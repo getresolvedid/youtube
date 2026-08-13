@@ -83,6 +83,64 @@ ukurannya yang dikecilkan.
 **Baris teks maksimal:** 2 baris untuk judul, 3 baris untuk body. Panjang baris
 ideal 28–40 karakter di 16:9, 20–28 karakter di 9:16.
 
+## Ikon & figur
+
+> **HARD RULE: tidak ada scene yang isinya cuma teks.** Setiap scene wajib punya
+> elemen visual — ikon, figur, diagram, ilustrasi, grafik, atau animasi bentuk.
+> Scene yang cuma teks belum selesai.
+
+Alasannya bukan estetika. Channel ini menjanjikan penonton **melihat
+mekanismenya**; layar penuh teks adalah slide presentasi, dan penonton YouTube
+menutup slide.
+
+### Set ikon
+
+[`shared/icons.js`](../shared/icons.js) menyuntikkan sprite SVG inline ke dokumen
+— tidak ada permintaan jaringan, aman untuk capture headless.
+
+```html
+<script src="shared/icons.js"></script>
+
+<svg class="ic"><use href="#ic-ram"/></svg>
+<svg class="ic ic-lg c-accent"><use href="#ic-chip"/></svg>
+<svg class="ic ic-sm c-ok"><use href="#ic-check"/></svg>
+```
+
+| Kelompok | Ikon |
+|---|---|
+| Benda analogi | `desk` `cabinet` `file` `stack` |
+| Perangkat keras | `chip` `ram` `disk` |
+| Orang & arah | `person` `arrows` `ruler` `layers` |
+| Status | `check` `x` `warning` `info` |
+| Kejadian | `bolt` `drop` `refresh` `clock` `pause` |
+| Data & lain | `graph-down` `graph-up` `money` `comment` `app` |
+
+**Gaya:** garis, `viewBox` 96×96, `stroke-width` 6, ujung membulat, tanpa isian.
+Semua ikon mewarisi `currentColor`, jadi kelas warna tema (`.c-accent`, `.c-ok`,
+`.c-bad`, `.c-warn`) langsung berlaku.
+
+**Ukuran:** `.ic` 120px · `.ic-sm` 72px · `.ic-lg` 180px · `.ic-xl` 260px.
+Di 9:16 semuanya otomatis lebih besar.
+
+### Aturan pakai
+
+- **Satu ikon per scene** sebagai penanda utama. Dua ikon hanya kalau memang
+  sedang membandingkan dua hal (kiri/kanan).
+- **Di dalam kartu, ikon di kiri dan teks di kanan** — bukan ikon menumpuk di
+  atas teks. Susunan mendatar membaca lebih alami dan kartunya tidak jadi
+  tinggi-canggung. Ini otomatis: `.panel` yang berisi `.ic` langsung memakai
+  tata letak dua kolom.
+- Ikon yang berdiri sendiri di scene tengah tetap di **atas** judulnya.
+- Ikon **mendukung** kalimatnya, tidak mengulanginya. Kalau teksnya sudah
+  "listrik mati", ikon petir menambah — ikon bertuliskan "mati" tidak.
+- Kalau tidak ada ikon yang pas, **buat figur atau diagramnya**. Kalau bentuknya
+  akan berguna di episode lain, tambahkan sebagai ikon baru di `shared/icons.js`.
+- Ikon bukan dekorasi acak. Scene yang butuh gerak (aliran data, perubahan state)
+  tetap butuh animasi, bukan sekadar ikon diam.
+- **Logo getresolved tidak dipakai sebagai ikon.** Ia hanya muncul di brand sting
+  dan end card ([10 · Scene standar](10-scene-standar.md)). Menaburkannya sebagai
+  pengisi justru melemahkan momen brand-nya.
+
 ## Layout & safe area
 
 ### 16:9

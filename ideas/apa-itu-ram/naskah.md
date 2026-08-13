@@ -26,6 +26,15 @@ begitu listrik mati. Dan prosesor tidak mengambil langsung dari meja — ada mej
 jauh lebih kecil yang menempel padanya, namanya cache. **Keduanya wajib disebut
 di VO**, bukan cuma dicatat di sini (scene 021 dan 030).
 
+## Pertanyaan inti (benang merah)
+
+> **"Di mana data aplikasi saat aplikasi dibuka?"**
+
+Pertanyaan ini dibuka di scene 001 dan **dipanggil ulang di tiap batas babak** —
+scene 008 (masuk fondasi), 013 & 015 (tertutup vs dibuka), 024 (masuk mekanisme),
+lalu dijawab lugas di scene 072–073. Bukan sekadar hook: ini tulang punggung
+alur video.
+
 ## Satu kalimat bawa-pulang
 
 > RAM bukan tempat menyimpan — RAM tempat mengerjakan. Menambahnya hanya membantu
@@ -77,25 +86,25 @@ di VO**, bukan cuma dicatat di sini (scene 021 dan 030).
 
 ## Video panjang — T01-L
 
-**Target:** 7–9 menit · ~1.150 kata · 50 scene + 2 scene standar
+**Aktual:** 6:22 · 76 scene + 2 scene standar · 5.283 karakter (≈ kredit ElevenLabs)
 
 ### Outline babak
 
 | Babak | Tangga | Isi | Perkiraan |
 |---|---|---|---|
-| 1 Hook | L1 | Aplikasi yang sama: pertama lambat, kedua langsung muncul | 0:00–0:20 |
-| 2 Kontrak | L1 | Janji + peta 3 bagian. Brand sting di sini | 0:20–0:55 |
-| 3 Fondasi | L1→L2 | Meja & lemari, lalu dinamai. Titik putus analogi | 0:55–2:40 |
-| 4 Mekanisme | L2 | Tingkatan sebagai jarak, skala waktu manusiawi, meja penuh, kenapa RAM lupa | 2:40–5:45 |
-| 5 Realita | L3 | Mesin nyata, kapan tambah RAM berguna, indikator yang benar | 5:45–7:15 |
-| 6 Rangkuman + CTA | L1 | Tiga poin + end card | 7:15–8:10 |
+| 1 Hook | L1 | **Pertanyaan inti:** di mana data aplikasi saat dibuka? Lalu buktinya | 0:00–0:22 |
+| 2 Kontrak | L1 | Janji menjawab pertanyaan itu + peta 3 bagian. Brand sting di sini | 0:22–0:37 |
+| 3 Fondasi | L1→L2 | Meja & lemari, lalu dinamai. Tertutup vs dibuka. Titik putus analogi | 0:37–1:50 |
+| 4 Mekanisme | L2 | Tingkatan sebagai jarak, skala waktu manusiawi, meja penuh, kenapa RAM lupa, kenapa tidak semua secepat cache | 1:50–4:22 |
+| 5 Realita | L3 | Mesin nyata, kapan tambah RAM berguna, indikator yang benar | 4:22–5:33 |
+| 6 Rangkuman + CTA | L1 | Kembali ke pertanyaan awal, tiga poin, end card | 5:33–6:22 |
 
 ### Scene standar (tanpa VO — durasi ditambahkan manual)
 
 | Scene | Posisi | Durasi | Catatan |
 |---|---|---|---|
 | `sc-open` | setelah scene 005 | **1,5 dtk** | brand sting, awal babak 2 |
-| `sc-close` | setelah scene 050 | **5,0 dtk** | end card 16:9 |
+| `sc-close` | setelah scene 076 | **5,0 dtk** | end card 16:9 |
 
 Keduanya tidak ikut terhitung `estimate-timing.mjs` — lihat [docs/10](../../docs/10-scene-standar.md#efeknya-ke-timing).
 
@@ -103,21 +112,21 @@ Keduanya tidak ikut terhitung `estimate-timing.mjs` — lihat [docs/10](../../do
 
 | # | Babak | VO | Visual | Motion | Aset |
 |---|---|---|---|---|---|
-| 001 | 1 Hook | Kamu buka sebuah aplikasi. Yang pertama terasa lambat. | Layar gelap, satu ikon aplikasi di tengah, spinner berputar pelan. | Spinner berputar konstan, angka detik naik pelan di bawahnya. | — |
-| 002 | 1 Hook | Kamu tutup, lalu buka lagi aplikasi yang sama persis. Kali ini langsung muncul. | Ikon sama, tanpa spinner, jendela langsung terbentuk. | Jendela scale 0.94→1 + fade, back.out(1.6), 0.25 dtk. | — |
-| 003 | 1 Hook | Aplikasinya tidak berubah. Komputernya juga tidak. | Dua panel berdampingan, keduanya identik, diberi centang hijau. | Dua centang muncul bergantian, stagger 0.2 dtk. | — |
-| 004 | 1 Hook | Yang berubah cuma satu hal: di mana datanya berada saat itu. | Panel menyatu; muncul dua kotak berlabel jauh dan dekat. | Kotak "jauh" bergeser menjauh 200px, "dekat" mendekat, power3.inOut. | — |
-| 005 | 2 Kontrak | Dan tempat itulah yang namanya ram. | Judul besar: "RAM" Mono 800, di bawahnya "tempat kerja, bukan tempat simpan". | Huruf RAM masuk stagger per karakter 0.06 dtk, y 30→0. | — |
-| 006 | 2 Kontrak | Delapan menit ke depan kamu akan paham kenapa komputer butuh dua tempat penyimpanan yang berbeda. | Peta tiga kartu: Meja & lemari · Tingkatan · Kapan perlu nambah. | Tiga kartu masuk stagger 0.14 dtk, garis penghubung SVG tergambar. | — |
-| 007 | 2 Kontrak | Bukan satu tempat besar. Dua, dan alasannya masuk akal. | Kartu tengah tersorot; satu kotak besar dicoret, dua kotak muncul. | Coret SVG tergambar 0.5 dtk; dua kotak fade in stagger. | — |
-| 008 | 3 Fondasi | Bayangkan kamu bekerja di ruangan dengan satu meja dan satu lemari arsip. | Ilustrasi ruangan sederhana: meja di kiri, lemari tinggi di kanan. | Ruangan digambar garis demi garis, stroke draw 1.2 dtk. | — |
+| 001 | 1 Hook | Kamu buka sebuah aplikasi. Di mana data aplikasi itu berada saat kamu membukanya? | **PERTANYAAN INTI** di layar penuh, ikon aplikasi di atasnya. | Pertanyaan masuk stagger per kata; ikon aplikasi pop lebih dulu. | — |
+| 002 | 1 Hook | Kelihatannya sepele. Tapi jawabannya yang menentukan komputermu terasa cepat atau lambat. | Pertanyaan mengecil ke atas; dua ikon jam muncul di bawahnya. | Pertanyaan scale 1→0.6 naik ke atas; dua ikon masuk stagger. | — |
+| 003 | 1 Hook | Buktinya begini. Buka pertama kali terasa lambat. Buka kedua kali langsung muncul. | Dua kartu: "buka ke-1" dengan jam kuning, "buka ke-2" dengan centang hijau. | Dua kartu masuk bergantian, stagger 0.22 dtk. | — |
+| 004 | 1 Hook | Aplikasinya sama. Komputernya sama. Yang berbeda cuma satu: di mana datanya berada. | Dua kartu bercentang identik, lalu satu label "letak data" menyala. | Dua centang muncul bergantian; label ketiga pop belakangan. | — |
+| 005 | 2 Kontrak | Dan tempat paling dekat itu namanya ram. | Judul besar "RAM" + ikon keping RAM. | Ikon pop, lalu huruf RAM masuk stagger per karakter 0.06 dtk. | — |
+| 006 | 2 Kontrak | Enam menit ke depan kita akan menjawab pertanyaan tadi sampai tuntas. | Peta tiga kartu: Meja & lemari · Tingkatan · Kapan perlu nambah. | Tiga kartu masuk stagger 0.14 dtk, garis penghubung SVG tergambar. | — |
+| 007 | 2 Kontrak | Ternyata jawabannya bukan satu tempat. Ada beberapa, dan alasannya masuk akal. | Kartu tengah tersorot; satu kotak besar dicoret, beberapa kotak muncul. | Coret SVG tergambar 0.5 dtk; kotak fade in stagger. | — |
+| 008 | 3 Fondasi | Untuk menjawabnya, bayangkan kamu bekerja di ruangan dengan satu meja dan satu lemari arsip. | Ilustrasi ruangan sederhana: meja di kiri, lemari tinggi di kanan. | Ruangan digambar garis demi garis, stroke draw 1.2 dtk. | — |
 | 009 | 3 Fondasi | Lemari itu besar. Semua dokumen yang pernah kamu punya ada di sana. | Lemari membesar, laci-laci terisi banyak berkas. | Laci terbuka berurutan stagger 0.1 dtk, berkas muncul. | — |
 | 010 | 3 Fondasi | Tapi kamu tidak pernah membaca dokumen di dalam lemari. | Tanda silang merah di depan lemari. | Silang SVG tergambar cepat 0.35 dtk, ease power4.out. | — |
 | 011 | 3 Fondasi | Kamu ambil dokumennya, taruh di meja, baru kamu kerjakan. | Satu berkas melayang dari lemari ke meja. | Berkas bergerak sepanjang path lengkung 0.9 dtk, power2.inOut. | — |
 | 012 | 3 Fondasi | Lemari arsip itu penyimpanan. Hard disk, atau S S D di komputermu. | Label muncul di lemari: "PENYIMPANAN". | Label slide dari kanan + garis penunjuk tergambar. | — |
-| 013 | 3 Fondasi | Isinya tetap ada walaupun kamu pulang dan mematikan lampu. | Ruangan gelap, lemari tetap terlihat samar dengan isinya. | Lampu meredup 0.6 dtk; lemari tetap ber-outline. | — |
+| 013 | 3 Fondasi | Jadi saat aplikasi tertutup, datanya ada di sini. Tetap ada walaupun lampu dimatikan. | Ruangan gelap, lemari tetap terlihat samar dengan isinya. | Lampu meredup 0.6 dtk; lemari tetap ber-outline. | — |
 | 014 | 3 Fondasi | Mejanya, itulah ram. | Label besar di meja: "RAM". | Label pop scale 0→1 back.out(2), meja tersorot indigo. | — |
-| 015 | 3 Fondasi | Kecil, tapi semua pekerjaan terjadi di sana. | Meja tersorot, beberapa berkas terbuka di atasnya. | Tiga berkas muncul stagger 0.12 dtk. | — |
+| 015 | 3 Fondasi | Dan saat aplikasi dibuka, datanya disalin ke sini. Kecil, tapi semua pekerjaan terjadi di sana. | Meja tersorot, beberapa berkas terbuka di atasnya. | Tiga berkas muncul stagger 0.12 dtk. | — |
 | 016 | 3 Fondasi | Meja yang lebih luas berarti lebih banyak dokumen terbuka sekaligus. | Meja melebar; jumlah berkas bertambah dari tiga jadi delapan. | Meja scaleX 1→1.5 power2.out; berkas bertambah stagger cepat. | — |
 | 017 | 3 Fondasi | Kamu tidak perlu bolak-balik ke lemari setiap ganti pekerjaan. | Panah bolak-balik ke lemari memudar dan hilang. | Panah fade out + strokeDashoffset mundur. | — |
 | 018 | 3 Fondasi | Dan setiap perjalanan ke lemari itu, jauh lebih lama daripada yang kamu kira. | Jam kecil muncul di jalur menuju lemari. | Jarum jam berputar cepat; jalur berdenyut merah. | — |
@@ -126,7 +135,7 @@ Keduanya tidak ikut terhitung `estimate-timing.mjs` — lihat [docs/10](../../do
 | 021 | 3 Fondasi | Tapi analogi meja ini punya satu bocor yang penting. | Layar menggelap, meja tetap terlihat, muncul retakan garis di analoginya. | Garis retak tergambar melintasi ilustrasi, 0.6 dtk. | — |
 | 022 | 3 Fondasi | Meja sungguhan tetap berisi saat kamu pulang. Ram tidak. | Ruangan gelap total; meja kosong melompong, lemari tetap berisi. | Semua berkas di meja fade out serentak 0.4 dtk. | — |
 | 023 | 3 Fondasi | Begitu listrik mati, seluruh isi ram hilang. Semuanya, tanpa sisa. | Teks besar: "LISTRIK MATI" lalu meja kosong. | Layar berkedip gelap sekali, lalu teks masuk cepat. | — |
-| 024 | 4 Mekanisme | Sekarang bagian yang jarang diceritakan. Mejanya ternyata bukan cuma satu. | Meja tunggal pecah jadi beberapa meja bertingkat. | Meja terbelah jadi empat tingkat, stagger 0.15 dtk. | — |
+| 024 | 4 Mekanisme | Jadi jawabannya meja. Tapi ini bagian yang jarang diceritakan: mejanya bukan cuma satu. | Meja tunggal pecah jadi beberapa meja bertingkat. | Meja terbelah jadi empat tingkat, stagger 0.15 dtk. | — |
 | 025 | 4 Mekanisme | Di dalam komputer ada beberapa tingkat tempat kerja, bukan hanya dua. | Diagram tangga empat tingkat mulai terbentuk. | Setiap anak tangga muncul dari bawah, stagger 0.18 dtk. | — |
 | 026 | 4 Mekanisme | Dan yang membedakannya bukan ukuran. Yang membedakan adalah jarak. | Tangga berubah jadi peta jarak horizontal. | Layout beralih dari vertikal ke horizontal, 0.8 dtk power3.inOut. | — |
 | 027 | 4 Mekanisme | Semakin dekat ke prosesor, semakin cepat. Tapi juga semakin kecil dan semakin mahal. | Sumbu: kiri "dekat & cepat", kanan "jauh & lambat". Kotak mengecil ke kiri. | Empat kotak menyusut ke kiri; label sumbu tergambar. | — |
@@ -160,7 +169,7 @@ Keduanya tidak ikut terhitung `estimate-timing.mjs` — lihat [docs/10](../../do
 | 055 | 4 Mekanisme | Jadi komputer tidak memilih satu. Ia memakai semuanya sekaligus. | Keempat tingkat muncul kembali, semuanya menyala. | Empat kotak menyala berurutan stagger 0.12 dtk. | — |
 | 056 | 4 Mekanisme | Sedikit yang sangat cepat. Banyak yang lebih lambat. Sangat banyak yang paling lambat. | Piramida: puncak kecil, dasar lebar. | Piramida terbentuk dari puncak ke dasar. | — |
 | 057 | 4 Mekanisme | Susunan itu bukan kompromi yang terpaksa. Itu memang rancangannya. | Piramida tersorot utuh dengan label "hierarki memori". | Garis tepi piramida tergambar; label muncul. | — |
-| 058 | 5 Realita | Sekarang mari lihat angka aslinya, di komputer yang dipakai membuat video ini. | Kartu spesifikasi mesin mulai terbentuk. | Kartu masuk dari bawah, y 40→0, power3.out. | — |
+| 058 | 5 Realita | Sekarang lihat angka aslinya, di komputer yang dipakai membuat video ini. | Kartu spesifikasi mesin mulai terbentuk. | Kartu masuk dari bawah, y 40→0, power3.out. | — |
 | 059 | 5 Realita | Prosesornya punya meja kecil bertingkat, totalnya sekitar dua puluh megabita. | Baris spesifikasi: cache L2 4 MB, L3 16 MB. | Angka counter naik ke nilainya, power2.out. | — |
 | 060 | 5 Realita | Ramnya tiga puluh dua gigabita. Kira-kira seribu enam ratus kali lebih besar. | Baris RAM 32 GB; bar perbandingan panjang muncul. | Bar memanjang keluar layar untuk menekankan rasio. | — |
 | 061 | 5 Realita | Meja kecil itu hanya sepersekian ribu ukuran mejanya. Tapi hampir semua pekerjaan lewat sana. | Bar cache nyaris tak terlihat di sebelah bar RAM. | Sorotan berpindah ke bar kecil; bar besar meredup. | — |
@@ -174,8 +183,8 @@ Keduanya tidak ikut terhitung `estimate-timing.mjs` — lihat [docs/10](../../do
 | 069 | 5 Realita | Yang harus kamu lihat adalah seberapa sering berkas dipindah ke lemari. | Grafik aktivitas pemindahan ke penyimpanan. | Garis grafik tergambar, ada lonjakan tajam. | — |
 | 070 | 5 Realita | Di Windows namanya pemakaian berkas halaman. Di Linux dan Mac namanya swap. | Dua label sistem berdampingan dengan nama masing-masing. | Dua label masuk stagger 0.2 dtk. | — |
 | 071 | 5 Realita | Kalau angka itu terus naik saat kamu bekerja, barulah menambah ram masuk akal. | Grafik naik terus; centang hijau muncul di sebelahnya. | Garis naik, lalu centang pop. | — |
-| 072 | 6 Rangkuman | Jadi, tiga hal yang perlu kamu bawa pulang. | Layar bersih, angka "3" besar di tengah. | Angka pop lalu mengecil ke sudut, 0.5 dtk. | — |
-| 073 | 6 Rangkuman | Satu. Ram bukan tempat menyimpan. Ram tempat mengerjakan. | Poin pertama muncul dengan nomor besar. | Baris masuk y 24→0, power3.out. | — |
+| 072 | 6 Rangkuman | Jadi, kembali ke pertanyaan awal. Di mana data aplikasi saat kamu membukanya? | Layar bersih, angka "3" besar di tengah. | Angka pop lalu mengecil ke sudut, 0.5 dtk. | — |
+| 073 | 6 Rangkuman | Satu. Yang sedang dipakai ada di ram. Sisanya masih di penyimpanan. | Poin pertama muncul dengan nomor besar. | Baris masuk y 24→0, power3.out. | — |
 | 074 | 6 Rangkuman | Dua. Yang membuat cepat bukan ukurannya, tapi jaraknya ke prosesor. | Poin kedua muncul di bawahnya. | Baris kedua masuk, stagger setelah poin pertama. | — |
 | 075 | 6 Rangkuman | Tiga. Menambah ram hanya membantu kalau mejamu memang sudah penuh. | Poin ketiga muncul; ketiganya terlihat bersamaan. | Baris ketiga masuk; garis aksen tergambar di bawah ketiganya. | — |
 | 076 | 6 Rangkuman | Dan kalau kamu penasaran apa yang terjadi di dalam meja kecil itu, bilang di komentar. | Ajakan singkat; ikon komentar. | Ikon pop, teks masuk dari bawah. | — |

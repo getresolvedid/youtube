@@ -8,6 +8,26 @@ Produksi konten YouTube edukasi **teknologi / coding / engineering** berbahasa
 Indonesia. Bukan codebase aplikasi — isinya guideline, naskah, komposisi
 HyperFrames, dan aset render. Mulai dari [README.md](README.md).
 
+## HARD RULE — jangan pernah dilanggar
+
+**Tidak ada scene yang isinya cuma teks.** Setiap scene wajib punya elemen
+visual: ikon, figur, diagram, ilustrasi, grafik, atau animasi bentuk. Teks
+berdiri sendiri di layar penuh = scene itu belum selesai, bukan pilihan gaya.
+
+Alasannya: ini channel yang menjanjikan penonton **melihat mekanismenya**, bukan
+membaca istilahnya. Layar penuh teks adalah slide presentasi, dan penonton
+YouTube menutup slide.
+
+Cara memenuhinya:
+
+- Set ikon ada di [`shared/icons.js`](shared/icons.js) — sprite SVG inline,
+  dipakai dengan `<svg class="ic"><use href="#ic-ram"/></svg>`.
+- Kalau tidak ada ikon yang pas, **buat figur/diagramnya**, atau tambahkan ikon
+  baru ke `shared/icons.js` supaya episode lain ikut kebagian.
+- Logo getresolved **tetap terbatas** di brand sting dan end card
+  ([docs/10](docs/10-scene-standar.md)) — jangan menaburkannya sebagai pengisi.
+- Detail ukuran, warna, dan penempatan: [docs/03 § Ikon & figur](docs/03-tema-visual.md#ikon--figur).
+
 ## Aturan kerja
 
 - **Balas dalam Bahasa Indonesia** — user berkomunikasi dalam Bahasa Indonesia informal.

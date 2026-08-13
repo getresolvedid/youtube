@@ -34,6 +34,13 @@
 
   --accent:      var(--brand-indigo);
   --accent-deep: var(--brand-indigo-deep);
+
+  /* Aksen untuk PERMUKAAN (isian, garis, bar) vs aksen untuk TEKS.
+     Indigo brand #4F46E5 hanya mencapai ~2,7:1 sebagai teks di atas --bg-elev —
+     gagal WCAG. Untuk teks dipakai indigo terang yang memang ada di gradient
+     wordmark brand, sehingga tetap satu keluarga warna. */
+  --accent-ink:  #818CF8;
+
   --ok:          var(--brand-green);
   --warn:        #F59E0B;
   --bad:         #EF4444;
@@ -158,7 +165,7 @@ html, body {
 .t-num { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-display);
          font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
 
-.c-accent { color: var(--accent); }
+.c-accent { color: var(--accent-ink); }
 .c-ok     { color: var(--ok); }
 .c-warn   { color: var(--warn); }
 .c-bad    { color: var(--bad); }
@@ -221,7 +228,51 @@ html, body {
         border: 1px solid var(--line); background: var(--bg-elev);
         font-family: var(--font-mono); font-size: var(--fs-label);
         letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-1); }
-.pill.accent { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.pill.accent { border-color: var(--accent); color: var(--accent-ink); background: var(--accent-soft); }
+
+/* --------------------------------------------------------------------------
+   Ikon & figur — HARD RULE: tidak ada scene yang isinya cuma teks.
+   Sprite disuntikkan oleh shared/icons.js. Aturan: docs/03 § Ikon & figur.
+   -------------------------------------------------------------------------- */
+
+.ic {
+  display: block;
+  width: 120px;
+  height: 120px;
+  flex: none;
+}
+
+/* Warna bawaan ikon ditulis dengan :where() supaya specificity-nya NOL —
+   kalau ditulis sebagai `.ic { color: ... }` biasa, ia menimpa .c-ok/.c-warn/
+   .c-bad yang muncul lebih dulu di berkas ini, dan semua ikon jadi indigo. */
+:where(.ic) { color: var(--accent); }
+
+.ic-sm { width: 72px;  height: 72px; }
+.ic-lg { width: 180px; height: 180px; }
+.ic-xl { width: 260px; height: 260px; }
+
+.hf-9x16 .ic    { width: 160px; height: 160px; }
+.hf-9x16 .ic-sm { width: 96px;  height: 96px; }
+.hf-9x16 .ic-lg { width: 240px; height: 240px; }
+.hf-9x16 .ic-xl { width: 340px; height: 340px; }
+
+/* Ikon di dalam kartu: DI KIRI, teks di kanan.
+   Ikon menumpuk di atas teks membuat kartu terasa canggung dan tinggi;
+   susunan mendatar membaca jauh lebih alami. Ikon merentang setinggi
+   seluruh blok teks, jadi tetap sejajar walau teksnya dua-tiga baris. */
+.panel:has(> .ic) {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 28px;
+  row-gap: 6px;
+  align-items: center;
+  text-align: left;
+}
+.panel:has(> .ic) > .ic        { grid-row: 1 / -1; grid-column: 1; }
+.panel:has(> .ic) > :not(.ic)  { grid-column: 2; }
+
+/* Ikon berdiri sendiri di scene tengah tetap di atas judulnya. */
+.scene-content.center > .ic { margin: 0 auto; }
 
 .row  { display: flex; gap: var(--grid-gutter); align-items: stretch; }
 .row > * { flex: 1; }

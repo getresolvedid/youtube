@@ -68,6 +68,7 @@ youtube/                      ← ROOT PROJECT HyperFrames
 ├── package.json              ← npm run dev / check / render
 ├── index.html                ← komposisi uji scene standar (uji regresi visual)
 ├── docs/                     ← guideline (01–10)
+├── ideas/                    ← SEMUA ide posting masuk sini dulu (1 berkas = 1 ide)
 ├── compositions/             ← satu berkas per episode per format
 │   └── T01-long.html · T01-short-1.html · T01-short-2.html
 ├── shared/
@@ -122,10 +123,12 @@ Sudah ditetapkan:
 
 | Audiens | **Khalayak umum + developer** dalam satu video, dijembatani tangga L1→L2→L3 |
 
+| Episode pertama | **T01 · Apa itu RAM** — [ide](ideas/apa-itu-ram.md) · [backlog](docs/07-backlog-topik.md) |
+
 Yang masih terbuka:
 
-1. **Topik T01.** Urutan yang disarankan membuka dengan
-   [T01 · Sinyal penuh tapi internet lambat](docs/07-backlog-topik.md) — jangkauan
-   paling luas, dan pertanyaan yang benar-benar ditanyakan orang.
+1. **Angka latensi untuk T01** belum punya sumber primer. Opsi paling jujur:
+   ukur sendiri di mesin ini dan sebutkan spesifikasinya di video. Detailnya di
+   [ideas/apa-itu-ram.md](ideas/apa-itu-ram.md#catatan).
 2. **Musik latar.** Belum ada aset di `shared/`; dibutuhkan sebelum render final
    episode pertama.

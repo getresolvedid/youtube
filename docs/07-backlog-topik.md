@@ -3,6 +3,11 @@
 Daftar topik beserta **sudut untuk kedua Shorts-nya**. Satu topik hanya boleh
 masuk daftar ini kalau lolos empat syarat di bagian bawah.
 
+> **Ide baru tidak ditulis di sini.** Semua ide masuk lewat
+> [`ideas/`](../ideas/) dulu — satu berkas per ide, bebas seberapa mentah.
+> Yang lolos empat syarat baru naik ke halaman ini dan dapat kode `T{nn}`.
+> Alurnya: [`ideas/README.md`](../ideas/README.md).
+
 Komposisi mengikuti porsi pilar di [01 · Positioning](01-positioning.md): mayoritas
 bisa dinikmati khalayak umum, sebagian untuk developer, dan setiap topik menaiki
 tangga L1 → L2 → L3.
@@ -17,7 +22,8 @@ tidak ditulis di sini — semuanya ada di `.env`. Lihat
 
 | Kode | Topik | Pilar | Lapis utama | Status |
 |---|---|---|---|---|
-| T01 | Sinyal penuh tapi internet lambat | P1 | umum | belum mulai |
+| **T01** | **Apa itu RAM** | P1 | umum | **riset** ← episode pertama |
+| T13 | Sinyal penuh tapi internet lambat | P1 | umum | belum mulai |
 | T02 | Bagaimana HP tahu posisi kamu | P1 | umum | belum mulai |
 | T03 | Kenapa rekaman video jadi buram | P1 | umum | belum mulai |
 | T04 | Apa isi sebuah QR code | P1 | umum | belum mulai |
@@ -36,7 +42,37 @@ Status: `belum mulai → riset → naskah → vo → komposisi → render → pu
 
 ## P1 · Cara Kerja Sehari-hari
 
-### T01 · Sinyal penuh tapi internet lambat
+### T01 · Apa itu RAM ← episode pertama
+
+**L1:** RAM itu meja kerja, hard disk itu lemari arsip. Kamu tidak membaca
+dokumen di dalam lemari — kamu ambil, taruh di meja, baru kerjakan. Meja lebih
+besar berarti lebih banyak yang terbuka sekaligus tanpa bolak-balik. Kalau meja
+penuh, berkas mulai ditumpuk di lantai.
+
+**Titik putus analogi:** meja tetap berisi saat kamu pulang; RAM kosong total
+begitu listrik mati. Dan CPU tidak mengambil langsung dari meja — ada meja kecil
+yang jauh lebih dekat, namanya cache.
+
+**Video panjang.** Kenapa komputer butuh dua tempat penyimpanan yang berbeda,
+bukan satu yang besar. Bedah hierarkinya dari register → cache → RAM → SSD, dengan
+skala waktu yang dibuat bisa dibayangkan manusia. Lalu: apa yang sebenarnya
+terjadi saat RAM penuh (swap), dan kenapa RAM harus disegarkan ribuan kali per
+detik hanya untuk mengingat. Realita: kapan menambah RAM benar-benar membantu dan
+kapan sama sekali tidak, dibaca dari indikator yang tepat.
+
+- **Short 1 — Nugget:** skala waktu dibuat manusiawi. Kalau mengambil data dari
+  cache itu 1 detik, dari RAM sekitar satu menit, dan dari hard disk sekitar dua
+  bulan. Satu animasi, satu insight, berdiri sendiri.
+- **Short 2 — Jebakan:** "RAM lebih besar = komputer lebih cepat." Hanya benar
+  sampai mejanya cukup besar; setelah itu tambahan RAM tidak memberi apa-apa.
+  Tunjukkan indikator mana yang harus dilihat sebelum membeli.
+
+**Kenapa ini episode pertama:** pertanyaan yang benar-benar ditanyakan orang saat
+membeli HP atau laptop, mekanismenya mudah dianimasikan, dan babak realitanya
+cukup dalam untuk developer (hierarki cache dan locality). Lolos keempat syarat
+di bawah tanpa dipaksakan.
+
+### T13 · Sinyal penuh tapi internet lambat
 
 **L1:** Batang sinyal cuma memberi tahu seberapa dekat kamu ke pemancar — bukan
 berapa banyak orang yang sedang antre memakai pemancar yang sama.
@@ -239,9 +275,10 @@ sinyal audiens yang konsisten lebih berharga daripada variasi. Karena itu
 **buka dengan P1** (jangkauan paling luas), baru turunkan kedalamannya perlahan
 lewat P2, dan sisipkan P3 setelah ada penonton yang bertahan.
 
-**T01 → T03 → T05 → T10 → T06 → T12**, lalu masuk P3 (T08/T09) dan sesuaikan
+**T01 → T13 → T03 → T05 → T10 → T06**, lalu masuk P3 (T08/T09) dan sesuaikan
 dengan data retensi.
 
-Alasan tiga yang pertama: T01 dan T03 adalah pertanyaan yang benar-benar
-ditanyakan orang sehari-hari, dan T05 adalah jembatan pertama ke materi yang
-lebih dalam tanpa kehilangan penonton awam.
+Alasan tiga yang pertama: T01 (RAM), T13 (sinyal), dan T03 (video buram) adalah
+pertanyaan yang benar-benar ditanyakan orang sehari-hari — saat membeli HP,
+saat internet lemot, saat rekaman tidak terbaca. T05 menyusul sebagai jembatan
+pertama ke materi yang lebih dalam tanpa kehilangan penonton awam.

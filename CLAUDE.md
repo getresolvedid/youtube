@@ -14,6 +14,10 @@ HyperFrames, dan aset render. Mulai dari [README.md](README.md).
 - **Guideline adalah kontrak.** Sebelum menulis naskah atau komposisi, baca dokumen
   yang relevan di [`docs/`](docs/). Kalau sebuah keputusan bertentangan dengan
   guideline, ubah guideline-nya dulu secara eksplisit — jangan diam-diam menyimpang.
+- **Semua ide posting masuk ke [`ideas/`](ideas/)**, satu berkas per ide, sebelum
+  jadi apa pun. Yang lolos 4 syarat naik ke [`docs/07`](docs/07-backlog-topik.md)
+  dan dapat kode `T{nn}`; ide yang ditolak tetap disimpan beserta alasannya.
+  Jangan menulis ide baru langsung ke backlog.
 - **Satu topik = 1 video panjang + 2 Shorts.** Jangan kirim topik setengah jadi.
   Shorts diturunkan dari topik yang sama, tapi **hook-nya ditulis ulang**, bukan
   potongan mentah video panjang.

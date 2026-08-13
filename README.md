@@ -16,10 +16,11 @@ Repo ini menyimpan **guideline, naskah, dan komposisi video** — bukan aplikasi
 - **[ElevenLabs](https://elevenlabs.io/docs/overview/models)** — voice over Bahasa Indonesia, voice **George**, model `eleven_multilingual_v2`.
 - **Tema visual** — turunan brand [`wargasipil/getresolved`](https://github.com/wargasipil/getresolved) (`branding/guidelines/brand.html`): Indigo `#4F46E5`, Green `#10B981`, Ink `#0F172A`, tipografi Manrope.
 
-**Dua aturan yang mengikat seluruh alur kerja:**
+**Tiga aturan yang mengikat seluruh alur kerja:**
 
-1. **Bahasa anak 5 tahun.** Topik yang belum bisa dijelaskan dalam 60 kata tanpa istilah teknis belum boleh masuk produksi → [09 · Tangga abstraksi](docs/09-tangga-abstraksi.md).
-2. **VO paling akhir.** ElevenLabs dibayar per karakter, jadi komposisi dibangun dan ditonton dulu dalam keadaan **bisu** dengan timing perkiraan. VO baru dibuat setelah naskah **beku** → [04 · Pipeline](docs/04-pipeline-produksi.md).
+1. **Satu video, dua lapis penonton.** Khalayak umum harus bertahan sampai babak 4; developer dapat kedalamannya di babak 5. Dijembatani tangga **L1 → L2 → L3** → [09 · Tangga abstraksi](docs/09-tangga-abstraksi.md).
+2. **Bahasa anak 5 tahun.** Topik yang belum bisa dijelaskan dalam 60 kata tanpa istilah teknis belum boleh masuk produksi.
+3. **VO paling akhir.** ElevenLabs dibayar per karakter, jadi komposisi dibangun dan ditonton dulu dalam keadaan **bisu** dengan timing perkiraan. VO baru dibuat setelah naskah **beku** → [04 · Pipeline](docs/04-pipeline-produksi.md).
 
 ---
 
@@ -119,12 +120,12 @@ Sudah ditetapkan:
 | Website / CTA | [getresolved.id](https://getresolved.id) |
 | Voice ElevenLabs | **George** (`JBFqnCBsd6RMkjVDRZzb`), model `eleven_multilingual_v2` |
 
-Yang masih **memblokir** episode pertama:
+| Audiens | **Khalayak umum + developer** dalam satu video, dijembatani tangga L1→L2→L3 |
 
-1. **Sudut channel.** `getresolved.id` menjual CCTV, internet, kasir, gudang, dan
-   absensi ke UMKM — sementara [01 · Positioning](docs/01-positioning.md) menyasar
-   developer dengan materi seperti B-Tree dan Git internals. Dua audiens ini
-   berbeda. Harus diputuskan dulu sebelum topik dipilih, karena ini menentukan
-   seluruh backlog.
-2. **Topik T01** — kandidat ada di [backlog](docs/07-backlog-topik.md), tapi
-   pilihannya bergantung pada keputusan nomor 1.
+Yang masih terbuka:
+
+1. **Topik T01.** Urutan yang disarankan membuka dengan
+   [T01 · Sinyal penuh tapi internet lambat](docs/07-backlog-topik.md) — jangkauan
+   paling luas, dan pertanyaan yang benar-benar ditanyakan orang.
+2. **Musik latar.** Belum ada aset di `shared/`; dibutuhkan sebelum render final
+   episode pertama.

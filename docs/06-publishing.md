@@ -110,7 +110,7 @@ Tag sekadar sinyal pendukung — judul, thumbnail, dan retensi jauh lebih menent
 
 Satu playlist per pilar (lihat [01 · Positioning](01-positioning.md)):
 
-`Cara Kerja` · `Bahasa & Tooling` · `Arsitektur & Sistem` · `Praktik Engineering` · `AI & Agentic`
+`Cara Kerja Sehari-hari` · `Di Balik Aplikasi` · `Untuk yang Menulis Kodenya` · `AI & Data` · `Keamanan & Privasi`
 
 Setiap video panjang masuk tepat satu playlist. Shorts tidak dimasukkan playlist pilar.
 

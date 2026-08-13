@@ -31,6 +31,11 @@ Timecode di bawah adalah patokan untuk video 8 menit. Geser proporsional.
 Kolom **tangga** mengacu ke [09 · Tangga abstraksi](09-tangga-abstraksi.md):
 L1 = bahasa anak 5 tahun, L2 = istilah teknis, L3 = angka dan batas.
 
+Struktur ini sekaligus yang melayani **dua lapis penonton**
+([01](01-positioning.md)): babak 1–4 harus bisa diikuti khalayak umum tanpa
+tertinggal, babak 5 adalah bagian yang membuat developer bertahan. Karena itu
+**babak 5 tidak pernah dipangkas demi durasi** — yang dipangkas duluan babak 3.
+
 | Babak | Timecode | Tangga | Tugasnya |
 |---|---|---|---|
 | **1. Hook** | `0:00–0:15` | **L1** | Satu pertanyaan atau satu fakta mengganggu. **Tanpa salam, tanpa perkenalan.** Frame pertama sudah konten. |

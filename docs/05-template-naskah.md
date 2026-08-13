@@ -66,7 +66,8 @@ Salin blok di bawah ke `topics/T{nn}-{slug}/naskah.md`.
 kode: T01
 slug: cara-kerja-index-database
 judul_kerja: Kenapa query jadi 1000x lebih cepat dengan index
-pilar: P1 · Cara Kerja
+pilar: P2 · Di Balik Aplikasi
+lapis: umum → dev        # umum | umum → dev | dev
 status: riset | naskah | vo | komposisi | render | publish
 naskah_beku:            # diisi tanggal saat lolos gerbang (docs/04 §5)
 karakter_terpakai:      # diisi setelah VO dibuat, untuk kalibrasi biaya

@@ -34,6 +34,9 @@ client_secret*.json
 # (di justmart ukurannya ~30 MB).
 graphify-out/
 
+# Cache thumbnail HyperFrames Studio (dibuat ulang otomatis saat preview)
+.thumbnails/
+
 node_modules/
 .hyperframes/
 out/

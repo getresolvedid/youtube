@@ -6,13 +6,60 @@ Panduan untuk Claude Code saat bekerja di repo ini.
 
 Produksi konten YouTube edukasi **teknologi / coding / engineering** berbahasa
 Indonesia. Bukan codebase aplikasi — isinya guideline, naskah, komposisi
-HyperFrames, dan aset render. Mulai dari [README.md](README.md).
+[Remotion](https://remotion.dev), dan aset render. Mulai dari [README.md](README.md).
 
 ## HARD RULE — jangan pernah dilanggar
 
-**Tidak ada scene yang isinya cuma teks.** Setiap scene wajib punya elemen
-visual: ikon, figur, diagram, ilustrasi, grafik, atau animasi bentuk. Teks
-berdiri sendiri di layar penuh = scene itu belum selesai, bukan pilihan gaya.
+### 1. Satu scene = satu berkas, di `ideas/<slug>/scenes/`
+
+**Dilarang menaruh seluruh scene sebuah episode dalam satu berkas.**
+Setiap scene jadi berkas sendiri:
+
+```
+ideas/<slug>/scenes/s001.tsx
+ideas/<slug>/scenes/s002.tsx
+ideas/<slug>/scenes/index.ts   ← daftar SCENES: id → komponen
+ideas/<slug>/Episode.tsx       ← hanya merangkai, lewat <Sequence>
+```
+
+Alasannya:
+
+- **Bisa di-preview satu per satu.** Setiap scene otomatis jadi komposisi
+  sendiri di Studio (`src/Root.tsx`), jadi
+  `npx remotion still s-s042 out/s042.png` cukup — tanpa scrubbing enam menit
+  untuk memeriksa satu scene.
+- **Menahan diri dari melantur.** Satu berkas 83 scene bikin tiap scene ditulis
+  sambil lalu. Satu berkas per scene memaksa tiap scene berdiri sendiri.
+
+`Episode.tsx` hanya memetakan timing → komponen. Tidak ada isi scene di sana.
+
+**Nama berkas boleh semantik.** `s001.tsx` untuk scene yang mengikuti nomor
+naskah; `hook-question.tsx` untuk scene yang menggabungkan beberapa shot.
+Kolom pertama tabel scene di `naskah.md` adalah ID-nya — nomor atau nama,
+keduanya sah — dan itu yang jadi kunci di `SCENES`.
+
+**Beberapa shot yang satu beat digabung jadi satu scene.** Hook T01 dulu tiga
+scene (001–003) yang isinya satu pertanyaan yang sama; sekarang satu scene tiga
+tahap. Pecah berkas itu soal bisa di-preview, bukan alasan memotong satu gagasan
+jadi tiga potong yang saling menunggu.
+
+**Opening & closing tidak didaftarkan di `SCENES`.** Keduanya milik `shared/`
+([docs/10](docs/10-scene-standar.md)) supaya semua episode identik.
+
+**`check` lulus bukan bukti gambarnya ada.** Di versi HyperFrames repo ini
+pernah kehilangan waktu karena panggung setinggi 0 membuat seluruh episode
+render hitam polos sementara semua pemeriksaan lulus — tidak ada yang salah,
+hanya tidak ada yang terlihat. `<AbsoluteFill>` menutup penyebab spesifik itu,
+tapi kelasnya tidak hilang: font gagal muat, aset salah path, teks sewarna
+latar. `npm run check` menjalankan `tools/periksa-frame.mjs` yang membuktikan
+frame-nya ada isinya, tapi itu smoke test — **tetap render still dan lihat
+sendiri** sebelum menyatakan selesai.
+
+### 2. Tidak ada scene yang isinya cuma teks
+
+Setiap scene wajib punya elemen visual: ikon, figur, diagram, ilustrasi, grafik,
+atau animasi bentuk. Teks berdiri sendiri di layar penuh = scene itu belum
+selesai, bukan pilihan gaya.
 
 Alasannya: ini channel yang menjanjikan penonton **melihat mekanismenya**, bukan
 membaca istilahnya. Layar penuh teks adalah slide presentasi, dan penonton
@@ -20,10 +67,13 @@ YouTube menutup slide.
 
 Cara memenuhinya:
 
-- Set ikon ada di [`shared/icons.js`](shared/icons.js) — sprite SVG inline,
-  dipakai dengan `<svg class="ic"><use href="#ic-ram"/></svg>`.
+- Set ikon ada di [`shared/Icons.tsx`](shared/Icons.tsx) — sprite SVG inline,
+  dipakai dengan `<Ic n="ram" />` / `<Ic n="chip" ukuran="lg" warna="c-accent" />`.
+- Kosakata figur bersama ada di [`shared/figur.css`](shared/figur.css): sumbu
+  berlabel, bar pembanding, piramida, kisi sel, tabel spesifikasi, figur
+  meja/lemari. Pakai itu dulu sebelum menggambar dari nol.
 - Kalau tidak ada ikon yang pas, **buat figur/diagramnya**, atau tambahkan ikon
-  baru ke `shared/icons.js` supaya episode lain ikut kebagian.
+  baru ke `shared/Icons.tsx` supaya episode lain ikut kebagian.
 - Logo getresolved **tetap terbatas** di brand sting dan end card
   ([docs/10](docs/10-scene-standar.md)) — jangan menaburkannya sebagai pengisi.
 - Detail ukuran, warna, dan penempatan: [docs/03 § Ikon & figur](docs/03-tema-visual.md#ikon--figur).
@@ -45,19 +95,24 @@ Cara memenuhinya:
   daripada video yang kurang keren. Kalau sebuah angka (benchmark, kompleksitas,
   versi, perilaku API) tidak bisa diverifikasi, jangan sebutkan — atau sebutkan
   dengan sumbernya di `naskah.md`. Setiap klaim angka wajib punya baris `sumber:`.
-- **Jangan mengarang API.** HyperFrames, ElevenLabs, dan flag CLI-nya sudah
+- **Jangan mengarang API.** Remotion, ElevenLabs, dan flag CLI-nya sudah
   didokumentasikan di [docs/04-pipeline-produksi.md](docs/04-pipeline-produksi.md).
-  Kalau butuh perilaku yang tidak tercatat di sana, cek dokumentasi resminya dulu,
-  lalu perbarui dokumen itu.
-- **Naskah hidup di `naskah.md`,** bukan hanya di chat. Komposisi HTML adalah
-  *turunan* dari naskah — kalau VO berubah, ubah `naskah.md` dulu.
+  Kalau butuh perilaku yang tidak tercatat di sana, cek dokumentasi resminya dulu
+  ([remotion.dev/docs](https://www.remotion.dev/docs)), lalu perbarui dokumen itu.
+- **Naskah hidup di `naskah.md`,** bukan hanya di chat. Komposisi adalah
+  *turunan* dari naskah — kalau VO berubah, ubah `naskah.md` dulu lalu
+  `npm run gen`. Timing tidak pernah disunting tangan.
 - **Semua secret & konfigurasi ada di `.env`.** Jangan menulis API key, voice ID,
   atau angka setelan produksi (resolusi, padding VO, track index, LUFS) langsung
   di skrip, komposisi, atau dokumen — baca dari `.env`. Variabel baru wajib ikut
   ditambahkan ke `.env.example` dengan nilai kosong. Aturan lengkap:
   [docs/08-konfigurasi.md](docs/08-konfigurasi.md).
-- **Deterministik.** Komposisi HyperFrames dilarang memakai `Math.random()`,
-  `Date.now()`, `setInterval`, atau `repeat: -1` — render harus reproducible.
+- **Deterministik.** Setiap nilai animasi wajib jadi **fungsi murni dari frame**
+  — pakai `useDetik()` + helper di [`shared/anim.ts`](shared/anim.ts). Dilarang
+  `Math.random()`, `Date.now()`, `setInterval`, `useState` untuk animasi, atau
+  apa pun yang bergantung pada frame sebelumnya. Remotion merender frame 1.234
+  tanpa pernah merender 1.233; yang menyimpan state akan pecah saat seek dan
+  saat render paralel.
 - **Bahasa anak 5 tahun dulu.** Setiap topik wajib punya blok "Penjelasan 5 tahun"
   ≤ 60 kata tanpa istilah teknis sebelum naskah ditulis; istilah teknis tidak
   boleh muncul sebelum benda yang diwakilinya sudah digambarkan.
@@ -66,9 +121,10 @@ Cara memenuhinya:
   komposisi bisu dengan timing perkiraan (`tools/estimate-timing.mjs`), cocokkan
   naskah dengan visual, bekukan naskah, **baru** generate VO.
   → [docs/04 §5](docs/04-pipeline-produksi.md#5-gerbang--bekukan-naskah).
-- **Opening & closing tidak dibuat ulang.** Pakai `shared/scenes.*` apa adanya;
-  kalau koreografinya perlu berubah, ubah di `shared/` untuk semua episode.
-  → [docs/10](docs/10-scene-standar.md).
+- **Opening & closing tidak dibuat ulang.** Pakai `<BrandSting/>` dan
+  `<EndCard/>` dari [`shared/StandarScenes.tsx`](shared/StandarScenes.tsx) apa
+  adanya; kalau koreografinya perlu berubah, ubah di `shared/` untuk semua
+  episode. → [docs/10](docs/10-scene-standar.md).
 
 ## Yang tidak perlu dilakukan
 
@@ -83,31 +139,39 @@ Cara memenuhinya:
 ## Perintah yang dipakai
 
 ```powershell
-. .\tools\load-env.ps1                      # muat .env dulu (perhatikan titik di depan)
+npm run gen        # .env → shared/config.gen.ts, naskah.md → timing.gen.ts
+npm run check      # tsc + bukti frame tidak kosong (tools/periksa-frame.mjs)
+npm run sisa       # berapa scene yang masih placeholder
+npm run studio     # Remotion Studio — server panjang, jalankan di background
+npm run render     # episode utuh → out/
+
+# satu scene saja — inilah gunanya HARD RULE 1
+npx remotion still  s-s042 out/s042.png
+npx remotion render s-s042 out/s042.mp4
+
+# VO & timing
+. .\tools\load-env.ps1                      # muat .env ke sesi PowerShell
 node tools/elevenlabs-keys.mjs status       # cek / rotasi API key ElevenLabs
 node --env-file=.env tools/estimate-timing.mjs ideas/<slug>/naskah.md
 node --env-file=.env tools/vo-durations.mjs ideas/<slug>/vo L
-
-npm run check                               # lint + runtime + layout + motion + kontras
-npm run dev                                 # Studio — server panjang, jalankan di background
-npx hyperframes render -o ideas/<slug>/render/T01-L.mp4          # index.html = episode aktif
-npx hyperframes render -c compositions/uji-scene-standar.html -o render/uji-scene-standar.mp4
 ```
 
-**Repo ini adalah satu project HyperFrames** — root-nya di akar repo. Jangan
-`npx hyperframes init` lagi per episode, dan jangan menulis path aset dengan
-`../` (ditolak lint).
+`gen` dijalankan otomatis lewat npm pre-script sebelum `studio`, `render`,
+`check`, dan `sisa` — tidak perlu diingat, tapi perlu diketahui kenapa
+`shared/config.gen.ts` dan `ideas/*/timing.gen.ts` tidak ada di git: keduanya
+turunan `.env` dan `naskah.md`, dan meng-commit-nya berarti dua sumber kebenaran.
 
-**Episode yang sedang digarap selalu di `index.html`.** `check`, `lint`, `dev`,
-dan `render` tanpa `-c` semuanya bekerja pada berkas itu; komposisi yang disimpan
-di `compositions/` tidak tersentuh gerbang QA. Setelah episode selesai,
-pindahkan ke `compositions/T{nn}-*.html` dan isi `index.html` dengan episode
-berikutnya.
+**Episode yang sedang digarap didaftarkan di [`src/Root.tsx`](src/Root.tsx).**
+Setiap scene otomatis dapat komposisinya sendiri (`s-<id>`) di samping episode
+utuhnya. Setelah satu episode selesai dan diunggah, biarkan pendaftarannya —
+Remotion tidak keberatan punya banyak komposisi, dan episode lama tetap bisa
+dirender ulang.
 
-Aturan framework-nya ada di [AGENTS.md](AGENTS.md); **selalu `npm run check`
-setelah menyunting komposisi.**
+**Jangan render MP4 final selama `npm run sisa` masih melaporkan placeholder.**
+Scene yang belum dibuat tampil sebagai kartu kuning bergaris, bukan layar hitam,
+justru supaya tidak lolos tanpa disadari.
 
-Belum ada `npm test` / `make build` di repo ini — jangan mengarang perintah.
+Belum ada `npm test` di repo ini — jangan mengarang perintah.
 
 ## graphify
 
@@ -125,14 +189,15 @@ Bagian `## graphify` di atas **digenerate** oleh `graphify claude install` dan
 ditimpa ulang setiap kali dipasang lagi. Catatan khusus repo ini ditaruh di sini,
 di bawahnya, supaya tidak ikut hilang.
 
-**Yang perlu dikoreksi dari bagian generate itu:** repo ini **bukan codebase.**
-Isinya dokumen guideline, naskah, dan satu komposisi HTML. Karena itu:
+**Yang perlu dikoreksi dari bagian generate itu:** repo ini **bukan codebase
+biasa.** Isinya dokumen guideline, naskah, dan komposisi video. Karena itu:
 
-- **`graphify update .` hampir tidak berguna di sini.** Ia AST-only, jadi yang
-  terlihat cuma `tools/*.mjs` — bagian yang paling tidak butuh peta.
-- Relasi yang bernilai di repo ini semuanya **bukan import**:
-  `flow.md` → `docs/02` → `ideas/<slug>/naskah.md` → `index.html`,
-  aturan `docs/03` → `shared/theme.css` + `shared/icons.js`,
+- **`graphify update .` sekarang lebih berguna daripada dulu** — sejak pindah ke
+  Remotion, `shared/*.tsx`, `src/`, dan `ideas/*/scenes/*.tsx` punya graf impor
+  sungguhan yang bisa dibaca AST. Jalankan setelah menyunting komposisi.
+- Tapi relasi yang paling bernilai di repo ini tetap **bukan impor**:
+  `flow.md` → `docs/02` → `ideas/<slug>/naskah.md` → `Episode.tsx`,
+  aturan `docs/03` → `shared/theme.css` + `shared/Icons.tsx`,
   `ide.md` → backlog `docs/07`.
   Relasi seperti itu hanya tertangkap ekstraksi doc-aware:
 
@@ -140,8 +205,7 @@ Isinya dokumen guideline, naskah, dan satu komposisi HTML. Karena itu:
   graphify extract . --backend claude-cli
   ```
 
-- Jalankan ulang ekstraksi itu setelah **guideline atau naskah** berubah —
-  bukan setelah menyunting komposisi. Yang bergerak di repo ini adalah aturan
-  dan naskah, bukan kode.
+- Jalankan ulang ekstraksi itu setelah **guideline atau naskah** berubah;
+  `graphify update .` yang murah cukup untuk perubahan komposisi.
 - `graphify-out/` di-ignore git (lihat `.gitignore`), sama seperti di
   `getresolved/` dan `apps/justmart/`.

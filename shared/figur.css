@@ -1,0 +1,51 @@
+/* ===========================================================================
+   Figur & diagram — kosakata visual bersama.
+
+   Ini yang membuat HARD RULE 2 ("tidak ada scene yang isinya cuma teks") bisa
+   dipenuhi tanpa menggambar ulang dari nol tiap scene: sumbu, bar, piramida,
+   kisi sel, tabel spesifikasi, dan figur analogi ruang kerja. Semuanya bebas
+   episode — kalau sebuah pola cuma dipakai satu scene, tulis gayanya inline di
+   scene itu, jangan ditambahkan ke sini.
+
+   Diimpor sekali oleh shared/Stage.tsx. Aturan: docs/03-tema-visual.md.
+   ======================================================================== */
+
+/* --- analogi ruang kerja: meja (RAM) vs lemari arsip (penyimpanan) --------- */
+.ruang  { align-self: stretch; display: flex; align-items: flex-end; justify-content: space-between; width: 100%; height: 250px; margin-bottom: 120px; }
+.meja   { width: 520px; height: 34px; background: var(--accent); border-radius: 8px; position: relative; }
+.meja::after { content: ""; position: absolute; left: 34px; right: 34px; top: 34px; height: 110px;
+               border-left: 9px solid var(--accent-deep); border-right: 9px solid var(--accent-deep); }
+.lemari { width: 220px; height: 240px; border: 7px solid var(--ink-1); border-radius: 12px;
+          display: flex; flex-direction: column; gap: 9px; padding: 15px; }
+.laci   { flex: 1; background: var(--bg-elev); border: 2px solid var(--line); border-radius: 6px; }
+
+/* --- sumbu berlabel: menempatkan beberapa hal pada satu rentang ----------- */
+.sumbu { align-self: stretch; position: relative; width: 100%; height: 260px; }
+.garis { position: absolute; left: 0; right: 0; top: 130px; height: 4px;
+         background: linear-gradient(90deg, var(--accent), var(--warn), var(--bad)); border-radius: 2px; }
+.titik { position: absolute; top: 118px; text-align: center; transform: translateX(-50%); }
+.titik i { display: block; width: 24px; height: 24px; border-radius: 50%; background: var(--ink-0); margin: 0 auto 22px; }
+.titik b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 32px; }
+.titik span { display: block; font-family: var(--font-mono); font-size: 24px; color: var(--ink-1); }
+
+/* --- piramida bertingkat: hierarki yang makin lebar ke bawah -------------- */
+.pir { align-self: stretch; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+.pir div { height: 72px; border-radius: 10px; display: grid; place-items: center;
+           font-family: var(--font-display); font-weight: 800; font-size: 30px; color: var(--bg); }
+
+/* --- bar pembanding ------------------------------------------------------- */
+.bars { display: flex; align-items: flex-end; gap: 90px; height: 430px; }
+.bar  { width: 190px; border-radius: 12px 12px 0 0; transform-origin: bottom; }
+.bar-l { text-align: center; font-family: var(--font-mono); font-size: 26px; color: var(--ink-1); margin-top: 18px; }
+
+/* --- kisi sel: menggambarkan "sebagian kecil yang dipakai berulang" ------- */
+.grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; width: 860px; }
+.grid i { aspect-ratio: 1; border-radius: 6px; background: var(--bg-elev); border: 1px solid var(--line); }
+.grid i.on { background: var(--accent); border-color: var(--accent); }
+
+/* --- tabel spesifikasi: nama di kiri, angka di kanan ---------------------- */
+.spec { width: 100%; display: flex; flex-direction: column; gap: 18px; }
+.spec div { display: flex; justify-content: space-between; align-items: baseline;
+            padding: 20px 28px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius); }
+.spec b { font-family: var(--font-display); font-weight: 600; font-size: 34px; }
+.spec span { font-family: var(--font-mono); font-weight: 700; font-size: 34px; color: var(--accent-ink); }

@@ -12,7 +12,7 @@ Repo ini menyimpan **guideline, naskah, dan komposisi video** — bukan aplikasi
 
 **Tooling yang dipakai** (sudah diputuskan):
 
-- **[HyperFrames](https://github.com/heygen-com/hyperframes)** — tulis HTML/CSS/GSAP, render jadi MP4. Cocok untuk motion graphic, diagram, dan animasi kode.
+- **[Remotion](https://www.remotion.dev)** — tulis React/CSS, render jadi MP4. Setiap frame adalah fungsi murni dari nomor frame, jadi render selalu reproducible dan tiap scene bisa di-preview satuan.
 - **[ElevenLabs](https://elevenlabs.io/docs/overview/models)** — voice over Bahasa Indonesia, voice **George**, model `eleven_multilingual_v2`.
 - **Tema visual** — turunan brand [`wargasipil/getresolved`](https://github.com/wargasipil/getresolved) (`branding/guidelines/brand.html`): Indigo `#4F46E5`, Green `#10B981`, Ink `#0F172A`, tipografi Manrope.
 
@@ -43,9 +43,17 @@ Aset pendukung:
 
 | Berkas | Guna |
 |---|---|
-| [`shared/theme.css`](shared/theme.css) | Token tema siap pakai untuk komposisi HyperFrames |
-| [`shared/scenes.html`](shared/scenes.html) · [`.css`](shared/scenes.css) · [`.js`](shared/scenes.js) | Scene opening & closing standar — salin apa adanya |
+| [`AGENTS.md`](AGENTS.md) | Aturan framework Remotion — struktur, determinisme, gerbang QA |
+| [`shared/theme.css`](shared/theme.css) | Token warna/tipografi/skala + komponen dasar |
+| [`shared/figur.css`](shared/figur.css) | Kosakata diagram: sumbu, bar, piramida, kisi, tabel spesifikasi |
+| [`shared/Icons.tsx`](shared/Icons.tsx) | Set ikon garis — `<Ic n="ram" />` |
+| [`shared/StandarScenes.tsx`](shared/StandarScenes.tsx) | `<BrandSting>` & `<EndCard>` — dipakai apa adanya tiap episode |
+| [`shared/anim.ts`](shared/anim.ts) | Helper animasi; setiap nilai fungsi murni dari frame |
 | [`.env.example`](.env.example) | Kontrak konfigurasi; salin jadi `.env` lalu isi |
+| [`tools/bangun-config.mjs`](tools/bangun-config.mjs) | `.env` → `shared/config.gen.ts` (daftar putih, tanpa secret) |
+| [`tools/bangun-timing.mjs`](tools/bangun-timing.mjs) | `naskah.md` → `ideas/<slug>/timing.gen.ts` |
+| [`tools/periksa-frame.mjs`](tools/periksa-frame.mjs) | Bukti frame tidak kosong — pembaca PNG tanpa dependensi |
+| [`tools/sisa-scene.mjs`](tools/sisa-scene.mjs) | Berapa scene yang masih placeholder |
 | [`tools/load-env.ps1`](tools/load-env.ps1) | Muat `.env` ke sesi PowerShell (`. .\tools\load-env.ps1`) |
 | [`tools/estimate-timing.mjs`](tools/estimate-timing.mjs) | Perkiraan timing dari naskah — **gratis**, dipakai sebelum VO |
 | [`tools/vo-durations.mjs`](tools/vo-durations.mjs) | Timing final dari durasi berkas VO (butuh ffprobe) |
@@ -53,28 +61,41 @@ Aset pendukung:
 
 ## Struktur repo
 
-**Seluruh repo adalah satu project HyperFrames.** Komposisi tidak boleh menunjuk
-aset di atas root project, jadi root-nya harus di akar repo supaya `shared/`
-bisa dipakai semua episode.
+Satu project Remotion di akar repo, dipakai bersama semua episode. `shared/`
+adalah milik semua episode; `ideas/<slug>/` adalah satu episode beserta seluruh
+produksinya.
 
 ```
-youtube/                      ← ROOT PROJECT HyperFrames
+youtube/                      ← ROOT PROJECT Remotion
 ├── README.md                 ← berkas ini
 ├── CLAUDE.md                 ← aturan kerja agent di repo ini
-├── AGENTS.md                 ← aturan HyperFrames (bawaan scaffold)
+├── AGENTS.md                 ← aturan framework Remotion
 ├── .env                      ← SEMUA secret & konfigurasi (tidak di-commit)
 ├── .env.example              ← kontrak konfigurasi (di-commit)
-├── hyperframes.json          ← paths.assets → "shared"
-├── package.json              ← npm run dev / check / render
-├── index.html                ← KOMPOSISI EPISODE YANG SEDANG DIGARAP
+├── remotion.config.ts        ← setelan CLI
+├── tsconfig.json
+├── package.json              ← npm run gen / check / sisa / studio / render
 ├── docs/                     ← guideline (01–10)
-├── compositions/             ← satu berkas per episode per format
-│   └── uji-scene-standar.html · episode yang sudah selesai
-├── shared/
+├── src/
+│   ├── index.ts              ← registerRoot
+│   └── Root.tsx              ← DAFTAR KOMPOSISI: episode + satu per scene
+├── public/logos/             ← mark & wordmark (salinan brand getresolved)
+├── shared/                   ← milik SEMUA episode
+│   ├── config.gen.ts         ← ⚙ digenerate dari .env
 │   ├── theme.css             ← token warna/tipografi/skala
-│   ├── scenes.html/.css/.js  ← scene opening & closing standar
-│   └── assets/logos/         ← mark & wordmark (salinan brand getresolved)
+│   ├── figur.css             ← kosakata diagram bersama
+│   ├── scenes.css            ← gaya scene standar
+│   ├── Stage.tsx             ← <Panggung> + <Scene>
+│   ├── anim.ts               ← helper animasi berbasis frame
+│   ├── Icons.tsx             ← set ikon garis
+│   ├── StandarScenes.tsx     ← <BrandSting> + <EndCard>
+│   ├── Placeholder.tsx       ← <BelumDibuat>
+│   └── fonts.ts              ← Manrope + JetBrains Mono
 ├── tools/
+│   ├── bangun-config.mjs     ← .env → shared/config.gen.ts
+│   ├── bangun-timing.mjs     ← naskah.md → ideas/<slug>/timing.gen.ts
+│   ├── periksa-frame.mjs     ← bukti frame tidak kosong
+│   ├── sisa-scene.mjs        ← sisa scene placeholder
 │   ├── load-env.ps1          ← muat .env ke sesi PowerShell
 │   ├── git-setup.ps1         ← init git + hook penolak secret
 │   ├── estimate-timing.mjs   ← timing perkiraan dari naskah (gratis)
@@ -84,23 +105,28 @@ youtube/                      ← ROOT PROJECT HyperFrames
     ├── README.md             ← alur & template ide
     └── <slug>/
         ├── ide.md            ← ide mentah + uji 4 syarat (selalu ada)
-        ├── naskah.md         ← sumber kebenaran: outline + VO + visual per scene
+        ├── naskah.md         ← SUMBER KEBENARAN: outline + VO + visual per scene
+        ├── timing.gen.ts     ← ⚙ digenerate dari naskah.md
+        ├── Episode.tsx       ← merangkai <Sequence>, tanpa isi scene
+        ├── scenes/index.ts   ← daftar SCENES: id → komponen
+        ├── scenes/s042.tsx   ← satu scene = satu berkas (HARD RULE 1)
         ├── vo/               ← keluaran ElevenLabs, satu berkas per scene
         └── render/           ← MP4 final + thumbnail + metadata publish
 ```
 
-Path di dalam komposisi selalu relatif ke akar repo, tanpa `../`:
-`shared/theme.css`, `ideas/<slug>/vo/L-001.mp3`.
+⚙ = digenerate, di-ignore git, dibangun ulang `npm run gen`. Sumber kebenarannya
+`.env` dan `naskah.md`; menyunting berkas generate akan hilang saat build
+berikutnya.
 
 ## Prasyarat (status di mesin ini, dicek 2026-08-13)
 
 | Kebutuhan | Status | Catatan |
 |---|---|---|
 | Node.js ≥ 22 | ✅ `v22.21.1` | |
-| Google Chrome | ✅ terpasang | HyperFrames juga mengunduh Chrome-nya sendiri saat render pertama |
-| FFmpeg + ffprobe | ✅ `9.0-full_build` | via `winget install Gyan.FFmpeg`; PATH aktif di terminal baru |
-| Pipeline render | ✅ **terbukti** | komposisi uji scene standar sudah dirender jadi MP4 |
-| `.env` terisi | ❔ identitas channel masih kosong | `CHANNEL_NAME`, `CHANNEL_HANDLE`, `CTA_TEXT` |
+| Google Chrome | ✅ terpasang | Remotion mengunduh Headless Shell-nya sendiri saat render pertama (±113 MB) |
+| FFmpeg + ffprobe | ✅ `9.0-full_build` | via `winget install Gyan.FFmpeg`; PATH aktif di terminal baru. Remotion membawa FFmpeg sendiri; ini untuk `tools/vo-durations.mjs` |
+| Pipeline render | ✅ **terbukti** | brand sting & end card sudah dirender jadi PNG 1920×1080 dan diperiksa |
+| `.env` terisi | ✅ identitas channel & spesifikasi video terisi | API key ElevenLabs perlu dicek: `node tools/elevenlabs-keys.mjs status` |
 
 Penyiapan di mesin baru:
 
@@ -108,7 +134,9 @@ Penyiapan di mesin baru:
 Copy-Item .env.example .env   # lalu isi nilainya
 . .\tools\load-env.ps1 -Show  # cek apa saja yang masih kosong
 .\tools\git-setup.ps1         # pasang hook penolak secret — WAJIB
-npm run check                 # validasi komposisi uji
+npm install
+npm run check                 # tsc + bukti frame tidak kosong
+npm run studio                # Remotion Studio
 ```
 
 Semua konfigurasi ada di satu tempat — lihat [08 · Konfigurasi](docs/08-konfigurasi.md).
@@ -127,6 +155,11 @@ Sudah ditetapkan:
 
 Yang masih terbuka:
 
+0. **81 scene T01 perlu dibangun ulang.** Migrasi dari HyperFrames ke Remotion
+   (2026-08-13) sengaja membuang 80 scene generate lama + hook tulis tangan;
+   yang diselamatkan naskah, timing, tema, kosakata figur, dan scene standar.
+   Sisa pekerjaannya terlihat lewat `npm run sisa`, dan tiap scene yang belum
+   ada tampil sebagai kartu kuning lengkap dengan baris VO-nya.
 1. **Angka latensi untuk T01** belum punya sumber primer. Opsi paling jujur:
    ukur sendiri di mesin ini dan sebutkan spesifikasinya di video. Detailnya di
    [ideas/apa-itu-ram/ide.md](ideas/apa-itu-ram/ide.md#catatan).

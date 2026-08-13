@@ -34,11 +34,18 @@ client_secret*.json
 # (di justmart ukurannya ~30 MB).
 graphify-out/
 
-# Cache thumbnail HyperFrames Studio (dibuat ulang otomatis saat preview)
-.thumbnails/
+# --- Berkas generate ---------------------------------------------------------
+# Keduanya dibangun ulang oleh `npm run gen` dari sumber yang DI-commit
+# (.env dan ideas/<slug>/naskah.md). Meng-commit-nya berarti dua sumber
+# kebenaran yang bisa berbeda diam-diam.
+#
+# config.gen.ts turunan .env — di-ignore juga karena .env-nya rahasia; kalau
+# ikut masuk repo, daftar putih di tools/bangun-config.mjs jadi satu-satunya
+# yang menahan setelan produksi bocor ke publik.
+shared/config.gen.ts
+ideas/*/timing.gen.ts
 
 node_modules/
-.hyperframes/
 out/
 *.log
 npm-debug.log*

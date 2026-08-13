@@ -129,9 +129,9 @@ Aturan yang berlaku untuk ketiga keluaran:
 2. **Tidak ada layar diam lebih dari 4 detik.** Kalau satu scene 8 detik, harus
    ada aktivitas tengah-scene: counter jalan, garis SVG tergambar, highlight
    berpindah, kamera zoom pelan.
-3. **95% perpindahan scene = potong keras.** Transisi shader hanya di 2–3 momen
-   kunci (buka babak, pergeseran besar, CTA). Ini konvensi HyperFrames sekaligus
-   konvensi film.
+3. **95% perpindahan scene = potong keras.** Transisi halus hanya di 2–3 momen
+   kunci (buka babak, pergeseran besar, CTA). Ini konvensi film, dan alasan
+   `shared/anim.ts` tidak menyediakan transisi antar-scene sebagai gerak baku.
 4. **Satu layar = satu ide.** Kalau perlu tiga bullet, munculkan bertahap
    (stagger), jangan sekaligus.
 5. **Kode di layar maksimal 12 baris**, highlight baris yang sedang dibahas.

@@ -2,9 +2,8 @@
    Scene standar — opening (brand sting) & closing (end card).
    Wajib dipakai apa adanya di setiap episode. Aturan: docs/10-scene-standar.md
 
-   Pakai bersama theme.css:
-     <link rel="stylesheet" href="../../../shared/theme.css">
-     <link rel="stylesheet" href="../../../shared/scenes.css">
+   Komponennya di shared/StandarScenes.tsx; berkas ini hanya gayanya.
+   Diimpor sekali oleh shared/Stage.tsx.
    ======================================================================== */
 
 /* --- Opening: brand sting 1,5 dtk ------------------------------------------
@@ -32,16 +31,15 @@
   flex: none;
 }
 
-/* Wordmark disingkap dari kiri lewat clip-path (dianimasikan di scenes.js). */
+/* Wordmark disingkap dari kiri lewat clip-path (nilainya dihitung di TSX). */
 .sc-open .sting-word {
   height: 92px;
   width: auto;
-  clip-path: inset(0 100% 0 0);
 }
 
-.hf-9x16 .sc-open .sting { flex-direction: column; gap: 36px; }
-.hf-9x16 .sc-open .sting-mark { width: 260px; height: 260px; }
-.hf-9x16 .sc-open .sting-word { height: 96px; }
+.r-9x16 .sc-open .sting { flex-direction: column; gap: 36px; }
+.r-9x16 .sc-open .sting-mark { width: 260px; height: 260px; }
+.r-9x16 .sc-open .sting-word { height: 96px; }
 
 /* --- Closing: end card -----------------------------------------------------
    16:9 → 5 dtk. Konten ditaruh di PARUH KIRI; paruh kanan sengaja dikosongkan
@@ -103,7 +101,7 @@
 }
 
 /* Zona end screen YouTube (16:9) — jangan diisi apa pun.
-   Aktifkan .debug-endscreen saat preview untuk melihat batasnya. */
+   Nyalakan lewat <Panggung debug> saat memeriksa di Studio. */
 .debug-endscreen .sc-close .scene-content::after {
   content: "zona end screen — kosongkan";
   position: absolute;
@@ -121,12 +119,12 @@
   place-items: center;
 }
 
-.hf-9x16 .sc-close .scene-content {
+.r-9x16 .sc-close .scene-content {
   align-items: center;
   text-align: center;
   max-width: 100%;
   gap: 28px;
 }
-.hf-9x16 .sc-close .close-mark { width: 148px; height: 148px; }
-.hf-9x16 .sc-close .close-sub { display: none; }  /* tidak cukup waktu dibaca */
-.hf-9x16 .sc-close .close-rule { align-self: center; }
+.r-9x16 .sc-close .close-mark { width: 148px; height: 148px; }
+.r-9x16 .sc-close .close-sub { display: none; }  /* tidak cukup waktu dibaca */
+.r-9x16 .sc-close .close-rule { align-self: center; }

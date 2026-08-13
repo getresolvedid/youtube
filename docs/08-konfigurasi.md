@@ -27,19 +27,39 @@ Copy-Item .env.example .env      # sekali saja
 node --env-file=.env tools/skrip.mjs
 ```
 
-**Perintah yang tidak bisa baca `.env` sendiri** (terutama `npx hyperframes`) —
-muat dulu ke sesi terminal. Perhatikan **titik di depan** (dot-sourcing); tanpa
-itu variabelnya hilang begitu skrip selesai:
+**Perintah lain** — muat dulu ke sesi terminal. Perhatikan **titik di depan**
+(dot-sourcing); tanpa itu variabelnya hilang begitu skrip selesai:
 
 ```powershell
 . .\tools\load-env.ps1
-npx hyperframes render -o render/T01-L.mp4
 ```
 
 Opsi: `. .\tools\load-env.ps1 -Show` menampilkan variabel yang dimuat (secret
 tetap disamarkan) dan mendaftar variabel yang masih kosong.
 
 Variabel hanya berlaku di sesi terminal itu. Terminal baru = muat ulang.
+
+### Komposisi Remotion — lewat berkas generate, bukan `process.env`
+
+Komposisi di-bundle untuk browser; `process.env` di sana **tidak** berisi `.env`
+kita. Jembatannya `tools/bangun-config.mjs`, yang menyalin **hanya nama yang ada
+di daftar putihnya** ke `shared/config.gen.ts`:
+
+```tsx
+import { CFG, FPS, f } from "../../shared/config.gen";
+```
+
+Dua hal yang mengikat:
+
+1. **Variabel baru yang dibutuhkan komposisi wajib ditambahkan ke `IZIN` di
+   `tools/bangun-config.mjs`** — kalau tidak, ia tidak sampai ke sana.
+2. **Jangan pernah menambahkan nama yang bernuansa secret ke daftar itu.**
+   Bundle Remotion dikirim ke browser dan bisa ikut masuk berkas render;
+   apa pun yang tersalin ke sana sama saja dengan dibocorkan. Skrip punya
+   penjaga pola (`KEY|SECRET|TOKEN|PASSWORD|CLIENT_ID|CREDENTIAL`) yang
+   menghentikan build, tapi jangan mengandalkan itu — pikirkan dulu.
+
+`shared/config.gen.ts` di-ignore git, dibangun ulang `npm run gen`.
 
 ## Kelompok variabel
 
@@ -48,8 +68,9 @@ Variabel hanya berlaku di sesi terminal itu. Terminal baru = muat ulang.
 | Identitas channel | `CHANNEL_NAME`, `CHANNEL_HANDLE`, `CTA_URL` | [01](01-positioning.md), [06](06-publishing.md) |
 | ElevenLabs | `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`, `ELEVENLABS_MODEL_ID`, setelan suara | [04 §3](04-pipeline-produksi.md#3-voice-over-elevenlabs) |
 | Spesifikasi video | `LONG_WIDTH/HEIGHT`, `SHORT_WIDTH/HEIGHT`, `VIDEO_FPS`, durasi target | [02](02-format-video.md) |
-| Timing VO | `VO_PAD_SECONDS`, `VO_WORDS_PER_MINUTE`, `TRACK_VO`, `TRACK_MUSIC` | [04 §4–5](04-pipeline-produksi.md#4-tabel-timing) |
-| Render | `HYPERFRAMES_QUALITY`, `HYPERFRAMES_WORKERS`, `FFMPEG_PATH`, `CHROME_PATH` | [04 §6](04-pipeline-produksi.md#6-render) |
+| Timing VO | `VO_PAD_SECONDS`, `VO_WORDS_PER_MINUTE`, `MUSIC_VOLUME` | [04 §3](04-pipeline-produksi.md#3-timing-estimasi-gratis) |
+| Scene standar | `OPENING_SECONDS`, `CLOSING_LONG_SECONDS`, `CLOSING_SHORT_SECONDS` | [10](10-scene-standar.md) |
+| Render | `FFMPEG_PATH`, `FFPROBE_PATH`, `CHROME_PATH` | [04 §7](04-pipeline-produksi.md) |
 | Loudness | `TARGET_LUFS`, `MUSIC_DUCK_LUFS` | [02](02-format-video.md) |
 | YouTube | `YOUTUBE_*` | [06](06-publishing.md) — kosong selama unggah masih manual |
 

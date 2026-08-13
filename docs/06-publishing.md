@@ -103,8 +103,9 @@ Tag sekadar sinyal pendukung — judul, thumbnail, dan retensi jauh lebih menent
   melengkapi: judul menjelaskan, thumbnail menarik.
 - Konsisten: posisi teks, palet, dan gaya tetap sama antar-episode supaya video
   channel dikenali dari kejauhan di feed.
-- Thumbnail bisa dirender dari HyperFrames (`npx hyperframes snapshot`) memakai
-  `shared/theme.css` yang sama — hasilnya otomatis sekeluarga dengan videonya.
+- Thumbnail bisa dirender dari Remotion (`npx remotion still <komposisi> thumb.png`)
+  memakai `shared/theme.css` yang sama — hasilnya otomatis sekeluarga dengan
+  videonya.
 
 ## Playlist
 

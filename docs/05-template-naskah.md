@@ -234,4 +234,6 @@ cepat dengan index"*.
 - Bahasa L1 di babak Hook — tidak ada satu pun istilah teknis di scene 001–002.
 - Kolom visual menyebut posisi, ukuran, dan warna konkret.
 - Kolom motion menyebut properti + durasi + ease yang bisa langsung diterjemahkan
-  ke GSAP tanpa menebak.
+  ke helper di [`shared/anim.ts`](../shared/anim.ts) tanpa menebak. Nama ease
+  ditulis dengan konvensi GSAP (`power3.out`, `back.out(1.6)`, `expo.out`) —
+  padanannya sudah tersedia sebagai `E.power3out`, `E.backOut(1.6)`, `E.expoOut`.

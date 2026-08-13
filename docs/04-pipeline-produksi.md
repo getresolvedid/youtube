@@ -26,19 +26,19 @@ langkah 5, setiap perubahan naskah berarti membayar ulang.
 |---|---|---|
 | Node.js ≥ 22 | `node -v` | ✅ v22.21.1 |
 | FFmpeg + ffprobe | `ffmpeg -version` | ✅ 9.0-full_build (via winget) |
-| Google Chrome | — | ✅ terpasang; HyperFrames juga mengunduh Chrome-nya sendiri saat render pertama |
-| `.env` terisi | `. .\tools\load-env.ps1 -Show` | ❔ identitas channel masih kosong |
+| Google Chrome | — | ✅ terpasang; Remotion mengunduh Headless Shell-nya sendiri (±113 MB) saat render pertama |
+| `.env` terisi | `. .\tools\load-env.ps1 -Show` | ✅ identitas channel & spesifikasi video terisi |
 
 FFmpeg dipasang lewat `winget install Gyan.FFmpeg`. PATH-nya baru aktif di
 **terminal baru** — kalau `ffmpeg -version` gagal padahal sudah terpasang, tutup
-terminal lalu buka lagi.
+terminal lalu buka lagi. Remotion membawa FFmpeg-nya sendiri untuk render;
+yang butuh `ffprobe` di PATH adalah `tools/vo-durations.mjs`.
 
-Konfigurasi & secret semuanya di `.env`, tidak ada di tempat lain. Muat ke sesi
-terminal sebelum menjalankan `npx hyperframes` (perhatikan **titik di depan**):
+Konfigurasi & secret semuanya di `.env`, tidak ada di tempat lain:
 
 ```powershell
 Copy-Item .env.example .env   # sekali saja, lalu isi nilainya
-. .\tools\load-env.ps1
+. .\tools\load-env.ps1        # untuk sesi PowerShell (perhatikan titik di depan)
 ```
 
 Untuk skrip Node pakai flag bawaan Node 22: `node --env-file=.env tools/skrip.mjs`.
@@ -46,24 +46,22 @@ Daftar variabel dan aturannya: [08 · Konfigurasi](08-konfigurasi.md).
 
 ## Struktur project
 
-**Seluruh repo adalah SATU project HyperFrames**, bukan satu project per episode.
-Ini bukan pilihan gaya — komposisi HyperFrames **tidak boleh menunjuk aset di atas
-root project** (`../../` ditolak lint dan 404 di Studio). Supaya `shared/` bisa
-dipakai bersama semua episode, root project harus berada di akar repo.
+**Seluruh repo adalah SATU project Remotion**, bukan satu project per episode —
+supaya `shared/` (tema, ikon, scene standar) dipakai bersama semua episode.
 
 ```
-youtube/                        ← ROOT PROJECT HyperFrames
-├── hyperframes.json            paths.assets → "shared"
-├── package.json                skrip dev/check/render (versi CLI dipatok)
-├── meta.json · AGENTS.md       bawaan scaffold — jangan dihapus
-├── index.html                  komposisi uji scene standar (regresi visual)
-├── compositions/
-│   ├── T01-long.html           1920×1080
-│   ├── T01-short-1.html        1080×1920
-│   └── T01-short-2.html
-├── shared/                     tema, scene standar, logo
+youtube/                        ← ROOT PROJECT Remotion
+├── remotion.config.ts          setelan CLI
+├── package.json                gen/check/sisa/studio/render (versi dipatok tepat)
+├── src/Root.tsx                DAFTAR KOMPOSISI: episode + satu per scene
+├── public/logos/               aset — lewat staticFile()
+├── shared/                     tema, ikon, figur, scene standar, helper animasi
 └── ideas/apa-itu-ram/
     ├── naskah.md               sumber kebenaran (lihat docs/05)
+    ├── timing.gen.ts           ⚙ digenerate dari naskah.md
+    ├── Episode.tsx             merangkai <Sequence>
+    ├── scenes/index.ts         SCENES: id → komponen
+    ├── scenes/s042.tsx         satu scene = satu berkas
     ├── vo/L-001.mp3 …          satu berkas per scene
     └── render/
         ├── T01-L.mp4 · T01-S1.mp4 · T01-S2.mp4
@@ -71,17 +69,16 @@ youtube/                        ← ROOT PROJECT HyperFrames
         └── publish.md          judul/deskripsi/tag final (lihat docs/06)
 ```
 
-**Semua path di dalam komposisi ditulis relatif terhadap root project**, tanpa
-`../`:
+**Aset diakses lewat `staticFile()`**, bukan path string:
 
-```html
-<link rel="stylesheet" href="shared/theme.css">
-<img src="shared/assets/logos/getresolved-mark.svg">
-<audio src="ideas/apa-itu-ram/vo/L-001.mp3">
+```tsx
+import { staticFile } from "remotion";
+<img src={staticFile("logos/getresolved-mark.svg")} />
 ```
 
 **Penamaan:** `T{nn}-{slug-kebab}`. Kode episode `T01-L`, `T01-S1`, `T01-S2`
-dipakai konsisten di nama berkas, judul commit, dan metadata.
+dipakai konsisten di nama berkas, judul commit, dan metadata. ID komposisi
+Remotion: `T01-apa-itu-ram` untuk episode, `s-<id>` untuk scene satuan.
 
 ---
 
@@ -124,9 +121,15 @@ Hitung perkiraan durasi tiap scene dari jumlah kata — tanpa menyentuh API.
 node --env-file=.env tools/estimate-timing.mjs ideas/<slug>/naskah.md
 ```
 
-Keluarannya tabel `data-start` / `data-duration` yang siap disalin ke komposisi,
-plus **total durasi** dan **hitungan karakter** (= perkiraan kredit ElevenLabs
-yang nanti terpakai). Rumusnya:
+Keluarannya tabel timing untuk dibaca manusia, plus **total durasi** dan
+**hitungan karakter** (= perkiraan kredit ElevenLabs yang nanti terpakai).
+
+Timing yang dipakai komposisi **tidak disalin tangan** dari sini. `npm run gen`
+menghitung ulang dari naskah yang sama ke `ideas/<slug>/timing.gen.ts` dengan
+rumus identik, dan `Episode.tsx` membaca berkas itu. Yang perlu disunting
+selamanya cuma `naskah.md`.
+
+Rumusnya:
 
 ```
 durasi_perkiraan = jumlah_kata / VO_WORDS_PER_MINUTE * 60 + VO_PAD_SECONDS
@@ -141,85 +144,78 @@ itu diselesaikan di langkah 7.
 
 ## 4 · Komposisi bisu + preview
 
-Buat berkas baru di `compositions/` — **jangan** `npx hyperframes init` lagi,
-project-nya sudah ada satu di root repo. Cara tercepat: salin `index.html`
-(komposisi uji scene standar) sebagai titik mulai.
+Bangun seluruh komposisi **tanpa audio sama sekali**. Tonton di Studio, dan
+iterasi sepuasnya di sini — semua ini gratis.
 
-Bangun seluruh komposisi memakai timing estimasi, **tanpa track VO sama sekali**.
-Tonton di Studio, dan iterasi sepuasnya di sini — semua ini gratis.
+Setiap scene satu berkas (HARD RULE 1). Dua langkah:
 
-Kerangka wajib tiap komposisi:
+```tsx
+// ideas/apa-itu-ram/scenes/s042.tsx
+import type React from "react";
+import { Ic } from "../../../shared/Icons";
+import { masuk, useDetik } from "../../../shared/anim";
+import { Scene } from "../../../shared/Stage";
 
-```html
-<link rel="stylesheet" href="shared/theme.css">
-<link rel="stylesheet" href="shared/scenes.css">
+export const S042: React.FC = () => {
+  const d = useDetik();
+  return (
+    <Scene>
+      <Ic n="refresh" />
+      <h1 className="big c-accent" style={masuk(d, { urutan: 0 })}>ribuan×</h1>
+      <p className="t-sub" style={masuk(d, { urutan: 1 })}>
+        setiap detik, selama komputer menyala
+      </p>
+    </Scene>
+  );
+};
+```
 
-<div id="root" class="hf-stage hf-16x9" data-composition-id="t01l"
-     data-start="0" data-duration="480" data-width="1920" data-height="1080">
+```ts
+// ideas/apa-itu-ram/scenes/index.ts
+import { S042 } from "./s042";
+export const SCENES = { s042: S042 };
+```
 
-  <div class="scene clip" id="s1" data-start="0" data-duration="4.6"
-       data-track-index="0" style="visibility:hidden;">
-    <div class="scene-content">
-      <h1 id="s1-title" class="t-title">Judul scene</h1>
-    </div>
-  </div>
+Begitu terdaftar, scene itu otomatis masuk episode pada timing dari naskah,
+**dan** jadi komposisi sendiri di Studio:
 
-  <!-- Track VO baru ditambahkan di langkah 7, setelah berkas audionya ada. -->
-</div>
+```powershell
+npm run studio                       # server panjang — jalankan di background
+npx remotion still s-s042 out/s042.png --frame 15
 ```
 
 Yang wajib dan paling mudah terlewat:
 
-- Wrapper memakai kelas **`hf-stage`** + `hf-16x9` (atau `hf-9x16`) — itu yang
-  menyalakan tema.
-- `data-composition-id` bebas, tapi **harus sama persis** dengan kunci di
-  `window.__timelines`.
-- Wrapper juga butuh `data-duration` = total durasi komposisi.
-- Setiap elemen bertiming wajib `class="clip"` + `data-start` + `data-duration`
-  + `data-track-index`.
-- Path aset **tanpa `../`** — lihat [Struktur project](#struktur-project).
+- **Isi scene dibungkus `<Scene>`**, bukan `<div>` biasa — itu yang memberi
+  kotak aman dan tata letaknya.
+- **Setiap nilai animasi fungsi murni dari `useDetik()`.** Tidak ada `useState`,
+  tidak ada `Math.random()`, tidak ada `Date.now()`. Alasannya di
+  [AGENTS.md](../AGENTS.md#aturan-yang-mengikat).
+- **Jangan tulis durasi scene di dalam scene.** Durasinya dari naskah, dipasang
+  `Episode.tsx` lewat `<Sequence>`. Scene hanya tahu detik ke berapa dirinya
+  sedang berjalan.
+- **Jangan pernah menyunting `timing.gen.ts`.** Ubah `naskah.md`, lalu
+  `npm run gen`.
+- Ikon lewat `<Ic n="..." />`, figur lewat kelas di
+  [`shared/figur.css`](../shared/figur.css) — HARD RULE 2.
 
-```javascript
-const tl = gsap.timeline({ paused: true });
+Audio ditambahkan di langkah 7, memakai `<Audio>` Remotion di dalam
+`<Sequence>` scene yang bersangkutan. Volume musik latar dari `MUSIC_VOLUME`
+di `.env`.
 
-tl.set("#s1", { autoAlpha: 1 }, 0);
-tl.from("#s1-title", { opacity: 0, y: 24, duration: 0.5, ease: "power3.out" }, 0.2);
-tl.set("#s1", { autoAlpha: 0 }, 4.6);
+**Opening dan closing tidak dibuat sendiri.** `Episode.tsx` sudah memasang
+`<BrandSting/>` dan `<EndCard cta={...}/>` dari
+[`shared/StandarScenes.tsx`](../shared/StandarScenes.tsx) pada ID `opening` dan
+`closing`. Penempatan, durasi, dan apa yang boleh diubah:
+[10 · Scene standar](10-scene-standar.md). Keduanya sudah ikut dihitung
+`tools/bangun-timing.mjs`.
 
-window.__timelines = window.__timelines || {};
-window.__timelines.t01l = tl;
+Sebelum menyatakan selesai:
+
+```powershell
+npm run sisa      # masih ada scene placeholder?
+npm run check     # tsc + bukti frame tidak kosong
 ```
-
-Konvensi track index channel ini — angkanya ada di `.env`
-(`TRACK_VO`, `TRACK_MUSIC`, `MUSIC_VOLUME`):
-
-| Track | Isi |
-|---|---|
-| `0` | scene utama |
-| `1–3` | overlay (lower third, chapter card, highlight) |
-| `4–7` | media (video/gambar) bila ada |
-| `8` | **voice over** — kosong sampai langkah 7 |
-| `9` | musik latar |
-
-Impor tema dan scene standar di setiap komposisi:
-
-```html
-<link rel="stylesheet" href="shared/theme.css">
-<link rel="stylesheet" href="shared/scenes.css">
-<script src="shared/scenes.js"></script>
-```
-
-**Opening dan closing tidak dibuat sendiri.** Salin dari
-[`shared/scenes.html`](../shared/scenes.html) dan panggil koreografinya —
-aturan penempatan, durasi, dan apa yang boleh diubah ada di
-[10 · Scene standar](10-scene-standar.md). Keduanya memakan durasi (1,5 dtk +
-5,0 dtk) yang harus ikut dihitung di tabel timing.
-
-Aturan scene, `autoAlpha`, anchor shader, dan determinisme ada di
-[03 · Tema visual](03-tema-visual.md#catatan-teknis-hyperframes) — patuhi semuanya.
-
-Opsional, sekali di awal: `npx hyperframes skills update` memasang skill agent
-bawaan HyperFrames, berguna saat Claude menulis komposisi.
 
 ## 5 · GERBANG — bekukan naskah
 
@@ -312,8 +308,8 @@ Sekarang ganti timing perkiraan dengan angka sebenarnya.
 node --env-file=.env tools/vo-durations.mjs ideas/<slug>/vo L
 ```
 
-Skrip ini menjalankan `ffprobe` untuk tiap berkas dan mengeluarkan tabel timing
-final. Rumusnya:
+Skrip ini menjalankan `ffprobe` untuk tiap berkas dan mengeluarkan tabel durasi
+VO sebenarnya. Rumus timing-nya:
 
 ```
 durasi_scene  = durasi_vo + VO_PAD_SECONDS
@@ -322,46 +318,51 @@ start_scene(n) = start_scene(n-1) + durasi_scene(n-1)
 
 Lalu:
 
-1. Salin `data-start` / `data-duration` baru ke komposisi — **seluruh scene**,
-   bukan hanya yang berubah. Satu durasi bergeser berarti semua scene sesudahnya
-   ikut bergeser.
-2. Geser juga semua waktu di timeline GSAP (`tl.set`, `tl.from`, transisi shader).
-3. Tambahkan track VO, satu elemen per scene, dengan durasi **asli** (tanpa padding):
+1. **Perbarui kolom VO di `naskah.md`** kalau ada perbedaan kata (seharusnya
+   tidak ada — naskah sudah beku), lalu `npm run gen`. Timing seluruh episode
+   dihitung ulang sekaligus. Tidak ada angka yang disalin tangan, jadi tidak ada
+   scene yang tertinggal saat satu durasi bergeser.
 
-```html
-<audio data-start="0" data-duration="4.2" data-track-index="8" data-volume="1.0"
-       src="ideas/<slug>/vo/L-001.mp3"></audio>
+   > Perkiraan dari jumlah kata biasanya meleset beberapa persen dari durasi VO
+   > asli. Kalau selisihnya menumpuk sampai visual tidak lagi jatuh di kalimat
+   > yang benar, tambahkan `tools/bangun-timing.mjs` membaca durasi asli dari
+   > `vo/` — jangan menambal `timing.gen.ts` dengan tangan.
 
-<audio data-start="0" data-duration="480" data-track-index="9" data-volume="0.12"
-       src="shared/music/tenang.mp3"></audio>
+2. Tambahkan audio, satu `<Audio>` per scene, di dalam `<Sequence>` scene itu:
+
+```tsx
+import { Audio, staticFile } from "remotion";
+
+<Audio src={staticFile("vo/apa-itu-ram/L-042.mp3")} />
+<Audio src={staticFile("music/tenang.mp3")} volume={CFG.MUSIC_VOLUME} />
 ```
 
-4. Render:
+3. Render:
 
 ```powershell
-npm run check                    # lint + runtime + layout + motion + kontras
-npm run dev                      # Studio (server panjang — jalankan di background)
+npm run check                    # tsc + bukti frame tidak kosong
+npm run sisa                     # WAJIB nol placeholder sebelum render final
+npm run studio                   # Studio (server panjang — jalankan di background)
 
-npx hyperframes render -c compositions/T01-long.html -o ideas/<slug>/render/T01-L.mp4 --quality draft
-npx hyperframes render -c compositions/T01-long.html -o ideas/<slug>/render/T01-L.mp4
+npm run render -- --out ideas/<slug>/render/T01-L.mp4
 ```
 
-- **Selalu `npm run check` sebelum render** — sekali jalan sudah mencakup lint,
-  runtime, layout, motion, dan kontras WCAG. Jauh lebih murah daripada menunggu
-  render selesai baru ketahuan salah.
-- `-c` memilih komposisi mana yang dirender. Tanpa `-c`, yang dirender `index.html`.
-- `--quality draft` untuk semua iterasi. Render final hanya sekali di akhir.
-- `--workers 1` (`HYPERFRAMES_WORKERS`) kalau komposisi berat media dan render
-  tidak stabil.
-- `npm run dev` adalah server yang berjalan terus — jalankan di background,
+- **Selalu `npm run check` sebelum render.** Jauh lebih murah daripada menunggu
+  render enam menit baru ketahuan salah.
+- **`npm run sisa` harus nol.** Scene placeholder tampil sebagai kartu kuning
+  bergaris; kalau ikut masuk MP4 final, itu ketahuan penonton.
+- `--concurrency 1` kalau render tidak stabil di komposisi berat media.
+- `npm run studio` adalah server yang berjalan terus — jalankan di background,
   jangan sebagai perintah biasa.
+- Render satu scene untuk memeriksa cepat:
+  `npx remotion render s-s042 out/s042.mp4`.
 
-**Peringatan lint yang memang dibiarkan:** `google_fonts_import`. Manrope dan
-JetBrains Mono diambil dari Google Fonts, dan compiler HyperFrames sudah
-menyuntik `@font-face` deterministik plus menyimpannya ke cache lokal saat
-render pertama. Risikonya tinggal render pertama di mesin baru yang butuh
-internet. Kalau nanti perlu render sepenuhnya offline, unduh `.woff2`-nya ke
-`shared/fonts/` dan ganti `@import` di `shared/theme.css` dengan `@font-face`.
+**Font.** Manrope dan JetBrains Mono dimuat lewat `@remotion/google-fonts` di
+[`shared/fonts.ts`](../shared/fonts.ts), yang menahan render sampai fontnya
+benar-benar terpasang. Render pertama di mesin baru butuh internet untuk
+mengunduhnya; setelah itu tersimpan di cache. Ini sengaja tidak dilakukan lewat
+`@import` di CSS — dengan `@import`, render bisa menangkap frame sebelum font
+siap, dan seluruh tata letak meleset tanpa ada yang gagal.
 
 ## 8 · QA
 
@@ -369,9 +370,11 @@ Wajib dilewati sebelum publish. Jangan tandai selesai kalau ada yang belum dicek
 
 **Teknis**
 
+- [ ] `npm run sisa` melaporkan **nol** placeholder.
 - [ ] Durasi total sesuai target ([02](02-format-video.md)); Shorts ≤ 60 dtk.
 - [ ] Tidak ada celah/tumpang tindih antar scene (frame hitam berkedip).
-- [ ] Semua scene muncul — tidak ada yang tetap tersembunyi (bug `autoAlpha`).
+- [ ] Semua scene muncul — cek dengan menggulir daftar komposisi `s-*` di Studio,
+      bukan hanya dengan scrubbing episode utuh.
 - [ ] VO sinkron dengan visual **di seluruh video**, bukan hanya di awal —
       pergeseran timing menumpuk ke belakang.
 - [ ] Loudness ≈ `TARGET_LUFS`; musik tidak menutupi VO.
@@ -396,8 +399,14 @@ mengunggah, bukan mengarang metadata di kolom unggah YouTube.
 
 ## Referensi
 
-- HyperFrames — [repo](https://github.com/heygen-com/hyperframes) ·
-  [panduan authoring untuk agent](https://github.com/heygen-com/hyperframes/blob/main/docs/guides/claude-design-hyperframes.md) ·
-  [cloud rendering](https://developers.heygen.com/hyperframes)
+- Remotion — [dokumentasi](https://www.remotion.dev/docs) ·
+  [`interpolate`](https://www.remotion.dev/docs/interpolate) ·
+  [`Easing`](https://www.remotion.dev/docs/easing) ·
+  [`Sequence`](https://www.remotion.dev/docs/sequence) ·
+  [`Audio`](https://www.remotion.dev/docs/audio) ·
+  [lisensi](https://www.remotion.dev/docs/license) — gratis untuk individu;
+  perusahaan di atas ambang tertentu butuh lisensi berbayar, cek sendiri sebelum
+  channel ini jadi entitas berbadan hukum
+- Aturan framework di repo ini: [AGENTS.md](../AGENTS.md)
 - ElevenLabs — [daftar model](https://elevenlabs.io/docs/overview/models) ·
   [text to speech](https://elevenlabs.io/docs/overview/capabilities/text-to-speech)

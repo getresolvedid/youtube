@@ -93,16 +93,23 @@ meja — ada meja jauh lebih kecil yang menempel padanya, namanya cache
 
 | Scene | Posisi | Durasi |
 |---|---|---|
-| `sc-open` | bagian 2, setelah scene 003 | **1,5 dtk** |
-| `sc-close` | setelah scene 083 | **5,0 dtk** |
+| `opening` | bagian 2, setelah `hook-question` | **1,5 dtk** |
+| `closing` | setelah scene 083 | **5,0 dtk** |
+
+Keduanya **tidak ditulis di episode ini**. `tools/bangun-timing.mjs`
+menyisipkannya otomatis ke `timing.gen.ts` — `opening` setelah baris terakhir
+bagian 1, `closing` di paling akhir — dan `Episode.tsx` memasang `<BrandSting/>`
+serta `<EndCard/>` dari `shared/StandarScenes.tsx` (docs/10). Durasinya dari
+`.env` (`OPENING_SECONDS`, `CLOSING_LONG_SECONDS`).
+
+`hook-question` adalah scene biasa milik episode ini: satu berkas di `scenes/`,
+menggabungkan tiga shot yang dulu jadi scene 001–003.
 
 ### Scene
 
 | # | Bagian | VO | Visual | Motion | Aset |
 |---|---|---|---|---|---|
-| 001 | 1 question | Kamu buka sebuah aplikasi. Di mana data aplikasi itu berada saat kamu membukanya? | Pertanyaan besar di layar penuh, ikon aplikasi di atasnya. | Ikon pop lebih dulu; pertanyaan masuk stagger per baris. | — |
-| 002 | 1 question | Kelihatannya sepele. | Pertanyaan tetap, mengecil sedikit. | Skala turun halus 0.5 dtk. | — |
-| 003 | 1 question | Tapi jawabannya menjelaskan kenapa komputermu terasa cepat, atau terasa lambat. | Dua kartu: jam kuning "terasa lambat", centang hijau "terasa cepat". | Dua kartu masuk bergantian, stagger 0.2 dtk. | — |
+| hook-question | 1 question | Kamu buka sebuah aplikasi. Di mana data aplikasi itu berada saat kamu membukanya? Kelihatannya sepele. Tapi jawabannya menjelaskan kenapa komputermu terasa cepat, atau terasa lambat. | Satu scene tiga tahap: ikon aplikasi + pertanyaan besar di tengah → pertanyaan naik & mengecil, "Kelihatannya sepele." muncul → dua kartu (jam kuning "terasa lambat", centang hijau "terasa cepat") masuk di bawahnya. Pertanyaan tidak pernah hilang dari layar. | Tahap 1 ikon pop back.out, pertanyaan stagger per baris. Tahap 2 pertanyaan scale 1→0.62 + naik, kicker fade. Tahap 3 dua kartu masuk dari sisi berlawanan, stagger 0.18 dtk. | **ditulis tangan** — `scenes/hook-question.html` |
 | 004 | 3 problem | Semua yang kamu punya tersimpan di satu tempat. Foto, dokumen, aplikasi, sistemnya sendiri. | Ikon penyimpanan besar, empat label mengelilinginya. | Label masuk mengelilingi ikon, stagger 0.12 dtk. | — |
 | 005 | 3 problem | Namanya penyimpanan. Hard disk, atau S S D di komputer yang lebih baru. | Label besar "PENYIMPANAN" + ikon disk. | Label slide dari bawah; ikon berdenyut sekali. | — |
 | 006 | 3 problem | Kapasitasnya luas. Ratusan gigabita, sering jauh lebih. | Angka kapasitas membesar. | Counter naik ke 512, power2.out. | — |
@@ -187,8 +194,8 @@ meja — ada meja jauh lebih kecil yang menempel padanya, namanya cache
 ### Timing — estimasi
 
 Keluaran `node --env-file=.env tools/estimate-timing.mjs ideas/apa-itu-ram/naskah.md`,
-lalu ditambah manual: +1,5 dtk (`sc-open` setelah scene 003) dan +5,0 dtk
-(`sc-close` setelah scene 076).
+lalu ditambah manual: +1,5 dtk (`opening` setelah `hook-question`) dan +5,0 dtk
+(`closing` setelah scene 083).
 
 ### Timing — final *(setelah VO jadi)*
 

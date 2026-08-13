@@ -1,11 +1,30 @@
 {
-  "name": "long",
+  "name": "youtube",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npx --yes hyperframes@0.7.107 preview",
-    "check": "npx --yes hyperframes@0.7.107 check",
-    "render": "npx --yes hyperframes@0.7.107 render",
-    "publish": "npx --yes hyperframes@0.7.107 publish"
+    "gen": "node --env-file=.env tools/bangun-config.mjs && node --env-file=.env tools/bangun-timing.mjs apa-itu-ram",
+    "prestudio": "npm run gen",
+    "studio": "remotion studio",
+    "prerender": "npm run gen",
+    "render": "remotion render T01-apa-itu-ram",
+    "prestill": "npm run gen",
+    "still": "remotion still",
+    "precheck": "npm run gen",
+    "check": "tsc --noEmit && node tools/periksa-frame.mjs",
+    "presisa": "npm run gen",
+    "sisa": "node tools/sisa-scene.mjs apa-itu-ram"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.509",
+    "@remotion/google-fonts": "4.0.509",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.509"
+  },
+  "devDependencies": {
+    "@types/node": "22.18.8",
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
   }
 }

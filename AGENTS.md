@@ -1,95 +1,97 @@
-# HyperFrames Composition Project
+# Project Remotion — aturan framework
 
-## Skills — USE THESE FIRST
+Aturan produksi channel ada di [CLAUDE.md](CLAUDE.md) dan [`docs/`](docs/).
+Berkas ini hanya soal frameworknya: [Remotion](https://www.remotion.dev) 4.x,
+React 19, TypeScript.
 
-**Always invoke the relevant skill before writing or modifying compositions.** Skills encode framework-specific patterns (e.g., `window.__timelines` registration, `data-*` attribute semantics, shader-compatible CSS rules) that are NOT in generic web docs. Skipping them produces broken compositions.
+## Perintah
 
-**Doing anything with HyperFrames?** Start at `/hyperframes` — it tells you what HyperFrames can do and which skill or workflow handles your intent (make a video, TTS / BGM, prep footage, author / animate, render, install blocks), confirms your brief up front (the intent layer), and routes every "make me a…" request (a video, a deck, a composition port) to the right workflow. Read it first, especially when there's no project context to orient you. The workflows it routes to:
-
-- `/product-launch-video` — any **website** URL or brief / script → a product launch / SaaS / promo video, or a site tour / showcase featuring the site's own captured visuals.
-- `/faceless-explainer` — arbitrary text (topic / article / notes), **no URL, no website capture** → 60-90s faceless explainer.
-- `/embedded-captions` — an existing talking-head video (MP4) → the same footage with captions / subtitles added (rail + embed, or pure-cinematic embed); the footage itself is untouched.
-- `/talking-head-recut` — an existing talking-head / interview / podcast video (MP4) → the same footage **packaged with designed graphic overlays** (kinetic titles, lower-thirds, data callouts, pull-quotes, side panels, pip) synced to the transcript; the clip plays unchanged underneath. (Plain captions/subtitles → `/embedded-captions`.)
-- `/pr-to-video` — a GitHub PR (URL / `owner/repo#N` / "this PR") → 30-90s code-change explainer (changelog / feature reveal / fix / refactor).
-- `/motion-graphics` — a short (typically under 10s) design-led **motion graphic**, motion-is-the-message, no narration: kinetic type, a stat / number count-up, a chart, a logo sting, a lower-third / overlay, or an animated tweet / headline / captured-page highlight; rendered to MP4 or a transparent overlay. Longer / narrated / custom → `/general-video`.
-- `/music-to-video` — a **music track** (audio file, video to pull audio from, or one generated from a mood brief) → beat-synced video (lyric / slideshow / kinetic promo). Music drives pacing; user-supplied images / videos are cut onto the same beat grid.
-- `/slideshow` — a **presentation / pitch deck / interactive deck** — discrete slides, fragment reveals, branching, hotspot navigation, presenter mode. Output is a navigable deck, not a rendered video.
-- `/general-video` — fallback for any other video (title card, longer brand / sizzle reel, multi-scene montage, static loop, custom composition) and the home of **companion mode** — co-create with the full HyperFrames toolbox; the original hyperframes authoring flow, any length.
-
-**Porting an existing composition?** `/remotion-to-hyperframes` translates a Remotion (React) composition into HyperFrames HTML — a source migration, separate from the creation workflows above.
-
-The domain skills (`/hyperframes-core`, `/hyperframes-animation`, `/hyperframes-keyframes`, `/hyperframes-creative`, `/hyperframes-cli`, `/media-use`, `/hyperframes-registry`, `/figma`) and the full capability map live inside `/hyperframes` — it is the single source of truth for which skill handles which intent.
-
-**Changing how real footage or images look or reveal?** Load `/media-use` and read its `references/media-treatments.md` before editing, even when the request only says dark, flat, boring, retro, private, or “make the reveal cooler.” It governs how footage is treated, never whether media may be used. Use canonical media treatments and seek-safe motion; do not improvise equivalent CSS/SVG filters or overlays.
-
-> **Tailwind v4 projects** (`hyperframes init --tailwind`): see `/hyperframes-core` → `references/tailwind.md`.
-
-> **Skill missing or stale?** Run `npx hyperframes skills update <name>` to install/refresh
-> the specific skill you need (the `/hyperframes` router does this automatically before
-> entering a workflow), or bare `npx hyperframes skills update` to refresh the core set plus
-> everything already installed — neither pulls the full set. Restart the agent session so
-> newly installed skills load.
-
-## Commands
-
-```bash
-npm run dev          # start the preview server (long-running — keep it alive in background)
-npm run check        # lint + runtime + layout + motion + contrast (one command)
-npm run render       # render to MP4
-npm run publish      # publish and get a shareable link
-npx hyperframes lint --verbose  # include info-level findings
-npx hyperframes lint --json     # machine-readable output for CI
-npx hyperframes docs <topic> # reference docs in terminal
+```powershell
+npm run gen        # .env → shared/config.gen.ts, naskah.md → ideas/*/timing.gen.ts
+npm run check      # tsc --noEmit + tools/periksa-frame.mjs
+npm run sisa       # scene yang masih placeholder
+npm run studio     # Remotion Studio (server panjang — jalankan di background)
+npm run render     # episode utuh
+npm run still      # `npm run still -- s-s042 out/s042.png`
 ```
 
-> **`npm run dev` is a long-running server, not a one-shot command.** It blocks until stopped.
-> In Claude Code, always run it with `run_in_background: true`. Never run it as a foreground
-> command — it will time out and the server will die, breaking the browser preview.
+`gen` jalan otomatis sebagai pre-script sebelum `studio` / `render` / `check` /
+`sisa` / `still`.
 
-> **Pinned CLI version.** These scripts pin an exact `hyperframes@X.Y.Z` so this project re-renders identically over time. Weeks later that pin lags fixes shipped since. To move up: `npx hyperframes@latest upgrade --project . --check` (shows the delta), then `npx hyperframes@latest upgrade --project .` to rewrite the pins. Always unpinned — the pinned script re-runs the old version against itself.
+> **`npm run studio` adalah server yang berjalan terus.** Di Claude Code
+> jalankan dengan `run_in_background: true`. Sebagai perintah biasa ia akan
+> timeout dan servernya mati.
 
-## Documentation
+> **Versi dipatok tepat** di `package.json` (`4.0.509`, tanpa `^`) supaya
+> episode lama render identik berbulan-bulan kemudian. Naikkan dengan sadar,
+> lalu `npm run check` dan bandingkan still-nya.
 
-**For quick reference**, use the local CLI docs command (no network required):
-
-```bash
-npx hyperframes docs <topic>
-```
-
-Topics: `data-attributes`, `gsap`, `compositions`, `rendering`, `examples`, `troubleshooting`
-
-**For full documentation**, discover pages via the machine-readable index — do NOT guess URLs:
+## Struktur
 
 ```
-https://hyperframes.heygen.com/llms.txt
+remotion.config.ts        setelan CLI (bukan ukuran komposisi)
+src/index.ts              registerRoot
+src/Root.tsx              daftar <Composition> — episode + satu per scene
+shared/
+  config.gen.ts           DIGENERATE dari .env — jangan disunting
+  Stage.tsx               <Panggung> + <Scene>
+  anim.ts                 helper animasi (pengganti GSAP)
+  Icons.tsx               <Ic n="ram" /> + sprite
+  StandarScenes.tsx       <BrandSting> + <EndCard>
+  Placeholder.tsx         <BelumDibuat> untuk scene yang belum digarap
+  theme.css figur.css scenes.css
+public/logos/             aset — diakses lewat staticFile()
+ideas/<slug>/
+  naskah.md               SUMBER KEBENARAN
+  timing.gen.ts           DIGENERATE dari naskah.md — jangan disunting
+  Episode.tsx             merangkai <Sequence>, tidak berisi scene
+  scenes/index.ts         SCENES: id → komponen
+  scenes/s042.tsx         satu scene = satu berkas
 ```
 
-## Project Structure
+## Aturan yang mengikat
 
-- `index.html` — main composition (root timeline)
-- `compositions/` — sub-compositions referenced via `data-composition-src`
-- `meta.json` — project metadata (id, name)
-- `transcript.json` — whisper word-level transcript (if generated)
+1. **Animasi = fungsi murni dari frame.** Pakai `useDetik()` dan helper di
+   `shared/anim.ts`. Dilarang `useState`/`useEffect` untuk animasi,
+   `Math.random()`, `Date.now()`, `setInterval`. Remotion merender frame 1.234
+   tanpa pernah merender 1.233, dan merender banyak frame paralel di proses
+   berbeda — apa pun yang menyimpan state akan pecah.
+2. **Waktu ditulis dalam detik, dikonversi sekali.** Naskah, timing, dan docs
+   semuanya bicara detik. `f()` di `shared/config.gen.ts` satu-satunya tempat
+   detik jadi frame.
+3. **Batas <Sequence> dihitung dari titik mulai dua scene berurutan**, bukan
+   dari durasi masing-masing — lihat komentar di `Episode.tsx`. Membulatkan
+   durasi sendiri-sendiri menyisakan frame hitam di antara scene.
+4. **Ukuran & fps tidak pernah ditulis literal.** Semuanya dari `.env` lewat
+   `shared/config.gen.ts`. Variabel baru wajib masuk daftar putih di
+   `tools/bangun-config.mjs` **dan** `.env.example`.
+5. **Aset lewat `staticFile()`** dari `public/`. Jangan mengimpor berkas biner
+   sebagai modul.
+6. **Font lewat `@remotion/google-fonts`** (`shared/fonts.ts`), bukan `@import`
+   di CSS — loader-nya menahan render sampai font siap.
+7. **Jangan sunting berkas `*.gen.ts`.** Ubah sumbernya (`.env` / `naskah.md`)
+   lalu `npm run gen`.
 
-## Linting — ALWAYS RUN AFTER CHANGES
+## Setelah menyunting komposisi
 
-After creating or editing any `.html` composition, **always** run the full check before considering the task complete:
-
-```bash
+```powershell
 npm run check
 ```
 
-Fix all errors before presenting the result. Warnings should be reviewed before rendering.
+`check` = `tsc --noEmit` + bukti frame tidak kosong. Ia menangkap "tidak ada
+yang terlihat", **bukan** "jelek". Kontras teks, kotak aman, dan ritme gerak
+tetap harus dilihat mata:
 
-## Key Rules
+```powershell
+npx remotion still s-s042 out/s042.png --frame 30
+```
 
-1. Every timed element needs `data-start`, `data-duration`, and `data-track-index`
-2. Elements with timing **MUST** have `class="clip"` — the framework uses this for visibility control
-3. Timelines must be paused and registered on `window.__timelines`:
-   ```js
-   window.__timelines = window.__timelines || {};
-   window.__timelines["composition-id"] = gsap.timeline({ paused: true });
-   ```
-4. Videos use `muted` with a separate `<audio>` element for the audio track
-5. Sub-compositions use `data-composition-src="compositions/file.html"` to reference other HTML files
-6. Only deterministic logic — no `Date.now()`, no `Math.random()`, no network fetches
+Lalu buka PNG-nya. `check` lulus bukan bukti gambarnya benar — alasannya ada di
+[CLAUDE.md](CLAUDE.md#1-satu-scene--satu-berkas-di-ideasslugscenes).
+
+## Dokumentasi
+
+- Remotion — <https://www.remotion.dev/docs>
+- API yang paling sering dipakai di repo ini: `interpolate`, `Easing`,
+  `useCurrentFrame`, `useVideoConfig`, `Sequence`, `AbsoluteFill`, `staticFile`,
+  `Audio`, `Composition`.

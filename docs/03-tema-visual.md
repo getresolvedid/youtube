@@ -95,16 +95,20 @@ menutup slide.
 
 ### Set ikon
 
-[`shared/icons.js`](../shared/icons.js) menyuntikkan sprite SVG inline ke dokumen
-— tidak ada permintaan jaringan, aman untuk capture headless.
+[`shared/Icons.tsx`](../shared/Icons.tsx) memasang sprite SVG inline sekali per
+komposisi (lewat `<Panggung>`) — tidak ada permintaan jaringan, aman untuk
+render headless.
 
-```html
-<script src="shared/icons.js"></script>
+```tsx
+import { Ic } from "../../../shared/Icons";
 
-<svg class="ic"><use href="#ic-ram"/></svg>
-<svg class="ic ic-lg c-accent"><use href="#ic-chip"/></svg>
-<svg class="ic ic-sm c-ok"><use href="#ic-check"/></svg>
+<Ic n="ram" />
+<Ic n="chip" ukuran="lg" warna="c-accent" />
+<Ic n="check" ukuran="sm" warna="c-ok" />
 ```
+
+Nama ikon diketik — `<Ic n="ramm" />` gagal saat `npm run check`, bukan diam-diam
+tidak menggambar apa-apa.
 
 | Kelompok | Ikon |
 |---|---|
@@ -113,7 +117,7 @@ menutup slide.
 | Orang & arah | `person` `arrows` `ruler` `layers` |
 | Status | `check` `x` `warning` `info` |
 | Kejadian | `bolt` `drop` `refresh` `clock` `pause` |
-| Data & lain | `graph-down` `graph-up` `money` `comment` `app` |
+| Data & lain | `graphDown` `graphUp` `money` `comment` `app` |
 
 **Gaya:** garis, `viewBox` 96×96, `stroke-width` 6, ujung membulat, tanpa isian.
 Semua ikon mewarisi `currentColor`, jadi kelas warna tema (`.c-accent`, `.c-ok`,
@@ -133,8 +137,13 @@ Di 9:16 semuanya otomatis lebih besar.
 - Ikon yang berdiri sendiri di scene tengah tetap di **atas** judulnya.
 - Ikon **mendukung** kalimatnya, tidak mengulanginya. Kalau teksnya sudah
   "listrik mati", ikon petir menambah — ikon bertuliskan "mati" tidak.
-- Kalau tidak ada ikon yang pas, **buat figur atau diagramnya**. Kalau bentuknya
-  akan berguna di episode lain, tambahkan sebagai ikon baru di `shared/icons.js`.
+- Kalau tidak ada ikon yang pas, **buat figur atau diagramnya**. Kosakata figur
+  bersama sudah ada di [`shared/figur.css`](../shared/figur.css) — sumbu
+  berlabel (`.sumbu`), bar pembanding (`.bars`), piramida (`.pir`), kisi sel
+  (`.grid`), tabel spesifikasi (`.spec`), figur meja/lemari (`.ruang`). Kalau
+  bentuknya akan berguna di episode lain, tambahkan ke sana, atau sebagai ikon
+  baru di `shared/Icons.tsx`. Kalau cuma dipakai satu scene, tulis gayanya
+  inline di scene itu.
 - Ikon bukan dekorasi acak. Scene yang butuh gerak (aliran data, perubahan state)
   tetap butuh animasi, bukan sekadar ikon diam.
 - **Logo getresolved tidak dipakai sebagai ikon.** Ia hanya muncul di brand sting
@@ -227,18 +236,28 @@ jadi scene standar di `shared/scenes.*`, lihat [10 · Scene standar](10-scene-st
 - Screenshot buram di-upscale — semua tampilan kode dibuat ulang sebagai teks HTML.
 - Gradient warna-warni di luar palet indigo→indigo deep.
 
-## Catatan teknis HyperFrames
+## Catatan teknis Remotion
 
 Perilaku yang mudah bikin bug visual, ditulis di sini supaya tidak terulang:
 
-- Setiap scene: `class="scene clip"` + `data-start` + `data-duration` +
-  `data-track-index`, dan isi dibungkus `<div class="scene-content">`.
-- Scene **non-anchor** disembunyikan dengan `visibility:hidden` di HTML, lalu
-  ditampilkan/disembunyikan lewat **`autoAlpha`** di timeline —
-  bukan properti `visibility` mentah.
-- Scene **anchor** (batas transisi shader) memakai `opacity:0`, dan anchor
-  pertama tiap grup shader wajib di-set `opacity: 1` secara eksplisit.
-- Waktu transisi = `batas_scene − (durasi_transisi / 2)`.
+- Isi scene dibungkus `<Scene>` dari [`shared/Stage.tsx`](../shared/Stage.tsx),
+  yang memberi `.scene-content` beserta kotak amannya. Jangan menulis padding
+  scene sendiri.
+- **Scene tidak mengatur kapan dirinya muncul.** Dulu itu urusan `autoAlpha`;
+  sekarang `<Sequence>` di `Episode.tsx`. Scene hanya tahu sudah berjalan berapa
+  detik, lewat `useDetik()` — selalu mulai dari 0.
+- **Setiap nilai animasi fungsi murni dari detik itu.** Tidak ada state, tidak
+  ada `Math.random()`, tidak ada `Date.now()`. Remotion merender frame 1.234
+  tanpa pernah merender 1.233 dan merender banyak frame paralel di proses
+  terpisah.
+- Semua tween **dijepit di kedua ujung** (`extrapolate: "clamp"`, sudah default
+  di `shared/anim.ts`). Tanpa itu, seek ke detik akhir scene menghasilkan nilai
+  ekstrapolasi yang liar.
+- Gerak masuk baku mulai di detik **0,05**, jadi 1–2 frame pertama tiap scene
+  memang kosong. Itu disengaja; jangan "memperbaiki"-nya dengan menyampel frame
+  0 lalu bingung kenapa gelap.
 - Jangan pakai grain lewat `data:image/svg+xml` filter — pakai `radial-gradient` CSS.
-- Scene harus menempel ujung-ke-ujung, tanpa celah. Kalau satu durasi berubah,
-  `data-start` semua scene sesudahnya ikut berubah.
+- Scene menempel ujung-ke-ujung tanpa celah. Ini sudah dijamin `Episode.tsx`,
+  yang menghitung batas frame dari titik mulai dua scene berurutan — bukan dari
+  durasi masing-masing, yang bisa menyisakan frame hitam saat dibulatkan.
+- Aset lewat `staticFile()` dari `public/`, bukan path string.

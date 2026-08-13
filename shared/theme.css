@@ -3,19 +3,14 @@
    Turunan brand getresolved (branding/guidelines/brand.html).
    Aturan pemakaian: docs/03-tema-visual.md
 
-   Pakai di komposisi HyperFrames — kelas dipasang di wrapper komposisi
-   (elemen ber-data-composition-id, di scaffold bawaan id-nya #root):
+   Diimpor sekali oleh shared/Stage.tsx; tidak perlu diimpor per scene.
+   Kelas rasio dipasang oleh <Panggung format="16x9" | "9x16">.
 
-     <link rel="stylesheet" href="../../../shared/theme.css">
-     <div id="root" class="hf-stage hf-16x9" data-composition-id="main" ...>
-                                ↑ atau hf-9x16 untuk Shorts
-
-   Catatan: font diambil dari Google Fonts. Kalau render dijalankan offline,
-   unduh Manrope + JetBrains Mono ke shared/fonts/ dan ganti @import dengan
-   @font-face. Font gagal muat = seluruh tata letak meleset.
+   Font TIDAK diambil lewat @import di sini. Google Fonts lewat CSS bikin
+   render bergantung jaringan dan bisa menghasilkan frame pertama tanpa font —
+   pemuatannya ditangani shared/fonts.ts dengan @remotion/google-fonts, yang
+   menahan render sampai fontnya benar-benar siap.
    ======================================================================== */
-
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap");
 
 :root {
   /* --- warna brand (jangan diubah) --- */
@@ -59,7 +54,7 @@
   --radius-lg: 24px;
   --grid-gutter: 32px;
 
-  /* skala tipografi & layout: nilai default = 16:9, ditimpa oleh .hf-9x16 */
+  /* skala tipografi & layout: nilai default = 16:9, ditimpa oleh .r-9x16 */
   --fs-display: 96px;
   --fs-title:   72px;
   --fs-sub:     44px;
@@ -75,7 +70,7 @@
 
 /* Shorts 1080×1920 — teks lebih besar, safe area jauh lebih ketat.
    Kotak aman: x 90–920, y 240–1480 (lihat docs/03). */
-.hf-9x16 {
+.r-9x16 {
   --fs-display: 120px;
   --fs-title:    96px;
   --fs-sub:      60px;
@@ -93,9 +88,9 @@
    Panggung & scene
    -------------------------------------------------------------------------- */
 
-html, body {
-  margin: 0;
-  padding: 0;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
   background: var(--bg);
   color: var(--ink-0);
   font-family: var(--font-body);
@@ -104,14 +99,18 @@ html, body {
   text-rendering: geometricPrecision;
 }
 
-.hf-stage {
-  position: relative;
+/* Ukuran panggung TIDAK diatur di sini. <Panggung> memakai <AbsoluteFill>
+   Remotion, yang selalu seukuran komposisi (width/height di src/Root.tsx,
+   dibaca dari .env). Inilah yang dulu jadi jebakan panggung 0x0 di komposisi
+   HyperFrames: di sana tinggi harus ditulis eksplisit, kalau lupa seluruh
+   episode render hitam sementara pemeriksaan tetap lulus. */
+.panggung {
   overflow: hidden;
   background: var(--bg);
 }
 
 /* Latar halus — pakai radial-gradient, JANGAN filter SVG data-uri (docs/03). */
-.hf-stage::before {
+.panggung::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -121,9 +120,8 @@ html, body {
     radial-gradient(90% 60% at 100% 110%, rgba(67, 56, 202, 0.10), transparent 60%);
 }
 
-/* Setiap scene WAJIB: class="scene clip" + data-start/data-duration/data-track-index
-   dan isi dibungkus .scene-content. Scene non-anchor mulai visibility:hidden
-   lalu ditampilkan lewat autoAlpha di timeline. */
+/* Isi scene selalu dibungkus .scene-content supaya kotak amannya seragam.
+   Visibilitas scene diatur <Sequence>, bukan CSS. */
 .scene {
   position: absolute;
   inset: 0;
@@ -135,7 +133,6 @@ html, body {
   position: relative;
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
   padding: var(--safe-top) var(--safe-x) var(--safe-bottom);
   display: flex;
   flex-direction: column;
@@ -145,7 +142,7 @@ html, body {
 
 .scene-content.center { align-items: center; text-align: center; }
 
-/* Penanda kotak aman untuk pengecekan di preview — hapus/jangan aktifkan saat render. */
+/* Penanda kotak aman untuk pengecekan di Studio — <Panggung debug>. */
 .debug-safe .scene-content { outline: 2px dashed var(--bad); outline-offset: -2px; }
 
 /* --------------------------------------------------------------------------
@@ -232,7 +229,7 @@ html, body {
 
 /* --------------------------------------------------------------------------
    Ikon & figur — HARD RULE: tidak ada scene yang isinya cuma teks.
-   Sprite disuntikkan oleh shared/icons.js. Aturan: docs/03 § Ikon & figur.
+   Sprite dipasang <Panggung> lewat shared/Icons.tsx. Aturan: docs/03.
    -------------------------------------------------------------------------- */
 
 .ic {
@@ -251,10 +248,10 @@ html, body {
 .ic-lg { width: 180px; height: 180px; }
 .ic-xl { width: 260px; height: 260px; }
 
-.hf-9x16 .ic    { width: 160px; height: 160px; }
-.hf-9x16 .ic-sm { width: 96px;  height: 96px; }
-.hf-9x16 .ic-lg { width: 240px; height: 240px; }
-.hf-9x16 .ic-xl { width: 340px; height: 340px; }
+.r-9x16 .ic    { width: 160px; height: 160px; }
+.r-9x16 .ic-sm { width: 96px;  height: 96px; }
+.r-9x16 .ic-lg { width: 240px; height: 240px; }
+.r-9x16 .ic-xl { width: 340px; height: 340px; }
 
 /* Ikon di dalam kartu: DI KIRI, teks di kanan.
    Ikon menumpuk di atas teks membuat kartu terasa canggung dan tinggi;
@@ -282,3 +279,13 @@ html, body {
 .compare { display: grid; grid-template-columns: 1fr 1fr; gap: var(--grid-gutter); }
 
 .rule { height: 4px; background: var(--accent); border-radius: 2px; width: 120px; }
+
+/* --------------------------------------------------------------------------
+   Pola tata letak yang dipakai lintas scene (di luar token tema).
+   -------------------------------------------------------------------------- */
+
+.kicker { font-family: var(--font-mono); font-size: var(--fs-label); font-weight: 700;
+          letter-spacing: .16em; text-transform: uppercase; color: var(--ink-1); }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; width: 100%; }
+.big { font-family: var(--font-mono); font-weight: 700; font-size: 190px; line-height: 1;
+       letter-spacing: -.03em; font-variant-numeric: tabular-nums; }

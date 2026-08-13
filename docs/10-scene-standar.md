@@ -152,7 +152,7 @@ atau +2,0 dtk (closing) pada total, dan geser `data-start` scene sesudahnya.
 - [ ] Opening ada di babak 2, bukan di detik 0 — dan tidak ada di Shorts.
 - [ ] `data-start` di markup sama persis dengan `at` di pemanggilan `HFScenes`.
 - [ ] `.close-cta` maksimal 6 kata.
-- [ ] Handle channel benar (bukan placeholder `@handle-channel`).
+- [ ] Handle channel tertulis `@GetResolved`.
 - [ ] Kelas `debug-endscreen` sudah dihapus dari `#stage`.
 - [ ] Paruh kanan end card 16:9 kosong.
 - [ ] Closing Shorts memakai `format: "9x16"` (2 dtk), bukan default 5 dtk.

@@ -61,8 +61,8 @@ Template — 3 baris pertama yang paling penting (sisanya tertutup "Selengkapnya
 🎬 Video terkait
 - <judul> — <url>
 
-<NAMA CHANNEL> — penjelasan teknologi, coding, dan engineering dalam Bahasa Indonesia.
-Dibuat oleh tim di balik getresolved.id
+Get Resolved — penjelasan teknologi, coding, dan engineering dalam Bahasa Indonesia.
+youtube.com/@GetResolved · getresolved.id
 
 #<tag1> #<tag2> #<tag3>
 ```

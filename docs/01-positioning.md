@@ -99,15 +99,28 @@ Hindari:
 
 ## Hubungan dengan getresolved.id
 
-Channel ini memakai **tema visual** brand getresolved (lihat [03](03-tema-visual.md))
-supaya satu keluarga secara visual, tapi **bukan channel produk**. Video edukasi
-tidak menjual apa pun. Penyebutan produk hanya boleh:
+Channel ini **adalah** channel brand getresolved — [@GetResolved](https://www.youtube.com/@GetResolved),
+dengan website [getresolved.id](https://getresolved.id). Bukan channel terpisah
+yang kebetulan memakai tema visualnya.
 
-- Di deskripsi video, sebagai satu baris.
-- Di end card, sebagai identitas pembuat — bukan sebagai penawaran.
+> **⚠ Ketegangan yang belum diselesaikan.** getresolved.id menjual **CCTV,
+> internet, build up computer, kasir, gudang, dan absensi** ke UMKM. Pemirsa yang
+> datang dari sana adalah **pemilik usaha dan teknisi**, bukan developer. Padahal
+> profil audiens dan backlog topik di dokumen ini disusun untuk **developer**
+> (B-Tree, event loop, Git internals).
+>
+> Dua audiens itu tidak saling menggantikan. Kalau keduanya dicampur di satu
+> channel tanpa keputusan sadar, hasilnya: pelanggan produk bingung, developer
+> menganggapnya channel vendor, dan sinyal algoritma YouTube jadi kabur karena
+> penonton yang datang bukan penonton yang bertahan.
+>
+> Keputusan ini harus diambil **sebelum topik pertama dipilih** — lihat
+> [README § Keputusan yang masih terbuka](../README.md#keputusan-yang-masih-terbuka).
 
-Kalau suatu saat ada video yang memang tentang produk, tandai jelas sebagai
-konten produk dan taruh di playlist terpisah.
+Apa pun yang dipilih, satu aturan tetap berlaku: **video edukasi tidak menjual
+apa pun.** Penyebutan produk hanya boleh di deskripsi (satu baris) dan di end card
+sebagai identitas. Video yang memang tentang produk ditandai jelas dan ditaruh di
+playlist terpisah.
 
 ## Ukuran keberhasilan
 

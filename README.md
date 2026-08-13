@@ -111,10 +111,20 @@ Semua konfigurasi ada di satu tempat — lihat [08 · Konfigurasi](docs/08-konfi
 
 ## Keputusan yang masih terbuka
 
-Ini yang belum ditentukan dan **memblokir** produksi episode pertama. Tiga dari
-empat cukup diisi ke `.env`:
+Sudah ditetapkan:
 
-1. **Nama channel + handle** → `CHANNEL_NAME`, `CHANNEL_HANDLE`.
-2. **Voice ElevenLabs** → `ELEVENLABS_VOICE_ID`. Pilih satu lalu kunci; ganti voice di tengah jalan merusak konsistensi channel. Lihat [pipeline §3](docs/04-pipeline-produksi.md#3-voice-over-elevenlabs).
-3. **CTA** → `CTA_URL` + `CTA_TEXT`: mengarah ke `getresolved.id` atau ke aset channel sendiri (newsletter/Discord/repo contoh).
-4. **Topik T01** — kandidat ada di [backlog](docs/07-backlog-topik.md); tinggal pilih.
+| | Nilai |
+|---|---|
+| Channel | **Get Resolved** — [youtube.com/@GetResolved](https://www.youtube.com/@GetResolved) |
+| Website / CTA | [getresolved.id](https://getresolved.id) |
+| Voice ElevenLabs | **George** (`JBFqnCBsd6RMkjVDRZzb`), model `eleven_multilingual_v2` |
+
+Yang masih **memblokir** episode pertama:
+
+1. **Sudut channel.** `getresolved.id` menjual CCTV, internet, kasir, gudang, dan
+   absensi ke UMKM — sementara [01 · Positioning](docs/01-positioning.md) menyasar
+   developer dengan materi seperti B-Tree dan Git internals. Dua audiens ini
+   berbeda. Harus diputuskan dulu sebelum topik dipilih, karena ini menentukan
+   seluruh backlog.
+2. **Topik T01** — kandidat ada di [backlog](docs/07-backlog-topik.md), tapi
+   pilihannya bergantung pada keputusan nomor 1.

@@ -108,3 +108,40 @@ Aturan framework-nya ada di [AGENTS.md](AGENTS.md); **selalu `npm run check`
 setelah menyunting komposisi.**
 
 Belum ada `npm test` / `make build` di repo ini — jangan mengarang perintah.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+
+## graphify — catatan repo ini
+
+Bagian `## graphify` di atas **digenerate** oleh `graphify claude install` dan
+ditimpa ulang setiap kali dipasang lagi. Catatan khusus repo ini ditaruh di sini,
+di bawahnya, supaya tidak ikut hilang.
+
+**Yang perlu dikoreksi dari bagian generate itu:** repo ini **bukan codebase.**
+Isinya dokumen guideline, naskah, dan satu komposisi HTML. Karena itu:
+
+- **`graphify update .` hampir tidak berguna di sini.** Ia AST-only, jadi yang
+  terlihat cuma `tools/*.mjs` — bagian yang paling tidak butuh peta.
+- Relasi yang bernilai di repo ini semuanya **bukan import**:
+  `flow.md` → `docs/02` → `ideas/<slug>/naskah.md` → `index.html`,
+  aturan `docs/03` → `shared/theme.css` + `shared/icons.js`,
+  `ide.md` → backlog `docs/07`.
+  Relasi seperti itu hanya tertangkap ekstraksi doc-aware:
+
+  ```powershell
+  graphify extract . --backend claude-cli
+  ```
+
+- Jalankan ulang ekstraksi itu setelah **guideline atau naskah** berubah —
+  bukan setelah menyunting komposisi. Yang bergerak di repo ini adalah aturan
+  dan naskah, bukan kode.
+- `graphify-out/` di-ignore git (lihat `.gitignore`), sama seperti di
+  `getresolved/` dan `apps/justmart/`.

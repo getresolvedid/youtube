@@ -29,6 +29,11 @@ client_secret*.json
 *.m4a
 
 # --- Tooling -----------------------------------------------------------------
+# graphify: keluaran knowledge graph, dibangun ulang dari sumber.
+# Konsisten dengan getresolved/ dan apps/justmart/ yang juga meng-ignore-nya
+# (di justmart ukurannya ~30 MB).
+graphify-out/
+
 node_modules/
 .hyperframes/
 out/

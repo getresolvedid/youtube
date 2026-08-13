@@ -128,7 +128,7 @@ memperkenalkannya di kemunculan pertama.
 | # | Bagian | Tangga | Isi | Perkiraan |
 |---|---|---|---|---|
 | 1 | [question] | L1 | ... | 0:00–0:20 |
-| 2 | brand opening | — | scene standar 1,5 dtk | |
+| 2 | brand opening | — | scene standar 2,5 dtk (kartu judul) | |
 | 3 | [problem] | L1 | ... | 0:22–1:22 |
 | 4 | [answer] → [what] | L1→L2 | ... | 1:22–2:07 |
 | 5 | [why] | L2 | ... | 2:07–3:32 |
@@ -225,7 +225,7 @@ cepat dengan index"*.
 |---|---|---|---|---|
 | 001 | 1 Hook | Query yang sama, tabel yang sama. Satu selesai dalam sepuluh detik, satu dalam tiga milidetik. | Layar dibagi dua. Kiri: label `TANPA INDEX`, angka Mono 800 120px. Kanan: `DENGAN INDEX`, angka hijau. | Counter kiri naik 0→10.000 dalam 2 dtk (`power2.out`); kanan berhenti di 3, pulse `--ok`. |
 | 002 | 1 Hook | Mesin databasenya sama persis. Yang berbeda cuma satu hal: cara barisnya dicari. | Dua panel menyatu jadi satu panel gelap; judul masuk dari bawah. | `y 24→0` + fade, `power3.out`, 0.2 dtk setelah scene mulai. |
-| 003 | 2 Kontrak | Delapan menit ke depan kamu akan tahu persis apa yang terjadi di dalam. Kenapa index bisa secepat itu, dan kenapa kadang justru diabaikan. | Peta tiga babak: `B-Tree` → `Jalur query` → `Kapan gagal`. Brand sting 1,5 dtk sebelum peta. | Tiga kartu masuk stagger 0.12 dtk; garis penghubung SVG tergambar `power2.out`. |
+| 003 | 2 Kontrak | Delapan menit ke depan kamu akan tahu persis apa yang terjadi di dalam. Kenapa index bisa secepat itu, dan kenapa kadang justru diabaikan. | Peta tiga babak: `B-Tree` → `Jalur query` → `Kapan gagal`. Kartu judul 2,5 dtk sebelum peta. | Tiga kartu masuk stagger 0.12 dtk; garis penghubung SVG tergambar `power2.out`. |
 
 **Yang bikin baris-baris ini lolos standar:**
 

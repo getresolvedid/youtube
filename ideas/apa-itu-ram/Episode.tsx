@@ -15,20 +15,21 @@ import { Sequence } from "remotion";
 import { f } from "../../shared/config.gen";
 import { BelumDibuat } from "../../shared/Placeholder";
 import { Panggung } from "../../shared/Stage";
-import { BrandSting, EndCard } from "../../shared/StandarScenes";
+import { KartuJudul, TandaBrand } from "../../shared/StandarScenes";
 import { SCENES } from "./scenes";
 import { TIMING, type Timing } from "./timing.gen";
 
-/** Kalimat penutup episode ini. Maks 6 kata, satu kata ditekankan (docs/10). */
-export const CTA = (
-  <>
-    Yang dipakai, <em>di RAM</em>.
-  </>
-);
+/** Judul episode, tampil di kartu pembuka (docs/10). Maks 5 kata.
+ *
+ *  TIDAK BOLEH menyebut "RAM". Kartu ini tayang di detik ~10, sementara kata
+ *  RAM baru diperkenalkan di s019 sekitar detik 68 — setelah penonton melihat
+ *  benda yang diwakilinya (tangga abstraksi, docs/09). Judul yang menyebutnya
+ *  lebih dulu membatalkan enam puluh detik pembangunan itu. */
+export const JUDUL = "Di mana data bekerja";
 
 export const isiScene = (t: Timing): React.ReactNode => {
-  if (t.id === "opening") return <BrandSting />;
-  if (t.id === "closing") return <EndCard cta={CTA} />;
+  if (t.id === "opening") return <KartuJudul judul={JUDUL} />;
+  if (t.id === "closing") return <TandaBrand />;
 
   const Komponen = SCENES[t.id];
   if (Komponen) return <Komponen />;

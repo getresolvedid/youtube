@@ -1,79 +1,85 @@
 /* ===========================================================================
-   Scene standar — opening (brand sting) & closing (end card).
+   Scene standar — kartu judul (pembuka) & tanda tangan brand (penutup).
    Wajib dipakai apa adanya di setiap episode. Aturan: docs/10-scene-standar.md
 
    Komponennya di shared/StandarScenes.tsx; berkas ini hanya gayanya.
    Diimpor sekali oleh shared/Stage.tsx.
+
+   Keduanya RATA KIRI, bukan di tengah. Alasannya beda:
+   - pembuka rata kiri supaya terbaca sebagai kepala bab, bukan poster
+   - penutup rata kiri supaya paruh kanan bebas untuk end screen YouTube
    ======================================================================== */
 
-/* --- Opening: brand sting 1,5 dtk ------------------------------------------
-   BUKAN intro pembuka video. Muncul di awal babak 2 (sekitar detik 15),
-   setelah hook. Tidak pernah dipakai di Shorts. */
+/* --- Pembuka: kartu judul 2,5 dtk -------------------------------------------
+   BUKAN intro pembuka video. Muncul di awal babak 2 (sekitar detik 10),
+   setelah hook. Tidak pernah dipakai di Shorts.
+
+   `.scene` adalah grid `place-items: center`. Tanpa `justify-self: start`,
+   blok yang punya max-width akan DITENGAHKAN — bukan itu yang dimaksud. */
 
 .sc-open .scene-content {
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  text-align: center;
-  gap: 0;
+  text-align: left;
+  gap: 28px;
+  max-width: 62%;
+  justify-self: start;
 }
 
-.sc-open .sting {
+.sc-open .open-brand {
   display: flex;
   align-items: center;
-  gap: 48px;
+  gap: 32px;
 }
 
-/* Ukuran diuji pada render 1920×1080: 132px terlihat kerdil di layar penuh.
-   200px ≈ 18% tinggi frame — cukup hadir untuk momen brand 1,5 detik. */
-.sc-open .sting-mark {
-  width: 200px;
-  height: 200px;
-  flex: none;
+.sc-open .open-rule {
+  height: 5px;
+  width: 180px;
+  background: linear-gradient(90deg, var(--accent), var(--ok));
+  border-radius: 3px;
+  transform-origin: left center;
 }
 
-/* Wordmark disingkap dari kiri lewat clip-path (nilainya dihitung di TSX). */
-.sc-open .sting-word {
-  height: 92px;
-  width: auto;
+/* Judul episode. Ini elemen terpenting di scene — 2,5 dtk artinya ia hanya
+   tampil sekitar 1,5 dtk, jadi ukurannya tidak boleh kompromi. */
+.sc-open .open-judul {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
 }
 
-.r-9x16 .sc-open .sting { flex-direction: column; gap: 36px; }
-.r-9x16 .sc-open .sting-mark { width: 260px; height: 260px; }
-.r-9x16 .sc-open .sting-word { height: 96px; }
+.r-9x16 .sc-open .scene-content { max-width: 100%; }
+.r-9x16 .sc-open .open-brand { gap: 24px; }
 
-/* --- Closing: end card -----------------------------------------------------
-   16:9 → 5 dtk. Konten ditaruh di PARUH KIRI; paruh kanan sengaja dikosongkan
-   untuk elemen end screen YouTube (video terkait + tombol subscribe).
-   9:16 → 2 dtk, konten di tengah kotak aman, tanpa CTA panjang. */
+/* --- Penutup: tanda tangan brand -------------------------------------------
+   16:9 → 5 dtk. Konten di PARUH KIRI; paruh kanan sengaja dikosongkan untuk
+   elemen end screen YouTube (video terkait + tombol subscribe), yang butuh
+   minimal 5 detik tayang agar bisa diklik.
+   9:16 → 2 dtk, konten di tengah kotak aman, tanpa baris deskripsi.
+
+   Tidak ada judul di sini — judul milik pembuka (docs/10). */
 
 .sc-close .scene-content {
   align-items: flex-start;
   justify-content: center;
   gap: 32px;
   max-width: 52%;
+  /* Sama seperti .sc-open: tanpa ini blok 52% itu ditengahkan, dan kontennya
+     justru menjorok ke zona end screen — kebalikan dari yang dimaksud. */
+  justify-self: start;
   /* --safe-bottom besar (ruang progress bar) menarik blok ini ke atas.
      Padding bawah disamakan dengan atas supaya blok benar-benar di tengah;
-     zona end screen tetap aman karena dijaga oleh max-width, bukan oleh tinggi. */
+     zona end screen tetap dijaga oleh max-width, bukan oleh tinggi. */
   padding-bottom: var(--safe-top);
 }
 
-.sc-close .close-mark {
-  width: 124px;
-  height: 124px;
-}
-
-.sc-close .close-cta {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: var(--fs-title);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  margin: 0;
-}
-
-.sc-close .close-cta em {
-  font-style: normal;
-  color: var(--accent-ink);
+.sc-close .close-brand {
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
 
 .sc-close .close-handle {
@@ -123,8 +129,9 @@
   align-items: center;
   text-align: center;
   max-width: 100%;
+  justify-self: center;
   gap: 28px;
 }
-.r-9x16 .sc-close .close-mark { width: 148px; height: 148px; }
+.r-9x16 .sc-close .close-brand { flex-direction: column; gap: 28px; }
 .r-9x16 .sc-close .close-sub { display: none; }  /* tidak cukup waktu dibaca */
 .r-9x16 .sc-close .close-rule { align-self: center; }

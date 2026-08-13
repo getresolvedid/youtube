@@ -37,7 +37,7 @@ shared/
   Stage.tsx               <Panggung> + <Scene>
   anim.ts                 helper animasi (pengganti GSAP)
   Icons.tsx               <Ic n="ram" /> + sprite
-  StandarScenes.tsx       <BrandSting> + <EndCard>
+  StandarScenes.tsx       <KartuJudul> + <TandaBrand>
   Placeholder.tsx         <BelumDibuat> untuk scene yang belum digarap
   theme.css figur.css scenes.css
 public/logos/             aset — diakses lewat staticFile()

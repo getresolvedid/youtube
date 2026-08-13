@@ -146,8 +146,8 @@ Di 9:16 semuanya otomatis lebih besar.
   inline di scene itu.
 - Ikon bukan dekorasi acak. Scene yang butuh gerak (aliran data, perubahan state)
   tetap butuh animasi, bukan sekadar ikon diam.
-- **Logo getresolved tidak dipakai sebagai ikon.** Ia hanya muncul di brand sting
-  dan end card ([10 · Scene standar](10-scene-standar.md)). Menaburkannya sebagai
+- **Logo getresolved tidak dipakai sebagai ikon.** Ia hanya muncul di kartu judul
+  dan tanda brand ([10 · Scene standar](10-scene-standar.md)). Menaburkannya sebagai
   pengisi justru melemahkan momen brand-nya.
 
 ## Layout & safe area
@@ -206,7 +206,7 @@ Konsistensi gerak lebih penting daripada variasi gerak.
 
 ## Elemen brand tetap
 
-Brand sting dan end card **tidak dibuat ulang tiap episode** — keduanya sudah
+Kartu judul dan tanda brand **tidak dibuat ulang tiap episode** — keduanya sudah
 jadi scene standar di `shared/scenes.*`, lihat [10 · Scene standar](10-scene-standar.md).
 
 | Elemen | Spesifikasi |

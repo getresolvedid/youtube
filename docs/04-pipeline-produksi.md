@@ -204,7 +204,7 @@ Audio ditambahkan di langkah 7, memakai `<Audio>` Remotion di dalam
 di `.env`.
 
 **Opening dan closing tidak dibuat sendiri.** `Episode.tsx` sudah memasang
-`<BrandSting/>` dan `<EndCard cta={...}/>` dari
+`<KartuJudul judul={...}/>` dan `<TandaBrand/>` dari
 [`shared/StandarScenes.tsx`](../shared/StandarScenes.tsx) pada ID `opening` dan
 `closing`. Penempatan, durasi, dan apa yang boleh diubah:
 [10 · Scene standar](10-scene-standar.md). Keduanya sudah ikut dihitung

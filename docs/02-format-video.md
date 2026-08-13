@@ -36,7 +36,7 @@ L1 = bahasa anak 5 tahun, L2 = istilah teknis, L3 = angka dan batas.
 | # | Bagian | Tangga | Tugasnya |
 |---|---|---|---|
 | **1** | **[question]** | **L1** | Satu pertanyaan yang jadi hook. **Frame pertama sudah pertanyaannya** — tanpa salam, tanpa perkenalan. Ini juga judul dan thumbnail-nya. |
-| **2** | **brand opening** | — | Brand sting 1,5 dtk. Scene standar, tidak dibuat ulang → [10](10-scene-standar.md). |
+| **2** | **brand opening** | — | Kartu judul 2,5 dtk. Scene standar, tidak dibuat ulang → [10](10-scene-standar.md). |
 | **3** | **[problem]** | **L1** | Masalah yang dibawa pertanyaan itu. Kenapa hal ini bahkan jadi persoalan. Belum ada jawaban di sini. |
 | **4** | **[answer] → [what]** | **L1→L2** | Jawaban atas problem — dan jawaban itu **dinamai**. Nama itulah `[what]`, subjek utama video. |
 | **5** | **[why]** | **L2** | Kenapa `[what]` benar-benar menyelesaikan `[problem]`. Mekanisme sebabnya, bukan sekadar klaim. |
@@ -60,15 +60,15 @@ L1 = bahasa anak 5 tahun, L2 = istilah teknis, L3 = angka dan batas.
 - **`[case]` bukan rangkuman.** Ia menjawab "jadi ini kelihatan di mana?" —
   perangkat nyata, angka nyata, keputusan nyata.
 - **Tidak ada babak "kontrak" atau "rangkuman" terpisah.** Kalimat bawa-pulang
-  ditaruh sebagai penutup `[case]`, lalu langsung end card.
-- **Tanpa "jangan lupa like dan subscribe" di tengah video.** Cukup di end card.
+  ditaruh sebagai penutup `[case]`, lalu langsung tanda brand.
+- **Tanpa "jangan lupa like dan subscribe" di tengah video.** Cukup di tanda brand penutup.
 
 ### Patokan porsi (video 7 menit)
 
 | Bagian | Porsi | Perkiraan |
 |---|---|---|
 | 1 [question] | 5% | ~20 dtk |
-| 2 brand | — | 1,5 dtk |
+| 2 brand | — | 2,5 dtk |
 | 3 [problem] | 15% | ~60 dtk |
 | 4 [answer]/[what] | 10% | ~45 dtk |
 | 5 [why] | 20% | ~85 dtk |

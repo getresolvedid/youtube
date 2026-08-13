@@ -126,7 +126,7 @@ tanpa perlu menjual apa pun.
 Aturan yang tetap mengikat:
 
 - **Video edukasi tidak menjual apa pun.** Tidak ada demo produk, tidak ada harga.
-- Penyebutan produk hanya boleh di **deskripsi** (satu baris) dan di **end card**
+- Penyebutan produk hanya boleh di **deskripsi** (satu baris) dan di **tanda brand penutup**
   sebagai identitas pembuat.
 - Video yang memang tentang produk ditandai jelas dan ditaruh di **playlist
   terpisah**, di luar lima pilar di atas.

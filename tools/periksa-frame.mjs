@@ -40,8 +40,8 @@ const CLI = (() => {
    (shared/anim.ts), jadi 1-2 frame pertama tiap scene memang sengaja kosong;
    memeriksanya di sana akan selalu merah tanpa ada yang rusak. */
 const TITIK = [
-  { komposisi: "s-opening", frame: 20, nama: "brand sting, tengah animasi" },
-  { komposisi: "s-closing", frame: 60, nama: "end card, setelah semua masuk" },
+  { komposisi: "s-opening", frame: 40, nama: "kartu judul, setelah judul masuk" },
+  { komposisi: "s-closing", frame: 60, nama: "tanda brand, setelah semua masuk" },
   { komposisi: "T01-apa-itu-ram", frame: 60, nama: "episode 2 dtk, scene pertama" },
 ];
 

@@ -74,7 +74,7 @@ Cara memenuhinya:
   meja/lemari. Pakai itu dulu sebelum menggambar dari nol.
 - Kalau tidak ada ikon yang pas, **buat figur/diagramnya**, atau tambahkan ikon
   baru ke `shared/Icons.tsx` supaya episode lain ikut kebagian.
-- Logo getresolved **tetap terbatas** di brand sting dan end card
+- Logo getresolved **tetap terbatas** di kartu judul dan tanda brand
   ([docs/10](docs/10-scene-standar.md)) — jangan menaburkannya sebagai pengisi.
 - Detail ukuran, warna, dan penempatan: [docs/03 § Ikon & figur](docs/03-tema-visual.md#ikon--figur).
 

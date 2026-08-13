@@ -91,10 +91,15 @@ meja — ada meja jauh lebih kecil yang menempel padanya, namanya cache
 
 ### Scene standar (tanpa VO)
 
-| Scene | Posisi | Durasi |
-|---|---|---|
-| `opening` | bagian 2, setelah `hook-question` | **1,5 dtk** |
-| `closing` | setelah scene 083 | **5,0 dtk** |
+| Scene | Isi | Posisi | Durasi |
+|---|---|---|---|
+| `opening` | kartu judul — **"Di mana data bekerja"** | bagian 2, setelah `hook-question` | **2,5 dtk** |
+| `closing` | tanda tangan brand, tanpa judul | setelah scene 083 | **5,0 dtk** |
+
+Judul episode **tidak boleh menyebut "RAM"**: kartu ini tayang di detik ~10,
+sedangkan kata RAM baru diperkenalkan di scene 019 (~detik 68), setelah penonton
+melihat bendanya lebih dulu (docs/09). Judulnya diatur di `Episode.tsx`
+(`export const JUDUL`).
 
 Keduanya **tidak ditulis di episode ini**. `tools/bangun-timing.mjs`
 menyisipkannya otomatis ke `timing.gen.ts` — `opening` setelah baris terakhir
@@ -109,7 +114,7 @@ menggabungkan tiga shot yang dulu jadi scene 001–003.
 
 | # | Bagian | VO | Visual | Motion | Aset |
 |---|---|---|---|---|---|
-| hook-question | 1 question | Kamu buka sebuah aplikasi. Di mana data aplikasi itu berada saat kamu membukanya? Kelihatannya sepele. Tapi jawabannya menjelaskan kenapa komputermu terasa cepat, atau terasa lambat. | Satu scene tiga tahap: ikon aplikasi + pertanyaan besar di tengah → pertanyaan naik & mengecil, "Kelihatannya sepele." muncul → dua kartu (jam kuning "terasa lambat", centang hijau "terasa cepat") masuk di bawahnya. Pertanyaan tidak pernah hilang dari layar. | Tahap 1 ikon pop back.out, pertanyaan stagger per baris. Tahap 2 pertanyaan scale 1→0.62 + naik, kicker fade. Tahap 3 dua kartu masuk dari sisi berlawanan, stagger 0.18 dtk. | **ditulis tangan** — `scenes/hook-question.html` |
+| hook-question | 1 question | Kamu buka sebuah aplikasi. Di mana datanya saat itu? Kelihatannya sepele. Tapi di mana persisnya ia ditaruh, dan di mana diproses? | Satu scene tiga tahap: ikon aplikasi + pertanyaan besar di tengah → pertanyaan naik & mengecil, "Kelihatannya sepele." muncul → dua kartu masuk dari sisi berlawanan: lemari arsip "ditaruh", keping prosesor "diproses". Pertanyaan tidak pernah hilang dari layar. Dua kartu itu adalah dua tempat yang jadi isi seluruh episode — di sini belum dijawab, cuma dinamai. | Tahap 1 ikon pop `back.out(2.0)`, pertanyaan fade + naik `expo.out`. Tahap 2 seluruh grup `scale 1→0.62` + naik 170px, `power3.out`; kicker fade. Tahap 3 tiap kartu masuk dari luar layar `expo.out` dan mendarat **tepat saat katanya diucapkan** — 6,55 dtk "ditaruh", 7,95 dtk "diproses" — bukan sebagai pasangan ber-stagger pendek. Aktivitas tengah-scene: ikon `y ±5px` `sine.inOut`. | **ditulis tangan** — `scenes/hook-question.tsx` |
 | 004 | 3 problem | Semua yang kamu punya tersimpan di satu tempat. Foto, dokumen, aplikasi, sistemnya sendiri. | Ikon penyimpanan besar, empat label mengelilinginya. | Label masuk mengelilingi ikon, stagger 0.12 dtk. | — |
 | 005 | 3 problem | Namanya penyimpanan. Hard disk, atau S S D di komputer yang lebih baru. | Label besar "PENYIMPANAN" + ikon disk. | Label slide dari bawah; ikon berdenyut sekali. | — |
 | 006 | 3 problem | Kapasitasnya luas. Ratusan gigabita, sering jauh lebih. | Angka kapasitas membesar. | Counter naik ke 512, power2.out. | — |

@@ -37,7 +37,7 @@ Repo ini menyimpan **guideline, naskah, dan komposisi video** — bukan aplikasi
 | 07 | [Backlog topik](docs/07-backlog-topik.md) | Taksonomi topik + 12 topik pembuka beserta sudut kedua Shorts-nya |
 | 08 | [Konfigurasi & secret](docs/08-konfigurasi.md) | Semua setelan & API key jadi satu di `.env`, termasuk rotasi key |
 | 09 | [Tangga abstraksi](docs/09-tangga-abstraksi.md) | Aturan "bahasa anak 5 tahun": L1 → L2 → L3. Dibaca bersama 02 dan 05 |
-| 10 | [Scene standar](docs/10-scene-standar.md) | Opening (brand sting) & closing (end card) yang identik di semua episode |
+| 10 | [Scene standar](docs/10-scene-standar.md) | Kartu judul (pembuka) & tanda brand (penutup) yang identik di semua episode |
 
 Aset pendukung:
 
@@ -47,7 +47,7 @@ Aset pendukung:
 | [`shared/theme.css`](shared/theme.css) | Token warna/tipografi/skala + komponen dasar |
 | [`shared/figur.css`](shared/figur.css) | Kosakata diagram: sumbu, bar, piramida, kisi, tabel spesifikasi |
 | [`shared/Icons.tsx`](shared/Icons.tsx) | Set ikon garis — `<Ic n="ram" />` |
-| [`shared/StandarScenes.tsx`](shared/StandarScenes.tsx) | `<BrandSting>` & `<EndCard>` — dipakai apa adanya tiap episode |
+| [`shared/StandarScenes.tsx`](shared/StandarScenes.tsx) | `<KartuJudul>` & `<TandaBrand>` — dipakai apa adanya tiap episode |
 | [`shared/anim.ts`](shared/anim.ts) | Helper animasi; setiap nilai fungsi murni dari frame |
 | [`.env.example`](.env.example) | Kontrak konfigurasi; salin jadi `.env` lalu isi |
 | [`tools/bangun-config.mjs`](tools/bangun-config.mjs) | `.env` → `shared/config.gen.ts` (daftar putih, tanpa secret) |
@@ -88,7 +88,7 @@ youtube/                      ← ROOT PROJECT Remotion
 │   ├── Stage.tsx             ← <Panggung> + <Scene>
 │   ├── anim.ts               ← helper animasi berbasis frame
 │   ├── Icons.tsx             ← set ikon garis
-│   ├── StandarScenes.tsx     ← <BrandSting> + <EndCard>
+│   ├── StandarScenes.tsx     ← <KartuJudul> + <TandaBrand>
 │   ├── Placeholder.tsx       ← <BelumDibuat>
 │   └── fonts.ts              ← Manrope + JetBrains Mono
 ├── tools/
@@ -125,7 +125,7 @@ berikutnya.
 | Node.js ≥ 22 | ✅ `v22.21.1` | |
 | Google Chrome | ✅ terpasang | Remotion mengunduh Headless Shell-nya sendiri saat render pertama (±113 MB) |
 | FFmpeg + ffprobe | ✅ `9.0-full_build` | via `winget install Gyan.FFmpeg`; PATH aktif di terminal baru. Remotion membawa FFmpeg sendiri; ini untuk `tools/vo-durations.mjs` |
-| Pipeline render | ✅ **terbukti** | brand sting & end card sudah dirender jadi PNG 1920×1080 dan diperiksa |
+| Pipeline render | ✅ **terbukti** | kartu judul & tanda brand sudah dirender jadi PNG 1920×1080 dan diperiksa |
 | `.env` terisi | ✅ identitas channel & spesifikasi video terisi | API key ElevenLabs perlu dicek: `node tools/elevenlabs-keys.mjs status` |
 
 Penyiapan di mesin baru:

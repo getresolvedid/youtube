@@ -1,0 +1,15 @@
+# Normalisasi akhir baris supaya konsisten lintas mesin.
+* text=auto eol=lf
+
+# Skrip PowerShell nyaman dengan CRLF di Windows.
+*.ps1 text eol=crlf
+
+# Hook git dijalankan oleh sh — WAJIB LF, kalau CRLF hook-nya gagal jalan.
+tools/hooks/* text eol=lf
+
+# Biner
+*.png binary
+*.jpg binary
+*.mp4 binary
+*.mp3 binary
+*.wav binary

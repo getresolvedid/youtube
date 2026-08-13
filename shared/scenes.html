@@ -1,0 +1,96 @@
+<!-- ==========================================================================
+     Markup scene standar — SALIN APA ADANYA ke komposisi episode.
+     Berkas ini bukan komposisi yang bisa dirender; ini sumber salinan.
+     Aturan pakai, durasi, dan penempatan: docs/10-scene-standar.md
+
+     Yang boleh diubah per episode: HANYA teks di .close-cta / .close-sub.
+     Struktur, kelas, id, dan urutan elemen tidak boleh diubah.
+     ========================================================================== -->
+
+
+<!-- ===== OPENING — brand sting, 1,5 dtk =====================================
+     Ditaruh di AWAL BABAK 2 (sekitar detik 15), bukan di detik 0.
+     TIDAK dipakai di Shorts.
+     data-start diisi sesuai tabel timing; data-duration selalu 1.5
+     ========================================================================== -->
+
+<div class="scene clip sc-open" id="sc-open" data-start="15.0" data-duration="1.5"
+     data-track-index="1" style="visibility:hidden;">
+  <div class="scene-content">
+    <div class="sting">
+      <!-- Mark di-inline (bukan <img>) supaya cincinnya bisa dianimasikan. -->
+      <svg class="sting-mark" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="stingPlate" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#818CF8"/><stop offset="1" stop-color="#4338CA"/>
+          </linearGradient>
+          <linearGradient id="stingDot" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#10B981"/>
+          </linearGradient>
+        </defs>
+        <rect class="sting-plate" width="120" height="120" rx="30" fill="url(#stingPlate)"/>
+        <circle class="sting-ring" cx="60" cy="60" r="33" fill="none" stroke="#fff"
+                stroke-width="9" stroke-linecap="round"/>
+        <circle class="sting-dot" cx="60" cy="60" r="13" fill="url(#stingDot)"/>
+      </svg>
+
+      <img class="sting-word" src="../../../shared/assets/logos/getresolved-wordmark-inverse.svg" alt="">
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== CLOSING 16:9 — end card, 5 dtk =====================================
+     Konten di paruh kiri; paruh kanan dikosongkan untuk end screen YouTube.
+     data-duration selalu 5.0
+     ========================================================================== -->
+
+<div class="scene clip sc-close" id="sc-close" data-start="475.0" data-duration="5.0"
+     data-track-index="1" style="visibility:hidden;">
+  <div class="scene-content">
+    <img class="close-mark" src="../../../shared/assets/logos/getresolved-mark.svg" alt="">
+
+    <!-- Satu kalimat ajakan. Ganti per episode, maksimal 6 kata. -->
+    <h2 class="close-cta">Masih penasaran <em>kenapa</em>?</h2>
+
+    <div class="close-rule"></div>
+
+    <p class="close-handle">@handle-channel</p>
+    <p class="close-sub">Penjelasan teknologi, coding, dan engineering dalam Bahasa Indonesia.</p>
+  </div>
+</div>
+
+
+<!-- ===== CLOSING 9:16 — end card Shorts, 2 dtk ==============================
+     Konten di tengah kotak aman. Tanpa kalimat panjang — tidak cukup waktu.
+     data-duration selalu 2.0
+     ========================================================================== -->
+
+<div class="scene clip sc-close" id="sc-close" data-start="48.0" data-duration="2.0"
+     data-track-index="1" style="visibility:hidden;">
+  <div class="scene-content">
+    <img class="close-mark" src="../../../shared/assets/logos/getresolved-mark.svg" alt="">
+    <h2 class="close-cta">Versi lengkapnya <em>di channel</em></h2>
+    <div class="close-rule"></div>
+    <p class="close-handle">@handle-channel</p>
+  </div>
+</div>
+
+
+<!-- ===== Koreografi — panggil di skrip timeline =============================
+
+<script src="../../../shared/scenes.js"></script>
+<script>
+  const tl = gsap.timeline({ paused: true });
+
+  // ... scene-scene episode ...
+
+  HFScenes.opening(tl, { at: 15.0 });                    // 16:9 saja
+  HFScenes.closing(tl, { at: 475.0 });                   // 16:9, 5 dtk
+  HFScenes.closing(tl, { at: 48.0, format: "9x16" });    // Shorts, 2 dtk
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines.t01l = tl;
+</script>
+
+     ========================================================================== -->

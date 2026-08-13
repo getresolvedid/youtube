@@ -1,0 +1,126 @@
+/* ===========================================================================
+   Scene standar — opening (brand sting) & closing (end card).
+   Wajib dipakai apa adanya di setiap episode. Aturan: docs/10-scene-standar.md
+
+   Pakai bersama theme.css:
+     <link rel="stylesheet" href="../../../shared/theme.css">
+     <link rel="stylesheet" href="../../../shared/scenes.css">
+   ======================================================================== */
+
+/* --- Opening: brand sting 1,5 dtk ------------------------------------------
+   BUKAN intro pembuka video. Muncul di awal babak 2 (sekitar detik 15),
+   setelah hook. Tidak pernah dipakai di Shorts. */
+
+.sc-open .scene-content {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0;
+}
+
+.sc-open .sting {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.sc-open .sting-mark {
+  width: 132px;
+  height: 132px;
+  flex: none;
+}
+
+/* Wordmark disingkap dari kiri lewat clip-path (dianimasikan di scenes.js). */
+.sc-open .sting-word {
+  height: 62px;
+  width: auto;
+  clip-path: inset(0 100% 0 0);
+}
+
+.hf-9x16 .sc-open .sting { flex-direction: column; gap: 28px; }
+.hf-9x16 .sc-open .sting-mark { width: 180px; height: 180px; }
+.hf-9x16 .sc-open .sting-word { height: 74px; }
+
+/* --- Closing: end card -----------------------------------------------------
+   16:9 → 5 dtk. Konten ditaruh di PARUH KIRI; paruh kanan sengaja dikosongkan
+   untuk elemen end screen YouTube (video terkait + tombol subscribe).
+   9:16 → 2 dtk, konten di tengah kotak aman, tanpa CTA panjang. */
+
+.sc-close .scene-content {
+  align-items: flex-start;
+  justify-content: center;
+  gap: 32px;
+  max-width: 52%;
+}
+
+.sc-close .close-mark {
+  width: 108px;
+  height: 108px;
+}
+
+.sc-close .close-cta {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-title);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.sc-close .close-cta em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.sc-close .close-handle {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-sub);
+  color: var(--ink-0);
+  margin: 0;
+}
+
+.sc-close .close-sub {
+  font-size: var(--fs-body);
+  color: var(--ink-1);
+  margin: 0;
+  max-width: var(--measure);
+}
+
+/* Garis aksen yang menggambar diri — penanda tutup yang konsisten tiap episode. */
+.sc-close .close-rule {
+  height: 5px;
+  width: 220px;
+  background: linear-gradient(90deg, var(--accent), var(--ok));
+  border-radius: 3px;
+  transform-origin: left center;
+}
+
+/* Zona end screen YouTube (16:9) — jangan diisi apa pun.
+   Aktifkan .debug-endscreen saat preview untuk melihat batasnya. */
+.debug-endscreen .sc-close .scene-content::after {
+  content: "zona end screen — kosongkan";
+  position: absolute;
+  right: var(--safe-x);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42%;
+  height: 62%;
+  border: 2px dashed var(--bad);
+  border-radius: var(--radius);
+  color: var(--bad);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  display: grid;
+  place-items: center;
+}
+
+.hf-9x16 .sc-close .scene-content {
+  align-items: center;
+  text-align: center;
+  max-width: 100%;
+  gap: 28px;
+}
+.hf-9x16 .sc-close .close-mark { width: 148px; height: 148px; }
+.hf-9x16 .sc-close .close-sub { display: none; }  /* tidak cukup waktu dibaca */
+.hf-9x16 .sc-close .close-rule { align-self: center; }

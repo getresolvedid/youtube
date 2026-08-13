@@ -1,0 +1,41 @@
+# =============================================================================
+# HANYA .env.example yang boleh masuk repo. Berkas .env berisi API key asli.
+# Aturan lengkap: docs/08-konfigurasi.md
+# =============================================================================
+
+.env
+.env.*
+!.env.example
+
+# Bentuk secret lain yang mungkin muncul kemudian
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+client_secret*.json
+*_secret*
+.netrc
+
+# --- Keluaran produksi (berat) ----------------------------------------------
+# Thumbnail (thumb.png) dan render/publish.md SENGAJA tidak di-ignore —
+# keduanya kecil dan merupakan bagian dari catatan episode.
+
+*.mp4
+*.mov
+*.webm
+*.mp3
+*.wav
+*.m4a
+
+# --- Tooling -----------------------------------------------------------------
+node_modules/
+.hyperframes/
+out/
+*.log
+npm-debug.log*
+
+# --- OS ----------------------------------------------------------------------
+Thumbs.db
+desktop.ini
+.DS_Store

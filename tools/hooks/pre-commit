@@ -1,0 +1,60 @@
+#!/bin/sh
+# Pre-commit: menolak commit yang membawa secret.
+# Dipasang oleh tools/git-setup.ps1 ke .git/hooks/pre-commit
+#
+# Melewati pemeriksaan (HANYA kalau yakin): git commit --no-verify
+
+set -e
+
+fail=0
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+
+[ -z "$staged" ] && exit 0
+
+# --- 1. Berkas yang tidak boleh masuk sama sekali ---------------------------
+for f in $staged; do
+  case "$f" in
+    .env.example) ;;                     # ini memang harus di-commit
+    .env|.env.*)
+      echo "TOLAK: $f berisi secret dan tidak boleh di-commit."
+      fail=1 ;;
+    *.pem|*.key|*.p12|*.pfx|.netrc|credentials*.json|client_secret*.json)
+      echo "TOLAK: $f terlihat seperti berkas kredensial."
+      fail=1 ;;
+  esac
+done
+
+# --- 2. Pola secret di dalam isi berkas -------------------------------------
+# sk_...  = API key ElevenLabs / OpenAI
+# ghp_/gho_ = token GitHub
+# AKIA... = access key AWS
+patterns='sk_[A-Za-z0-9]{20,}|gh[pos]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
+
+for f in $staged; do
+  # .env.example boleh memuat nama variabel, asal nilainya kosong
+  [ "$f" = ".env.example" ] && continue
+  [ "$f" = "tools/hooks/pre-commit" ] && continue   # berkas ini memuat polanya sendiri
+
+  if git show ":$f" 2>/dev/null | grep -nE "$patterns" >/dev/null 2>&1; then
+    echo "TOLAK: pola secret ditemukan di $f —"
+    git show ":$f" | grep -nE "$patterns" | head -5 | sed 's/^/    /'
+    fail=1
+  fi
+done
+
+# --- 3. aturan .gitignore harus tetap menutup .env ---------------------------
+# --no-index: periksa aturannya saja, tidak terpengaruh apakah berkasnya
+# sedang ter-stage (berkas yang di-stage tidak dianggap "ignored" oleh git).
+if [ -f .env ] && ! git check-ignore --no-index -q .env; then
+  echo "TOLAK: aturan .gitignore tidak menutup .env. Periksa .gitignore."
+  fail=1
+fi
+
+if [ "$fail" -ne 0 ]; then
+  echo ""
+  echo "Commit dibatalkan. Keluarkan secret dari staging, lalu ulangi."
+  echo "Kalau key memang sudah bocor: cabut di dashboard, jangan cuma dihapus."
+  exit 1
+fi
+
+exit 0

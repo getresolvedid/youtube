@@ -1,0 +1,230 @@
+/* ===========================================================================
+   Tema video — channel edukasi teknologi
+   Turunan brand getresolved (branding/guidelines/brand.html).
+   Aturan pemakaian: docs/03-tema-visual.md
+
+   Pakai di komposisi HyperFrames:
+     <link rel="stylesheet" href="../../../shared/theme.css">
+     <div id="stage" class="hf-16x9" ...>   ← atau .hf-9x16 untuk Shorts
+
+   Catatan: font diambil dari Google Fonts. Kalau render dijalankan offline,
+   unduh Manrope + JetBrains Mono ke shared/fonts/ dan ganti @import dengan
+   @font-face. Font gagal muat = seluruh tata letak meleset.
+   ======================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap");
+
+:root {
+  /* --- warna brand (jangan diubah) --- */
+  --brand-indigo:      #4F46E5;
+  --brand-indigo-deep: #4338CA;
+  --brand-green:       #10B981;
+  --brand-ink:         #0F172A;
+
+  /* --- palet video (dark-first) --- */
+  --bg:       #0B1020;
+  --bg-elev:  #141B32;
+  --ink-0:    #F6F8FB;
+  --ink-1:    #94A3B8;
+  --ink-2:    #64748B;
+  --line:     #1E293B;
+
+  --accent:      var(--brand-indigo);
+  --accent-deep: var(--brand-indigo-deep);
+  --ok:          var(--brand-green);
+  --warn:        #F59E0B;
+  --bad:         #EF4444;
+
+  --accent-soft: rgba(79, 70, 229, 0.18);
+  --ok-soft:     rgba(16, 185, 129, 0.16);
+  --bad-soft:    rgba(239, 68, 68, 0.16);
+
+  /* --- tipografi --- */
+  --font-display: "Manrope", system-ui, sans-serif;
+  --font-body:    "Manrope", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+
+  /* --- bentuk --- */
+  --radius:    16px;
+  --radius-lg: 24px;
+  --grid-gutter: 32px;
+
+  /* skala tipografi & layout: nilai default = 16:9, ditimpa oleh .hf-9x16 */
+  --fs-display: 96px;
+  --fs-title:   72px;
+  --fs-sub:     44px;
+  --fs-body:    30px;
+  --fs-code:    26px;
+  --fs-label:   20px;
+
+  --safe-x:      96px;
+  --safe-top:    60px;
+  --safe-bottom: 120px;   /* progress bar + kontrol pemutar */
+  --measure:     40ch;
+}
+
+/* Shorts 1080×1920 — teks lebih besar, safe area jauh lebih ketat.
+   Kotak aman: x 90–920, y 240–1480 (lihat docs/03). */
+.hf-9x16 {
+  --fs-display: 120px;
+  --fs-title:    96px;
+  --fs-sub:      60px;
+  --fs-body:     44px;
+  --fs-code:     34px;
+  --fs-label:    28px;
+
+  --safe-x:      90px;
+  --safe-top:   240px;
+  --safe-bottom: 440px;   /* judul, nama channel, rail tombol */
+  --measure:     24ch;
+}
+
+/* --------------------------------------------------------------------------
+   Panggung & scene
+   -------------------------------------------------------------------------- */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink-0);
+  font-family: var(--font-body);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+#stage {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* Latar halus — pakai radial-gradient, JANGAN filter SVG data-uri (docs/03). */
+#stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(79, 70, 229, 0.16), transparent 60%),
+    radial-gradient(90% 60% at 100% 110%, rgba(67, 56, 202, 0.10), transparent 60%);
+}
+
+/* Setiap scene WAJIB: class="scene clip" + data-start/data-duration/data-track-index
+   dan isi dibungkus .scene-content. Scene non-anchor mulai visibility:hidden
+   lalu ditampilkan lewat autoAlpha di timeline. */
+.scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.scene-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: var(--safe-top) var(--safe-x) var(--safe-bottom);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+}
+
+.scene-content.center { align-items: center; text-align: center; }
+
+/* Penanda kotak aman untuk pengecekan di preview — hapus/jangan aktifkan saat render. */
+.debug-safe .scene-content { outline: 2px dashed var(--bad); outline-offset: -2px; }
+
+/* --------------------------------------------------------------------------
+   Tipografi
+   -------------------------------------------------------------------------- */
+
+.t-display,
+.t-title { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; margin: 0; }
+.t-display { font-size: var(--fs-display); }
+.t-title   { font-size: var(--fs-title); }
+
+.t-sub   { font-size: var(--fs-sub);  font-weight: 600; line-height: 1.2;  margin: 0; color: var(--ink-0); }
+.t-body  { font-size: var(--fs-body); font-weight: 500; line-height: 1.45; margin: 0; color: var(--ink-1); max-width: var(--measure); }
+.t-label { font-size: var(--fs-label); font-family: var(--font-mono); font-weight: 700;
+           letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); margin: 0; }
+
+.t-num { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-display);
+         font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+.c-accent { color: var(--accent); }
+.c-ok     { color: var(--ok); }
+.c-warn   { color: var(--warn); }
+.c-bad    { color: var(--bad); }
+.c-mute   { color: var(--ink-2); }
+
+/* --------------------------------------------------------------------------
+   Komponen
+   -------------------------------------------------------------------------- */
+
+.panel {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+}
+
+.panel.ok  { border-color: rgba(16, 185, 129, 0.45); background: linear-gradient(var(--ok-soft), transparent); }
+.panel.bad { border-color: rgba(239, 68, 68, 0.45);  background: linear-gradient(var(--bad-soft), transparent); }
+
+/* Panel kode — bukan mockup jendela macOS, tanpa titik tiga warna. */
+.code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-code);
+  line-height: 1.55;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 32px 36px;
+  white-space: pre;
+  tab-size: 2;
+  color: var(--ink-0);
+}
+
+/* Maksimal 12 baris per panel (docs/02). Baris yang sedang dibahas: .is-active */
+.code .line { display: block; padding: 2px 12px; margin: 0 -12px; border-left: 3px solid transparent; }
+.code .line.is-active { background: var(--accent-soft); border-left-color: var(--accent); }
+.code .line.is-dim    { color: var(--ink-2); }
+.code .tok-key { color: #A5B4FC; }
+.code .tok-str { color: #6EE7B7; }
+.code .tok-com { color: var(--ink-2); font-style: italic; }
+
+/* Lower third — kiri bawah, tampil ~3 dtk saat istilah baru muncul. */
+.lower-third {
+  position: absolute;
+  left: var(--safe-x);
+  bottom: calc(var(--safe-bottom) + 40px);
+  padding-left: 20px;
+  border-left: 4px solid var(--accent);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: calc(var(--fs-sub) * 0.72);
+}
+.lower-third small { display: block; font-family: var(--font-mono); font-weight: 400;
+                     font-size: var(--fs-label); color: var(--ink-2); letter-spacing: 0.1em; }
+
+.chapter-num { font-family: var(--font-mono); font-weight: 700;
+               font-size: calc(var(--fs-display) * 1.6); color: var(--line); line-height: 1; }
+
+.pill { display: inline-block; padding: 10px 22px; border-radius: 999px;
+        border: 1px solid var(--line); background: var(--bg-elev);
+        font-family: var(--font-mono); font-size: var(--fs-label);
+        letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-1); }
+.pill.accent { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+.row  { display: flex; gap: var(--grid-gutter); align-items: stretch; }
+.row > * { flex: 1; }
+.stack { display: flex; flex-direction: column; gap: 20px; }
+
+/* Pembanding sebelum/sesudah — merah selalu "sebelum/salah", hijau "sesudah/benar". */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: var(--grid-gutter); }
+
+.rule { height: 4px; background: var(--accent); border-radius: 2px; width: 120px; }

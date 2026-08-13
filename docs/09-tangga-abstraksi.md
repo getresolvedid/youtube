@@ -87,14 +87,14 @@ Kalau mereka mengangguk tapi tidak bisa mengulangi, itu belum lolos.
 
 ## Pemetaan ke struktur video
 
-| Bagian | Tangga | Catatan |
+| Bagian (flow 7) | Tangga | Catatan |
 |---|---|---|
-| Hook (0:00–0:15) | **L1** | Hook selalu bahasa manusia. Jangan pernah membuka dengan istilah teknis. |
-| Kontrak (0:15–0:45) | L1 | Janji ditulis sebagai hasil yang bisa dibayangkan, bukan daftar materi. |
-| Fondasi (0:45–2:30) | **L1 → L2** | Inilah tempat analogi utama dibangun lalu dinamai. Titik putus disebut di sini. |
-| Mekanisme (2:30–5:30) | **L2** | Boleh turun ke L1 sebentar tiap kali ada konsep baru. |
-| Realita (5:30–7:00) | **L3** | Angka, trade-off, kegagalan. Bagian yang membedakan kita dari artikel blog. |
-| Rangkuman | **L1** | Rangkuman kembali ke bahasa paling sederhana. Kalimat bawa-pulang selalu L1. |
+| 1 [question] | **L1** | Pertanyaan pembuka selalu bahasa manusia. Jangan pernah membuka dengan istilah teknis. |
+| 3 [problem] | **L1** | Masalahnya harus terasa tanpa satu pun jargon. |
+| 4 [answer] → [what] | **L1 → L2** | Di sinilah istilah resmi diperkenalkan — setelah bendanya sudah terbayang. Titik putus analogi disebut di sini. |
+| 5 [why] | **L2** | Mekanisme sebabnya. Boleh turun ke L1 sebentar tiap konsep baru. |
+| 6 [explaining] | **L2 → L3** | Makin ke belakang makin presisi: batas, trade-off, angka. |
+| 7 [case] | **L3** | Perangkat nyata, angka nyata. Kalimat penutupnya kembali ke **L1**. |
 | Shorts | **L1 (+ sedikit L2)** | Shorts tidak pernah sampai L3. Tidak cukup waktu, dan bukan tempatnya. |
 
 ## Yang bukan ELI5

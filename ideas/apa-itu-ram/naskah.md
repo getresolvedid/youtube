@@ -1,9 +1,10 @@
 ---
 kode: T01
 slug: apa-itu-ram
-judul_kerja: Apa itu RAM — dan kenapa nambah RAM tidak selalu bikin cepat
+judul_kerja: Di mana data aplikasi saat aplikasi dibuka?
 pilar: P1 · Cara Kerja Sehari-hari
 lapis: umum
+what: RAM
 status: naskah
 naskah_beku:            # BELUM — lihat "Sumber", masih ada angka tanpa sumber primer
 karakter_terpakai:
@@ -12,6 +13,18 @@ tanggal_target:
 
 # T01 · Apa itu RAM
 
+Disusun mengikuti **flow 7 bagian** ([docs/02](../../docs/02-format-video.md#anatomi-video-panjang--flow-wajib)).
+
+| # | Bagian | Isi |
+|---|---|---|
+| 1 | **[question]** | Di mana data aplikasi saat aplikasi dibuka? |
+| 2 | **brand opening** | sting standar 1,5 dtk |
+| 3 | **[problem]** | Tempat yang muat banyak selalu lambat — prosesor habis waktu menunggu |
+| 4 | **[answer] → [what]** | Data disalin dulu ke tempat kerja yang dekat: **RAM** |
+| 5 | **[why]** | Jarak + pengulangan: satu perjalanan mahal terbayar ribuan kali |
+| 6 | **[explaining]** | RAM lupa · mejanya bertingkat · kenapa tidak semua secepat cache · saat meja penuh |
+| 7 | **[case]** | Mesin nyata, ponsel, server, kapan nambah RAM berguna |
+
 ## Penjelasan 5 tahun
 
 > RAM itu meja kerja, hard disk itu lemari arsip. Kamu tidak membaca dokumen di
@@ -19,59 +32,49 @@ tanggal_target:
 > berarti lebih banyak yang terbuka sekaligus tanpa bolak-balik. Kalau meja
 > penuh, berkas mulai ditumpuk di lantai.
 
-**Analogi utama:** meja kerja (RAM) vs lemari arsip (penyimpanan).
+**Analogi utama:** meja kerja (RAM) vs lemari arsip di gudang (penyimpanan).
 
 **Titik putus analogi:** meja tetap berisi saat kamu pulang; RAM kosong total
-begitu listrik mati. Dan prosesor tidak mengambil langsung dari meja — ada meja
-jauh lebih kecil yang menempel padanya, namanya cache. **Keduanya wajib disebut
-di VO**, bukan cuma dicatat di sini (scene 021 dan 030).
-
-## Pertanyaan inti (benang merah)
-
-> **"Di mana data aplikasi saat aplikasi dibuka?"**
-
-Pertanyaan ini dibuka di scene 001 dan **dipanggil ulang di tiap batas babak** —
-scene 008 (masuk fondasi), 013 & 015 (tertutup vs dibuka), 024 (masuk mekanisme),
-lalu dijawab lugas di scene 072–073. Bukan sekadar hook: ini tulang punggung
-alur video.
+begitu listrik mati (scene 039–045). Dan prosesor tidak mengambil langsung dari
+meja — ada meja jauh lebih kecil yang menempel padanya, namanya cache
+(scene 046–050).
 
 ## Satu kalimat bawa-pulang
 
-> RAM bukan tempat menyimpan — RAM tempat mengerjakan. Menambahnya hanya membantu
-> kalau mejamu memang sudah penuh.
+> Yang sedang dipakai ada di RAM. Sisanya masih di penyimpanan. Menambah RAM
+> hanya membantu kalau mejamu memang sudah penuh.
 
 ## Naik tangga
 
 | Tangga | Isi |
 |---|---|
-| **L1** | Meja kerja vs lemari arsip. Ambil dulu, baru kerjakan. Meja penuh = numpuk di lantai. |
-| **L2** | RAM = tempat kerja sementara, hilang saat listrik mati. Penyimpanan = permanen. Di antaranya ada cache. Saat RAM penuh, sistem memindahkan sebagian ke penyimpanan (swap) — dan penyimpanan jauh lebih lambat. |
-| **L3** | Hierarki cache dan alasan keberadaannya (locality). Kenapa DRAM harus disegarkan ribuan kali per detik. Kenapa "RAM terpakai 80 persen" bukan masalah, dan indikator mana yang benar-benar menandakan butuh tambah RAM. |
+| **L1** | Gudang besar tapi jauh; meja kecil tapi dekat. Ambil dulu, baru kerjakan. |
+| **L2** | Penyimpanan permanen tapi lambat; RAM cepat tapi hilang saat listrik mati. Di antaranya ada cache. Saat RAM penuh, data dipindahkan balik ke penyimpanan. |
+| **L3** | Hierarki memori dan alasan keberadaannya (locality). DRAM disegarkan ribuan kali per detik. "RAM terpakai 80 persen" bukan indikator; yang benar adalah aktivitas paging/swap. |
 
 ## Kamus istilah → L1
 
 | Istilah | Kalimat L1 pembuka | Scene |
 |---|---|---|
-| RAM | "Meja kerjanya komputer." | 014 |
-| penyimpanan / hard disk | "Lemari arsipnya." | 012 |
-| cache | "Meja kecil yang menempel langsung di prosesor." | 030 |
-| swap | "Menumpuk berkas di lantai karena meja penuh." | 034 |
+| penyimpanan | "Lemari arsip raksasa di gudang lantai bawah." | 007 |
+| RAM | "Meja kerja komputer." | 019 |
+| cache | "Meja kecil yang menempel langsung di prosesor." | 047 |
+| swap / berkas halaman | "Memindahkan berkas dari meja kembali ke gudang." | 083 |
 
 ## Sumber
 
 | Klaim / angka | Sumber | Status |
 |---|---|---|
-| Spesifikasi mesin di video: Intel Core i7-11700F, 8 inti, L2 4 MB, L3 16 MB, RAM 32 GB DDR4-2667, SSD NVMe | `Win32_Processor` + `Win32_PhysicalMemory` + `Get-PhysicalDisk` di mesin ini, 2026-08-13 | ✅ terverifikasi |
-| RAM ± 50–100 nanodetik; cache ± 1–15 nanodetik; SSD ± puluhan mikrodetik; HDD ± milidetik | — | ⚠ **BELUM** |
+| Spesifikasi mesin: Intel Core i7-11700F, 8 inti, L2 4 MB, L3 16 MB, RAM 32 GB DDR4-2667, SSD NVMe | `Win32_Processor` + `Win32_PhysicalMemory` + `Get-PhysicalDisk` di mesin ini, 2026-08-13 | ✅ terverifikasi |
+| Prosesor mengerjakan miliaran perintah per detik | frekuensi 2,5 GHz dari spesifikasi di atas | ✅ terverifikasi |
+| RAM ± 50–100 ns · cache ± 1–15 ns · SSD ± puluhan µs · HDD ± milidetik | — | ⚠ **BELUM** |
 | Rasio "cache 1 detik : RAM ± 1 menit : HDD ± 2 bulan" | turunan dari angka di atas | ⚠ **BELUM** |
-| DRAM disegarkan ribuan kali per detik | — | ⚠ **BELUM** (perlu JEDEC / datasheet) |
+| DRAM disegarkan ribuan kali per detik | — | ⚠ **BELUM** (perlu JEDEC) |
 
-> **GERBANG BELUM BOLEH DILEWATI.** Tiga baris ⚠ di atas harus ditopang sumber
-> primer **atau** diukur sendiri di mesin ini sebelum `naskah_beku` diisi dan VO
-> dibuat. Rencana: `tools/ukur-latensi.mjs` (pointer chasing) — hasilnya disebut
-> sebagai "diukur di mesin ini", lengkap dengan spesifikasinya, bukan diklaim
-> sebagai angka universal. Angka yang sekarang tertulis di kolom VO adalah
-> **placeholder** dan sengaja dibulatkan kasar.
+> **GERBANG BELUM BOLEH DILEWATI.** Tiga baris ⚠ harus ditopang sumber primer
+> **atau** diukur sendiri (`tools/ukur-latensi.mjs`) sebelum `naskah_beku` diisi
+> dan VO dibuat. Angka yang sekarang tertulis adalah **placeholder** yang sengaja
+> dibulatkan kasar.
 
 ## Kamus pengucapan
 
@@ -80,122 +83,114 @@ alur video.
 | kesh | cache | TTS cenderung membaca "kaks" |
 | S S D | SSD | dieja per huruf |
 | ram | RAM | dibaca sebagai kata, aman |
-| prosesor | CPU | sengaja **tidak** memakai "CPU" — hindari salah eja TTS |
+| prosesor | CPU | sengaja tidak memakai "CPU" |
 
 ---
 
 ## Video panjang — T01-L
 
-**Aktual:** 6:22 · 76 scene + 2 scene standar · 5.283 karakter (≈ kredit ElevenLabs)
+### Scene standar (tanpa VO)
 
-### Outline babak
-
-| Babak | Tangga | Isi | Perkiraan |
-|---|---|---|---|
-| 1 Hook | L1 | **Pertanyaan inti:** di mana data aplikasi saat dibuka? Lalu buktinya | 0:00–0:22 |
-| 2 Kontrak | L1 | Janji menjawab pertanyaan itu + peta 3 bagian. Brand sting di sini | 0:22–0:37 |
-| 3 Fondasi | L1→L2 | Meja & lemari, lalu dinamai. Tertutup vs dibuka. Titik putus analogi | 0:37–1:50 |
-| 4 Mekanisme | L2 | Tingkatan sebagai jarak, skala waktu manusiawi, meja penuh, kenapa RAM lupa, kenapa tidak semua secepat cache | 1:50–4:22 |
-| 5 Realita | L3 | Mesin nyata, kapan tambah RAM berguna, indikator yang benar | 4:22–5:33 |
-| 6 Rangkuman + CTA | L1 | Kembali ke pertanyaan awal, tiga poin, end card | 5:33–6:22 |
-
-### Scene standar (tanpa VO — durasi ditambahkan manual)
-
-| Scene | Posisi | Durasi | Catatan |
-|---|---|---|---|
-| `sc-open` | setelah scene 005 | **1,5 dtk** | brand sting, awal babak 2 |
-| `sc-close` | setelah scene 076 | **5,0 dtk** | end card 16:9 |
-
-Keduanya tidak ikut terhitung `estimate-timing.mjs` — lihat [docs/10](../../docs/10-scene-standar.md#efeknya-ke-timing).
+| Scene | Posisi | Durasi |
+|---|---|---|
+| `sc-open` | bagian 2, setelah scene 003 | **1,5 dtk** |
+| `sc-close` | setelah scene 083 | **5,0 dtk** |
 
 ### Scene
 
-| # | Babak | VO | Visual | Motion | Aset |
+| # | Bagian | VO | Visual | Motion | Aset |
 |---|---|---|---|---|---|
-| 001 | 1 Hook | Kamu buka sebuah aplikasi. Di mana data aplikasi itu berada saat kamu membukanya? | **PERTANYAAN INTI** di layar penuh, ikon aplikasi di atasnya. | Pertanyaan masuk stagger per kata; ikon aplikasi pop lebih dulu. | — |
-| 002 | 1 Hook | Kelihatannya sepele. Tapi jawabannya yang menentukan komputermu terasa cepat atau lambat. | Pertanyaan mengecil ke atas; dua ikon jam muncul di bawahnya. | Pertanyaan scale 1→0.6 naik ke atas; dua ikon masuk stagger. | — |
-| 003 | 1 Hook | Buktinya begini. Buka pertama kali terasa lambat. Buka kedua kali langsung muncul. | Dua kartu: "buka ke-1" dengan jam kuning, "buka ke-2" dengan centang hijau. | Dua kartu masuk bergantian, stagger 0.22 dtk. | — |
-| 004 | 1 Hook | Aplikasinya sama. Komputernya sama. Yang berbeda cuma satu: di mana datanya berada. | Dua kartu bercentang identik, lalu satu label "letak data" menyala. | Dua centang muncul bergantian; label ketiga pop belakangan. | — |
-| 005 | 2 Kontrak | Dan tempat paling dekat itu namanya ram. | Judul besar "RAM" + ikon keping RAM. | Ikon pop, lalu huruf RAM masuk stagger per karakter 0.06 dtk. | — |
-| 006 | 2 Kontrak | Enam menit ke depan kita akan menjawab pertanyaan tadi sampai tuntas. | Peta tiga kartu: Meja & lemari · Tingkatan · Kapan perlu nambah. | Tiga kartu masuk stagger 0.14 dtk, garis penghubung SVG tergambar. | — |
-| 007 | 2 Kontrak | Ternyata jawabannya bukan satu tempat. Ada beberapa, dan alasannya masuk akal. | Kartu tengah tersorot; satu kotak besar dicoret, beberapa kotak muncul. | Coret SVG tergambar 0.5 dtk; kotak fade in stagger. | — |
-| 008 | 3 Fondasi | Untuk menjawabnya, bayangkan kamu bekerja di ruangan dengan satu meja dan satu lemari arsip. | Ilustrasi ruangan sederhana: meja di kiri, lemari tinggi di kanan. | Ruangan digambar garis demi garis, stroke draw 1.2 dtk. | — |
-| 009 | 3 Fondasi | Lemari itu besar. Semua dokumen yang pernah kamu punya ada di sana. | Lemari membesar, laci-laci terisi banyak berkas. | Laci terbuka berurutan stagger 0.1 dtk, berkas muncul. | — |
-| 010 | 3 Fondasi | Tapi kamu tidak pernah membaca dokumen di dalam lemari. | Tanda silang merah di depan lemari. | Silang SVG tergambar cepat 0.35 dtk, ease power4.out. | — |
-| 011 | 3 Fondasi | Kamu ambil dokumennya, taruh di meja, baru kamu kerjakan. | Satu berkas melayang dari lemari ke meja. | Berkas bergerak sepanjang path lengkung 0.9 dtk, power2.inOut. | — |
-| 012 | 3 Fondasi | Lemari arsip itu penyimpanan. Hard disk, atau S S D di komputermu. | Label muncul di lemari: "PENYIMPANAN". | Label slide dari kanan + garis penunjuk tergambar. | — |
-| 013 | 3 Fondasi | Jadi saat aplikasi tertutup, datanya ada di sini. Tetap ada walaupun lampu dimatikan. | Ruangan gelap, lemari tetap terlihat samar dengan isinya. | Lampu meredup 0.6 dtk; lemari tetap ber-outline. | — |
-| 014 | 3 Fondasi | Mejanya, itulah ram. | Label besar di meja: "RAM". | Label pop scale 0→1 back.out(2), meja tersorot indigo. | — |
-| 015 | 3 Fondasi | Dan saat aplikasi dibuka, datanya disalin ke sini. Kecil, tapi semua pekerjaan terjadi di sana. | Meja tersorot, beberapa berkas terbuka di atasnya. | Tiga berkas muncul stagger 0.12 dtk. | — |
-| 016 | 3 Fondasi | Meja yang lebih luas berarti lebih banyak dokumen terbuka sekaligus. | Meja melebar; jumlah berkas bertambah dari tiga jadi delapan. | Meja scaleX 1→1.5 power2.out; berkas bertambah stagger cepat. | — |
-| 017 | 3 Fondasi | Kamu tidak perlu bolak-balik ke lemari setiap ganti pekerjaan. | Panah bolak-balik ke lemari memudar dan hilang. | Panah fade out + strokeDashoffset mundur. | — |
-| 018 | 3 Fondasi | Dan setiap perjalanan ke lemari itu, jauh lebih lama daripada yang kamu kira. | Jam kecil muncul di jalur menuju lemari. | Jarum jam berputar cepat; jalur berdenyut merah. | — |
-| 019 | 3 Fondasi | Itu sebabnya membuka aplikasi pertama kali terasa lambat tadi. | Kembali ke ikon aplikasi dari hook, dengan jalur ke lemari tersorot. | Jalur menyala berurutan dari lemari ke meja. | — |
-| 020 | 3 Fondasi | Yang kedua cepat karena dokumennya masih tergeletak di meja. | Berkas sudah ada di meja, jalur ke lemari padam. | Berkas berdenyut hijau sekali; jalur meredup. | — |
-| 021 | 3 Fondasi | Tapi analogi meja ini punya satu bocor yang penting. | Layar menggelap, meja tetap terlihat, muncul retakan garis di analoginya. | Garis retak tergambar melintasi ilustrasi, 0.6 dtk. | — |
-| 022 | 3 Fondasi | Meja sungguhan tetap berisi saat kamu pulang. Ram tidak. | Ruangan gelap total; meja kosong melompong, lemari tetap berisi. | Semua berkas di meja fade out serentak 0.4 dtk. | — |
-| 023 | 3 Fondasi | Begitu listrik mati, seluruh isi ram hilang. Semuanya, tanpa sisa. | Teks besar: "LISTRIK MATI" lalu meja kosong. | Layar berkedip gelap sekali, lalu teks masuk cepat. | — |
-| 024 | 4 Mekanisme | Jadi jawabannya meja. Tapi ini bagian yang jarang diceritakan: mejanya bukan cuma satu. | Meja tunggal pecah jadi beberapa meja bertingkat. | Meja terbelah jadi empat tingkat, stagger 0.15 dtk. | — |
-| 025 | 4 Mekanisme | Di dalam komputer ada beberapa tingkat tempat kerja, bukan hanya dua. | Diagram tangga empat tingkat mulai terbentuk. | Setiap anak tangga muncul dari bawah, stagger 0.18 dtk. | — |
-| 026 | 4 Mekanisme | Dan yang membedakannya bukan ukuran. Yang membedakan adalah jarak. | Tangga berubah jadi peta jarak horizontal. | Layout beralih dari vertikal ke horizontal, 0.8 dtk power3.inOut. | — |
-| 027 | 4 Mekanisme | Semakin dekat ke prosesor, semakin cepat. Tapi juga semakin kecil dan semakin mahal. | Sumbu: kiri "dekat & cepat", kanan "jauh & lambat". Kotak mengecil ke kiri. | Empat kotak menyusut ke kiri; label sumbu tergambar. | — |
-| 028 | 4 Mekanisme | Bayangkan tingkatannya sebagai jarak yang harus kamu tempuh sendiri. | Ikon orang berdiri di titik prosesor. | Ikon muncul; lingkaran jangkauan melebar dari titiknya. | — |
-| 029 | 4 Mekanisme | Tingkat pertama ada di meja, tepat di depanmu. Tinggal julurkan tangan. | Kotak pertama tepat di sebelah ikon orang, jarak nol. | Tangan menjulur pendek, 0.3 dtk. | — |
-| 030 | 4 Mekanisme | Itu kesh. Meja kecil yang menempel langsung di prosesor. | Label "CACHE" pada kotak terdekat, dengan ukuran ditulis kecil. | Label pop + garis penunjuk pendek. | — |
-| 031 | 4 Mekanisme | Tingkat berikutnya, ram, ada di rak seberang ruangan. | Kotak kedua diposisikan jauh, garis jarak digambar. | Garis jarak tergambar dari titik nol ke kotak RAM. | — |
-| 032 | 4 Mekanisme | Dan penyimpanan, ada di gudang, di lantai bawah. | Kotak ketiga jauh sekali, sampai memerlukan skala baru. | Kamera zoom out; skala berubah, sumbu memanjang. | — |
-| 033 | 4 Mekanisme | Kalau mengambil dari kesh terasa satu detik, mengambil dari ram terasa sekitar satu menit. | Dua label waktu muncul berdampingan: 1 detik dan 1 menit. | Angka counter naik dari nol ke nilainya, power2.out. | — |
-| 034 | 4 Mekanisme | Dan mengambil dari hard disk yang berputar, terasa seperti dua bulan. | Label ketiga: "2 BULAN", jauh di ujung kanan layar. | Sumbu memanjang keluar layar; angka naik cepat lalu berhenti. | — |
-| 035 | 4 Mekanisme | Jaraknya sejauh itu. Dan komputermu menempuhnya jutaan kali sehari. | Titik-titik cahaya mengalir bolak-balik di sepanjang sumbu. | Partikel mengalir dua arah, kecepatan berbeda per segmen. | — |
-| 036 | 4 Mekanisme | Lalu apa yang terjadi kalau mejanya penuh? | Meja terlihat penuh sesak oleh berkas. | Berkas terus bertambah sampai bertumpuk, stagger cepat. | — |
-| 037 | 4 Mekanisme | Sistem tidak menyerah. Ia memindahkan berkas yang paling jarang dipakai. | Satu berkas ditandai, diangkat dari meja. | Berkas terangkat, glow kuning, 0.5 dtk. | — |
-| 038 | 4 Mekanisme | Dipindahkan ke lemari, supaya meja punya ruang lagi. | Berkas melayang dari meja ke lemari. | Path lengkung ke lemari, 0.9 dtk power2.inOut. | — |
-| 039 | 4 Mekanisme | Kedengarannya pintar. Tapi ingat, lemari itu dua bulan jauhnya. | Label "2 BULAN" muncul kembali di jalur menuju lemari. | Jalur berdenyut merah; label pop. | — |
-| 040 | 4 Mekanisme | Begitu berkas itu dibutuhkan lagi, semuanya berhenti menunggu. | Seluruh layar membeku, spinner muncul lagi seperti di awal. | Semua elemen freeze; spinner fade in di tengah. | — |
-| 041 | 4 Mekanisme | Itulah yang kamu rasakan saat komputer tiba-tiba tersendat parah. | Grafik responsivitas terjun bebas. | Garis grafik jatuh tajam, strokeDashoffset, power4.in. | — |
-| 042 | 4 Mekanisme | Satu hal terakhir, dan ini bagian yang aneh. | Layar bersih, satu kotak kecil di tengah. | Semua fade out kecuali satu kotak. | — |
-| 043 | 4 Mekanisme | Ram menyimpan ingatannya di dalam wadah yang bocor pelan-pelan. | Wadah kecil berisi cahaya yang menetes keluar. | Tetesan turun berulang, sine.inOut, tiga siklus. | — |
-| 044 | 4 Mekanisme | Jadi isinya harus ditulis ulang terus-menerus, ribuan kali setiap detik. | Wadah terisi ulang berkali-kali dengan cepat. | Isi wadah naik-turun cepat, repeat terbatas, tanpa loop tak hingga. | — |
-| 045 | 4 Mekanisme | Berhenti menulis ulang sebentar saja, ingatannya hilang. Itu sebabnya ram lupa saat listrik mati. | Wadah berhenti diisi, cahaya habis, layar gelap. | Cahaya meredup sampai nol, 1.2 dtk power2.in. | — |
-| 046 | 4 Mekanisme | Tapi kalau kesh itu kecil sekali, kenapa dia bisa membantu sebanyak itu? | Kotak cache kecil di sebelah kotak RAM yang jauh lebih besar. | Perbandingan ukuran dianimasikan; kotak kecil berdenyut. | — |
-| 047 | 4 Mekanisme | Karena program tidak membaca data secara acak. Ia memakai data yang sama berulang kali. | Grid data; hanya beberapa sel yang menyala terus-menerus. | Sel yang sama menyala berulang, sel lain diam gelap. | — |
-| 048 | 4 Mekanisme | Sekali sebuah data ditarik ke meja kecil, biasanya ia dipakai lagi sebentar kemudian. | Satu sel ditarik ke kotak cache, lalu diakses beberapa kali. | Sel bergerak ke cache; tiga denyut akses cepat, stagger 0.2. | — |
-| 049 | 4 Mekanisme | Jadi meja sekecil apa pun tetap berguna, asal isinya yang tepat. | Cache kecil dengan tanda centang; label "isi yang tepat". | Centang hijau pop back.out(2). | — |
-| 050 | 4 Mekanisme | Kalau meja kecil itu jauh lebih cepat, kenapa tidak semuanya dibuat seperti itu? | Pertanyaan besar di tengah layar. | Teks masuk stagger per kata 0.07 dtk. | — |
-| 051 | 4 Mekanisme | Karena kecepatan itu dibayar dengan dua hal. Ruang, dan uang. | Dua ikon: penggaris dan tumpukan koin. | Dua ikon masuk dari sisi berlawanan. | — |
-| 052 | 4 Mekanisme | Meja kecil harus menempel di prosesor. Ruang di sana sangat terbatas. | Zoom ke keping prosesor; area cache disorot kecil. | Kamera zoom in 1.4×, area cache berdenyut. | — |
-| 053 | 4 Mekanisme | Setiap tambahan di sana memakan tempat yang bisa dipakai untuk hal lain. | Area cache melebar, mendesak blok lain sampai terjepit. | Blok lain terdorong keluar bingkai. | — |
-| 054 | 4 Mekanisme | Dan per gigabita, harganya berkali lipat dibanding ram biasa. | Perbandingan harga: dua batang, satu jauh lebih tinggi. | Batang tumbuh dari bawah, stagger 0.15 dtk. | — |
-| 055 | 4 Mekanisme | Jadi komputer tidak memilih satu. Ia memakai semuanya sekaligus. | Keempat tingkat muncul kembali, semuanya menyala. | Empat kotak menyala berurutan stagger 0.12 dtk. | — |
-| 056 | 4 Mekanisme | Sedikit yang sangat cepat. Banyak yang lebih lambat. Sangat banyak yang paling lambat. | Piramida: puncak kecil, dasar lebar. | Piramida terbentuk dari puncak ke dasar. | — |
-| 057 | 4 Mekanisme | Susunan itu bukan kompromi yang terpaksa. Itu memang rancangannya. | Piramida tersorot utuh dengan label "hierarki memori". | Garis tepi piramida tergambar; label muncul. | — |
-| 058 | 5 Realita | Sekarang lihat angka aslinya, di komputer yang dipakai membuat video ini. | Kartu spesifikasi mesin mulai terbentuk. | Kartu masuk dari bawah, y 40→0, power3.out. | — |
-| 059 | 5 Realita | Prosesornya punya meja kecil bertingkat, totalnya sekitar dua puluh megabita. | Baris spesifikasi: cache L2 4 MB, L3 16 MB. | Angka counter naik ke nilainya, power2.out. | — |
-| 060 | 5 Realita | Ramnya tiga puluh dua gigabita. Kira-kira seribu enam ratus kali lebih besar. | Baris RAM 32 GB; bar perbandingan panjang muncul. | Bar memanjang keluar layar untuk menekankan rasio. | — |
-| 061 | 5 Realita | Meja kecil itu hanya sepersekian ribu ukuran mejanya. Tapi hampir semua pekerjaan lewat sana. | Bar cache nyaris tak terlihat di sebelah bar RAM. | Sorotan berpindah ke bar kecil; bar besar meredup. | — |
-| 062 | 5 Realita | Sekarang pertanyaan yang sebenarnya kamu cari. Perlu tidak menambah ram? | Judul: "Perlu nambah RAM?" | Judul masuk besar, stagger per kata 0.08 dtk. | — |
-| 063 | 5 Realita | Jawabannya bukan angka besar-besaran. Jawabannya, apakah mejamu memang sudah penuh. | Dua meja berdampingan: satu longgar, satu penuh sesak. | Dua panel masuk dari sisi berlawanan, 0.6 dtk. | — |
-| 064 | 5 Realita | Kalau semua pekerjaanmu masih muat, menambah meja tidak memberi apa-apa. | Meja longgar diperlebar; jarum kecepatan tidak bergerak. | Meja melebar; jarum indikator diam, garis datar. | — |
-| 065 | 5 Realita | Bukan sedikit lebih cepat. Nol. | Angka besar "0%" di tengah layar. | Angka pop lalu diam; latar meredup. | — |
-| 066 | 5 Realita | Tapi kalau mejamu penuh dan berkas mulai ditumpuk di lantai, tambahan meja mengubah segalanya. | Meja penuh; tumpukan di lantai; lalu meja melebar dan lantai bersih. | Tumpukan hilang berurutan saat meja melebar. | — |
-| 067 | 5 Realita | Jadi jangan lihat angka pemakaian ram. Itu indikator yang salah. | Indikator "RAM terpakai 80 persen" dengan tanda silang merah. | Bar terisi ke 80 persen; silang merah tergambar di atasnya. | — |
-| 068 | 5 Realita | Ram yang kosong itu justru terbuang percuma. Sistem sengaja mengisinya. | Bar yang sama, sekarang dengan centang hijau. | Silang memudar, centang hijau menggantikan. | — |
-| 069 | 5 Realita | Yang harus kamu lihat adalah seberapa sering berkas dipindah ke lemari. | Grafik aktivitas pemindahan ke penyimpanan. | Garis grafik tergambar, ada lonjakan tajam. | — |
-| 070 | 5 Realita | Di Windows namanya pemakaian berkas halaman. Di Linux dan Mac namanya swap. | Dua label sistem berdampingan dengan nama masing-masing. | Dua label masuk stagger 0.2 dtk. | — |
-| 071 | 5 Realita | Kalau angka itu terus naik saat kamu bekerja, barulah menambah ram masuk akal. | Grafik naik terus; centang hijau muncul di sebelahnya. | Garis naik, lalu centang pop. | — |
-| 072 | 6 Rangkuman | Jadi, kembali ke pertanyaan awal. Di mana data aplikasi saat kamu membukanya? | Layar bersih, angka "3" besar di tengah. | Angka pop lalu mengecil ke sudut, 0.5 dtk. | — |
-| 073 | 6 Rangkuman | Satu. Yang sedang dipakai ada di ram. Sisanya masih di penyimpanan. | Poin pertama muncul dengan nomor besar. | Baris masuk y 24→0, power3.out. | — |
-| 074 | 6 Rangkuman | Dua. Yang membuat cepat bukan ukurannya, tapi jaraknya ke prosesor. | Poin kedua muncul di bawahnya. | Baris kedua masuk, stagger setelah poin pertama. | — |
-| 075 | 6 Rangkuman | Tiga. Menambah ram hanya membantu kalau mejamu memang sudah penuh. | Poin ketiga muncul; ketiganya terlihat bersamaan. | Baris ketiga masuk; garis aksen tergambar di bawah ketiganya. | — |
-| 076 | 6 Rangkuman | Dan kalau kamu penasaran apa yang terjadi di dalam meja kecil itu, bilang di komentar. | Ajakan singkat; ikon komentar. | Ikon pop, teks masuk dari bawah. | — |
+| 001 | 1 question | Kamu buka sebuah aplikasi. Di mana data aplikasi itu berada saat kamu membukanya? | Pertanyaan besar di layar penuh, ikon aplikasi di atasnya. | Ikon pop lebih dulu; pertanyaan masuk stagger per baris. | — |
+| 002 | 1 question | Kelihatannya sepele. | Pertanyaan tetap, mengecil sedikit. | Skala turun halus 0.5 dtk. | — |
+| 003 | 1 question | Tapi jawabannya menjelaskan kenapa komputermu terasa cepat, atau terasa lambat. | Dua kartu: jam kuning "terasa lambat", centang hijau "terasa cepat". | Dua kartu masuk bergantian, stagger 0.2 dtk. | — |
+| 004 | 3 problem | Semua yang kamu punya tersimpan di satu tempat. Foto, dokumen, aplikasi, sistemnya sendiri. | Ikon penyimpanan besar, empat label mengelilinginya. | Label masuk mengelilingi ikon, stagger 0.12 dtk. | — |
+| 005 | 3 problem | Namanya penyimpanan. Hard disk, atau S S D di komputer yang lebih baru. | Label besar "PENYIMPANAN" + ikon disk. | Label slide dari bawah; ikon berdenyut sekali. | — |
+| 006 | 3 problem | Kapasitasnya luas. Ratusan gigabita, sering jauh lebih. | Angka kapasitas membesar. | Counter naik ke 512, power2.out. | — |
+| 007 | 3 problem | Bayangkan lemari arsip raksasa, di gudang, di lantai bawah. | Ilustrasi lemari tinggi, jauh di sisi kanan layar. | Lemari digambar stroke draw 1 dtk. | — |
+| 008 | 3 problem | Muat semuanya. Tapi setiap kali butuh satu berkas, kamu harus turun ke sana. | Garis panjang dari meja ke gudang. | Titik berjalan menyusuri garis, 1.2 dtk linear. | — |
+| 009 | 3 problem | Sekarang bandingkan dengan kecepatan prosesornya. | Ikon prosesor muncul di kiri. | Ikon pop, back.out(1.6). | — |
+| 010 | 3 problem | Prosesor mengerjakan miliaran perintah setiap detik. | Angka besar: miliaran per detik. | Counter naik sangat cepat lalu berhenti. | — |
+| 011 | 3 problem | Kalau ia menunggu setiap data datang dari gudang, ia lebih banyak menunggu daripada bekerja. | Bar waktu: potongan kecil "bekerja", sisanya "menunggu". | Bar tumbuh dari kiri; bagian menunggu jauh lebih panjang. | — |
+| 012 | 3 problem | Seberapa timpang? Bagi prosesor, menunggu satu berkas dari hard disk itu seperti menunggu berminggu-minggu. | Skala waktu prosesor vs skala waktu gudang. | Dua sumbu waktu dengan panjang sangat berbeda. | — |
+| 013 | 3 problem | Selama menunggu itu, ia sebenarnya bisa menyelesaikan jutaan pekerjaan lain. | Pekerjaan menumpuk tak tergarap di samping prosesor. | Kotak pekerjaan bertumpuk cepat, stagger 0.05 dtk. | — |
+| 014 | 3 problem | Inilah masalahnya. Tempat yang muat banyak, selalu lambat. | Dua kartu: "muat banyak" dan "lambat". | Dua kartu masuk dari sisi berlawanan. | — |
+| 015 | 3 problem | Dan tempat yang cepat, tidak pernah muat banyak. | Kartu ketiga muncul: "cepat, tapi kecil". | Kartu ketiga pop di tengah. | — |
+| 016 | 4 answer | Jadi jawabannya bukan membaca langsung dari gudang. | Garis panjang ke gudang dicoret. | Coret SVG tergambar 0.4 dtk. | — |
+| 017 | 4 answer | Begitu aplikasi dibuka, data yang dibutuhkan disalin lebih dulu. | Berkas melayang dari gudang ke meja. | Berkas menyusuri path lengkung 0.9 dtk. | — |
+| 018 | 4 answer | Disalin ke tempat kerja yang jauh lebih dekat, dan jauh lebih cepat. | Meja tersorot di kiri, dekat prosesor. | Sorotan indigo menyebar dari meja. | — |
+| 019 | 4 answer | Tempat kerja itu namanya ram. | Judul besar "RAM" + ikon keping RAM. | Ikon pop; huruf masuk stagger 0.06 dtk. | — |
+| 020 | 4 answer | Kepanjangannya random access memory. Tapi namanya tidak penting. | Kepanjangan muncul kecil lalu memudar. | Fade in lalu fade turun ke separuh. | — |
+| 021 | 4 answer | Yang penting fungsinya. Ram adalah meja kerja komputer. | Ikon meja besar + label RAM. | Ikon meja masuk dari bawah, y 40→0. | — |
+| 022 | 4 answer | Gudang untuk menyimpan. Meja untuk mengerjakan. | Dua kartu berdampingan: gudang vs meja. | Dua kartu masuk bergantian, stagger 0.22 dtk. | — |
+| 023 | 5 why | Tapi kenapa memindahkan data ke meja benar-benar menyelesaikan masalahnya? | Pertanyaan di tengah layar. | Teks masuk stagger per kata 0.07 dtk. | — |
+| 024 | 5 why | Alasan pertama: jarak. | Ikon penggaris besar. | Ikon pop; garis ukur memanjang. | — |
+| 025 | 5 why | Ram duduk jauh lebih dekat ke prosesor daripada gudang. | Sumbu jarak: prosesor, RAM dekat, gudang jauh. | Sumbu tergambar; titik muncul stagger 0.18 dtk. | — |
+| 026 | 5 why | Makin pendek jaraknya, makin cepat datanya sampai. | Dua garis: pendek menyala cepat, panjang menyala lambat. | Dua garis menyala dengan durasi berbeda. | — |
+| 027 | 5 why | Kalau mengambil dari ram terasa satu menit, mengambil dari hard disk terasa dua bulan. | Sumbu waktu manusiawi: 1 menit dan 2 bulan. | Counter naik; label kanan jauh di ujung. | — |
+| 028 | 5 why | Alasan kedua, dan ini yang justru lebih menentukan. | Layar bersih, ikon pengulangan. | Ikon pop di tengah. | — |
+| 029 | 5 why | Program tidak membaca datanya secara acak. | Grid data, semua sel gelap. | Grid muncul stagger cepat dari kiri atas. | — |
+| 030 | 5 why | Ia memakai bagian yang sama, berulang-ulang. | Beberapa sel yang sama menyala berkali-kali. | Sel panas berdenyut tiga kali, sisanya diam. | — |
+| 031 | 5 why | Jadi sekali data disalin ke meja, ia bisa dipakai ribuan kali tanpa turun ke gudang lagi. | Satu berkas di meja, dipakai berulang. | Denyut akses beruntun, stagger 0.15 dtk. | — |
+| 032 | 5 why | Satu perjalanan yang mahal, terbayar ribuan kali. | Neraca: satu perjalanan vs ribuan pemakaian. | Bar kanan tumbuh jauh melebihi bar kiri. | — |
+| 033 | 5 why | Tapi kecepatan itu ada harganya, dan harganya yang membuat meja tidak bisa dibuat sebesar gudang. | Dua ikon: penggaris dan koin, di bawah label meja. | Dua ikon masuk bergantian. | — |
+| 034 | 5 why | Meja selalu jauh lebih kecil, jauh lebih mahal, dan isinya tidak bertahan. | Tiga kartu kecil: kecil, mahal, tidak bertahan. | Tiga kartu masuk stagger 0.16 dtk. | — |
+| 035 | 5 why | Dan itu menjawab hal yang tadi kamu lihat di awal. | Callback: dua kartu buka ke-1 dan ke-2. | Dua kartu masuk kembali, lebih cepat. | — |
+| 036 | 5 why | Buka pertama terasa lambat karena datanya masih diambil dari gudang. | Kartu kiri tersorot, jalur ke gudang menyala. | Jalur menyala dari gudang ke meja. | — |
+| 037 | 5 why | Buka kedua langsung muncul karena datanya masih tergeletak di meja. | Kartu kanan tersorot, jalur gudang padam. | Jalur meredup; berkas berdenyut hijau. | — |
+| 038 | 6 explaining | Sekarang kita bedah mejanya. Ada tiga hal yang jarang diceritakan. | Judul bagian + angka tiga. | Angka pop lalu mengecil ke sudut. | — |
+| 039 | 6 explaining | Yang pertama, dan ini paling aneh. Ram sebenarnya tidak bisa mengingat. | Ikon tetesan. | Ikon pop; tetesan turun. | — |
+| 040 | 6 explaining | Ingatannya disimpan di wadah-wadah kecil yang bocor pelan-pelan. | Deretan wadah kecil, isinya menetes keluar. | Tetesan berulang tiga siklus, sine.inOut. | — |
+| 041 | 6 explaining | Supaya tidak hilang, isinya harus ditulis ulang terus-menerus. | Wadah diisi ulang berkali-kali. | Isi naik-turun cepat, repeat terbatas. | — |
+| 042 | 6 explaining | Ribuan kali setiap detik, selama komputermu menyala. | Angka besar per detik. | Counter naik cepat lalu berdenyut. | — |
+| 043 | 6 explaining | Berhenti sebentar saja, isinya hilang seluruhnya. | Wadah berhenti diisi, cahaya habis. | Cahaya meredup ke nol, 1.2 dtk power2.in. | — |
+| 044 | 6 explaining | Itu sebabnya pekerjaan yang belum disimpan hilang saat listrik mati. | Ikon petir, layar gelap sesaat. | Kedip gelap sekali, lalu teks masuk. | — |
+| 045 | 6 explaining | Gudang tidak begitu. Isinya tetap ada walaupun listriknya dicabut. | Ikon lemari tetap terang di layar gelap. | Latar meredup, ikon tetap terang. | — |
+| 046 | 6 explaining | Hal kedua: mejanya ternyata bukan cuma satu. | Meja tunggal pecah jadi beberapa tingkat. | Meja terbelah, stagger 0.15 dtk. | — |
+| 047 | 6 explaining | Ada meja yang jauh lebih kecil, menempel langsung di keping prosesor. | Ikon prosesor, area kecil tersorot di dalamnya. | Zoom ke keping; area berdenyut. | — |
+| 048 | 6 explaining | Namanya kesh. | Label besar "CACHE". | Label pop, back.out(2). | — |
+| 049 | 6 explaining | Ukurannya cuma beberapa megabita. Ram bisa puluhan gigabita. | Dua batang perbandingan sangat timpang. | Batang kanan tumbuh melewati kiri. | — |
+| 050 | 6 explaining | Tapi kesh jauh lebih cepat, karena jaraknya nyaris nol. | Jarak nol digambar di sebelah prosesor. | Garis jarak menyusut ke nol. | — |
+| 051 | 6 explaining | Jadi susunannya bertingkat. Kesh, ram, S S D, lalu hard disk. | Piramida empat tingkat. | Tingkat muncul dari puncak ke dasar, stagger 0.13 dtk. | — |
+| 052 | 6 explaining | Makin dekat ke prosesor: makin cepat, makin kecil, dan makin mahal. | Tiga label di sisi piramida. | Label masuk berurutan dari atas. | — |
+| 053 | 6 explaining | Lalu kenapa tidak semuanya dibuat secepat kesh? | Pertanyaan di tengah. | Teks masuk stagger per kata. | — |
+| 054 | 6 explaining | Karena kecepatan dibayar dua hal. Ruang, dan uang. | Dua kartu: penggaris dan koin. | Dua kartu masuk dari sisi berlawanan. | — |
+| 055 | 6 explaining | Kesh harus muat di dalam keping prosesor, dan ruang di sana sangat sempit. | Area cache melebar, mendesak blok lain. | Blok lain terdorong keluar bingkai. | — |
+| 056 | 6 explaining | Per gigabita, harganya berkali lipat dibanding ram biasa. | Dua batang harga sangat timpang. | Batang tumbuh dari bawah, stagger 0.15 dtk. | — |
+| 057 | 6 explaining | Jadi komputer tidak memilih salah satu. Ia memakai semuanya sekaligus. | Empat tingkat menyala bersamaan. | Empat kotak menyala berurutan cepat. | — |
+| 058 | 6 explaining | Hal ketiga: apa yang terjadi kalau mejanya penuh? | Meja penuh sesak oleh berkas. | Berkas bertambah sampai bertumpuk. | — |
+| 059 | 6 explaining | Sistem memilih berkas yang paling jarang kamu sentuh. | Satu berkas ditandai di tumpukan. | Berkas tersorot, glow kuning. | — |
+| 060 | 6 explaining | Lalu memindahkannya kembali ke gudang, supaya meja punya ruang lagi. | Berkas melayang dari meja ke gudang. | Path lengkung ke gudang, 0.9 dtk. | — |
+| 061 | 6 explaining | Kedengarannya pintar. Sampai berkas itu dibutuhkan lagi. | Berkas di gudang berdenyut merah. | Denyut merah dua kali. | — |
+| 062 | 6 explaining | Karena mengambilnya balik berarti menempuh perjalanan yang tadi kita bilang dua bulan. | Jalur ke gudang menyala merah, label dua bulan. | Jalur menyala; label pop. | — |
+| 063 | 6 explaining | Dan selama itu, semuanya berhenti menunggu. | Ikon jeda besar, layar membeku. | Elemen berhenti; ikon pop. | — |
+| 064 | 6 explaining | Itulah yang kamu rasakan saat komputer tiba-tiba tersendat parah. | Grafik responsivitas terjun bebas. | Garis grafik jatuh tajam, power4.in. | — |
+| 065 | 7 case | Sekarang, di mana ini benar-benar terlihat? | Judul bagian. | Teks masuk stagger per kata. | — |
+| 066 | 7 case | Ini komputer yang dipakai membuat video ini. | Kartu spesifikasi mulai terbentuk. | Kartu masuk dari bawah, y 40→0. | — |
+| 067 | 7 case | Keshnya sekitar dua puluh megabita. Ramnya tiga puluh dua gigabita. | Dua baris spesifikasi dengan angka. | Counter naik ke masing-masing nilai. | — |
+| 068 | 7 case | Ramnya sekitar seribu enam ratus kali lebih besar daripada keshnya. | Bar perbandingan sangat panjang. | Bar memanjang keluar layar. | — |
+| 069 | 7 case | Tapi hampir semua pekerjaan tetap lewat meja kecil yang jauh lebih sempit itu. | Bar kecil tersorot, bar besar meredup. | Sorotan berpindah ke bar kecil. | — |
+| 070 | 7 case | Di ponsel, hal yang sama terjadi setiap hari. | Ikon aplikasi. | Ikon pop. | — |
+| 071 | 7 case | Aplikasi yang baru kamu buka menempati ram. Saat ram penuh, yang lama ditutup diam-diam. | Deretan aplikasi, satu menghilang. | Satu kartu aplikasi memudar dan hilang. | — |
+| 072 | 7 case | Itu sebabnya aplikasi yang kamu tinggal sebentar kadang memuat ulang dari awal. | Aplikasi memuat ulang. | Spinner muncul lalu jendela terbentuk lagi. | — |
+| 073 | 7 case | Di server, pola yang sama justru dipakai dengan sengaja. | Ikon tumpukan server. | Ikon pop. | — |
+| 074 | 7 case | Data yang paling sering diminta ditaruh di ram supaya tidak perlu menyentuh disk sama sekali. | Data panas berpindah ke RAM. | Berkas berpindah, glow hijau. | — |
+| 075 | 7 case | Buka peramban dengan dua puluh tab, lalu aplikasi desain, lalu pemutar musik. | Tiga kelompok aplikasi memenuhi meja. | Kelompok aplikasi masuk berurutan, meja makin sesak. | — |
+| 076 | 7 case | Di komputer dengan ram delapan gigabita, meja itu penuh sebelum kamu selesai. | Meja kecil penuh, tumpukan mulai muncul. | Tumpukan bertambah di sisi meja. | — |
+| 077 | 7 case | Di enam belas gigabita, semuanya masih muat, dan tidak ada yang perlu dipindahkan. | Meja lebih lebar, semua muat, tanpa tumpukan. | Meja melebar; tumpukan tidak muncul. | — |
+| 078 | 7 case | Lalu pertanyaan yang paling sering ditanyakan. Perlu tidak menambah ram? | Judul besar pertanyaan. | Teks masuk stagger per kata. | — |
+| 079 | 7 case | Kalau mejamu memang sering penuh, tambahan ram mengubah segalanya. | Meja penuh lalu melebar, tumpukan hilang. | Meja melebar; tumpukan hilang berurutan. | — |
+| 080 | 7 case | Tapi kalau pekerjaanmu masih muat, tambahan ram tidak memberi apa-apa. Nol. | Angka nol besar. | Angka pop lalu diam. | — |
+| 081 | 7 case | Dan jangan menilai dari angka pemakaian ram. Ram yang kosong justru terbuang percuma. | Indikator delapan puluh persen dengan centang hijau. | Bar terisi lalu centang muncul. | — |
+| 082 | 7 case | Yang harus dilihat adalah seberapa sering sistem memindahkan data kembali ke gudang. | Grafik aktivitas pemindahan. | Garis grafik tergambar dengan lonjakan. | — |
+| 083 | 7 case | Di Windows namanya berkas halaman, di Linux dan Mac namanya swap. Kalau itu terus naik saat kamu bekerja, barulah menambah ram masuk akal. | Dua label sistem, lalu grafik naik dengan centang. | Dua label stagger; grafik naik; centang pop. | — |
 
-### Timing — estimasi *(langkah 3)*
+### Timing — estimasi
 
-Diisi dari keluaran `node --env-file=.env tools/estimate-timing.mjs ideas/apa-itu-ram/naskah.md`,
-lalu **ditambah manual**: +1,5 dtk (`sc-open` setelah scene 005) dan +5,0 dtk
-(`sc-close` setelah scene 050).
+Keluaran `node --env-file=.env tools/estimate-timing.mjs ideas/apa-itu-ram/naskah.md`,
+lalu ditambah manual: +1,5 dtk (`sc-open` setelah scene 003) dan +5,0 dtk
+(`sc-close` setelah scene 076).
 
-### Timing — final *(langkah 7, setelah VO jadi)*
+### Timing — final *(setelah VO jadi)*
 
 | # | Berkas VO | Durasi VO | data-duration | data-start |
 |---|---|---|---|---|
@@ -204,15 +199,15 @@ lalu **ditambah manual**: +1,5 dtk (`sc-open` setelah scene 005) dan +5,0 dtk
 
 ## Short 1 — T01-S1 · “Nugget”
 
-**Insight yang diambil:** skala jarak/waktu antar tingkat memori, dibuat manusiawi.
-**Target:** 40–60 dtk · ~110 kata · tangga L1
+**Insight:** skala jarak/waktu antar tingkat memori, dibuat manusiawi.
+**Target:** 40–60 dtk · ~110 kata · L1
 
 *(Ditulis setelah video panjang disetujui.)*
 
 ## Short 2 — T01-S2 · “Jebakan”
 
-**Mitos yang dibantah:** "RAM lebih besar pasti bikin komputer lebih cepat."
-**Target:** 40–60 dtk · ~110 kata · tangga L1
+**Mitos:** "RAM lebih besar pasti bikin komputer lebih cepat."
+**Target:** 40–60 dtk · ~110 kata · L1
 
 *(Ditulis setelah video panjang disetujui.)*
 

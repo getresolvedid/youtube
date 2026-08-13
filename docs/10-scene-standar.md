@@ -33,11 +33,11 @@ Berkasnya:
 |---|---|---|
 | Durasi 16:9 | **1,5 dtk** | **5,0 dtk** |
 | Durasi 9:16 | **tidak dipakai** | **2,0 dtk** |
-| Posisi | awal **babak 2**, ± detik 15 | scene terakhir |
+| Posisi | **bagian 2 flow** — tepat setelah [question] | scene terakhir, setelah [case] |
 | Track | `1` (overlay) | `1` (overlay) |
 
-**Opening tidak pernah muncul di detik nol.** Frame pertama video selalu konten —
-hook mendahului brand. Ini aturan retensi yang sudah dikunci di
+**Opening tidak pernah muncul di detik nol.** Frame pertama video selalu
+[question] — pertanyaan mendahului brand. Ini aturan retensi yang sudah dikunci di
 [02 · Format](02-format-video.md#aturan-babak); scene standar mengikutinya, bukan
 membatalkannya.
 

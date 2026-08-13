@@ -12,7 +12,21 @@ status: lolos → T01
 
 > "apa itu ram"
 
-## Penjelasan 5 tahun (draf)
+## Pemetaan ke flow 7 bagian
+
+Flow wajib channel ([docs/02](../../docs/02-format-video.md#anatomi-video-panjang--flow-wajib)):
+
+| # | Bagian | Isi untuk topik ini |
+|---|---|---|
+| 1 | **[question]** | "Di mana data aplikasi saat aplikasi dibuka?" |
+| 2 | **brand opening** | Sting standar 1,5 dtk |
+| 3 | **[problem]** | Semua data tersimpan di satu tempat yang luas — tapi tempat itu **lambat**. Kalau prosesor menunggu setiap data dari sana, ia habis waktu menunggu. Tempat yang muat banyak selalu lambat. |
+| 4 | **[answer] → [what]** | Data yang dibutuhkan **disalin dulu** ke tempat kerja yang dekat dan cepat. Tempat itu = **RAM**. `[what]` = RAM. |
+| 5 | **[why]** | Dua sebab: **jarak** (RAM jauh lebih dekat ke prosesor) dan **pengulangan** (program memakai data yang sama berkali-kali, jadi satu perjalanan terbayar ribuan kali). |
+| 6 | **[explaining]** | RAM lupa saat listrik mati (wadah bocor, harus ditulis ulang ribuan kali/detik) · mejanya bertingkat (cache → RAM → SSD → HDD) · kenapa tidak semua dibuat secepat cache (ruang & harga) · apa yang terjadi saat RAM penuh (dipindah balik ke penyimpanan, lalu tersendat). |
+| 7 | **[case]** | Spesifikasi mesin nyata · HP menutup aplikasi lama diam-diam · database menaruh data panas di RAM · kapan menambah RAM berguna dan kapan nol · indikator yang benar (page file / swap). |
+
+## Penjelasan 5 tahun
 
 > RAM itu meja kerja, hard disk itu lemari arsip. Kamu tidak membaca dokumen di
 > dalam lemari — kamu ambil, taruh di meja, baru kerjakan. Meja lebih besar
@@ -22,65 +36,40 @@ status: lolos → T01
 *(54 kata, nol istilah teknis.)*
 
 **Titik putus analogi:** meja tetap berisi saat kamu pulang; RAM kosong total
-begitu listrik mati. Dan CPU tidak mengambil langsung dari meja — ada meja jauh
-lebih kecil yang menempel di CPU, namanya cache. Keduanya **wajib** disebut di
-VO, bukan cuma dicatat di sini.
+begitu listrik mati. Dan prosesor tidak mengambil langsung dari meja — ada meja
+jauh lebih kecil yang menempel padanya, namanya cache. Keduanya **wajib disebut
+di VO**, bukan cuma dicatat di sini.
 
 ## Uji 4 syarat
 
 | Syarat | Lolos? | Catatan |
 |---|---|---|
 | 1 Bahasa anak 5 tahun | ✅ | Analogi meja–lemari, 54 kata |
-| 2 Dua lapis (L1 + L3) | ✅ | L1: meja kerja. L3: hierarki cache, angka latensi, locality, kapan tambah RAM tidak berguna |
-| 3 Ada mekanisme | ✅ | Data berpindah antar tingkat, meja penuh → swap, refresh DRAM — semuanya bergerak dan enak dianimasikan |
-| 4 Bisa diverifikasi | ⚠ | **Angka latensi masih perlu sumber primer** — lihat catatan di bawah |
-
-## Sudut video panjang
-
-Kenapa komputer butuh **dua** tempat penyimpanan yang berbeda, bukan satu yang
-besar. Alurnya:
-
-1. **Hook (L1)** — kamu buka aplikasi, kenapa yang pertama lambat dan yang kedua
-   langsung muncul?
-2. **Fondasi (L1→L2)** — meja & lemari, lalu dinamai: RAM & penyimpanan. Titik
-   putus analogi disebut di sini.
-3. **Mekanisme (L2)** — hierarki register → cache → RAM → SSD, dengan skala waktu
-   yang dibuat bisa dibayangkan manusia. Lalu apa yang terjadi saat meja penuh
-   (swap), dan kenapa RAM harus disegarkan ribuan kali per detik hanya untuk
-   mengingat — itu sebabnya ia lupa saat listrik mati.
-4. **Realita (L3)** — kapan menambah RAM benar-benar membantu dan kapan sama
-   sekali tidak; indikator mana yang harus dilihat sebelum membeli (bukan
-   "RAM terpakai", tapi aktivitas swap/paging).
+| 2 Dua lapis (L1 + L3) | ✅ | L1: meja kerja. L3: hierarki cache, locality, kapan tambah RAM nol gunanya |
+| 3 Ada mekanisme | ✅ | Data berpindah antar tingkat, meja penuh → dipindah balik, refresh DRAM |
+| 4 Bisa diverifikasi | ⚠ | **Angka latensi masih perlu sumber primer** — lihat catatan |
 
 ## Sudut dua Shorts
 
-- **Nugget — skala waktu dibuat manusiawi.** Kalau mengambil data dari cache itu
-  terasa 1 detik, dari RAM sekitar satu menit, dan dari hard disk berputar
-  sekitar dua bulan. Satu animasi, satu insight, berdiri sendiri tanpa perlu
-  menonton video panjangnya.
+- **Nugget — skala waktu dibuat manusiawi.** Kalau mengambil dari cache terasa
+  1 detik, dari RAM sekitar satu menit, dari hard disk berputar sekitar dua
+  bulan. Satu animasi, satu insight, berdiri sendiri.
 - **Jebakan — "RAM lebih besar = komputer lebih cepat."** Hanya benar sampai
-  mejanya cukup besar untuk pekerjaanmu; setelah itu tambahan RAM tidak memberi
-  apa-apa. Tunjukkan indikator yang benar sebelum membeli.
-
-Keduanya berbeda insight, tidak saling menggantikan.
+  mejanya cukup besar; setelah itu tambahan RAM tidak memberi apa-apa.
+  Tunjukkan indikator yang benar sebelum membeli.
 
 ## Catatan
 
 **Yang belum beres — angka latensi.** Rasio antar tingkat (cache ≈ nanodetik,
-RAM ≈ puluhan nanodetik, SSD ≈ puluhan mikrodetik, HDD ≈ milidetik) itu urutan
-besaran yang aman, tapi angka spesifik yang akan disebut di layar **belum punya
-sumber primer**. Pencarian awal hanya menemukan sumber sekunder.
+RAM ≈ puluhan nanodetik, SSD ≈ puluhan mikrodetik, HDD ≈ milidetik) adalah
+urutan besaran yang aman, tapi angka spesifik yang tampil di layar **belum punya
+sumber primer**.
 
-Sebelum naskah dibekukan, angkanya harus ditopang salah satu dari:
+Sebelum naskah dibekukan, angkanya harus ditopang salah satu dari: manual
+optimasi resmi Intel/AMD, datasheet JEDEC untuk DDR4/DDR5, atau **pengukuran
+sendiri di mesin ini** (`tools/ukur-latensi.mjs`) dengan hasil disebut sebagai
+"diukur di mesin ini" lengkap dengan spesifikasinya.
 
-- manual optimasi resmi Intel/AMD,
-- datasheet JEDEC untuk DDR5,
-- atau pengukuran sendiri di mesin ini (`mlc`, `lmbench`) — hasilnya dicatat
-  sebagai "diukur di <spesifikasi mesin>", bukan diklaim sebagai angka universal.
-
-Opsi ketiga justru paling jujur dan paling enak untuk video: angka yang diukur
-sendiri, dengan mesinnya disebutkan.
-
-**Peluang visual yang kuat:** seluruh hierarki digambar sebagai jarak fisik —
-cache di meja, RAM di rak sebelah, SSD di gudang lantai bawah, HDD di kota lain.
-Skala jaraknya dibuat proporsional dengan latensi sungguhan.
+**Peluang visual terkuat:** seluruh hierarki digambar sebagai **jarak fisik** —
+cache di meja, RAM di rak sebelah, penyimpanan di gudang lantai bawah — dengan
+skala jarak proporsional ke latensi sungguhan.

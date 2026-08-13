@@ -125,18 +125,19 @@ memperkenalkannya di kemunculan pertama.
 
 ### Outline babak
 
-| Babak | Tangga | Isi | Perkiraan |
-|---|---|---|---|
-| 1 Hook | L1 | ... | 0:00–0:15 |
-| 2 Kontrak | L1 | ... | 0:15–0:45 |
-| 3 Fondasi | L1→L2 | ... | 0:45–2:30 |
-| 4 Mekanisme | L2 | ... | 2:30–5:30 |
-| 5 Realita | L3 | ... | 5:30–7:00 |
-| 6 Rangkuman + CTA | L1 | ... | 7:00–8:00 |
+| # | Bagian | Tangga | Isi | Perkiraan |
+|---|---|---|---|---|
+| 1 | [question] | L1 | ... | 0:00–0:20 |
+| 2 | brand opening | — | scene standar 1,5 dtk | |
+| 3 | [problem] | L1 | ... | 0:22–1:22 |
+| 4 | [answer] → [what] | L1→L2 | ... | 1:22–2:07 |
+| 5 | [why] | L2 | ... | 2:07–3:32 |
+| 6 | [explaining] | L2→L3 | ... | 3:32–6:02 |
+| 7 | [case] | L3 | ... | 6:02–7:07 |
 
 ### Scene
 
-| # | Babak | VO | Visual | Motion | Aset |
+| # | Bagian | VO | Visual | Motion | Aset |
 |---|---|---|---|---|---|
 | 001 | 1 Hook | Query yang sama. Satu jalan sepuluh detik, satu jalan tiga milidetik. | Dua panel gelap berdampingan, angka besar Mono 800 di masing-masing. | Counter naik ke 10.000 ms di kiri; kanan berhenti di 3 ms lalu pulse hijau. | — |
 | 002 | 1 Hook | Bedanya bukan mesinnya. Bedanya cara data itu dicari. | Panel menyatu jadi satu, teks judul masuk dari bawah. | fade + y 24→0, power3.out | — |

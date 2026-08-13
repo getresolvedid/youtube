@@ -24,39 +24,59 @@ dari `ffprobe` berkas VO asli — lihat [pipeline §4](04-pipeline-produksi.md#4
 
 ---
 
-## Anatomi video panjang
+## Anatomi video panjang — FLOW WAJIB
 
-Timecode di bawah adalah patokan untuk video 8 menit. Geser proporsional.
+Setiap video panjang memakai **tujuh bagian, dalam urutan ini**. Bukan saran,
+bukan template yang boleh dipilih-pilih: video yang tidak punya salah satunya
+belum selesai.
 
 Kolom **tangga** mengacu ke [09 · Tangga abstraksi](09-tangga-abstraksi.md):
 L1 = bahasa anak 5 tahun, L2 = istilah teknis, L3 = angka dan batas.
 
-Struktur ini sekaligus yang melayani **dua lapis penonton**
-([01](01-positioning.md)): babak 1–4 harus bisa diikuti khalayak umum tanpa
-tertinggal, babak 5 adalah bagian yang membuat developer bertahan. Karena itu
-**babak 5 tidak pernah dipangkas demi durasi** — yang dipangkas duluan babak 3.
-
-| Babak | Timecode | Tangga | Tugasnya |
+| # | Bagian | Tangga | Tugasnya |
 |---|---|---|---|
-| **1. Hook** | `0:00–0:15` | **L1** | Satu pertanyaan atau satu fakta mengganggu. **Tanpa salam, tanpa perkenalan.** Frame pertama sudah konten. |
-| **2. Kontrak** | `0:15–0:45` | L1 | Apa yang akan penonton bisa lakukan setelah video ini + peta singkat 3 babak. Di sini brand sting 1,5 dtk boleh muncul. |
-| **3. Fondasi** | `0:45–2:30` | **L1→L2** | Model mental dasar. Analogi utama dibangun, dinamai dengan istilah aslinya, lalu disebutkan titik putusnya. |
-| **4. Mekanisme** | `2:30–5:30` | **L2** | Inti video: bedah cara kerjanya, langkah demi langkah, dengan animasi. Bagian paling padat visual. |
-| **5. Realita** | `5:30–7:00` | **L3** | Kapan ini gagal, trade-off, kesalahan umum, angka nyata. Ini yang membedakan video kita dari artikel blog. |
-| **6. Rangkuman + CTA** | `7:00–8:00` | **L1** | 3 poin bawa-pulang di satu layar (bahasa paling sederhana), lalu satu ajakan spesifik + end card 5 dtk. |
+| **1** | **[question]** | **L1** | Satu pertanyaan yang jadi hook. **Frame pertama sudah pertanyaannya** — tanpa salam, tanpa perkenalan. Ini juga judul dan thumbnail-nya. |
+| **2** | **brand opening** | — | Brand sting 1,5 dtk. Scene standar, tidak dibuat ulang → [10](10-scene-standar.md). |
+| **3** | **[problem]** | **L1** | Masalah yang dibawa pertanyaan itu. Kenapa hal ini bahkan jadi persoalan. Belum ada jawaban di sini. |
+| **4** | **[answer] → [what]** | **L1→L2** | Jawaban atas problem — dan jawaban itu **dinamai**. Nama itulah `[what]`, subjek utama video. |
+| **5** | **[why]** | **L2** | Kenapa `[what]` benar-benar menyelesaikan `[problem]`. Mekanisme sebabnya, bukan sekadar klaim. |
+| **6** | **[explaining]** | **L2→L3** | Bedah `[what]` lebih dalam: cara kerjanya, batasnya, trade-off-nya. Bagian terpanjang dan paling padat visual. |
+| **7** | **[case]** | **L3** | Di mana `[what]` benar-benar dipakai: siapa yang memakainya, di perangkat apa, kapan berguna dan kapan tidak. Angka nyata masuk di sini. |
 
-### Aturan babak
+### Aturan flow
 
-- **Hook lebih dulu dari brand.** Bumper/logo tidak pernah muncul sebelum detik 15.
-  Brand sting dan end card sudah jadi scene standar → [10](10-scene-standar.md).
-- **Hook selalu L1.** Jangan pernah membuka video dengan istilah teknis — istilah
-  baru boleh muncul setelah benda yang diwakilinya sudah terbayang.
-- **Open loop.** Di babak 2, tanam satu pertanyaan yang baru dijawab di babak 5
-  ("nanti kita lihat kenapa angka ini justru bikin sistemnya lambat").
-- **Satu ide per babak.** Kalau babak 4 punya dua ide besar, itu dua video.
-- **Babak 5 tidak boleh dipotong** saat durasi kepanjangan. Yang dipangkas duluan
-  adalah babak 3.
-- **Tanpa "jangan lupa like dan subscribe" di tengah video.** Sekali saja, di CTA akhir.
+- **Urutannya mengikat.** Jangan menjawab sebelum problemnya terasa; jangan
+  menjelaskan dalam sebelum `[what]` dinamai; jangan memberi contoh sebelum
+  penonton tahu kenapa itu bekerja.
+- **`[what]` muncul tepat satu kali sebagai penamaan**, di bagian 4. Setelah itu
+  ia dipakai konsisten sampai akhir.
+- **Brand tidak pernah mendahului pertanyaan.** Sting selalu di bagian 2, tidak
+  pernah di detik nol.
+- **`[problem]` tidak boleh diringkas jadi satu kalimat.** Kalau penonton tidak
+  merasakan masalahnya, jawaban di bagian 4 terasa seperti definisi kamus —
+  dan itu titik penonton berhenti menonton.
+- **`[why]` adalah bagian yang paling sering dilewatkan orang, dan paling
+  menentukan.** Tanpa ini video cuma menghafalkan istilah.
+- **`[case]` bukan rangkuman.** Ia menjawab "jadi ini kelihatan di mana?" —
+  perangkat nyata, angka nyata, keputusan nyata.
+- **Tidak ada babak "kontrak" atau "rangkuman" terpisah.** Kalimat bawa-pulang
+  ditaruh sebagai penutup `[case]`, lalu langsung end card.
+- **Tanpa "jangan lupa like dan subscribe" di tengah video.** Cukup di end card.
+
+### Patokan porsi (video 7 menit)
+
+| Bagian | Porsi | Perkiraan |
+|---|---|---|
+| 1 [question] | 5% | ~20 dtk |
+| 2 brand | — | 1,5 dtk |
+| 3 [problem] | 15% | ~60 dtk |
+| 4 [answer]/[what] | 10% | ~45 dtk |
+| 5 [why] | 20% | ~85 dtk |
+| 6 [explaining] | 35% | ~2,5 mnt |
+| 7 [case] | 15% | ~65 dtk |
+
+Kalau durasi kepanjangan, yang dipangkas duluan **[explaining]** — bukan
+`[why]`, dan tidak pernah `[problem]`.
 
 ## Anatomi Shorts
 

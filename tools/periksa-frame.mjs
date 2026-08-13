@@ -39,9 +39,27 @@ const CLI = (() => {
    Tidak ada yang menyampel frame 0. Gerak masuk baku mulai di detik 0,05
    (shared/anim.ts), jadi 1-2 frame pertama tiap scene memang sengaja kosong;
    memeriksanya di sana akan selalu merah tanpa ada yang rusak. */
+/* ID komposisi scene = field `kunci` di timing.gen.ts, yang memuat nomor urut.
+   Nomor itu bergeser begitu naskah disisipi scene baru, jadi ia dibaca dari
+   sana — bukan ditulis "02-opening" di sini lalu jadi salah diam-diam. */
+const kunci = (() => {
+  const src = readFileSync("ideas/apa-itu-ram/timing.gen.ts", "utf8");
+  const peta = new Map(
+    [...src.matchAll(/"id":\s*"([^"]+)",\s*"kunci":\s*"([^"]+)"/g)].map((m) => [
+      m[1],
+      m[2],
+    ]),
+  );
+  return (id) => {
+    const k = peta.get(id);
+    if (!k) throw new Error(`Scene "${id}" tidak ada di timing.gen.ts.`);
+    return k;
+  };
+})();
+
 const TITIK = [
-  { komposisi: "s-opening", frame: 40, nama: "kartu judul, setelah judul masuk" },
-  { komposisi: "s-closing", frame: 60, nama: "tanda brand, setelah semua masuk" },
+  { komposisi: kunci("opening"), frame: 40, nama: "kartu judul, setelah judul masuk" },
+  { komposisi: kunci("closing"), frame: 60, nama: "tanda brand, setelah semua masuk" },
   { komposisi: "T01-apa-itu-ram", frame: 60, nama: "episode 2 dtk, scene pertama" },
 ];
 

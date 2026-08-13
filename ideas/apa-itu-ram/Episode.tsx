@@ -19,16 +19,18 @@ import { KartuJudul, TandaBrand } from "../../shared/StandarScenes";
 import { SCENES } from "./scenes";
 import { TIMING, type Timing } from "./timing.gen";
 
-/** Judul episode, tampil di kartu pembuka (docs/10). Maks 5 kata.
+/** Judul episode, tampil di kartu pembuka (docs/10).
  *
- *  TIDAK BOLEH menyebut "RAM". Kartu ini tayang di detik ~10, sementara kata
- *  RAM baru diperkenalkan di s019 sekitar detik 68 — setelah penonton melihat
- *  benda yang diwakilinya (tangga abstraksi, docs/09). Judul yang menyebutnya
- *  lebih dulu membatalkan enam puluh detik pembangunan itu. */
-export const JUDUL = "Di mana data bekerja";
+ *  CATATAN YANG BELUM DISELESAIKAN: kartu ini tayang di detik ~10, sementara
+ *  naskah baru menamai RAM di s019 (~68 dtk) dan mengeja kepanjangannya di
+ *  s020 ("Kepanjangannya random access memory. Tapi namanya tidak penting.").
+ *  Dengan judul ini, kedua scene itu mengulang sesuatu yang sudah dibaca satu
+ *  menit sebelumnya. VO s019–s020 perlu ditulis ulang. */
+export const JUDUL = "RAM";
+export const SUBJUDUL = "Random Access Memory";
 
 export const isiScene = (t: Timing): React.ReactNode => {
-  if (t.id === "opening") return <KartuJudul judul={JUDUL} />;
+  if (t.id === "opening") return <KartuJudul judul={JUDUL} subjudul={SUBJUDUL} />;
   if (t.id === "closing") return <TandaBrand />;
 
   const Komponen = SCENES[t.id];

@@ -109,7 +109,7 @@ youtube/                      ← ROOT PROJECT Remotion
         ├── timing.gen.ts     ← ⚙ digenerate dari naskah.md
         ├── Episode.tsx       ← merangkai <Sequence>, tanpa isi scene
         ├── scenes/index.ts   ← daftar SCENES: id → komponen
-        ├── scenes/s042.tsx   ← satu scene = satu berkas (HARD RULE 1)
+        ├── scenes/15-s016.tsx ← satu scene = satu berkas (HARD RULE 1)
         ├── vo/               ← keluaran ElevenLabs, satu berkas per scene
         └── render/           ← MP4 final + thumbnail + metadata publish
 ```

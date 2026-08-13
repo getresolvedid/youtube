@@ -127,10 +127,16 @@ const Wordmark: React.FC<{
  * fungsinya di sini.
  */
 export const KartuJudul: React.FC<{
-  /** Judul episode. Maks 5 kata — pada 2,5 dtk ia hanya tampil ~1,5 dtk.
-   *  JANGAN membocorkan jawaban episode: penonton baru di detik ~10. */
+  /** Judul episode. Maks 5 kata — pada 2,5 dtk ia hanya tampil ~1,5 dtk. */
   judul: string;
-}> = ({ judul }) => {
+  /** Baris kedua yang lebih kecil: kepanjangan akronim, atau penajam judul.
+   *
+   *  Ini BUKAN tempat kalimat. Pada 96px, judul lebih dari ~22 karakter sudah
+   *  melewati lebar aman dan patah di tempat yang salah — memecahnya jadi
+   *  nama + keterangan membaca jauh lebih baik daripada membiarkannya
+   *  membungkus sendiri. */
+  subjudul?: string;
+}> = ({ judul, subjudul }) => {
   const d = useDetik();
 
   return (
@@ -183,6 +189,24 @@ export const KartuJudul: React.FC<{
         >
           {judul}
         </h1>
+
+        {subjudul && (
+          <p
+            className="open-subjudul"
+            style={{
+              opacity: t(d, { mulai: 0.92, durasi: 0.4, dari: 0, ke: 1 }),
+              transform: `translateY(${t(d, {
+                mulai: 0.92,
+                durasi: 0.45,
+                dari: 14,
+                ke: 0,
+                ease: E.power3out,
+              })}px)`,
+            }}
+          >
+            {subjudul}
+          </p>
+        )}
       </Scene>
     </div>
   );

@@ -119,10 +119,21 @@ urut.push({ id: "closing", bagian: "penutup", vo: "", durasi: DUR_CLOSING, stand
 
 /* --- akumulasi ------------------------------------------------------------- */
 
+/* Lebar nomor urut mengikuti jumlah scene: 83 scene -> 2 digit. Kalau tidak
+   di-pad, `ls scenes/` mengurutkan 1, 10, 11, 2, 20 — dan nomor urut yang tidak
+   mengurutkan apa-apa lebih buruk daripada tidak ada nomor. */
+const LEBAR = String(urut.length).length;
+
 let t = 0;
-const timing = urut.map((u) => {
+const timing = urut.map((u, i) => {
   const entri = {
     id: u.id,
+    /* Kunci = nama berkas tanpa ekstensi = ID komposisi Remotion.
+       Satu bentuk untuk ketiganya, supaya `01-hook-question.tsx`,
+       `npx remotion still 01-hook-question`, dan baris di sidebar Studio
+       menyebut hal yang sama persis. */
+    kunci: `${String(i + 1).padStart(LEBAR, "0")}-${u.id}`,
+    urut: i + 1,
     bagian: u.bagian,
     mulai: R(t),
     durasi: u.durasi,
@@ -144,7 +155,12 @@ const isi = `/* DIGENERATE oleh tools/bangun-timing.mjs dari ideas/${slug}/naska
    Durasi = (kata / ${WPM} wpm) x 60 + ${PAD} dtk napas. */
 
 export type Timing = {
+  /** ID dari kolom pertama tabel scene di naskah.md. */
   readonly id: string;
+  /** \`<urutan>-<id>\` — nama berkas scene DAN id komposisi Remotion. */
+  readonly kunci: string;
+  /** Posisi di episode, 1-based. Opening & closing ikut terhitung. */
+  readonly urut: number;
   /** Bagian flow 7 langkah (docs/02) — mis. "3 problem". */
   readonly bagian: string;
   /** Detik mulai, relatif terhadap awal episode. */
@@ -160,11 +176,17 @@ export const TIMING: readonly Timing[] = ${JSON.stringify(timing, null, 2)} as c
 
 export const TOTAL = ${TOTAL};
 
-/** Cari timing satu scene menurut ID. Melempar kalau ID-nya tidak ada di
+/** Cari timing satu scene menurut ID atau kunci. Melempar kalau tidak ada di
  *  naskah — lebih baik gagal saat build daripada scene diam-diam berdurasi 0. */
-export const cari = (id: string): Timing => {
-  const t = TIMING.find((x) => x.id === id);
-  if (!t) throw new Error(\`Scene "\${id}" tidak ada di ideas/${slug}/naskah.md.\`);
+export const cari = (idAtauKunci: string): Timing => {
+  const t = TIMING.find(
+    (x) => x.id === idAtauKunci || x.kunci === idAtauKunci,
+  );
+  if (!t) {
+    throw new Error(
+      \`Scene "\${idAtauKunci}" tidak ada di ideas/${slug}/naskah.md.\`,
+    );
+  }
   return t;
 };
 `;

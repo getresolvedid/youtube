@@ -25,8 +25,8 @@ Berkasnya:
 >
 > ```powershell
 > npm run check                                         # otomatis menyampel keduanya
-> npx remotion still s-opening out/opening.png --frame 20
-> npx remotion still s-closing out/closing.png --frame 60
+> npx remotion still 02-opening out/opening.png --frame 40
+> npx remotion still 83-closing out/closing.png --frame 60
 > ```
 >
 > `npm run check` sudah menyampel kedua scene ini — bukan kebetulan: keduanya
@@ -83,11 +83,19 @@ poster, rata kiri terbaca sebagai kepala bab. Itu memang fungsinya di sini.
 | `0,70–1,20` | Judul episode naik + memudar masuk |
 | `2,22–2,50` | Semua memudar |
 
-**Judul episode maksimal 5 kata**, dan **tidak boleh membocorkan jawaban
-episode**. Kartu ini tayang sekitar detik 10; kalau istilah yang baru
-diperkenalkan di menit ke-1 sudah tertulis di sini, seluruh tangga abstraksi
-([09](09-tangga-abstraksi.md)) yang dibangun sesudahnya jadi percuma. T01
-memakai "Di mana data bekerja", bukan "Apa itu RAM".
+**Judul episode maksimal 5 kata.** Lebih dari ~22 karakter sudah melewati lebar
+aman pada 96px dan patah di tempat yang salah. Kalau judulnya akronim, pecah
+jadi dua: `judul="RAM"` + `subjudul="Random Access Memory"` — baris kedua
+otomatis lebih kecil dan mono. Membiarkan `"RAM (Random Access Memory)"` jadi
+satu string akan membungkus di tengah tanda kurung.
+
+**Judul boleh menyebut istilah inti episode**, dan T01 memang begitu. Tapi sadari
+konsekuensinya: kartu ini tayang sekitar detik 10, sementara [tangga
+abstraksi](09-tangga-abstraksi.md) menuntut istilah teknis baru muncul setelah
+bendanya digambarkan. Kalau judul mendahuluinya, **scene yang menamai istilah
+itu nanti harus ditulis ulang** — kalau tidak, ia mengulang sesuatu yang sudah
+penonton baca satu menit sebelumnya, dan terasa seperti video yang lupa apa yang
+sudah dikatakannya. Itu keputusan naskah, bukan keputusan komponen.
 
 Yang **tidak** ada di dalamnya, dan tidak boleh ditambahkan: suara whoosh, musik
 sting terpisah, tagline, alamat website, animasi partikel, handle channel.
@@ -132,10 +140,11 @@ render.**
 Tidak ada yang perlu disalin. `Episode.tsx` sudah memasang keduanya:
 
 ```tsx
-export const JUDUL = "Di mana data bekerja";
+export const JUDUL = "RAM";
+export const SUBJUDUL = "Random Access Memory";
 
 export const isiScene = (t: Timing) => {
-  if (t.id === "opening") return <KartuJudul judul={JUDUL} />;
+  if (t.id === "opening") return <KartuJudul judul={JUDUL} subjudul={SUBJUDUL} />;
   if (t.id === "closing") return <TandaBrand />;
   // ...
 };
@@ -161,8 +170,9 @@ komponen.
 
 **Boleh diubah per episode:**
 
-- Prop `judul` di `<KartuJudul>` — maksimal **5 kata**, tidak membocorkan
-  jawaban episode.
+- Prop `judul` di `<KartuJudul>` — maksimal **5 kata** / ~22 karakter.
+- Prop `subjudul` di `<KartuJudul>` — kepanjangan akronim atau penajam judul.
+  Bukan tempat kalimat.
 - Prop `sub` di `<TandaBrand>` (16:9 saja) — satu baris deskripsi channel.
 
 Keduanya prop, bukan hasil menyalin komponen. Kalau kamu sedang menyalin

@@ -93,13 +93,24 @@ meja — ada meja jauh lebih kecil yang menempel padanya, namanya cache
 
 | Scene | Isi | Posisi | Durasi |
 |---|---|---|---|
-| `opening` | kartu judul — **"Di mana data bekerja"** | bagian 2, setelah `hook-question` | **2,5 dtk** |
+| `opening` | kartu judul — **"RAM" / "Random Access Memory"** | bagian 2, setelah `hook-question` | **2,5 dtk** |
 | `closing` | tanda tangan brand, tanpa judul | setelah scene 083 | **5,0 dtk** |
 
-Judul episode **tidak boleh menyebut "RAM"**: kartu ini tayang di detik ~10,
-sedangkan kata RAM baru diperkenalkan di scene 019 (~detik 68), setelah penonton
-melihat bendanya lebih dulu (docs/09). Judulnya diatur di `Episode.tsx`
-(`export const JUDUL`).
+Judulnya diatur di `Episode.tsx` (`JUDUL` + `SUBJUDUL`).
+
+> **UTANG NASKAH — belum diselesaikan.** Kartu judul tayang di detik ~10 dan
+> sudah menulis "RAM" beserta kepanjangannya. Akibatnya dua scene ini mengulang
+> sesuatu yang penonton baca satu menit sebelumnya:
+>
+> | Scene | Detik | VO sekarang |
+> |---|---|---|
+> | `019` | ~68 | "Tempat kerja itu namanya ram." |
+> | `020` | ~72 | "Kepanjangannya random access memory. Tapi namanya tidak penting." |
+>
+> s020 paling parah: ia bilang "namanya tidak penting" tentang nama yang
+> dipampang sebagai judul. Keduanya perlu ditulis ulang sebelum naskah dibekukan
+> — kemungkinan s019 jadi penegasan ("Ya, itu RAM") dan s020 dibuang atau
+> diganti isi lain. Lihat [docs/10](../../docs/10-scene-standar.md#isi-pembuka).
 
 Keduanya **tidak ditulis di episode ini**. `tools/bangun-timing.mjs`
 menyisipkannya otomatis ke `timing.gen.ts` — `opening` setelah baris terakhir

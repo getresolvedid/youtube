@@ -12,7 +12,7 @@ npm run check      # tsc --noEmit + tools/periksa-frame.mjs
 npm run sisa       # scene yang masih placeholder
 npm run studio     # Remotion Studio (server panjang — jalankan di background)
 npm run render     # episode utuh
-npm run still      # `npm run still -- s-s042 out/s042.png`
+npm run still      # `npm run still -- 15-s016 out/s016.png`
 ```
 
 `gen` jalan otomatis sebagai pre-script sebelum `studio` / `render` / `check` /
@@ -46,7 +46,7 @@ ideas/<slug>/
   timing.gen.ts           DIGENERATE dari naskah.md — jangan disunting
   Episode.tsx             merangkai <Sequence>, tidak berisi scene
   scenes/index.ts         SCENES: id → komponen
-  scenes/s042.tsx         satu scene = satu berkas
+  scenes/01-hook-question.tsx   satu scene = satu berkas, bernomor urut
 ```
 
 ## Aturan yang mengikat
@@ -83,7 +83,7 @@ yang terlihat", **bukan** "jelek". Kontras teks, kotak aman, dan ritme gerak
 tetap harus dilihat mata:
 
 ```powershell
-npx remotion still s-s042 out/s042.png --frame 30
+npx remotion still 15-s016 out/s016.png --frame 30
 ```
 
 Lalu buka PNG-nya. `check` lulus bukan bukti gambarnya benar — alasannya ada di

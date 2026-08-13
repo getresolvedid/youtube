@@ -4,13 +4,25 @@
    Itulah inti HARD RULE 1: satu scene bisa dibuka, di-scrub, dan dirender
    satuan — tanpa menggulir enam menit untuk memeriksa satu scene.
 
+   ID komposisi scene = NAMA BERKASNYA, persis:
+
+     ideas/apa-itu-ram/scenes/01-hook-question.tsx
+     npx remotion still 01-hook-question out/hook.png
+
+   Satu bentuk untuk berkas, id komposisi, dan baris di sidebar Studio. Nomornya
+   dihitung tools/bangun-timing.mjs dari urutan di naskah dan dipakai apa adanya
+   di sini — tidak ada tempat kedua yang bisa salah hitung.
+
+   Opening & closing ikut dapat komposisi walaupun komponennya milik shared/;
+   keduanya justru yang paling perlu diperiksa satuan, karena kalau rusak SEMUA
+   episode ikut rusak.
+
      npx remotion studio                          -> semua komposisi di sidebar
-     npx remotion still  s-s042 out/s042.png      -> satu frame scene 042
-     npx remotion render s-s042 out/s042.mp4      -> satu scene saja
+     npx remotion render 01-hook-question         -> satu scene saja
      npx remotion render T01-apa-itu-ram          -> episode utuh
 */
 import type React from "react";
-import { Composition } from "remotion";
+import { Composition, Folder } from "remotion";
 
 import { CFG, FPS, f } from "../shared/config.gen";
 import { Panggung } from "../shared/Stage";
@@ -25,8 +37,8 @@ const UKURAN_16x9 = {
 /** Satu scene berdiri sendiri di panggung penuh. Komponennya stabil (bukan
  *  arrow function yang dibuat ulang tiap render) supaya Studio tidak
  *  me-remount scene setiap kali daftar komposisi dihitung ulang. */
-const SceneSolo: React.FC<{ id: string }> = ({ id }) => (
-  <Panggung rasio="16x9">{isiScene(cari(id))}</Panggung>
+const SceneSolo: React.FC<{ kunci: string }> = ({ kunci }) => (
+  <Panggung rasio="16x9">{isiScene(cari(kunci))}</Panggung>
 );
 
 export const RemotionRoot: React.FC = () => (
@@ -39,16 +51,20 @@ export const RemotionRoot: React.FC = () => (
       {...UKURAN_16x9}
     />
 
-    {TIMING.map((t) => (
-      <Composition
-        key={t.id}
-        id={`s-${t.id}`}
-        component={SceneSolo}
-        defaultProps={{ id: t.id }}
-        durationInFrames={Math.max(1, f(t.durasi))}
-        fps={FPS}
-        {...UKURAN_16x9}
-      />
-    ))}
+    {/* Folder Studio — 83 scene di daftar yang sama dengan episode akan
+        mengubur episodenya. Sidebar tetap urut tayang karena nomornya. */}
+    <Folder name="scene">
+      {TIMING.map((t) => (
+        <Composition
+          key={t.kunci}
+          id={t.kunci}
+          component={SceneSolo}
+          defaultProps={{ kunci: t.kunci }}
+          durationInFrames={Math.max(1, f(t.durasi))}
+          fps={FPS}
+          {...UKURAN_16x9}
+        />
+      ))}
+    </Folder>
   </>
 );

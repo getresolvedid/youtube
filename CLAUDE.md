@@ -26,7 +26,7 @@ Alasannya:
 
 - **Bisa di-preview satu per satu.** Setiap scene otomatis jadi komposisi
   sendiri di Studio (`src/Root.tsx`), jadi
-  `npx remotion still s-s042 out/s042.png` cukup — tanpa scrubbing enam menit
+  `npx remotion still 15-s016 out/s016.png` cukup — tanpa scrubbing enam menit
   untuk memeriksa satu scene.
 - **Menahan diri dari melantur.** Satu berkas 83 scene bikin tiap scene ditulis
   sambil lalu. Satu berkas per scene memaksa tiap scene berdiri sendiri.
@@ -146,8 +146,8 @@ npm run studio     # Remotion Studio — server panjang, jalankan di background
 npm run render     # episode utuh → out/
 
 # satu scene saja — inilah gunanya HARD RULE 1
-npx remotion still  s-s042 out/s042.png
-npx remotion render s-s042 out/s042.mp4
+npx remotion still  15-s016 out/s016.png
+npx remotion render 15-s016 out/s016.mp4
 
 # VO & timing
 . .\tools\load-env.ps1                      # muat .env ke sesi PowerShell
@@ -162,7 +162,7 @@ node --env-file=.env tools/vo-durations.mjs ideas/<slug>/vo L
 turunan `.env` dan `naskah.md`, dan meng-commit-nya berarti dua sumber kebenaran.
 
 **Episode yang sedang digarap didaftarkan di [`src/Root.tsx`](src/Root.tsx).**
-Setiap scene otomatis dapat komposisinya sendiri (`s-<id>`) di samping episode
+Setiap scene otomatis dapat komposisinya sendiri (bernomor urut, mis. `15-s016`) di samping episode
 utuhnya. Setelah satu episode selesai dan diunggah, biarkan pendaftarannya —
 Remotion tidak keberatan punya banyak komposisi, dan episode lama tetap bisa
 dirender ulang.

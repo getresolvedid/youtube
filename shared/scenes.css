@@ -51,6 +51,17 @@
   margin: 0;
 }
 
+/* Kepanjangan akronim / penajam judul. Mono supaya jelas ia keterangan, bukan
+   bagian dari judulnya — dan supaya tidak bersaing dengan judul di atasnya. */
+.sc-open .open-subjudul {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--fs-sub);
+  letter-spacing: 0.02em;
+  color: var(--ink-1);
+  margin: -12px 0 0;
+}
+
 .r-9x16 .sc-open .scene-content { max-width: 100%; }
 .r-9x16 .sc-open .open-brand { gap: 24px; }
 

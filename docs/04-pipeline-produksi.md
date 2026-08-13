@@ -61,7 +61,7 @@ youtube/                        ← ROOT PROJECT Remotion
     ├── timing.gen.ts           ⚙ digenerate dari naskah.md
     ├── Episode.tsx             merangkai <Sequence>
     ├── scenes/index.ts         SCENES: id → komponen
-    ├── scenes/s042.tsx         satu scene = satu berkas
+    ├── scenes/15-s016.tsx      satu scene = satu berkas, bernomor urut
     ├── vo/L-001.mp3 …          satu berkas per scene
     └── render/
         ├── T01-L.mp4 · T01-S1.mp4 · T01-S2.mp4
@@ -150,7 +150,7 @@ iterasi sepuasnya di sini — semua ini gratis.
 Setiap scene satu berkas (HARD RULE 1). Dua langkah:
 
 ```tsx
-// ideas/apa-itu-ram/scenes/s042.tsx
+// ideas/apa-itu-ram/scenes/15-s016.tsx
 import type React from "react";
 import { Ic } from "../../../shared/Icons";
 import { masuk, useDetik } from "../../../shared/anim";
@@ -181,7 +181,7 @@ Begitu terdaftar, scene itu otomatis masuk episode pada timing dari naskah,
 
 ```powershell
 npm run studio                       # server panjang — jalankan di background
-npx remotion still s-s042 out/s042.png --frame 15
+npx remotion still 15-s016 out/s016.png --frame 15
 ```
 
 Yang wajib dan paling mudah terlewat:
@@ -355,7 +355,7 @@ npm run render -- --out ideas/<slug>/render/T01-L.mp4
 - `npm run studio` adalah server yang berjalan terus — jalankan di background,
   jangan sebagai perintah biasa.
 - Render satu scene untuk memeriksa cepat:
-  `npx remotion render s-s042 out/s042.mp4`.
+  `npx remotion render 15-s016 out/s016.mp4`.
 
 **Font.** Manrope dan JetBrains Mono dimuat lewat `@remotion/google-fonts` di
 [`shared/fonts.ts`](../shared/fonts.ts), yang menahan render sampai fontnya
@@ -373,7 +373,7 @@ Wajib dilewati sebelum publish. Jangan tandai selesai kalau ada yang belum dicek
 - [ ] `npm run sisa` melaporkan **nol** placeholder.
 - [ ] Durasi total sesuai target ([02](02-format-video.md)); Shorts ≤ 60 dtk.
 - [ ] Tidak ada celah/tumpang tindih antar scene (frame hitam berkedip).
-- [ ] Semua scene muncul — cek dengan menggulir daftar komposisi `s-*` di Studio,
+- [ ] Semua scene muncul — cek dengan menggulir folder `scene` di sidebar Studio,
       bukan hanya dengan scrubbing episode utuh.
 - [ ] VO sinkron dengan visual **di seluruh video**, bukan hanya di awal —
       pergeseran timing menumpuk ke belakang.

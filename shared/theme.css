@@ -3,9 +3,12 @@
    Turunan brand getresolved (branding/guidelines/brand.html).
    Aturan pemakaian: docs/03-tema-visual.md
 
-   Pakai di komposisi HyperFrames:
+   Pakai di komposisi HyperFrames — kelas dipasang di wrapper komposisi
+   (elemen ber-data-composition-id, di scaffold bawaan id-nya #root):
+
      <link rel="stylesheet" href="../../../shared/theme.css">
-     <div id="stage" class="hf-16x9" ...>   ← atau .hf-9x16 untuk Shorts
+     <div id="root" class="hf-stage hf-16x9" data-composition-id="main" ...>
+                                ↑ atau hf-9x16 untuk Shorts
 
    Catatan: font diambil dari Google Fonts. Kalau render dijalankan offline,
    unduh Manrope + JetBrains Mono ke shared/fonts/ dan ganti @import dengan
@@ -94,14 +97,14 @@ html, body {
   text-rendering: geometricPrecision;
 }
 
-#stage {
+.hf-stage {
   position: relative;
   overflow: hidden;
   background: var(--bg);
 }
 
 /* Latar halus — pakai radial-gradient, JANGAN filter SVG data-uri (docs/03). */
-#stage::before {
+.hf-stage::before {
   content: "";
   position: absolute;
   inset: 0;

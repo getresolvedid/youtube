@@ -12,6 +12,18 @@ Berkasnya:
 | [`shared/scenes.css`](../shared/scenes.css) | Gaya kedua scene, sudah menangani 16:9 dan 9:16 |
 | [`shared/scenes.js`](../shared/scenes.js) | Koreografi: `HFScenes.opening()` dan `HFScenes.closing()` |
 | [`shared/assets/logos/`](../shared/assets/logos/) | Mark & wordmark (salinan dari brand getresolved) |
+| [`index.html`](../index.html) | **Komposisi uji** — kedua scene dirangkai jadi video 10,5 dtk |
+
+> **Status: sudah terbukti jalan.** `index.html` di root repo adalah komposisi uji
+> yang merangkai opening + closing dengan dua scene filler. Sudah lolos
+> `npm run check` (0 error, kontras 11/11 WCAG AA) dan sudah dirender jadi MP4
+> 1920×1080 · 30fps · 10,5 detik. Jalankan ulang kapan saja sebagai **uji regresi
+> visual** setelah mengubah `shared/scenes.*` atau `shared/theme.css`:
+>
+> ```powershell
+> npm run check
+> npx hyperframes render -o render/uji-scene-standar.mp4
+> ```
 
 ---
 
@@ -65,15 +77,18 @@ pada `#stage` — batasnya akan tergambar. **Hapus sebelum render.**
 
 ## Cara pakai
 
+Semua path ditulis relatif terhadap **root project** (akar repo), tanpa `../` —
+HyperFrames menolak aset yang menunjuk di atas root.
+
 ```html
-<link rel="stylesheet" href="../../../shared/theme.css">
-<link rel="stylesheet" href="../../../shared/scenes.css">
+<link rel="stylesheet" href="shared/theme.css">
+<link rel="stylesheet" href="shared/scenes.css">
 ```
 
 Salin markup dari [`shared/scenes.html`](../shared/scenes.html), lalu:
 
 ```html
-<script src="../../../shared/scenes.js"></script>
+<script src="shared/scenes.js"></script>
 <script>
   const tl = gsap.timeline({ paused: true });
 
@@ -87,6 +102,9 @@ Salin markup dari [`shared/scenes.html`](../shared/scenes.html), lalu:
   window.__timelines.t01l = tl;
 </script>
 ```
+
+Wrapper komposisi wajib memakai kelas `hf-stage` + `hf-16x9` / `hf-9x16`, dan
+kunci `window.__timelines` harus sama dengan `data-composition-id`.
 
 `at` adalah `data-start` scene-nya — harus sama persis dengan nilai di markup.
 Kedua fungsi mengembalikan durasi scene, jadi bisa dipakai untuk menghitung
@@ -108,6 +126,9 @@ t += HFScenes.opening(tl, { at: t });   // t sekarang 16.5
 **Tidak boleh diubah:**
 
 - Durasi (1,5 / 5,0 / 2,0 detik).
+- **Ukuran mark**: 200px (16:9) / 260px (9:16) di opening, 124px di closing.
+  Angka ini hasil pengujian pada render 1920×1080 penuh — 132px yang dipakai
+  di rancangan awal terlihat kerdil di layar besar.
 - Struktur, kelas, id, dan urutan elemen.
 - Koreografi di `scenes.js` — kalau memang perlu berubah, ubah di
   `shared/scenes.js` sekali untuk **semua** episode, jangan di satu komposisi.

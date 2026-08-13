@@ -21,25 +21,27 @@
 .sc-open .sting {
   display: flex;
   align-items: center;
-  gap: 36px;
+  gap: 48px;
 }
 
+/* Ukuran diuji pada render 1920×1080: 132px terlihat kerdil di layar penuh.
+   200px ≈ 18% tinggi frame — cukup hadir untuk momen brand 1,5 detik. */
 .sc-open .sting-mark {
-  width: 132px;
-  height: 132px;
+  width: 200px;
+  height: 200px;
   flex: none;
 }
 
 /* Wordmark disingkap dari kiri lewat clip-path (dianimasikan di scenes.js). */
 .sc-open .sting-word {
-  height: 62px;
+  height: 92px;
   width: auto;
   clip-path: inset(0 100% 0 0);
 }
 
-.hf-9x16 .sc-open .sting { flex-direction: column; gap: 28px; }
-.hf-9x16 .sc-open .sting-mark { width: 180px; height: 180px; }
-.hf-9x16 .sc-open .sting-word { height: 74px; }
+.hf-9x16 .sc-open .sting { flex-direction: column; gap: 36px; }
+.hf-9x16 .sc-open .sting-mark { width: 260px; height: 260px; }
+.hf-9x16 .sc-open .sting-word { height: 96px; }
 
 /* --- Closing: end card -----------------------------------------------------
    16:9 → 5 dtk. Konten ditaruh di PARUH KIRI; paruh kanan sengaja dikosongkan
@@ -51,11 +53,15 @@
   justify-content: center;
   gap: 32px;
   max-width: 52%;
+  /* --safe-bottom besar (ruang progress bar) menarik blok ini ke atas.
+     Padding bawah disamakan dengan atas supaya blok benar-benar di tengah;
+     zona end screen tetap aman karena dijaga oleh max-width, bukan oleh tinggi. */
+  padding-bottom: var(--safe-top);
 }
 
 .sc-close .close-mark {
-  width: 108px;
-  height: 108px;
+  width: 124px;
+  height: 124px;
 }
 
 .sc-close .close-cta {

@@ -25,17 +25,13 @@ langkah 5, setiap perubahan naskah berarti membayar ulang.
 | Kebutuhan | Perintah cek | Status di mesin ini (2026-08-13) |
 |---|---|---|
 | Node.js ≥ 22 | `node -v` | ✅ v22.21.1 |
-| FFmpeg + ffprobe | `ffmpeg -version` | ❌ **belum terpasang** |
-| Google Chrome | — | ✅ `C:\Program Files\Google\Chrome\Application\chrome.exe` |
-| `.env` terisi | `. .\tools\load-env.ps1 -Show` | ❔ API key & identitas channel masih kosong |
+| FFmpeg + ffprobe | `ffmpeg -version` | ✅ 9.0-full_build (via winget) |
+| Google Chrome | — | ✅ terpasang; HyperFrames juga mengunduh Chrome-nya sendiri saat render pertama |
+| `.env` terisi | `. .\tools\load-env.ps1 -Show` | ❔ identitas channel masih kosong |
 
-Pasang FFmpeg:
-
-```powershell
-winget install Gyan.FFmpeg
-# buka terminal baru, lalu:
-npx hyperframes doctor
-```
+FFmpeg dipasang lewat `winget install Gyan.FFmpeg`. PATH-nya baru aktif di
+**terminal baru** — kalau `ffmpeg -version` gagal padahal sudah terpasang, tutup
+terminal lalu buka lagi.
 
 Konfigurasi & secret semuanya di `.env`, tidak ada di tempat lain. Muat ke sesi
 terminal sebelum menjalankan `npx hyperframes` (perhatikan **titik di depan**):
@@ -48,24 +44,40 @@ Copy-Item .env.example .env   # sekali saja, lalu isi nilainya
 Untuk skrip Node pakai flag bawaan Node 22: `node --env-file=.env tools/skrip.mjs`.
 Daftar variabel dan aturannya: [08 · Konfigurasi](08-konfigurasi.md).
 
-## Struktur folder satu topik
+## Struktur project
+
+**Seluruh repo adalah SATU project HyperFrames**, bukan satu project per episode.
+Ini bukan pilihan gaya — komposisi HyperFrames **tidak boleh menunjuk aset di atas
+root project** (`../../` ditolak lint dan 404 di Studio). Supaya `shared/` bisa
+dipakai bersama semua episode, root project harus berada di akar repo.
 
 ```
-topics/T01-cara-kerja-index-database/
-├── naskah.md          ← sumber kebenaran (lihat docs/05)
-├── vo/
-│   ├── L-001.mp3 … L-072.mp3      VO video panjang, satu berkas per scene
-│   ├── S1-001.mp3 … S1-011.mp3
-│   └── S2-001.mp3 … S2-010.mp3
-├── long/
-│   ├── index.html     komposisi 1920×1080
-│   └── assets/
-├── short-1/index.html komposisi 1080×1920
-├── short-2/index.html
-└── render/
-    ├── T01-L.mp4  T01-S1.mp4  T01-S2.mp4
-    ├── thumb.png
-    └── publish.md     judul/deskripsi/tag final (lihat docs/06)
+youtube/                        ← ROOT PROJECT HyperFrames
+├── hyperframes.json            paths.assets → "shared"
+├── package.json                skrip dev/check/render (versi CLI dipatok)
+├── meta.json · AGENTS.md       bawaan scaffold — jangan dihapus
+├── index.html                  komposisi uji scene standar (regresi visual)
+├── compositions/
+│   ├── T01-long.html           1920×1080
+│   ├── T01-short-1.html        1080×1920
+│   └── T01-short-2.html
+├── shared/                     tema, scene standar, logo
+└── topics/T01-cara-kerja-index-database/
+    ├── naskah.md               sumber kebenaran (lihat docs/05)
+    ├── vo/L-001.mp3 …          satu berkas per scene
+    └── render/
+        ├── T01-L.mp4 · T01-S1.mp4 · T01-S2.mp4
+        ├── thumb.png
+        └── publish.md          judul/deskripsi/tag final (lihat docs/06)
+```
+
+**Semua path di dalam komposisi ditulis relatif terhadap root project**, tanpa
+`../`:
+
+```html
+<link rel="stylesheet" href="shared/theme.css">
+<img src="shared/assets/logos/getresolved-mark.svg">
+<audio src="topics/T01-cara-kerja-index-database/vo/L-001.mp3">
 ```
 
 **Penamaan:** `T{nn}-{slug-kebab}`. Kode episode `T01-L`, `T01-S1`, `T01-S2`
@@ -129,9 +141,9 @@ itu diselesaikan di langkah 7.
 
 ## 4 · Komposisi bisu + preview
 
-```powershell
-npx hyperframes init topics/T01-slug/long
-```
+Buat berkas baru di `compositions/` — **jangan** `npx hyperframes init` lagi,
+project-nya sudah ada satu di root repo. Cara tercepat: salin `index.html`
+(komposisi uji scene standar) sebagai titik mulai.
 
 Bangun seluruh komposisi memakai timing estimasi, **tanpa track VO sama sekali**.
 Tonton di Studio, dan iterasi sepuasnya di sini — semua ini gratis.
@@ -139,8 +151,11 @@ Tonton di Studio, dan iterasi sepuasnya di sini — semua ini gratis.
 Kerangka wajib tiap komposisi:
 
 ```html
-<div id="stage" class="hf-16x9" data-composition-id="t01l" data-start="0"
-     data-width="1920" data-height="1080">
+<link rel="stylesheet" href="shared/theme.css">
+<link rel="stylesheet" href="shared/scenes.css">
+
+<div id="root" class="hf-stage hf-16x9" data-composition-id="t01l"
+     data-start="0" data-duration="480" data-width="1920" data-height="1080">
 
   <div class="scene clip" id="s1" data-start="0" data-duration="4.6"
        data-track-index="0" style="visibility:hidden;">
@@ -152,6 +167,17 @@ Kerangka wajib tiap komposisi:
   <!-- Track VO baru ditambahkan di langkah 7, setelah berkas audionya ada. -->
 </div>
 ```
+
+Yang wajib dan paling mudah terlewat:
+
+- Wrapper memakai kelas **`hf-stage`** + `hf-16x9` (atau `hf-9x16`) — itu yang
+  menyalakan tema.
+- `data-composition-id` bebas, tapi **harus sama persis** dengan kunci di
+  `window.__timelines`.
+- Wrapper juga butuh `data-duration` = total durasi komposisi.
+- Setiap elemen bertiming wajib `class="clip"` + `data-start` + `data-duration`
+  + `data-track-index`.
+- Path aset **tanpa `../`** — lihat [Struktur project](#struktur-project).
 
 ```javascript
 const tl = gsap.timeline({ paused: true });
@@ -178,9 +204,9 @@ Konvensi track index channel ini — angkanya ada di `.env`
 Impor tema dan scene standar di setiap komposisi:
 
 ```html
-<link rel="stylesheet" href="../../../shared/theme.css">
-<link rel="stylesheet" href="../../../shared/scenes.css">
-<script src="../../../shared/scenes.js"></script>
+<link rel="stylesheet" href="shared/theme.css">
+<link rel="stylesheet" href="shared/scenes.css">
+<script src="shared/scenes.js"></script>
 ```
 
 **Opening dan closing tidak dibuat sendiri.** Salin dari
@@ -303,27 +329,39 @@ Lalu:
 3. Tambahkan track VO, satu elemen per scene, dengan durasi **asli** (tanpa padding):
 
 ```html
-<audio data-start="0" data-duration="4.2" data-track-index="8"
-       data-volume="1.0" src="../vo/L-001.mp3"></audio>
+<audio data-start="0" data-duration="4.2" data-track-index="8" data-volume="1.0"
+       src="topics/T01-slug/vo/L-001.mp3"></audio>
 
-<audio data-start="0" data-duration="480" data-track-index="9"
-       data-volume="0.12" src="assets/music.mp3"></audio>
+<audio data-start="0" data-duration="480" data-track-index="9" data-volume="0.12"
+       src="shared/music/tenang.mp3"></audio>
 ```
 
 4. Render:
 
 ```powershell
-. .\tools\load-env.ps1                               # muat konfigurasi dulu
-npx hyperframes lint ./topics/T01-slug/long          # validasi markup
-npx hyperframes preview                              # Studio: http://localhost:3002
-npx hyperframes render -o render/T01-L.mp4 --quality draft   # cek sinkron dulu
-npx hyperframes render -o render/T01-L.mp4                   # final
+npm run check                    # lint + runtime + layout + motion + kontras
+npm run dev                      # Studio (server panjang — jalankan di background)
+
+npx hyperframes render -c compositions/T01-long.html -o topics/T01-slug/render/T01-L.mp4 --quality draft
+npx hyperframes render -c compositions/T01-long.html -o topics/T01-slug/render/T01-L.mp4
 ```
 
-- Selalu `lint` sebelum render — lebih murah daripada menunggu render gagal.
+- **Selalu `npm run check` sebelum render** — sekali jalan sudah mencakup lint,
+  runtime, layout, motion, dan kontras WCAG. Jauh lebih murah daripada menunggu
+  render selesai baru ketahuan salah.
+- `-c` memilih komposisi mana yang dirender. Tanpa `-c`, yang dirender `index.html`.
 - `--quality draft` untuk semua iterasi. Render final hanya sekali di akhir.
 - `--workers 1` (`HYPERFRAMES_WORKERS`) kalau komposisi berat media dan render
   tidak stabil.
+- `npm run dev` adalah server yang berjalan terus — jalankan di background,
+  jangan sebagai perintah biasa.
+
+**Peringatan lint yang memang dibiarkan:** `google_fonts_import`. Manrope dan
+JetBrains Mono diambil dari Google Fonts, dan compiler HyperFrames sudah
+menyuntik `@font-face` deterministik plus menyimpannya ke cache lokal saat
+render pertama. Risikonya tinggal render pertama di mesin baru yang butuh
+internet. Kalau nanti perlu render sepenuhnya offline, unduh `.woff2`-nya ke
+`shared/fonts/` dan ganti `@import` di `shared/theme.css` dengan `@font-face`.
 
 ## 8 · QA
 

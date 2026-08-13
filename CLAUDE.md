@@ -63,11 +63,16 @@ HyperFrames, dan aset render. Mulai dari [README.md](README.md).
 node tools/elevenlabs-keys.mjs status       # cek / rotasi API key ElevenLabs
 node --env-file=.env tools/estimate-timing.mjs topics/T01-slug/naskah.md
 node --env-file=.env tools/vo-durations.mjs topics/T01-slug/vo L
-npx hyperframes doctor                      # cek Node / Chrome / FFmpeg
-npx hyperframes lint ./topics/T01-slug/long # validasi markup komposisi
-npx hyperframes preview                     # Studio di http://localhost:3002
-npx hyperframes render -o render/T01-L.mp4 --quality draft   # iterasi cepat
-npx hyperframes render -o render/T01-L.mp4                   # render final
+
+npm run check                               # lint + runtime + layout + motion + kontras
+npm run dev                                 # Studio — server panjang, jalankan di background
+npx hyperframes render -c compositions/T01-long.html -o topics/T01-slug/render/T01-L.mp4
+npx hyperframes render -o render/uji-scene-standar.mp4   # uji regresi scene standar
 ```
+
+**Repo ini adalah satu project HyperFrames** — root-nya di akar repo, komposisi
+di `compositions/`. Jangan `npx hyperframes init` lagi per episode, dan jangan
+menulis path aset dengan `../` (ditolak lint). Aturan framework-nya ada di
+[AGENTS.md](AGENTS.md); **selalu `npm run check` setelah menyunting komposisi.**
 
 Belum ada `npm test` / `make build` di repo ini — jangan mengarang perintah.

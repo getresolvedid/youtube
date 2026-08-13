@@ -52,48 +52,59 @@ Aset pendukung:
 
 ## Struktur repo
 
+**Seluruh repo adalah satu project HyperFrames.** Komposisi tidak boleh menunjuk
+aset di atas root project, jadi root-nya harus di akar repo supaya `shared/`
+bisa dipakai semua episode.
+
 ```
-youtube/
-├── README.md              ← berkas ini
-├── CLAUDE.md              ← aturan kerja agent di repo ini
-├── .env                   ← SEMUA secret & konfigurasi (tidak di-commit)
-├── .env.example           ← kontrak konfigurasi (di-commit)
-├── docs/                  ← guideline (01–10)
+youtube/                      ← ROOT PROJECT HyperFrames
+├── README.md                 ← berkas ini
+├── CLAUDE.md                 ← aturan kerja agent di repo ini
+├── AGENTS.md                 ← aturan HyperFrames (bawaan scaffold)
+├── .env                      ← SEMUA secret & konfigurasi (tidak di-commit)
+├── .env.example              ← kontrak konfigurasi (di-commit)
+├── hyperframes.json          ← paths.assets → "shared"
+├── package.json              ← npm run dev / check / render
+├── index.html                ← komposisi uji scene standar (uji regresi visual)
+├── docs/                     ← guideline (01–10)
+├── compositions/             ← satu berkas per episode per format
+│   └── T01-long.html · T01-short-1.html · T01-short-2.html
 ├── shared/
-│   ├── theme.css          ← token warna/tipografi/skala untuk semua komposisi
+│   ├── theme.css             ← token warna/tipografi/skala
 │   ├── scenes.html/.css/.js  ← scene opening & closing standar
-│   └── assets/logos/      ← mark & wordmark (salinan dari brand getresolved)
+│   └── assets/logos/         ← mark & wordmark (salinan brand getresolved)
 ├── tools/
-│   ├── load-env.ps1       ← muat .env ke sesi PowerShell
+│   ├── load-env.ps1          ← muat .env ke sesi PowerShell
+│   ├── git-setup.ps1         ← init git + hook penolak secret
 │   ├── estimate-timing.mjs   ← timing perkiraan dari naskah (gratis)
 │   ├── vo-durations.mjs      ← timing final dari berkas VO
 │   └── elevenlabs-keys.mjs   ← kelola & rotasi API key
-└── topics/                ← satu folder per topik (dibuat saat produksi dimulai)
-    └── T01-<slug>/
-        ├── naskah.md      ← sumber kebenaran: outline + VO + visual per scene
-        ├── long/          ← komposisi HyperFrames 16:9
-        ├── short-1/       ← komposisi HyperFrames 9:16
-        ├── short-2/
-        ├── vo/            ← keluaran ElevenLabs, satu berkas per scene
-        └── render/        ← MP4 final + thumbnail + metadata publish
+└── topics/T01-<slug>/
+    ├── naskah.md             ← sumber kebenaran: outline + VO + visual per scene
+    ├── vo/                   ← keluaran ElevenLabs, satu berkas per scene
+    └── render/               ← MP4 final + thumbnail + metadata publish
 ```
+
+Path di dalam komposisi selalu relatif ke akar repo, tanpa `../`:
+`shared/theme.css`, `topics/T01-slug/vo/L-001.mp3`.
 
 ## Prasyarat (status di mesin ini, dicek 2026-08-13)
 
 | Kebutuhan | Status | Catatan |
 |---|---|---|
 | Node.js ≥ 22 | ✅ `v22.21.1` | |
-| Google Chrome | ✅ terpasang | dipakai HyperFrames untuk capture headless |
-| **FFmpeg** | ❌ **belum ada** | **wajib** — `winget install Gyan.FFmpeg` lalu buka terminal baru |
-| `.env` terisi | ❔ 13 nilai masih kosong | termasuk `ELEVENLABS_API_KEY` dan `ELEVENLABS_VOICE_ID` |
+| Google Chrome | ✅ terpasang | HyperFrames juga mengunduh Chrome-nya sendiri saat render pertama |
+| FFmpeg + ffprobe | ✅ `9.0-full_build` | via `winget install Gyan.FFmpeg`; PATH aktif di terminal baru |
+| Pipeline render | ✅ **terbukti** | `index.html` sudah dirender jadi MP4 10,5 dtk |
+| `.env` terisi | ❔ identitas channel masih kosong | `CHANNEL_NAME`, `CHANNEL_HANDLE`, `CTA_TEXT` |
 
-Penyiapan:
+Penyiapan di mesin baru:
 
 ```powershell
-Copy-Item .env.example .env   # sudah dilakukan — tinggal isi nilainya
+Copy-Item .env.example .env   # lalu isi nilainya
 . .\tools\load-env.ps1 -Show  # cek apa saja yang masih kosong
-.\tools\git-setup.ps1         # pasang hook penolak secret (wajib di mesin baru)
-npx hyperframes doctor        # setelah ffmpeg terpasang
+.\tools\git-setup.ps1         # pasang hook penolak secret — WAJIB
+npm run check                 # validasi komposisi uji
 ```
 
 Semua konfigurasi ada di satu tempat — lihat [08 · Konfigurasi](docs/08-konfigurasi.md).

@@ -12,9 +12,9 @@ Berkasnya:
 | [`shared/scenes.css`](../shared/scenes.css) | Gaya kedua scene, sudah menangani 16:9 dan 9:16 |
 | [`shared/scenes.js`](../shared/scenes.js) | Koreografi: `HFScenes.opening()` dan `HFScenes.closing()` |
 | [`shared/assets/logos/`](../shared/assets/logos/) | Mark & wordmark (salinan dari brand getresolved) |
-| [`index.html`](../index.html) | **Komposisi uji** — kedua scene dirangkai jadi video 10,5 dtk |
+| [`compositions/uji-scene-standar.html`](../compositions/uji-scene-standar.html) | **Komposisi uji** — kedua scene dirangkai jadi video 10,5 dtk |
 
-> **Status: sudah terbukti jalan.** `index.html` di root repo adalah komposisi uji
+> **Status: sudah terbukti jalan.** `compositions/uji-scene-standar.html` adalah komposisi uji
 > yang merangkai opening + closing dengan dua scene filler. Sudah lolos
 > `npm run check` (0 error, kontras 11/11 WCAG AA) dan sudah dirender jadi MP4
 > 1920×1080 · 30fps · 10,5 detik. Jalankan ulang kapan saja sebagai **uji regresi
@@ -22,7 +22,7 @@ Berkasnya:
 >
 > ```powershell
 > npm run check
-> npx hyperframes render -o render/uji-scene-standar.mp4
+> npx hyperframes render -c compositions/uji-scene-standar.html -o render/uji-scene-standar.mp4
 > ```
 
 ---

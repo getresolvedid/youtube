@@ -1,93 +1,398 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 
-    <!-- Tema + scene standar channel -->
-    <link rel="stylesheet" href="shared/theme.css" />
-    <link rel="stylesheet" href="shared/scenes.css" />
+    <link rel="stylesheet" href="shared/theme.css">
+    <link rel="stylesheet" href="shared/scenes.css">
 
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { width: 1920px; height: 1080px; overflow: hidden; }
+
+      /* --- pola tata letak khusus komposisi ini --------------------------- */
+
+      .kicker { font-family: var(--font-mono); font-size: var(--fs-label); font-weight: 700;
+                letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
+
+      .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; width: 100%; }
+
+      .big { font-family: var(--font-mono); font-weight: 700; font-size: 200px;
+             line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+
+      /* ruangan: meja (RAM) & lemari (penyimpanan) */
+      .ruang { display: flex; align-items: flex-end; justify-content: space-between;
+               width: 100%; height: 460px; }
+      .meja  { width: 620px; height: 40px; background: var(--accent); border-radius: 8px;
+               position: relative; }
+      .meja::after { content: ""; position: absolute; left: 40px; right: 40px; top: 40px;
+                     height: 150px; border-left: 10px solid var(--accent-deep);
+                     border-right: 10px solid var(--accent-deep); }
+      .lemari { width: 300px; height: 420px; border: 8px solid var(--ink-1);
+                border-radius: 12px; display: flex; flex-direction: column; gap: 10px;
+                padding: 18px; }
+      .laci { flex: 1; background: var(--bg-elev); border: 2px solid var(--line); border-radius: 6px; }
+
+      /* sumbu jarak: cache -> RAM -> penyimpanan */
+      .sumbu { position: relative; width: 100%; height: 300px; }
+      .garis { position: absolute; left: 0; right: 0; top: 150px; height: 4px;
+               background: linear-gradient(90deg, var(--accent), var(--warn), var(--bad)); border-radius: 2px; }
+      .titik { position: absolute; top: 92px; text-align: center; transform: translateX(-50%); }
+      .titik i { display: block; width: 26px; height: 26px; border-radius: 50%;
+                 background: var(--ink-0); margin: 0 auto 18px; }
+      .titik b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 34px; }
+      .titik span { display: block; font-family: var(--font-mono); font-size: 24px; color: var(--ink-1); }
+
+      /* piramida hierarki */
+      .pir { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+      .pir div { height: 76px; border-radius: 10px; display: grid; place-items: center;
+                 font-family: var(--font-display); font-weight: 800; font-size: 30px; color: var(--bg); }
+
+      /* batang perbandingan */
+      .bars { display: flex; align-items: flex-end; gap: 80px; height: 420px; }
+      .bar  { width: 200px; border-radius: 12px 12px 0 0; transform-origin: bottom; }
+      .bar-l { text-align: center; font-family: var(--font-mono); font-size: 26px;
+               color: var(--ink-1); margin-top: 20px; }
+
+      /* grid data — untuk locality */
+      .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; width: 900px; }
+      .grid i { aspect-ratio: 1; border-radius: 6px; background: var(--bg-elev); border: 1px solid var(--line); }
+      .grid i.on { background: var(--accent); border-color: var(--accent); }
+
+      /* kartu spesifikasi mesin */
+      .spec { width: 100%; display: flex; flex-direction: column; gap: 18px; }
+      .spec div { display: flex; justify-content: space-between; align-items: baseline;
+                  padding: 20px 28px; background: var(--bg-elev); border: 1px solid var(--line);
+                  border-radius: var(--radius); }
+      .spec b { font-family: var(--font-display); font-weight: 600; font-size: 34px; }
+      .spec span { font-family: var(--font-mono); font-weight: 700; font-size: 34px; color: var(--accent); }
+
+      .num { font-family: var(--font-mono); font-weight: 700; font-size: 44px; color: var(--ink-2); }
+      .poin { display: flex; gap: 28px; align-items: baseline; }
     </style>
   </head>
 
   <body>
     <!--
-      KOMPOSISI UJI — membuktikan scene standar (opening + closing) benar-benar
-      jalan, bukan hanya benar di atas kertas. Bukan episode.
+      T01 · Apa itu RAM — video panjang 16:9
+      Naskah (sumber kebenaran): ideas/apa-itu-ram/naskah.md
+      Timing: estimasi dari tools/estimate-timing.mjs + scene standar (docs/10)
 
-      Susunan sengaja meniru posisi aslinya:
-        0.0–2.0   filler "hook"  → membuktikan opening TIDAK di detik nol
-        2.0–3.5   OPENING (brand sting, 1,5 dtk)
-        3.5–5.5   filler isi
-        5.5–10.5  CLOSING (end card 16:9, 5 dtk)
+      KOMPOSISI BISU. Track VO (8) sengaja masih kosong — VO baru dibuat setelah
+      naskah dibekukan. Lihat docs/04 §5.
     -->
-    <div
-      id="root"
-      class="hf-stage hf-16x9"
-      data-composition-id="main"
-      data-start="0"
-      data-duration="10.5"
-      data-width="1920"
-      data-height="1080"
-    >
-      <!-- ===== filler: hook ===== -->
-      <div class="scene clip" id="s1" data-start="0" data-duration="2"
-           data-track-index="0" style="visibility:hidden;">
-        <div class="scene-content center">
-          <p class="t-label">uji scene standar</p>
-          <h1 id="s1-title" class="t-title">Hook duluan.<br />Brand belakangan.</h1>
-        </div>
+    <div data-hf-id="hf-ppif" id="root" class="hf-stage hf-16x9" data-composition-id="t01l" data-start="0" data-duration="368.25" data-width="1920" data-height="1080">
+      <!-- ============ BABAK 1 · HOOK ============ -->
+      <div data-hf-id="hf-2vra" class="scene clip" id="s001" data-start="0" data-duration="3.83" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-viw3" class="scene-content center"><p data-hf-id="hf-hmdu" class="kicker" data-anim="">menit pertama</p><h1 data-hf-id="hf-1rdf" class="t-title" data-anim="">Kamu buka sebuah aplikasi.</h1><p data-hf-id="hf-70nt" class="t-body" data-anim="">Yang pertama terasa lambat.</p></div>
+      </div>
+      <div data-hf-id="hf-4wga" class="scene clip" id="s002" data-start="3.83" data-duration="5.97" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-8qjn" class="scene-content center"><h1 data-hf-id="hf-fgqu" class="t-title" data-anim="">Kamu buka lagi.</h1><p data-hf-id="hf-w5pp" class="t-sub c-ok" data-anim="">Kali ini langsung muncul.</p></div>
+      </div>
+      <div data-hf-id="hf-tjf9" class="scene clip" id="s003" data-start="9.8" data-duration="2.97" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-8c8m" class="scene-content center"><div data-hf-id="hf-rjq7" class="duo" data-anim=""><div data-hf-id="hf-owjm" class="panel"><p data-hf-id="hf-sqhw" class="t-sub">Aplikasi sama</p></div><div data-hf-id="hf-gxly" class="panel"><p data-hf-id="hf-cod5" class="t-sub">Komputer sama</p></div></div></div>
+      </div>
+      <div data-hf-id="hf-qifl" class="scene clip" id="s004" data-start="12.77" data-duration="5.11" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-7xxl" class="scene-content center"><p data-hf-id="hf-qoe8" class="kicker" data-anim="">yang berubah cuma satu</p><h1 data-hf-id="hf-qtcm" class="t-title" data-anim="">Di mana datanya berada saat itu.</h1></div>
+      </div>
+      <div data-hf-id="hf-vero" class="scene clip" id="s005" data-start="17.88" data-duration="2.97" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-7jmk" class="scene-content center"><h1 data-hf-id="hf-msnv" class="big c-accent" data-anim="">RAM</h1><p data-hf-id="hf-0pz7" class="t-sub" data-anim="">tempat kerja, bukan tempat simpan</p></div>
       </div>
 
-      <!-- ===== OPENING — brand sting, 1,5 dtk ===== -->
-      <div class="scene clip sc-open" id="sc-open" data-start="2" data-duration="1.5"
-           data-track-index="1" style="visibility:hidden;">
-        <div class="scene-content">
-          <div class="sting">
-            <svg class="sting-mark" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="stingPlate" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#818CF8" /><stop offset="1" stop-color="#4338CA" />
-                </linearGradient>
-                <linearGradient id="stingDot" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#34D399" /><stop offset="1" stop-color="#10B981" />
-                </linearGradient>
+      <!-- ============ SCENE STANDAR · OPENING (brand sting) ============ -->
+      <div data-hf-id="hf-nbao" class="scene clip sc-open" id="sc-open" data-start="20.85" data-duration="1.5" data-track-index="1" style="visibility:hidden">
+        <div data-hf-id="hf-cn5c" class="scene-content">
+          <div data-hf-id="hf-pes3" class="sting">
+            <svg data-hf-id="hf-5gzp" class="sting-mark" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+              <defs data-hf-id="hf-mh0t">
+                <lineargradient data-hf-id="hf-u8xq" id="stingPlate" x1="0" y1="0" x2="1" y2="1"><stop data-hf-id="hf-kdns" offset="0" stop-color="#818CF8" /><stop data-hf-id="hf-978l" offset="1" stop-color="#4338CA" /></lineargradient>
+                <lineargradient data-hf-id="hf-7s03" id="stingDot" x1="0" y1="0" x2="1" y2="1"><stop data-hf-id="hf-55hw" offset="0" stop-color="#34D399" /><stop data-hf-id="hf-j7pa" offset="1" stop-color="#10B981" /></lineargradient>
               </defs>
-              <rect class="sting-plate" width="120" height="120" rx="30" fill="url(#stingPlate)" />
-              <circle class="sting-ring" cx="60" cy="60" r="33" fill="none" stroke="#fff"
-                      stroke-width="9" stroke-linecap="round" />
-              <circle class="sting-dot" cx="60" cy="60" r="13" fill="url(#stingDot)" />
+              <rect data-hf-id="hf-4hfk" class="sting-plate" width="120" height="120" rx="30" fill="url(#stingPlate)" />
+              <circle data-hf-id="hf-r34m" class="sting-ring" cx="60" cy="60" r="33" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" />
+              <circle data-hf-id="hf-drm1" class="sting-dot" cx="60" cy="60" r="13" fill="url(#stingDot)" />
             </svg>
-            <img class="sting-word" src="shared/assets/logos/getresolved-wordmark-inverse.svg" alt="" />
+            <img data-hf-id="hf-jcc1" class="sting-word" src="shared/assets/logos/getresolved-wordmark-inverse.svg" alt="">
           </div>
         </div>
       </div>
 
-      <!-- ===== filler: isi ===== -->
-      <div class="scene clip" id="s2" data-start="3.5" data-duration="2"
-           data-track-index="0" style="visibility:hidden;">
-        <div class="scene-content center">
-          <h2 id="s2-title" class="t-sub">Isi video jalan di sini</h2>
-          <div class="rule" id="s2-rule"></div>
+      <!-- ============ BABAK 2 · KONTRAK ============ -->
+      <div data-hf-id="hf-43js" class="scene clip" id="s006" data-start="22.35" data-duration="6.83" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-75bj" class="scene-content center">
+          <p data-hf-id="hf-bb1r" class="kicker" data-anim="">delapan menit ke depan</p>
+          <div data-hf-id="hf-jo0f" class="duo" style="grid-template-columns:repeat(3,1fr)">
+            <div data-hf-id="hf-30et" class="panel" data-anim=""><p data-hf-id="hf-v0bn" class="t-sub">Meja &amp; lemari</p></div>
+            <div data-hf-id="hf-3j7t" class="panel" data-anim=""><p data-hf-id="hf-3jtr" class="t-sub">Tingkatan</p></div>
+            <div data-hf-id="hf-4q4w" class="panel" data-anim=""><p data-hf-id="hf-c0ra" class="t-sub">Kapan perlu nambah</p></div>
+          </div>
+        </div>
+      </div>
+      <div data-hf-id="hf-jalu" class="scene clip" id="s007" data-start="29.18" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-6r0i" class="scene-content center"><h1 data-hf-id="hf-2c4y" class="t-title" data-anim="">Bukan satu tempat besar.</h1><h1 data-hf-id="hf-m31q" class="t-title c-accent" data-anim="">Dua.</h1></div>
+      </div>
+
+      <!-- ============ BABAK 3 · FONDASI ============ -->
+      <div data-hf-id="hf-hdlt" class="scene clip" id="s008" data-start="33.44" data-duration="5.54" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-o0eg" class="scene-content">
+          <p data-hf-id="hf-z5wm" class="kicker" data-anim="">bayangkan satu ruangan</p>
+          <div data-hf-id="hf-8s7p" class="ruang"><div data-hf-id="hf-bjv4" class="meja" data-anim=""></div><div data-hf-id="hf-ch3v" class="lemari" data-anim=""><i data-hf-id="hf-gmap" class="laci"></i><i data-hf-id="hf-xgj9" class="laci"></i><i data-hf-id="hf-yngc" class="laci"></i><i data-hf-id="hf-y95b" class="laci"></i></div></div>
+        </div>
+      </div>
+      <div data-hf-id="hf-xeny" class="scene clip" id="s009" data-start="38.98" data-duration="5.54" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-6cph" class="scene-content center"><h1 data-hf-id="hf-a5xs" class="t-title" data-anim="">Semua dokumen yang pernah kamu punya</h1><p data-hf-id="hf-nclf" class="t-sub c-mute" data-anim="">ada di lemari itu.</p></div>
+      </div>
+      <div data-hf-id="hf-wa1f" class="scene clip" id="s010" data-start="44.52" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-5yeg" class="scene-content center"><h1 data-hf-id="hf-87ru" class="t-title c-bad" data-anim="">Tapi kamu tidak membacanya di dalam lemari.</h1></div>
+      </div>
+      <div data-hf-id="hf-anq2" class="scene clip" id="s011" data-start="48.78" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-5k3f" class="scene-content center"><h1 data-hf-id="hf-6php" class="t-title" data-anim="">Ambil dulu.</h1><p data-hf-id="hf-1oov" class="t-sub c-accent" data-anim="">Taruh di meja. Baru dikerjakan.</p></div>
+      </div>
+      <div data-hf-id="hf-6npa" class="scene clip" id="s012" data-start="53.04" data-duration="5.54" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-1dpl" class="scene-content center"><p data-hf-id="hf-gmci" class="kicker" data-anim="">lemari arsip itu</p><h1 data-hf-id="hf-v9l7" class="big" style="font-size:120px" data-anim="">PENYIMPANAN</h1><p data-hf-id="hf-bpvq" class="t-body" data-anim="">hard disk, atau S S D</p></div>
+      </div>
+      <div data-hf-id="hf-jd5l" class="scene clip" id="s013" data-start="58.58" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-1s0m" class="scene-content center"><h1 data-hf-id="hf-nf5j" class="t-title" data-anim="">Isinya tetap ada</h1><p data-hf-id="hf-tqp4" class="t-sub c-mute" data-anim="">walaupun lampu dimatikan.</p></div>
+      </div>
+      <div data-hf-id="hf-mjuc" class="scene clip" id="s014" data-start="62.84" data-duration="1.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-26bn" class="scene-content center"><p data-hf-id="hf-lklk" class="kicker" data-anim="">mejanya</p><h1 data-hf-id="hf-q28r" class="big c-accent" data-anim="">RAM</h1></div>
+      </div>
+      <div data-hf-id="hf-0vb0" class="scene clip" id="s015" data-start="64.53" data-duration="3.4" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-2kmo" class="scene-content center"><h1 data-hf-id="hf-uc6c" class="t-title" data-anim="">Kecil.</h1><p data-hf-id="hf-546y" class="t-sub c-accent" data-anim="">Tapi semua pekerjaan terjadi di sana.</p></div>
+      </div>
+      <div data-hf-id="hf-uvs0" class="scene clip" id="s016" data-start="67.93" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-zshh" class="scene-content center"><h1 data-hf-id="hf-mqna" class="t-title" data-anim="">Meja lebih luas</h1><p data-hf-id="hf-qyhi" class="t-sub" data-anim="">= lebih banyak terbuka sekaligus</p></div>
+      </div>
+      <div data-hf-id="hf-l1mc" class="scene clip" id="s017" data-start="72.62" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-06si" class="scene-content center"><h1 data-hf-id="hf-6y3d" class="t-title c-ok" data-anim="">Tak perlu bolak-balik ke lemari.</h1></div>
+      </div>
+      <div data-hf-id="hf-rdr8" class="scene clip" id="s018" data-start="76.88" data-duration="5.97" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-0l3j" class="scene-content center"><h1 data-hf-id="hf-fr2p" class="t-title" data-anim="">Dan setiap perjalanan ke lemari</h1><p data-hf-id="hf-megg" class="t-sub c-warn" data-anim="">jauh lebih lama daripada yang kamu kira.</p></div>
+      </div>
+      <div data-hf-id="hf-2z78" class="scene clip" id="s019" data-start="82.85" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-0zek" class="scene-content center"><p data-hf-id="hf-2x4c" class="kicker" data-anim="">itu sebabnya</p><h1 data-hf-id="hf-r4o4" class="t-title" data-anim="">Yang pertama terasa lambat.</h1></div>
+      </div>
+      <div data-hf-id="hf-s14s" class="scene clip" id="s020" data-start="87.11" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-y79d" class="scene-content center"><p data-hf-id="hf-tyvp" class="kicker" data-anim="">yang kedua cepat</p><h1 data-hf-id="hf-vdwb" class="t-title c-ok" data-anim="">Dokumennya masih di meja.</h1></div>
+      </div>
+      <div data-hf-id="hf-aal4" class="scene clip" id="s021" data-start="91.37" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-ylke" class="scene-content center"><h1 data-hf-id="hf-6trg" class="t-title c-warn" data-anim="">Tapi analogi ini punya satu bocor.</h1></div>
+      </div>
+      <div data-hf-id="hf-wpfi" class="scene clip" id="s022" data-start="95.63" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-25de" class="scene-content center"><div data-hf-id="hf-y4bg" class="duo"><div data-hf-id="hf-bu0f" class="panel ok" data-anim=""><p data-hf-id="hf-lb1p" class="t-sub">Meja sungguhan</p><p data-hf-id="hf-88x6" class="t-body">tetap berisi</p></div><div data-hf-id="hf-sg6y" class="panel bad" data-anim=""><p data-hf-id="hf-h97c" class="t-sub">RAM</p><p data-hf-id="hf-9h9x" class="t-body">kosong</p></div></div></div>
+      </div>
+      <div data-hf-id="hf-afpc" class="scene clip" id="s023" data-start="99.89" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-1r2d" class="scene-content center"><h1 data-hf-id="hf-huva" class="big c-bad" style="font-size:130px" data-anim="">LISTRIK MATI</h1><p data-hf-id="hf-dvox" class="t-sub" data-anim="">seluruh isi RAM hilang. Tanpa sisa.</p></div>
+      </div>
+
+      <!-- ============ BABAK 4 · MEKANISME ============ -->
+      <div data-hf-id="hf-afzo" class="scene clip" id="s024" data-start="104.58" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-2xzg" class="scene-content center"><p data-hf-id="hf-rgbc" class="kicker" data-anim="">yang jarang diceritakan</p><h1 data-hf-id="hf-l9sf" class="t-title" data-anim="">Mejanya ternyata bukan cuma satu.</h1></div>
+      </div>
+      <div data-hf-id="hf-xyac" class="scene clip" id="s025" data-start="109.27" data-duration="5.11" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-2jof" class="scene-content center"><div data-hf-id="hf-oeb8" class="pir" data-anim=""><div data-hf-id="hf-3ujo" style="width:420px;background:var(--accent)">cache</div><div data-hf-id="hf-kmdb" style="width:640px;background:var(--accent-deep)">RAM</div><div data-hf-id="hf-6jg6" style="width:860px;background:var(--warn)">SSD</div><div data-hf-id="hf-t3es" style="width:1080px;background:var(--bad)">hard disk</div></div></div>
+      </div>
+      <div data-hf-id="hf-blc6" class="scene clip" id="s026" data-start="114.38" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-3qli" class="scene-content center"><h1 data-hf-id="hf-1zzl" class="t-title" data-anim="">Yang membedakan bukan ukuran.</h1><h1 data-hf-id="hf-qzg3" class="big c-accent" style="font-size:150px" data-anim="">JARAK</h1></div>
+      </div>
+      <div data-hf-id="hf-dlgz" class="scene clip" id="s027" data-start="118.64" data-duration="5.97" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-3cah" class="scene-content center"><div data-hf-id="hf-folw" class="duo"><div data-hf-id="hf-y21b" class="panel ok" data-anim=""><p data-hf-id="hf-otsl" class="t-sub">Dekat</p><p data-hf-id="hf-1q80" class="t-body">cepat · kecil · mahal</p></div><div data-hf-id="hf-qkri" class="panel bad" data-anim=""><p data-hf-id="hf-1w28" class="t-sub">Jauh</p><p data-hf-id="hf-mew7" class="t-body">lambat · besar · murah</p></div></div></div>
+      </div>
+      <div data-hf-id="hf-anmf" class="scene clip" id="s028" data-start="124.61" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-4j7k" class="scene-content center"><h1 data-hf-id="hf-g3ls" class="t-title" data-anim="">Bayangkan jaraknya kamu tempuh sendiri.</h1></div>
+      </div>
+      <div data-hf-id="hf-hje1" class="scene clip" id="s029" data-start="128.87" data-duration="5.11" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-44wj" class="scene-content center"><p data-hf-id="hf-1f93" class="kicker" data-anim="">tingkat pertama</p><h1 data-hf-id="hf-q40i" class="t-title" data-anim="">Tepat di depanmu. Tinggal julurkan tangan.</h1></div>
+      </div>
+      <div data-hf-id="hf-qwog" class="scene clip" id="s030" data-start="133.98" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-yyx6" class="scene-content center"><h1 data-hf-id="hf-h9lo" class="big c-accent" style="font-size:150px" data-anim="">CACHE</h1><p data-hf-id="hf-hy4s" class="t-sub" data-anim="">meja kecil yang menempel di prosesor</p></div>
+      </div>
+      <div data-hf-id="hf-txbb" class="scene clip" id="s031" data-start="138.24" data-duration="3.83" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-ykm5" class="scene-content center"><p data-hf-id="hf-r4x1" class="kicker" data-anim="">RAM</p><h1 data-hf-id="hf-wtno" class="t-title" data-anim="">Rak di seberang ruangan.</h1></div>
+      </div>
+      <div data-hf-id="hf-ftvw" class="scene clip" id="s032" data-start="142.07" data-duration="3.83" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-o1tn" class="scene-content center"><p data-hf-id="hf-yjkx" class="kicker" data-anim="">penyimpanan</p><h1 data-hf-id="hf-j3in" class="t-title" data-anim="">Gudang, di lantai bawah.</h1></div>
+      </div>
+      <div data-hf-id="hf-qbls" class="scene clip" id="s033" data-start="145.9" data-duration="6.4" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-mthd" class="scene-content">
+          <p data-hf-id="hf-o6fr" class="kicker" data-anim="">kalau dirasakan sebagai waktu manusia</p>
+          <div data-hf-id="hf-ee69" class="sumbu" data-anim="">
+            <div data-hf-id="hf-dyci" class="garis"></div>
+            <div data-hf-id="hf-zk5l" class="titik" style="left:8%"><i data-hf-id="hf-wt6k"></i><b data-hf-id="hf-np1h">cache</b><span data-hf-id="hf-65x1">1 detik</span></div>
+            <div data-hf-id="hf-jpbu" class="titik" style="left:45%"><i data-hf-id="hf-zeb8"></i><b data-hf-id="hf-c2qr">RAM</b><span data-hf-id="hf-vsg2">±&#160;1 menit</span></div>
+          </div>
+        </div>
+      </div>
+      <div data-hf-id="hf-f70m" class="scene clip" id="s034" data-start="152.3" data-duration="5.11" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-n7se" class="scene-content">
+          <div data-hf-id="hf-qedx" class="sumbu" data-anim="">
+            <div data-hf-id="hf-kgli" class="garis"></div>
+            <div data-hf-id="hf-z1rx" class="titik" style="left:8%"><i data-hf-id="hf-y7e5"></i><b data-hf-id="hf-mw9l">cache</b><span data-hf-id="hf-l415">1 detik</span></div>
+            <div data-hf-id="hf-affi" class="titik" style="left:45%"><i data-hf-id="hf-ylp6"></i><b data-hf-id="hf-j5r7">RAM</b><span data-hf-id="hf-n292">±&#160;1 menit</span></div>
+            <div data-hf-id="hf-rtvu" class="titik" style="left:92%"><i data-hf-id="hf-xx58" style="background:var(--bad)"></i><b data-hf-id="hf-3s3g" class="c-bad">hard disk</b><span data-hf-id="hf-3y3m">±&#160;2 bulan</span></div>
+          </div>
+        </div>
+      </div>
+      <div data-hf-id="hf-3rg1" class="scene clip" id="s035" data-start="157.41" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-og4o" class="scene-content center"><h1 data-hf-id="hf-wicd" class="t-title" data-anim="">Dan komputermu menempuhnya</h1><h1 data-hf-id="hf-8b2y" class="t-title c-accent" data-anim="">jutaan kali sehari.</h1></div>
+      </div>
+      <div data-hf-id="hf-khzk" class="scene clip" id="s036" data-start="161.67" data-duration="3.4" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-n97l" class="scene-content center"><h1 data-hf-id="hf-rjys" class="t-title" data-anim="">Lalu kalau mejanya penuh?</h1></div>
+      </div>
+      <div data-hf-id="hf-gimr" class="scene clip" id="s037" data-start="165.07" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-nnim" class="scene-content center"><h1 data-hf-id="hf-i5ua" class="t-title" data-anim="">Yang paling jarang dipakai</h1><p data-hf-id="hf-99dh" class="t-sub c-warn" data-anim="">diangkat dari meja.</p></div>
+      </div>
+      <div data-hf-id="hf-apbf" class="scene clip" id="s038" data-start="169.76" data-duration="3.83" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-mglj" class="scene-content center"><h1 data-hf-id="hf-umvh" class="t-title" data-anim="">Dipindahkan ke lemari.</h1></div>
+      </div>
+      <div data-hf-id="hf-9n02" class="scene clip" id="s039" data-start="173.59" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-muwk" class="scene-content center"><p data-hf-id="hf-bd3m" class="kicker" data-anim="">tapi ingat</p><h1 data-hf-id="hf-b0tj" class="t-title c-bad" data-anim="">Lemari itu dua bulan jauhnya.</h1></div>
+      </div>
+      <div data-hf-id="hf-45y9" class="scene clip" id="s040" data-start="177.85" data-duration="3.83" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-lnzh" class="scene-content center"><h1 data-hf-id="hf-bi1i" class="t-title" data-anim="">Semuanya berhenti menunggu.</h1></div>
+      </div>
+      <div data-hf-id="hf-h9zk" class="scene clip" id="s041" data-start="181.68" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-m2ai" class="scene-content center"><h1 data-hf-id="hf-3bc8" class="t-title" data-anim="">Itulah rasanya</h1><p data-hf-id="hf-b0gf" class="t-sub c-bad" data-anim="">saat komputer tiba-tiba tersendat parah.</p></div>
+      </div>
+      <div data-hf-id="hf-hhi6" class="scene clip" id="s042" data-start="185.94" data-duration="3.83" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-r89v" class="scene-content center"><h1 data-hf-id="hf-ou99" class="t-title" data-anim="">Satu hal terakhir. Dan ini aneh.</h1></div>
+      </div>
+      <div data-hf-id="hf-oopu" class="scene clip" id="s043" data-start="189.77" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-rmkw" class="scene-content center"><h1 data-hf-id="hf-l534" class="t-title" data-anim="">RAM menyimpan ingatannya</h1><p data-hf-id="hf-kbmb" class="t-sub c-warn" data-anim="">di dalam wadah yang bocor pelan-pelan.</p></div>
+      </div>
+      <div data-hf-id="hf-wguh" class="scene clip" id="s044" data-start="194.03" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-othg" class="scene-content center"><h1 data-hf-id="hf-d54n" class="t-title" data-anim="">Jadi isinya ditulis ulang terus-menerus.</h1><p data-hf-id="hf-o4ce" class="t-sub c-accent" data-anim="">Ribuan kali setiap detik.</p></div>
+      </div>
+      <div data-hf-id="hf-holb" class="scene clip" id="s045" data-start="198.72" data-duration="6.4" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-of6f" class="scene-content center"><h1 data-hf-id="hf-7dep" class="t-title" data-anim="">Berhenti sebentar saja — ingatannya hilang.</h1><p data-hf-id="hf-xshf" class="t-sub c-mute" data-anim="">Itu sebabnya RAM lupa saat listrik mati.</p></div>
+      </div>
+      <div data-hf-id="hf-0vhx" class="scene clip" id="s046" data-start="205.12" data-duration="5.54" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-o0ve" class="scene-content center"><h1 data-hf-id="hf-kx66" class="t-title" data-anim="">Kalau cache sekecil itu,</h1><p data-hf-id="hf-23oq" class="t-sub" data-anim="">kenapa bisa membantu sebanyak itu?</p></div>
+      </div>
+      <div data-hf-id="hf-z733" class="scene clip" id="s047" data-start="210.66" data-duration="6.4" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-nmkd" class="scene-content center"><p data-hf-id="hf-wmrc" class="kicker" data-anim="">program tidak membaca acak</p><div data-hf-id="hf-c3q2" class="grid" data-anim="" id="grid47"></div></div>
+      </div>
+      <div data-hf-id="hf-p3te" class="scene clip" id="s048" data-start="217.06" data-duration="5.97" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-qepk" class="scene-content center"><h1 data-hf-id="hf-iw44" class="t-title" data-anim="">Sekali ditarik ke meja kecil,</h1><p data-hf-id="hf-7vj3" class="t-sub c-accent" data-anim="">biasanya dipakai lagi sebentar kemudian.</p></div>
+      </div>
+      <div data-hf-id="hf-4emf" class="scene clip" id="s049" data-start="223.03" data-duration="5.11" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-q0ej" class="scene-content center"><h1 data-hf-id="hf-hfky" class="t-title c-ok" data-anim="">Meja sekecil apa pun tetap berguna —</h1><p data-hf-id="hf-veoi" class="t-sub" data-anim="">asal isinya yang tepat.</p></div>
+      </div>
+      <div data-hf-id="hf-qjt8" class="scene clip" id="s050" data-start="228.14" data-duration="5.97" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-pm3i" class="scene-content center"><h1 data-hf-id="hf-z814" class="t-title" data-anim="">Kalau begitu, kenapa tidak semuanya</h1><h1 data-hf-id="hf-2xpf" class="t-title c-accent" data-anim="">dibuat secepat cache?</h1></div>
+      </div>
+      <div data-hf-id="hf-69ql" class="scene clip" id="s051" data-start="234.11" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-p7sh" class="scene-content center"><p data-hf-id="hf-fqny" class="kicker" data-anim="">kecepatan dibayar dua hal</p><div data-hf-id="hf-ehot" class="duo"><div data-hf-id="hf-4btv" class="panel" data-anim=""><p data-hf-id="hf-h0yn" class="t-sub">Ruang</p></div><div data-hf-id="hf-2caq" class="panel" data-anim=""><p data-hf-id="hf-73up" class="t-sub">Uang</p></div></div></div>
+      </div>
+      <div data-hf-id="hf-fwqm" class="scene clip" id="s052" data-start="238.8" data-duration="5.11" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-rzxo" class="scene-content center"><h1 data-hf-id="hf-4dsh" class="t-title" data-anim="">Meja kecil harus menempel di prosesor.</h1><p data-hf-id="hf-fz7p" class="t-sub c-mute" data-anim="">Ruang di sana sangat terbatas.</p></div>
+      </div>
+      <div data-hf-id="hf-tclc" class="scene clip" id="s053" data-start="243.91" data-duration="5.54" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-rlmn" class="scene-content center"><h1 data-hf-id="hf-mifi" class="t-title" data-anim="">Setiap tambahan di sana</h1><p data-hf-id="hf-mxug" class="t-sub c-warn" data-anim="">memakan tempat yang bisa dipakai hal lain.</p></div>
+      </div>
+      <div data-hf-id="hf-6gjk" class="scene clip" id="s054" data-start="249.45" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-pl59" class="scene-content center">
+          <p data-hf-id="hf-3qwx" class="kicker" data-anim="">harga per gigabita</p>
+          <div data-hf-id="hf-umx2" class="bars">
+            <div data-hf-id="hf-yeow"><div data-hf-id="hf-1fni" class="bar" data-anim="" style="height:90px;background:var(--ink-2)"></div><p data-hf-id="hf-ur7z" class="bar-l">RAM</p></div>
+            <div data-hf-id="hf-y7yw"><div data-hf-id="hf-4h15" class="bar" data-anim="" style="height:380px;background:var(--accent)"></div><p data-hf-id="hf-u75d" class="bar-l">cache</p></div>
+          </div>
+        </div>
+      </div>
+      <div data-hf-id="hf-9x67" class="scene clip" id="s055" data-start="253.71" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-pzga" class="scene-content center"><h1 data-hf-id="hf-aq9i" class="t-title" data-anim="">Jadi komputer tidak memilih satu.</h1><p data-hf-id="hf-oyiv" class="t-sub c-accent" data-anim="">Ia memakai semuanya sekaligus.</p></div>
+      </div>
+      <div data-hf-id="hf-88od" class="scene clip" id="s056" data-start="257.97" data-duration="5.97" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-qdrb" class="scene-content center"><div data-hf-id="hf-7vkc" class="pir" data-anim=""><div data-hf-id="hf-19q4" style="width:360px;background:var(--accent)">sedikit · sangat cepat</div><div data-hf-id="hf-qvip" style="width:660px;background:var(--accent-deep)">lebih banyak</div><div data-hf-id="hf-hqbf" style="width:960px;background:var(--warn)">banyak</div><div data-hf-id="hf-573h" style="width:1260px;background:var(--bad)">sangat banyak · paling lambat</div></div></div>
+      </div>
+      <div data-hf-id="hf-j7t1" class="scene clip" id="s057" data-start="263.94" data-duration="4.26" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-qs2c" class="scene-content center"><h1 data-hf-id="hf-ra5i" class="t-title" data-anim="">Itu bukan kompromi terpaksa.</h1><p data-hf-id="hf-baf1" class="t-sub c-accent" data-anim="">Itu memang rancangannya.</p></div>
+      </div>
+
+      <!-- ============ BABAK 5 · REALITA ============ -->
+      <div data-hf-id="hf-8x6e" class="scene clip" id="s058" data-start="268.2" data-duration="5.54" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-r6dd" class="scene-content center"><p data-hf-id="hf-6iek" class="kicker" data-anim="">angka aslinya</p><h1 data-hf-id="hf-9mbe" class="t-title" data-anim="">Di komputer yang dipakai membuat video ini.</h1></div>
+      </div>
+      <div data-hf-id="hf-c4wn" class="scene clip" id="s059" data-start="273.74" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-m0vb" class="scene-content">
+          <p data-hf-id="hf-o0m3" class="kicker" data-anim="">Intel Core i7-11700F · 8 inti</p>
+          <div data-hf-id="hf-j07t" class="spec"><div data-hf-id="hf-x366" data-anim=""><b data-hf-id="hf-am3l">cache L2</b><span data-hf-id="hf-ozdi">4 MB</span></div><div data-hf-id="hf-9hzm" data-anim=""><b data-hf-id="hf-b0em">cache L3</b><span data-hf-id="hf-tnsp">16 MB</span></div></div>
+        </div>
+      </div>
+      <div data-hf-id="hf-l46b" class="scene clip" id="s060" data-start="278.43" data-duration="5.54" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-mf6c" class="scene-content">
+          <div data-hf-id="hf-dpd9" class="spec"><div data-hf-id="hf-9wan" data-anim=""><b data-hf-id="hf-4vif">cache total</b><span data-hf-id="hf-4ls9">± 20 MB</span></div><div data-hf-id="hf-aalo" data-anim=""><b data-hf-id="hf-irg6">RAM</b><span data-hf-id="hf-iy69">32 GB</span></div></div>
+          <p data-hf-id="hf-rg0l" class="t-sub c-accent" data-anim="">kira-kira 1.600× lebih besar</p>
+        </div>
+      </div>
+      <div data-hf-id="hf-109v" class="scene clip" id="s061" data-start="283.97" data-duration="6.4" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-rkoe" class="scene-content center"><h1 data-hf-id="hf-1pbr" class="t-title" data-anim="">Sepersekian ribu ukuran mejanya.</h1><p data-hf-id="hf-y04q" class="t-sub c-accent" data-anim="">Tapi hampir semua pekerjaan lewat sana.</p></div>
+      </div>
+      <div data-hf-id="hf-gtu1" class="scene clip" id="s062" data-start="290.37" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-ryzf" class="scene-content center"><h1 data-hf-id="hf-stq3" class="big" style="font-size:120px" data-anim="">Perlu nambah RAM?</h1></div>
+      </div>
+      <div data-hf-id="hf-hdut" class="scene clip" id="s063" data-start="295.06" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-sdag" class="scene-content center"><h1 data-hf-id="hf-jpsn" class="t-title" data-anim="">Jawabannya bukan angka besar-besaran.</h1><p data-hf-id="hf-ns2i" class="t-sub c-accent" data-anim="">Tapi: apakah mejamu memang sudah penuh.</p></div>
+      </div>
+      <div data-hf-id="hf-sl3g" class="scene clip" id="s064" data-start="299.75" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-srlh" class="scene-content center"><h1 data-hf-id="hf-20e1" class="t-title" data-anim="">Kalau semua pekerjaanmu masih muat,</h1><p data-hf-id="hf-w7k2" class="t-sub" data-anim="">menambah meja tidak memberi apa-apa.</p></div>
+      </div>
+      <div data-hf-id="hf-9664" class="scene clip" id="s065" data-start="304.44" data-duration="2.54" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-t5wi" class="scene-content center"><p data-hf-id="hf-emy2" class="kicker" data-anim="">bukan sedikit lebih cepat</p><h1 data-hf-id="hf-gx7v" class="big c-bad" data-anim="">0%</h1></div>
+      </div>
+      <div data-hf-id="hf-hxph" class="scene clip" id="s066" data-start="306.98" data-duration="6.4" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-k5fa" class="scene-content center"><h1 data-hf-id="hf-69d7" class="t-title" data-anim="">Tapi kalau berkas mulai ditumpuk di lantai,</h1><p data-hf-id="hf-r47i" class="t-sub c-ok" data-anim="">tambahan meja mengubah segalanya.</p></div>
+      </div>
+      <div data-hf-id="hf-1spz" class="scene clip" id="s067" data-start="313.38" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-jr49" class="scene-content center"><p data-hf-id="hf-8ib0" class="kicker" data-anim="">indikator yang salah</p><h1 data-hf-id="hf-8j25" class="t-title c-bad" data-anim="">RAM terpakai 80%</h1></div>
+      </div>
+      <div data-hf-id="hf-09h9" class="scene clip" id="s068" data-start="318.07" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-ky1c" class="scene-content center"><h1 data-hf-id="hf-kb9h" class="t-title c-ok" data-anim="">RAM yang kosong itu terbuang percuma.</h1><p data-hf-id="hf-gelr" class="t-sub" data-anim="">Sistem sengaja mengisinya.</p></div>
+      </div>
+      <div data-hf-id="hf-25xp" class="scene clip" id="s069" data-start="322.76" data-duration="5.11" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-kjqb" class="scene-content center"><p data-hf-id="hf-uw10" class="kicker" data-anim="">yang harus dilihat</p><h1 data-hf-id="hf-o5ui" class="t-title" data-anim="">Seberapa sering berkas dipindah ke lemari.</h1></div>
+      </div>
+      <div data-hf-id="hf-ax35" class="scene clip" id="s070" data-start="327.87" data-duration="5.54" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-ik76" class="scene-content center"><div data-hf-id="hf-evzu" class="duo"><div data-hf-id="hf-1xzp" class="panel" data-anim=""><p data-hf-id="hf-fy81" class="kicker">Windows</p><p data-hf-id="hf-xuhz" class="t-sub">page file</p></div><div data-hf-id="hf-34ws" class="panel" data-anim=""><p data-hf-id="hf-tlsb" class="kicker">Linux &amp; Mac</p><p data-hf-id="hf-i7tf" class="t-sub">swap</p></div></div></div>
+      </div>
+      <div data-hf-id="hf-2v00" class="scene clip" id="s071" data-start="333.41" data-duration="5.97" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-i5w5" class="scene-content center"><h1 data-hf-id="hf-wl5b" class="t-title" data-anim="">Kalau angka itu terus naik saat bekerja,</h1><p data-hf-id="hf-qb8h" class="t-sub c-ok" data-anim="">barulah menambah RAM masuk akal.</p></div>
+      </div>
+
+      <!-- ============ BABAK 6 · RANGKUMAN ============ -->
+      <div data-hf-id="hf-o6mm" class="scene clip" id="s072" data-start="339.38" data-duration="3.83" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-jct8" class="scene-content center"><h1 data-hf-id="hf-g162" class="big c-accent" data-anim="">3</h1><p data-hf-id="hf-wyik" class="t-sub" data-anim="">yang perlu kamu bawa pulang</p></div>
+      </div>
+      <div data-hf-id="hf-j9pm" class="scene clip" id="s073" data-start="343.21" data-duration="3.83" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-l899" class="scene-content"><div data-hf-id="hf-ltfh" class="poin" data-anim=""><span data-hf-id="hf-kud6" class="num">1</span><h1 data-hf-id="hf-zarv" class="t-title">RAM bukan tempat menyimpan.<br data-hf-id="hf-x5px">RAM tempat mengerjakan.</h1></div></div>
+      </div>
+      <div data-hf-id="hf-z3zj" class="scene clip" id="s074" data-start="347.04" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-lmka" class="scene-content"><div data-hf-id="hf-jpzl" class="poin" data-anim=""><span data-hf-id="hf-l8o7" class="num">2</span><h1 data-hf-id="hf-r4oj" class="t-title">Yang bikin cepat bukan ukurannya —<br data-hf-id="hf-rsrt">tapi jaraknya ke prosesor.</h1></div></div>
+      </div>
+      <div data-hf-id="hf-tgsx" class="scene clip" id="s075" data-start="351.73" data-duration="4.69" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-qsjn" class="scene-content"><div data-hf-id="hf-kwwo" class="poin" data-anim=""><span data-hf-id="hf-lmz8" class="num">3</span><h1 data-hf-id="hf-6007" class="t-title">Nambah RAM hanya membantu<br data-hf-id="hf-szow">kalau mejamu memang sudah penuh.</h1></div></div>
+      </div>
+      <div data-hf-id="hf-wusz" class="scene clip" id="s076" data-start="356.42" data-duration="6.83" data-track-index="0" style="visibility:hidden">
+        <div data-hf-id="hf-iyi7" class="scene-content center"><h1 data-hf-id="hf-7pp9" class="t-title" data-anim="">Penasaran apa yang terjadi di dalam meja kecil itu?</h1><p data-hf-id="hf-07ui" class="t-sub c-accent" data-anim="">Bilang di komentar.</p></div>
+      </div>
+
+      <!-- ============ SCENE STANDAR · CLOSING (end card) ============ -->
+      <div data-hf-id="hf-1v23" class="scene clip sc-close" id="sc-close" data-start="363.25" data-duration="5" data-track-index="1" style="visibility:hidden">
+        <div data-hf-id="hf-r6uo" class="scene-content">
+          <img data-hf-id="hf-5osk" class="close-mark" src="shared/assets/logos/getresolved-mark.svg" alt="">
+          <h2 data-hf-id="hf-w5co" class="close-cta">Masih penasaran <em data-hf-id="hf-7lth">kenapa</em>?</h2>
+          <div data-hf-id="hf-ohcv" class="close-rule"></div>
+          <p data-hf-id="hf-ie88" class="close-handle">@GetResolved</p>
+          <p data-hf-id="hf-ixa6" class="close-sub">Penjelasan teknologi, coding, dan engineering dalam Bahasa Indonesia.</p>
         </div>
       </div>
 
-      <!-- ===== CLOSING — end card 16:9, 5 dtk ===== -->
-      <div class="scene clip sc-close" id="sc-close" data-start="5.5" data-duration="5"
-           data-track-index="1" style="visibility:hidden;">
-        <div class="scene-content">
-          <img class="close-mark" src="shared/assets/logos/getresolved-mark.svg" alt="" />
-          <h2 class="close-cta">Masih penasaran <em>kenapa</em>?</h2>
-          <div class="close-rule"></div>
-          <p class="close-handle">@GetResolved</p>
-          <p class="close-sub">Penjelasan teknologi, coding, dan engineering dalam Bahasa Indonesia.</p>
-        </div>
-      </div>
+      <!--
+        Track 8 (voice over) sengaja KOSONG. Diisi di langkah 7 pipeline,
+        setelah naskah dibekukan dan VO ElevenLabs dibuat.
+      -->
     </div>
 
     <script src="shared/scenes.js"></script>
@@ -95,24 +400,107 @@
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
 
-      /* --- filler: hook --- */
-      tl.set("#s1", { autoAlpha: 1 }, 0);
-      tl.from("#s1-title", { opacity: 0, y: 24, duration: 0.5, ease: "power3.out" }, 0.2);
-      tl.set("#s1", { autoAlpha: 0 }, 2);
+      /* Grid locality untuk scene 047 — dibangun deterministik, tanpa Math.random. */
+      (function () {
+        const g = document.getElementById("grid47");
+        const panas = [14, 15, 16, 26, 27, 28, 38, 39, 40];   // sel yang dipakai berulang
+        for (let i = 0; i < 60; i++) {
+          const c = document.createElement("i");
+          if (panas.includes(i)) c.className = "on";
+          g.appendChild(c);
+        }
+      })();
 
-      /* --- OPENING (scene standar) --- */
-      HFScenes.opening(tl, { at: 2 });
+      /* --- koreografi dasar, seragam untuk semua scene ---------------------
+         Setiap scene: tampil (autoAlpha), satu tween masuk untuk tiap [data-anim]
+         dengan stagger, lalu sembunyi. Ease dan arah divariasikan berdasarkan
+         indeks scene supaya gerakannya tidak terasa mekanis — tetap deterministik
+         karena hanya bergantung pada urutan, bukan angka acak. */
 
-      /* --- filler: isi --- */
-      tl.set("#s2", { autoAlpha: 1 }, 3.5);
-      tl.from("#s2-title", { opacity: 0, y: 20, duration: 0.45, ease: "power3.out" }, 3.7);
-      tl.from("#s2-rule", { scaleX: 0, transformOrigin: "left center", duration: 0.5, ease: "expo.out" }, 3.9);
-      tl.set("#s2", { autoAlpha: 0 }, 5.5);
+      const EASE = ["power3.out", "power2.out", "back.out(1.4)", "expo.out", "circ.out"];
 
-      /* --- CLOSING (scene standar) --- */
-      HFScenes.closing(tl, { at: 5.5 });
+      document.querySelectorAll(".scene").forEach((el, i) => {
+        if (el.classList.contains("sc-open") || el.classList.contains("sc-close")) return;
 
-      window.__timelines["main"] = tl;
+        const start = parseFloat(el.dataset.start);
+        const dur = parseFloat(el.dataset.duration);
+        const sel = "#" + el.id + " [data-anim]";
+        const n = el.querySelectorAll("[data-anim]").length;
+
+        tl.set("#" + el.id, { autoAlpha: 1 }, start);
+
+        if (n) {
+          tl.from(sel, {
+            opacity: 0,
+            y: i % 3 === 0 ? 28 : 20,
+            duration: 0.55,
+            ease: EASE[i % EASE.length],
+            stagger: 0.12,
+          }, start + 0.18);
+        }
+
+        /* Scene panjang tidak boleh jadi layar diam — beri aktivitas tengah. */
+        if (dur > 4.5 && n) {
+          tl.to(sel, {
+            y: -5,
+            duration: 1.4,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: 1,
+            stagger: 0.08,
+          }, start + dur * 0.45);
+        }
+
+        tl.set("#" + el.id, { autoAlpha: 0 }, start + dur);
+      });
+
+      /* --- tween khusus untuk scene bertanda ------------------------------- */
+
+      // 025 & 056 — piramida tumbuh dari puncak ke dasar
+      ["#s025", "#s056"].forEach((s) => {
+        const st = parseFloat(document.querySelector(s).dataset.start);
+        tl.from(s + " .pir div", { scaleX: 0, transformOrigin: "center", duration: 0.55,
+          ease: "expo.out", stagger: 0.13 }, st + 0.25);
+      });
+
+      // 033 & 034 — sumbu jarak: garis tergambar lalu titik-titik muncul
+      ["#s033", "#s034"].forEach((s) => {
+        const st = parseFloat(document.querySelector(s).dataset.start);
+        tl.from(s + " .garis", { scaleX: 0, transformOrigin: "left center",
+          duration: 0.9, ease: "power2.out" }, st + 0.2);
+        tl.from(s + " .titik", { opacity: 0, scale: 0.7, transformOrigin: "center",
+          duration: 0.45, ease: "back.out(2)", stagger: 0.18 }, st + 0.5);
+      });
+
+      // 054 — batang harga tumbuh dari bawah
+      (function () {
+        const st = parseFloat(document.querySelector("#s054").dataset.start);
+        tl.from("#s054 .bar", { scaleY: 0, duration: 0.6, ease: "expo.out", stagger: 0.15 }, st + 0.3);
+      })();
+
+      // 047 — sel "panas" berdenyut berulang: data yang sama dipakai lagi dan lagi
+      (function () {
+        const st = parseFloat(document.querySelector("#s047").dataset.start);
+        tl.from("#s047 .grid i", { opacity: 0, duration: 0.3, ease: "power1.out",
+          stagger: { each: 0.012, from: "start" } }, st + 0.25);
+        tl.to("#s047 .grid i.on", { scale: 1.18, transformOrigin: "center", duration: 0.5,
+          ease: "sine.inOut", yoyo: true, repeat: 3, stagger: 0.05 }, st + 1.2);
+      })();
+
+      // 008 — ruangan: meja & lemari masuk dari sisi berlawanan
+      (function () {
+        const st = parseFloat(document.querySelector("#s008").dataset.start);
+        tl.from("#s008 .meja", { x: -160, opacity: 0, duration: 0.7, ease: "power3.out" }, st + 0.25);
+        tl.from("#s008 .lemari", { x: 160, opacity: 0, duration: 0.7, ease: "power3.out" }, st + 0.35);
+        tl.from("#s008 .laci", { scaleY: 0, transformOrigin: "top", duration: 0.4,
+          ease: "power2.out", stagger: 0.09 }, st + 0.8);
+      })();
+
+      /* --- scene standar (docs/10) ----------------------------------------- */
+      HFScenes.opening(tl, { at: 20.85 });
+      HFScenes.closing(tl, { at: 363.25 });
+
+      window.__timelines["t01l"] = tl;
     </script>
   </body>
 </html>

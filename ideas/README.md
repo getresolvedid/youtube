@@ -1,13 +1,24 @@
 # ideas/ — tempat masuk semua ide
 
-**Semua ide posting ditulis di sini dulu.** Satu ide, satu berkas `.md`.
-Menangkap ide harus murah — tulis apa adanya, tidak perlu rapi, tidak perlu
-lengkap. Yang penting tidak hilang.
+**Semua ide posting ditulis di sini dulu — dan seluruh produksinya juga hidup
+di sini.** Satu ide, satu folder `ideas/<slug>/`.
+
+Menangkap ide harus murah: cukup buat `ideas/<slug>/ide.md` dan tulis apa adanya.
+Tidak perlu rapi, tidak perlu lengkap. Yang penting tidak hilang. Berkas lain
+(`naskah.md`, `vo/`, `render/`) menyusul kalau dan ketika ide itu digarap.
+
+```
+ideas/apa-itu-ram/
+├── ide.md        ← selalu ada
+├── naskah.md     ← setelah lolos 4 syarat
+├── vo/           ← setelah naskah beku
+└── render/       ← MP4 + thumbnail + publish.md
+```
 
 ## Alur sebuah ide
 
 ```
-ideas/<slug>.md          →   docs/07-backlog-topik.md   →   topics/T{nn}-<slug>/
+ideas/<slug>/ide.md      →   docs/07-backlog-topik.md   →   ideas/<slug>/naskah.md
    ide mentah                 lolos 4 syarat,                naskah, VO, komposisi,
    (siapa pun, kapan pun)     dapat kode T{nn}               render
        ↓ tidak lolos
@@ -41,7 +52,7 @@ kali ia bisa digabung dengan ide lain, atau diturunkan jadi Shorts saja.
 
 ## Template
 
-Salin ke `ideas/<slug>.md`:
+Salin ke `ideas/<slug>/ide.md`:
 
 ```markdown
 ---

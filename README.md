@@ -66,11 +66,10 @@ youtube/                      ← ROOT PROJECT HyperFrames
 ├── .env.example              ← kontrak konfigurasi (di-commit)
 ├── hyperframes.json          ← paths.assets → "shared"
 ├── package.json              ← npm run dev / check / render
-├── index.html                ← komposisi uji scene standar (uji regresi visual)
+├── index.html                ← KOMPOSISI EPISODE YANG SEDANG DIGARAP
 ├── docs/                     ← guideline (01–10)
-├── ideas/                    ← SEMUA ide posting masuk sini dulu (1 berkas = 1 ide)
 ├── compositions/             ← satu berkas per episode per format
-│   └── T01-long.html · T01-short-1.html · T01-short-2.html
+│   └── uji-scene-standar.html · episode yang sudah selesai
 ├── shared/
 │   ├── theme.css             ← token warna/tipografi/skala
 │   ├── scenes.html/.css/.js  ← scene opening & closing standar
@@ -81,14 +80,17 @@ youtube/                      ← ROOT PROJECT HyperFrames
 │   ├── estimate-timing.mjs   ← timing perkiraan dari naskah (gratis)
 │   ├── vo-durations.mjs      ← timing final dari berkas VO
 │   └── elevenlabs-keys.mjs   ← kelola & rotasi API key
-└── topics/T01-<slug>/
-    ├── naskah.md             ← sumber kebenaran: outline + VO + visual per scene
-    ├── vo/                   ← keluaran ElevenLabs, satu berkas per scene
-    └── render/               ← MP4 final + thumbnail + metadata publish
+└── ideas/                    ← SEMUA ide + seluruh produksinya hidup di sini
+    ├── README.md             ← alur & template ide
+    └── <slug>/
+        ├── ide.md            ← ide mentah + uji 4 syarat (selalu ada)
+        ├── naskah.md         ← sumber kebenaran: outline + VO + visual per scene
+        ├── vo/               ← keluaran ElevenLabs, satu berkas per scene
+        └── render/           ← MP4 final + thumbnail + metadata publish
 ```
 
 Path di dalam komposisi selalu relatif ke akar repo, tanpa `../`:
-`shared/theme.css`, `topics/T01-slug/vo/L-001.mp3`.
+`shared/theme.css`, `ideas/<slug>/vo/L-001.mp3`.
 
 ## Prasyarat (status di mesin ini, dicek 2026-08-13)
 
@@ -97,7 +99,7 @@ Path di dalam komposisi selalu relatif ke akar repo, tanpa `../`:
 | Node.js ≥ 22 | ✅ `v22.21.1` | |
 | Google Chrome | ✅ terpasang | HyperFrames juga mengunduh Chrome-nya sendiri saat render pertama |
 | FFmpeg + ffprobe | ✅ `9.0-full_build` | via `winget install Gyan.FFmpeg`; PATH aktif di terminal baru |
-| Pipeline render | ✅ **terbukti** | `index.html` sudah dirender jadi MP4 10,5 dtk |
+| Pipeline render | ✅ **terbukti** | komposisi uji scene standar sudah dirender jadi MP4 |
 | `.env` terisi | ❔ identitas channel masih kosong | `CHANNEL_NAME`, `CHANNEL_HANDLE`, `CTA_TEXT` |
 
 Penyiapan di mesin baru:
@@ -120,15 +122,13 @@ Sudah ditetapkan:
 | Channel | **Get Resolved** — [youtube.com/@GetResolved](https://www.youtube.com/@GetResolved) |
 | Website / CTA | [getresolved.id](https://getresolved.id) |
 | Voice ElevenLabs | **George** (`JBFqnCBsd6RMkjVDRZzb`), model `eleven_multilingual_v2` |
-
 | Audiens | **Khalayak umum + developer** dalam satu video, dijembatani tangga L1→L2→L3 |
-
-| Episode pertama | **T01 · Apa itu RAM** — [ide](ideas/apa-itu-ram.md) · [backlog](docs/07-backlog-topik.md) |
+| Episode pertama | **T01 · Apa itu RAM** — [ide](ideas/apa-itu-ram/ide.md) · [backlog](docs/07-backlog-topik.md) |
 
 Yang masih terbuka:
 
 1. **Angka latensi untuk T01** belum punya sumber primer. Opsi paling jujur:
    ukur sendiri di mesin ini dan sebutkan spesifikasinya di video. Detailnya di
-   [ideas/apa-itu-ram.md](ideas/apa-itu-ram.md#catatan).
+   [ideas/apa-itu-ram/ide.md](ideas/apa-itu-ram/ide.md#catatan).
 2. **Musik latar.** Belum ada aset di `shared/`; dibutuhkan sebelum render final
    episode pertama.

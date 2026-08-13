@@ -59,7 +59,7 @@ Jangan dipakai di `eleven_multilingual_v2` — tag akan ikut dibaca sebagai teks
 
 ## Template `naskah.md`
 
-Salin blok di bawah ke `topics/T{nn}-{slug}/naskah.md`.
+Salin blok di bawah ke `ideas/<slug>/naskah.md`.
 
 ````markdown
 ---

@@ -105,9 +105,12 @@ for (const s of sections) {
 
   for (const sc of s.scenes) {
     const vo = (sc.words / WPM) * 60;
-    const dur = vo + PAD;
+    // Bulatkan durasi DULU, baru dijumlahkan. Kalau start diakumulasi dari nilai
+    // yang belum dibulatkan, data-start akan meleset ~0,01 dtk dari akhir scene
+    // sebelumnya — dan HyperFrames menolaknya sebagai overlapping_clips_same_track.
+    const dur = Math.round((vo + PAD) * 100) / 100;
     console.log(`| ${sc.no} | ${sc.words} | ${f(vo)} | ${f(dur)} | ${f(start)} |`);
-    start += dur;
+    start = Math.round((start + dur) * 100) / 100;
     chars += sc.chars;
   }
 

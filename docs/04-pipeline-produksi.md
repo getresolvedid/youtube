@@ -62,7 +62,7 @@ youtube/                        ← ROOT PROJECT HyperFrames
 │   ├── T01-short-1.html        1080×1920
 │   └── T01-short-2.html
 ├── shared/                     tema, scene standar, logo
-└── topics/T01-cara-kerja-index-database/
+└── ideas/apa-itu-ram/
     ├── naskah.md               sumber kebenaran (lihat docs/05)
     ├── vo/L-001.mp3 …          satu berkas per scene
     └── render/
@@ -77,7 +77,7 @@ youtube/                        ← ROOT PROJECT HyperFrames
 ```html
 <link rel="stylesheet" href="shared/theme.css">
 <img src="shared/assets/logos/getresolved-mark.svg">
-<audio src="topics/T01-cara-kerja-index-database/vo/L-001.mp3">
+<audio src="ideas/apa-itu-ram/vo/L-001.mp3">
 ```
 
 **Penamaan:** `T{nn}-{slug-kebab}`. Kode episode `T01-L`, `T01-S1`, `T01-S2`
@@ -121,7 +121,7 @@ Cek sebelum lanjut:
 Hitung perkiraan durasi tiap scene dari jumlah kata — tanpa menyentuh API.
 
 ```powershell
-node --env-file=.env tools/estimate-timing.mjs topics/T01-slug/naskah.md
+node --env-file=.env tools/estimate-timing.mjs ideas/<slug>/naskah.md
 ```
 
 Keluarannya tabel `data-start` / `data-duration` yang siap disalin ke komposisi,
@@ -309,7 +309,7 @@ istilah teknis, nama library, dan akronim wajib dicek manusia.
 Sekarang ganti timing perkiraan dengan angka sebenarnya.
 
 ```powershell
-node --env-file=.env tools/vo-durations.mjs topics/T01-slug/vo L
+node --env-file=.env tools/vo-durations.mjs ideas/<slug>/vo L
 ```
 
 Skrip ini menjalankan `ffprobe` untuk tiap berkas dan mengeluarkan tabel timing
@@ -330,7 +330,7 @@ Lalu:
 
 ```html
 <audio data-start="0" data-duration="4.2" data-track-index="8" data-volume="1.0"
-       src="topics/T01-slug/vo/L-001.mp3"></audio>
+       src="ideas/<slug>/vo/L-001.mp3"></audio>
 
 <audio data-start="0" data-duration="480" data-track-index="9" data-volume="0.12"
        src="shared/music/tenang.mp3"></audio>
@@ -342,8 +342,8 @@ Lalu:
 npm run check                    # lint + runtime + layout + motion + kontras
 npm run dev                      # Studio (server panjang — jalankan di background)
 
-npx hyperframes render -c compositions/T01-long.html -o topics/T01-slug/render/T01-L.mp4 --quality draft
-npx hyperframes render -c compositions/T01-long.html -o topics/T01-slug/render/T01-L.mp4
+npx hyperframes render -c compositions/T01-long.html -o ideas/<slug>/render/T01-L.mp4 --quality draft
+npx hyperframes render -c compositions/T01-long.html -o ideas/<slug>/render/T01-L.mp4
 ```
 
 - **Selalu `npm run check` sebelum render** — sekali jalan sudah mencakup lint,

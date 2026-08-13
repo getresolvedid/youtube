@@ -1,5 +1,14 @@
 # compositions/
 
+> **Episode yang sedang digarap hidup di `index.html` (akar repo), bukan di sini.**
+> `npm run check`, `npm run dev`, dan `npm run render` semuanya bekerja pada
+> `index.html` — kalau episode aktif disimpan di folder ini, gerbang QA kita
+> tidak pernah menyentuhnya. Folder ini untuk komposisi yang **sudah selesai**
+> atau tidak sedang digarap; jalankan dengan `-c`.
+>
+> Alur: garap di `index.html` → selesai → pindahkan ke `compositions/T{nn}-*.html`
+> → `index.html` diisi episode berikutnya.
+
 Satu berkas HTML per episode per format:
 
 ```
@@ -17,7 +26,7 @@ Aturan yang mengikat:
   unik, plus `data-width` / `data-height` / `data-duration`.
 - Kunci `window.__timelines` **harus sama** dengan `data-composition-id`.
 - Path aset relatif ke akar repo, **tanpa `../`**: `shared/theme.css`,
-  `topics/T01-slug/vo/L-001.mp3`.
+  `ideas/<slug>/vo/L-001.mp3`.
 - Opening & closing disalin dari [`../shared/scenes.html`](../shared/scenes.html),
   jangan dibuat ulang — lihat [docs/10](../docs/10-scene-standar.md).
 - Jalankan `npm run check` setiap selesai menyunting.
@@ -25,5 +34,5 @@ Aturan yang mengikat:
 Render satu komposisi:
 
 ```powershell
-npx hyperframes render -c compositions/T01-long.html -o topics/T01-slug/render/T01-L.mp4
+npx hyperframes render -c compositions/T01-long.html -o ideas/<slug>/render/T01-L.mp4
 ```

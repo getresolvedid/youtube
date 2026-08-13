@@ -65,18 +65,26 @@ HyperFrames, dan aset render. Mulai dari [README.md](README.md).
 ```powershell
 . .\tools\load-env.ps1                      # muat .env dulu (perhatikan titik di depan)
 node tools/elevenlabs-keys.mjs status       # cek / rotasi API key ElevenLabs
-node --env-file=.env tools/estimate-timing.mjs topics/T01-slug/naskah.md
-node --env-file=.env tools/vo-durations.mjs topics/T01-slug/vo L
+node --env-file=.env tools/estimate-timing.mjs ideas/<slug>/naskah.md
+node --env-file=.env tools/vo-durations.mjs ideas/<slug>/vo L
 
 npm run check                               # lint + runtime + layout + motion + kontras
 npm run dev                                 # Studio — server panjang, jalankan di background
-npx hyperframes render -c compositions/T01-long.html -o topics/T01-slug/render/T01-L.mp4
-npx hyperframes render -o render/uji-scene-standar.mp4   # uji regresi scene standar
+npx hyperframes render -o ideas/<slug>/render/T01-L.mp4          # index.html = episode aktif
+npx hyperframes render -c compositions/uji-scene-standar.html -o render/uji-scene-standar.mp4
 ```
 
-**Repo ini adalah satu project HyperFrames** — root-nya di akar repo, komposisi
-di `compositions/`. Jangan `npx hyperframes init` lagi per episode, dan jangan
-menulis path aset dengan `../` (ditolak lint). Aturan framework-nya ada di
-[AGENTS.md](AGENTS.md); **selalu `npm run check` setelah menyunting komposisi.**
+**Repo ini adalah satu project HyperFrames** — root-nya di akar repo. Jangan
+`npx hyperframes init` lagi per episode, dan jangan menulis path aset dengan
+`../` (ditolak lint).
+
+**Episode yang sedang digarap selalu di `index.html`.** `check`, `lint`, `dev`,
+dan `render` tanpa `-c` semuanya bekerja pada berkas itu; komposisi yang disimpan
+di `compositions/` tidak tersentuh gerbang QA. Setelah episode selesai,
+pindahkan ke `compositions/T{nn}-*.html` dan isi `index.html` dengan episode
+berikutnya.
+
+Aturan framework-nya ada di [AGENTS.md](AGENTS.md); **selalu `npm run check`
+setelah menyunting komposisi.**
 
 Belum ada `npm test` / `make build` di repo ini — jangan mengarang perintah.

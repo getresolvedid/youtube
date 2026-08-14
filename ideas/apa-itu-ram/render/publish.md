@@ -126,13 +126,25 @@ Teks: **MEJA, BUKAN GUDANG** (3 kata). Tidak mengulang satu kata pun dari judul
 — judul menjelaskan *kenapa disalin*, thumbnail menaruh gambarannya.
 
 Isi: figur meja kerja (berkas terhampar) di kiri, lemari arsip gudang di kanan,
-panah salin di antaranya — komponen yang sama dengan scene `ram-analogy`, jadi
-gambarnya bisa dirender dari komposisinya sendiri:
-`npx remotion still 04-ram-analogy out/thumb.png`, lalu teks ditambahkan di
-kartu 1280×720 dengan `shared/theme.css`. Latar `--bg`, aksen Indigo.
-Hasil akhirnya disimpan di sebelah berkas ini sebagai `thumb.png`.
+panah salin di antaranya — kelas `.meja` dan `.lemari` yang sama dengan scene
+`04-ram-analogy`. Latar `--bg`, aksen Indigo. Meja terang, lemari redup: ini
+kartu **koreksi**, dan yang dibaca dalam seperempat detik adalah kontrasnya,
+bukan panahnya.
 
-Uji 210×118 sebelum dipakai.
+**Sudah jadi** — `thumb.png` di sebelah berkas ini, 1280×720, 230 KB.
+
+```powershell
+npx remotion still T01-thumb ideas/apa-itu-ram/render/thumb.png
+```
+
+Sumbernya [`../thumb.tsx`](../thumb.tsx) (kata & figur) di atas
+[`shared/Thumbnail.tsx`](../../../shared/Thumbnail.tsx) (tata letak channel).
+Kalau kata-katanya diganti, render ulang perintah di atas — jangan menyunting
+PNG-nya.
+
+**Uji 210×118: lolos.** Tinggi huruf kapital 95px (syarat ≥ 90). Panahnya
+sengaja panjang dari tepi lemari sampai tepi meja — versi pendeknya terbaca
+sebagai tanda, bukan sebagai jarak, padahal jarak itulah isi videonya.
 
 ### Pinned comment
 
@@ -224,7 +236,7 @@ Video panjang:
 - [x] Detik bab disalin ulang dari `../timing.gen.ts` setelah VO jadi.
 - [x] VO terpasang di seluruh 9 scene bicara, nol subtitel preview.
 - [ ] **Tonton utuh & dengarkan pengucapannya** — tidak bisa diwakilkan skrip.
-- [ ] Thumbnail lolos uji 210×118.
+- [x] Thumbnail lolos uji 210×118 (`thumb.png`, dirender dari `T01-thumb`).
 - [ ] Playlist pilar dipilih.
 - [ ] End screen dipasang, tidak menutupi teks di 5 detik terakhir.
 - [ ] Subtitle Indonesia diunggah (dari `../scenes/*-vo.md`, bukan auto-generate).

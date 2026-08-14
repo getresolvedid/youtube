@@ -454,6 +454,9 @@ npm run render     # episode utuh → out/
 npm run render:s1  # Short 1 utuh (9:16) → out/
 npm run render:s2  # Short 2 utuh (9:16) → out/
 
+# thumbnail — komposisi sendiri, 1280x720 (docs/06 § Thumbnail)
+npx remotion still T01-thumb ideas/apa-itu-ram/render/thumb.png
+
 # satu scene saja — inilah gunanya HARD RULE 1
 npx remotion still  01-hook-question out/hook.png
 npx remotion render 01-hook-question out/hook.mp4

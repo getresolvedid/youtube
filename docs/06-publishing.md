@@ -109,9 +109,38 @@ Tag sekadar sinyal pendukung — judul, thumbnail, dan retensi jauh lebih menent
   melengkapi: judul menjelaskan, thumbnail menarik.
 - Konsisten: posisi teks, palet, dan gaya tetap sama antar-episode supaya video
   channel dikenali dari kejauhan di feed.
-- Thumbnail bisa dirender dari Remotion (`npx remotion still <komposisi> thumb.png`)
-  memakai `shared/theme.css` yang sama — hasilnya otomatis sekeluarga dengan
-  videonya.
+### Dirender dari Remotion, bukan digambar terpisah
+
+Tiap episode punya satu komposisi thumbnail sendiri:
+
+```
+ideas/<slug>/thumb.tsx        kata-katanya + figurnya (milik episode)
+shared/Thumbnail.tsx          tata letak, ukuran huruf, posisi teks (milik channel)
+src/Root.tsx                  id komposisi "T<nn>-thumb", 1280x720 dari .env
+
+npx remotion still T01-thumb ideas/apa-itu-ram/render/thumb.png
+```
+
+**Yang milik episode cuma dua: kata-katanya dan figurnya.** Sisanya —
+posisi teks di kiri bawah, ukuran huruf, palet, marjin — hidup di
+`shared/Thumbnail.tsx` dan dipakai bersama. Syarat thumbnail yang paling sulit
+dipenuhi bukan "bagus" melainkan **sama**: video channel dikenali di feed dari
+kejauhan lewat tata letak yang tidak berubah, dan itu tidak bertahan kalau tiap
+episode menyalin lalu menggesernya sedikit.
+
+Figurnya **wajib dari videonya sendiri** — komponen dan kelas CSS yang sama
+dengan scene-nya, bukan gambar baru yang mirip. Thumbnail yang menjanjikan
+gambar yang tidak ada di videonya menaikkan CTR dan menurunkan retensi, dan
+YouTube menghitung yang kedua.
+
+Batas 4 kata **dijaga kode**: `shared/Thumbnail.tsx` melempar error kalau
+dilanggar. Peringatan di terminal akan terlewat; render yang gagal tidak.
+
+**Sudut kanan bawah tidak dipakai** — di situ YouTube menempelkan badge durasi.
+
+Shorts tidak dibuatkan thumbnail: YouTube memakai frame dari videonya sendiri,
+dan frame pertama Shorts kita memang sudah dirancang berdiri sendiri
+([docs/02 § Anatomi Shorts](02-format-video.md#anatomi-shorts)).
 
 ## Playlist
 

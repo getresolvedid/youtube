@@ -89,6 +89,12 @@ const TITIK = [
     props: { subtitel: false },
   },
   { komposisi: "s1-99-closing", frame: 40, nama: "tanda brand 9:16" },
+  /* Thumbnail ikut disampel walaupun ia bukan video. Justru ia yang paling
+     mahal kalau kosong: MP4 yang gelap ketahuan saat ditonton sebelum diunggah,
+     tapi thumbnail cuma dilihat sekali — waktu dipilih di kolom unggah — dan
+     sesudah itu tidak ada yang membukanya lagi. Ukurannya juga sendiri
+     (1280x720), jadi episode yang lolos tidak membuktikan apa pun tentangnya. */
+  { komposisi: "T01-thumb", frame: 0, nama: "thumbnail 1280x720" },
 ];
 
 /* --- pembaca PNG minimal ---------------------------------------------------

@@ -35,6 +35,7 @@ import { CFG, FPS, f } from "../shared/config.gen";
 import { Panggung, type Rasio } from "../shared/Stage";
 import { TrekVO } from "../shared/Vo";
 import { Episode, isiScene } from "../ideas/apa-itu-ram/Episode";
+import { Thumb } from "../ideas/apa-itu-ram/thumb";
 import { TIMING, TOTAL, cari } from "../ideas/apa-itu-ram/timing.gen";
 import {
   Short as ShortS1,
@@ -66,6 +67,15 @@ const UKURAN_16x9 = {
 const UKURAN_9x16 = {
   width: CFG.SHORT_WIDTH,
   height: CFG.SHORT_HEIGHT,
+} as const;
+
+/** Thumbnail 1280x720 — syarat YouTube, bukan turunan LONG_WIDTH. Sengaja
+ *  komposisi tersendiri dan bukan frame yang dipetik dari episode: teksnya
+ *  tidak boleh mengulang judul (docs/06), jadi ia memang bukan salah satu
+ *  frame videonya. */
+const UKURAN_THUMB = {
+  width: CFG.THUMB_WIDTH,
+  height: CFG.THUMB_HEIGHT,
 } as const;
 
 /** Pabrik komponen "satu scene berdiri sendiri di panggung penuh".
@@ -136,6 +146,16 @@ export const RemotionRoot: React.FC = () => (
       durationInFrames={f(TOTAL)}
       fps={FPS}
       {...UKURAN_16x9}
+    />
+
+    {/* Satu frame saja — ini gambar, bukan video:
+        npx remotion still T01-thumb ideas/apa-itu-ram/render/thumb.png */}
+    <Composition
+      id="T01-thumb"
+      component={Thumb}
+      durationInFrames={1}
+      fps={FPS}
+      {...UKURAN_THUMB}
     />
 
     {/* Folder Studio — 83 scene di daftar yang sama dengan episode akan

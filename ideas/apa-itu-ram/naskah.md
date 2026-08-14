@@ -11,6 +11,9 @@ naskah_beku:
   S1: 2026-08-14
   S2: 2026-08-14
 karakter_terpakai: 4185   # 2026-08-14 · L 2.785 + S1 & S2 1.400 — sekali jalan, nol generate ulang
+kamus:                    # kamus pengucapan ElevenLabs, dikompilasi dari § Kamus pengucapan
+  id: XIVGhYQEqXXJmNBpHY7Z
+  version: lxPnmq4DGvjvzzXPd8Aj   # 6 aturan · dibuat 2026-08-14
 tanggal_target:
 ---
 
@@ -117,15 +120,38 @@ meja — ada meja jauh lebih kecil yang menempel padanya, namanya cache
 
 ## Kamus pengucapan
 
-| Tulis di VO | Maksudnya | Catatan |
+Tabel ini **dikompilasi jadi kamus ElevenLabs** — `kamus:` di frontmatter
+menyimpan `id` dan `version`-nya. Arahnya kiri ke kanan: naskah menulis ejaan
+normal, alias yang dikirim ke TTS. Hanya ElevenLabs yang melihat kolom kanan;
+subtitel penonton dan `npm run sisa` membaca kolom kiri.
+
+| Tulis di VO | Alias ke TTS | Kenapa |
 |---|---|---|
-| kesh | cache | TTS cenderung membaca "kaks" |
-| S S D | SSD | dieja per huruf |
-| hardisk | hard disk | ditulis sesuai lafal Indonesia; "hard disk" dibaca janggal |
-| ram | RAM | dibaca sebagai kata, aman |
-| prosesor | CPU | sengaja tidak memakai "CPU" |
-| D D R lima | DDR5 | dieja per huruf, angkanya ditulis sebagai kata |
-| S O D I M M | SO-DIMM | hanya di layar, tidak pernah masuk VO |
+| cache | kesh | TTS cenderung membaca "kaks" |
+| SSD | S S D | dieja per huruf |
+| DDR4 | D D R empat | dieja per huruf, angkanya jadi kata |
+| DDR5 | D D R lima | sama |
+| hard disk | hardisk | lafal Indonesia; "hard disk" dibaca janggal |
+| RAM | ram | supaya dibaca sebagai kata, bukan dieja |
+
+**Blok `## VO` T01 belum memakai ejaan kolom kiri.** Naskahnya beku dan VO-nya
+sudah dibayar, jadi teksnya masih `S S D` dan `D D R empat` seperti saat
+digenerate. Kamusnya inert terhadap teks itu — `SSD` tidak cocok dengan `S S D`
+karena `word_boundaries` dan `case_sensitive` keduanya `true` — dan baru aktif
+saat T01 digenerate ulang. Membersihkan teksnya sekarang tanpa generate ulang
+justru memisahkan naskah dari audio yang sudah ada.
+
+## Pilihan kata
+
+Bukan pengucapan, melainkan keputusan **istilah mana yang dipakai** — dan
+sengaja **tidak** masuk kamus. Kalau `CPU → prosesor` jadi aturan alias,
+ElevenLabs akan menutupi pelanggaran kosakata L1 alih-alih membiarkannya
+ketahuan, dan naskah yang salah lolos karena terdengar benar.
+
+| Dipakai | Bukan | Kenapa |
+|---|---|---|
+| prosesor | CPU | akronim dilarang di L1 ([docs/09](../../docs/09-tangga-abstraksi.md)) |
+| — | SO-DIMM | hanya di layar, tidak pernah masuk VO |
 
 ---
 

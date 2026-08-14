@@ -18,6 +18,8 @@ import "./theme.css";
 import "./figur.css";
 import "./scenes.css";
 import { SpriteIkon } from "./Icons";
+import { PeriksaJahitan } from "./PeriksaJahitan";
+import { PeriksaTumpang } from "./PeriksaTumpang";
 
 export type Rasio = "16x9" | "9x16";
 
@@ -39,6 +41,11 @@ export const Panggung: React.FC<{
   >
     <SpriteIkon />
     {children}
+    {/* Keduanya TIDUR kecuali input prop-nya dikirim — tidak merender apa pun
+        dan tidak menyentuh frame. tools/periksa-tumpang.mjs dan
+        tools/periksa-jahitan.mjs yang menyalakannya, satu per satu. */}
+    <PeriksaTumpang />
+    <PeriksaJahitan />
   </AbsoluteFill>
 );
 

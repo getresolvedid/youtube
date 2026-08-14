@@ -341,15 +341,72 @@ percobaan pertama** — setiap kesalahan di sini berarti generate ulang berbayar
 
 - Tulis angka sesuai cara baca: `"seratus milidetik"`, bukan `"100 ms"`.
   Kecuali angka besar yang memang dibaca sebagai angka: `"dua ribu dua puluh enam"`.
-- Akronim yang dieja per huruf tulis dengan pemisah: `"H T T P"`, `"S Q L"`,
-  `"A P I"`. Yang dibaca sebagai kata biarkan utuh: `"cache"`, `"JSON"`.
-- Istilah Inggris di kalimat Indonesia sering salah baca. Kalau hasilnya keliru,
-  **tulis fonetik Indonesia** di blok `## VO` dan simpan bentuk aslinya di
-  `## Catatan`. Contoh: `cache → kesh`, `queue → kyu`, `deadlock → dedlok`,
-  `schema → skima`.
-- Kumpulkan perbaikan pengucapan di bagian **Kamus pengucapan** `naskah.md`
-  supaya konsisten antar-episode — dan supaya kesalahan yang sama tidak dibayar
-  dua kali.
+- **Akronim dan istilah asing tidak lagi ditulis fonetik di blok `## VO`.**
+  Tulis ejaan normalnya — `SSD`, `DDR4`, `cache` — dan daftarkan pengucapannya
+  di § Kamus pengucapan. Mekanismenya di bawah.
+
+## Kamus pengucapan
+
+Dulu perbaikan pengucapan ditulis langsung ke blok `## VO`: `cache` diketik
+`kesh`, `SSD` diketik `S S D`. Itu berhasil untuk ElevenLabs dan **merusak
+empat pembaca lain** — blok `## VO` juga sumber subtitel preview, sumber
+hitungan kata untuk timing, yang dicetak `npm run sisa` saat kamu menilai
+sambungan, dan nanti sumber berkas subtitel penonton. Salah eja yang disengaja
+untuk menyenangkan satu pembaca dibayar oleh empat lainnya.
+
+Sekarang pemetaannya hidup di luar naskah, di **kamus pengucapan ElevenLabs**.
+
+**Sumbernya tabel `## Kamus pengucapan` di `naskah.md`**, dan arahnya kiri ke
+kanan — naskah menulis ejaan normal, alias yang dikirim ke TTS:
+
+| Tulis di VO | Alias ke TTS | Kenapa |
+|---|---|---|
+| cache | kesh | TTS cenderung membaca "kaks" |
+| SSD | S S D | dieja per huruf |
+| DDR4 | D D R empat | dieja per huruf, angkanya jadi kata |
+
+Kamusnya berdiri di akun ElevenLabs dan `id` + `version`-nya disimpan di
+frontmatter naskah, **satu kamus per topik**:
+
+```yaml
+kamus:
+  id: XIVGhYQEqXXJmNBpHY7Z
+  version: lxPnmq4DGvjvzzXPd8Aj
+```
+
+Endpoint-nya, semuanya `POST` ke `https://api.elevenlabs.io/v1/pronunciation-dictionaries`:
+
+| Operasi | Jalur | Hasil |
+|---|---|---|
+| Buat | `…/add-from-rules` | `{id, version_id}` |
+| Tambah aturan | `…/{id}/add-rules` | versi baru |
+| Hapus aturan | `…/{id}/remove-rules` | versi baru |
+
+lalu dipakai lewat `pronunciation_dictionary_locators` (maks 3) di panggilan
+text-to-speech.
+
+**Hanya aturan `alias` yang dipakai.** Aturan `phoneme` cuma didukung
+`eleven_flash_v2` — model yang dilarang untuk produksi di `.env`. Untuk
+`eleven_multilingual_v2` kendali pengucapan berarti substitusi kata, bukan
+fonetik.
+
+**`version` disematkan, tidak dibiarkan mengikuti yang terbaru.** Locator boleh
+mengabaikannya, tapi versi kamus adalah riwayat, bukan alamat isi: menghapus
+aturan yang baru ditambahkan menghasilkan versi **ketiga**, bukan kembali ke
+yang pertama. Tanpa disematkan, tidak akan pernah bisa dibuktikan versi mana
+yang menghasilkan audio yang ada. Konsekuensinya mengikat — **tabel berubah
+berarti dua tempat naik**, kamus di server dan baris `version` di sini.
+
+**Yang tidak boleh masuk kamus: pilihan kata.** `CPU → prosesor` adalah aturan
+penulisan ([docs/09](09-tangga-abstraksi.md)), bukan pengucapan. Kalau ia jadi
+aturan alias, ElevenLabs menutupi pelanggaran kosakata L1 alih-alih
+membiarkannya ketahuan, dan naskah yang salah lolos karena terdengar benar.
+Taruh di tabel `## Pilihan kata` yang terpisah.
+
+**Topik yang sudah beku tidak dibersihkan.** Naskah T01 masih menulis `S S D`
+karena VO-nya sudah dibayar; kamusnya inert terhadap teks itu dan baru aktif
+saat digenerate ulang. Membersihkan teks tanpa generate ulang memisahkan naskah
+dari audio yang sudah ada — dan tidak ada yang akan memberitahumu.
 
 **Yang dihindari di blok `## VO`**
 
@@ -360,6 +417,52 @@ percobaan pertama** — setiap kesalahan di sini berarti generate ulang berbayar
 
 **Audio tag** (hanya `eleven_v3`): `[excited]`, `[whispers]`, dan sejenisnya.
 Jangan dipakai di `eleven_multilingual_v2` — tag akan ikut dibaca sebagai teks.
+
+## Audit naskah VO — dua lapis
+
+Memeriksa naskah VO terbelah tajam, dan belahannya **bukan soal keparahan
+melainkan soal siapa yang bisa memutuskan**.
+
+```powershell
+npm run vo-script-audit                              # kedua topik
+node --env-file=.env tools/vo-script-audit.mjs <slug>
+```
+
+| Tingkat | Isi | Perilaku |
+|---|---|---|
+| **A · pasti salah** | audio tag di model yang tidak mendukungnya · simbol mentah · tanda kurung · angka digit · akronim tanpa aturan kamus · `<break>` mentah atau > 3 dtk | **exit 1** |
+| **B · perlu dibaca** | ritme datar · dua kalimat dalam satu beat · kalimat > 18 kata · tanya tanpa `?` | dicetak saja |
+
+**Tingkat B tidak pernah menggagalkan**, dan itu disengaja. Baris pembuka
+`05-kenapa-cepat` — "Dekatnya memang membantu. Tapi bukan cuma itu." — ditandai
+sebagai dua kalimat dalam satu beat, padahal ia justru jembatan HARD RULE 7
+terbaik di episode itu. Aturan yang menggagalkan build karena naskahnya bagus
+akan dimatikan orang dalam seminggu, dan tingkat A ikut mati bersamanya.
+
+**Ritme diukur dengan cakupan berbeda.** Scene video panjang punya 4–9 baris,
+jadi ritmenya hidup **di dalam** scene. Scene Short cuma 1–2 baris — menghitung
+sebarannya di situ menyalakan bendera palsu di hampir semua scene. Ritme Short
+diukur **melintasi** scene, satu angka per Short.
+
+**Pemeriksaan akronim baru punya arti setelah kamus ada.** Selama istilah ditulis
+fonetik dengan tangan (`S S D`), tidak ada yang tersisa untuk ditangkap. Dengan
+kamus, invariannya tajam: **akronim boleh ada jika dan hanya jika ada aturan yang
+mencakupnya.**
+
+### Dua skill di atasnya
+
+| | |
+|---|---|
+| `/vo-script-audit` | jalankan lapis mekanis, lalu **nilai** yang tidak bisa dinilai mesin — undangan, penamaan, kosakata L1, sambungan, VO vs direction. Tidak pernah menyunting. |
+| `/vo-script-refactor` | audit lalu **perbaiki**. Dua gerbang: naskah yang sudah beku, dan indeks beat yang bergeser. |
+
+**Gerbang indeks beat** yang paling mudah dilanggar. Komposisi memanggil
+`beat(ID, 4)` dengan nomor, jadi **memecah satu baris menggeser semua indeks
+sesudahnya** — dan `.tsx` yang menunjuk indeks lama diam-diam menunjuk kalimat
+yang berbeda. Tanpa error, tanpa `tsc` gagal. Penyakit yang sama dengan
+HARD RULE 5, tapi di dalam scene dan tanpa nama berkas yang membuatnya
+kelihatan. Karena itu memecah baris **wajib** disertai remap di `.tsx`, di
+suntingan yang sama.
 
 ## Siapa menulis, siapa merevisi
 

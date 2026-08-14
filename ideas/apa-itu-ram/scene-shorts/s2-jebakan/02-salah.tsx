@@ -54,6 +54,8 @@ export const Salah: React.FC = () => {
         return (
           <svg
             key={y}
+            /* Memang menimpa teksnya — itu definisi coretan. */
+            data-tumpang="sengaja"
             style={{
               position: "absolute",
               left: MITOS_GEO.xKiri,

@@ -594,6 +594,7 @@ export const RamSize: React.FC = () => {
                   bisa di-tween langsung, opasitas bisa. */}
               <span style={{ color: "var(--ink-0)", opacity: 1 - 0.55 * naik }}>{a.teks}</span>
               <span
+                data-tumpang="sengaja"
                 style={{
                   position: "absolute",
                   left: 0,

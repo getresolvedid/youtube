@@ -255,6 +255,7 @@ export const Lemari: React.FC<{
                 <Ic
                   n="file"
                   warna="c-accent"
+                  tumpang="sengaja"
                   style={{
                     position: "absolute",
                     inset: 0,
@@ -287,6 +288,7 @@ export const Prosesor: React.FC<{ nyala: number }> = ({ nyala }) => (
       n="chip"
       ukuran="lg"
       warna="c-accent"
+      tumpang="sengaja"
       style={{ position: "absolute", inset: 0, opacity: nyala }}
     />
   </div>

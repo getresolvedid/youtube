@@ -27,13 +27,16 @@ tidak ditulis di sini — semuanya ada di `.env`. Lihat
 | T02 | Bagaimana HP tahu posisi kamu | P1 | umum | belum mulai |
 | T03 | Kenapa rekaman video jadi buram | P1 | umum | belum mulai |
 | T04 | Apa isi sebuah QR code | P1 | umum | belum mulai |
-| T05 | Perjalanan satu alamat web | P2 | umum → dev | belum mulai |
+| **T14** | **Apa itu DNS server** | P2 | umum → dev | **naskah** |
+| T05 | Perjalanan satu alamat web | P2 | umum → dev | belum mulai — dipersempit, lihat T14 |
 | T06 | Index database | P2 | umum → dev | belum mulai |
 | T07 | Cache: cepat, tapi kadang salah | P2 | umum → dev | belum mulai |
 | T08 | Event loop JavaScript | P3 | dev | belum mulai |
 | T09 | Apa yang terjadi saat `git commit` | P3 | dev | belum mulai |
 | T10 | Kenapa AI bisa menjawab tapi kadang ngarang | P4 | umum | belum mulai |
 | T11 | Kenapa rekomendasi tahu selera kamu | P4 | umum → dev | belum mulai |
+| **T15** | **Apa itu firewall** | P5 | umum → dev | **naskah** |
+| **T16** | **Apa itu enkripsi** | P5 | umum → dev | **komposisi** ← video panjang jadi |
 | T12 | Apa yang terjadi saat password bocor | P5 | umum | belum mulai |
 
 Status: `belum mulai → riset → naskah → vo → komposisi → render → publish`.
@@ -135,6 +138,35 @@ QR bisa dipakai menipu.
 
 ## P2 · Di Balik Aplikasi
 
+### T14 · Apa itu DNS server
+
+**L1:** Setiap tempat di internet punya nomor, bukan nama. Kamu cuma hafal
+namanya. Jadi sebelum berangkat, komputermu bertanya dulu ke loket: nomor tempat
+ini berapa? Loketnya tidak tahu semua, tapi ia tahu harus bertanya ke siapa.
+
+**Titik putus analogi:** loketnya tidak memegang buku — ia cuma menunjuk loket
+berikutnya. Catatan jawabannya punya umur, jadi dua orang bisa mendapat jawaban
+berbeda untuk nama yang sama di detik yang sama. Dan tidak ada yang memeriksa
+identitas loket: siapa pun di jalur bisa menjawab duluan.
+
+**Video panjang.** Kenapa satu nama harus ditanyakan dulu sebelum satu huruf pun
+terkirim, dan kenapa jawabannya sengaja **tidak** disimpan di satu tempat. Nama
+dibaca dari kanan ke kiri; pertanyaannya naik tangga loket sampai ke pemilik
+situsnya, lalu jawabannya dicatat di sepanjang jalan pulang. Realita: umur
+catatan yang membuat pergantian alamat terasa "belum merata", pemblokiran yang
+bekerja dengan membuat loket menjawab salah, dan pertanyaan yang terkirim polos
+— beserta dua tambalan yang sering dikira satu barang.
+
+- **Short 1 — Nugget:** nama situs itu dibaca dari belakang. Titik paling kanan
+  lebih dulu; tiap potongan membuka satu loket berikutnya.
+- **Short 2 — Jebakan:** "ganti DNS biar internet kencang." Yang berubah cuma
+  waktu bertanya alamat, sekali di awal. Situs yang jadi terbuka itu **terbuka**,
+  bukan **kencang**.
+
+**Batasnya dengan T05:** DNS berdiri sendiri di sini — tangga loket, umur
+catatan, dan babak keamanannya tidak muat sebagai satu langkah di dalam T05.
+Yang tinggal di T05 cuma perannya sebagai perjalanan bolak-balik pertama.
+
 ### T05 · Perjalanan satu alamat web
 
 **L1:** Sebelum satu huruf pun muncul, ada tiga percakapan bolak-balik: mencari
@@ -143,6 +175,14 @@ alamat, menyapa, lalu bersalaman rahasia.
 **Video panjang.** DNS → TCP handshake → TLS handshake → HTTP → render, setiap
 langkah dengan angka latensi nyata. Realita: mana yang benar-benar mahal, dan
 kenapa koneksi kedua jauh lebih cepat daripada yang pertama.
+
+> **Dipersempit 2026-08-14 — DNS pindah ke [T14](#t14--apa-itu-dns-server).**
+> Di sini DNS tinggal satu beat: perjalanan bolak-balik pertama, yang mahalnya
+> diukur bersama TCP dan TLS. Tangga loket, umur catatan, dan babak keamanannya
+> **tidak** dibahas lagi di episode ini — dua episode yang sama-sama membuka DNS
+> akan saling memakan, dan yang kalah selalu yang tayang belakangan. Sudut T05
+> tetap utuh tanpa itu: pertanyaannya bukan "bagaimana nama jadi nomor",
+> melainkan "kenapa kunjungan pertama selalu lebih lambat".
 
 - **Short 1 — Nugget:** kenapa kunjungan pertama ke sebuah situs selalu lebih
   lambat — tiga perjalanan bolak-balik sebelum satu byte konten terkirim.
@@ -237,14 +277,94 @@ konsekuensi matematis, bukan konspirasi.
 
 ## P5 · Keamanan & Privasi
 
+### T15 · Apa itu firewall
+
+**L1:** Rumahmu punya banyak pintu. Supaya bisa menerima kiriman, sebagian harus
+bisa diketuk — dan siapa pun boleh mengetuk. Jadi ditaruh satu penjaga di depan,
+dengan daftar siapa yang boleh lewat. Ia juga mencatat tiap kiriman yang kamu
+pesan sendiri, supaya cuma jawaban yang kamu tunggu yang boleh masuk.
+
+**Titik putus analogi:** penjaganya tidak pernah membuka kotaknya — ia cuma
+membaca label. Buku catatannya cuma berisi percakapan yang kamu mulai sendiri,
+jadi apa pun yang kamu undang sudah punya barisnya di sana. Dan penjaganya bukan
+satu orang: ada beberapa, berlapis, dan yang satu bisa mengizinkan apa yang
+ditolak yang lain.
+
+**Video panjang.** Kenapa mesin yang sedang kamu pakai harus bisa dihubungi siapa
+pun supaya berguna sama sekali — dan bagaimana satu buku catatan kecil
+menyelesaikan hal yang terlihat mustahil: membedakan jawaban yang kamu tunggu
+dari orang asing, padahal keduanya datang dari arah yang sama lewat pintu yang
+sama. Lalu daftarnya dibedah: dibaca dari atas dan berhenti di baris pertama yang
+cocok, baris terakhirnya berbunyi "selain itu, tidak", dan penjaganya berdiri dua
+arah. Realita: firewall gagal bukan karena ditembus, tapi karena kita sendiri
+yang menyuruhnya minggir — satu pintu dibuka untuk kamera rumah, satu kotak
+diundang masuk dan labelnya memang benar.
+
+- **Short 1 — Nugget:** cara paling aman menjawab ketukan adalah tidak menjawab.
+  Pintu yang bilang "tidak" sudah membocorkan bahwa pintunya ada; pintu yang diam
+  memulangkan pengetuknya dengan peta kosong.
+- **Short 2 — Jebakan:** "sudah ada firewall, jadi aman dari virus." Penjaganya
+  membaca label, tidak pernah membuka kotaknya — dan kotak yang paling sering
+  jadi masalah adalah yang kamu pesan sendiri.
+
+**Batasnya dengan T12:** sama-sama P5 dan tidak bersinggungan. T12 soal apa yang
+terjadi pada rahasia yang sudah diberikan; T15 soal siapa yang boleh mengetuk
+sejak awal. **Dengan T05:** T05 memakai pintu bernomor sebagai *tujuan yang
+dituju*, T15 sebagai *yang dijaga* — tidak ada scene T15 yang menjelaskan salaman
+TCP.
+
+### T16 · Apa itu enkripsi
+
+**L1:** Kamu menitipkan surat lewat banyak tangan. Supaya tidak dibaca di jalan,
+suratnya ditaruh di kotak yang dikunci. Masalahnya, kuncinya lewat jalan yang
+sama. Jadi orang yang kamu kirimi membagikan gembok terbukanya ke siapa saja.
+Siapa pun bisa mengunci — tapi cuma dia yang punya kunci pembukanya.
+
+**Titik putus analogi:** gembok terbuka tidak membuktikan siapa pemiliknya —
+siapa pun bisa menyodorkan gemboknya sambil mengaku toko itu. Kotak terkunci
+menyembunyikan isi, bukan pengirimannya: ke mana, sebesar apa, dan sesering apa
+tetap terbaca. Dan gemboknya tidak benar-benar dipakai mengantar kunci — di
+praktik sekarang keduanya menyusun kunci yang sama di dua meja sekaligus.
+
+**Video panjang.** Bukan "bagaimana tulisan diacak" — itu bagian yang paling
+mudah dan paling tidak penting. Pertanyaannya: bagaimana dua pihak yang **belum
+pernah bertemu** menyepakati satu rahasia di jalan yang semua orang dengarkan,
+saat kuncinya harus ikut lewat jalan yang sama dengan kotaknya. Lalu dibedah:
+kenapa gembok yang bagus cuma dipakai di menit pembukaan, kenapa terkunci belum
+berarti utuh, kenapa kuncinya dibuang setelah dipakai, dan kenapa labelnya
+justru harus tetap terbaca. Realita: yang jebol hampir tidak pernah gemboknya —
+kotaknya dibuka di ujung, dan ujungnya bukan yang kamu kira.
+
+- **Short 1 — Nugget:** ada kotak yang bisa kamu kunci tapi tidak bisa kamu buka
+  lagi. Gembok yang mengunci dan kunci yang membuka adalah dua benda berbeda,
+  dan yang pertama boleh ditaruh di depan umum.
+- **Short 2 — Jebakan:** "ada gemboknya, berarti situsnya aman." Gemboknya
+  menjanjikan tepat dua hal — tidak ada yang membaca di jalan, dan namanya
+  cocok. Bahwa nama itu jujur, tidak pernah termasuk.
+
+**Batasnya dengan T12:** T16 memegang **kotak yang memang dirancang untuk dibuka
+lagi**; T12 memegang **sidik jari yang tidak bisa dibalik**. **Dengan T05:** T05
+memakai salaman rahasia sebagai *ongkos* satu perjalanan bolak-balik, T16
+memegang isi salamannya — dan tidak ada scene T16 yang menghitung waktu.
+**Dengan T15:** bersambung, tidak bertabrakan — penjaga T15 membaca label dan
+tidak pernah membuka kotaknya, dan T16 menjelaskan kenapa labelnya memang harus
+tetap terbaca.
+
 ### T12 · Apa yang terjadi saat password bocor
 
 **L1:** Situs yang benar tidak menyimpan passwordmu. Ia menyimpan sidik jarinya —
 dan sidik jari tidak bisa dibalik jadi jari.
 
-**Video panjang.** Hashing vs enkripsi, salt, kenapa MD5 sudah mati, dan apa yang
-sebenarnya dijual saat sebuah database bocor. Realita: berapa cepat password
-lemah dipecahkan hari ini, dan kenapa password manager mengubah perhitungannya.
+**Video panjang.** Salt, kenapa MD5 sudah mati, dan apa yang sebenarnya dijual
+saat sebuah database bocor. Realita: berapa cepat password lemah dipecahkan hari
+ini, dan kenapa password manager mengubah perhitungannya.
+
+> **"Hashing vs enkripsi" dicoret dari sudut T12 — 2026-08-14.** Kunci, gembok,
+> dan segalanya yang bisa dibuka lagi milik [T16](#t16--apa-itu-enkripsi), yang
+> tayang lebih dulu. Yang tinggal di T12 satu kalimat pembeda: sidik jari tidak
+> punya kunci, dan memang tidak dimaksudkan untuk dibalik. Dua episode yang
+> sama-sama menjelaskan kunci akan saling memakan, dan yang kalah selalu yang
+> tayang belakangan.
 
 - **Short 1 — Nugget:** satu huruf diubah, seluruh hash berubah total — efek
   longsoran divisualkan.
@@ -275,8 +395,27 @@ sinyal audiens yang konsisten lebih berharga daripada variasi. Karena itu
 **buka dengan P1** (jangkauan paling luas), baru turunkan kedalamannya perlahan
 lewat P2, dan sisipkan P3 setelah ada penonton yang bertahan.
 
-**T01 → T13 → T03 → T05 → T10 → T06**, lalu masuk P3 (T08/T09) dan sesuaikan
-dengan data retensi.
+**T01 → T14 → T15 → T16 → T13 → T03 → T10 → T06**, lalu masuk P3 (T08/T09) dan
+sesuaikan dengan data retensi. **T05 turun ke belakang T14**: setelah penonton tahu apa
+yang terjadi saat satu nama ditanyakan, "kenapa kunjungan pertama lebih lambat"
+punya satu dari tiga perjalanannya yang sudah dikenal — dan urutan sebaliknya
+memaksa T05 menjelaskan DNS sambil lalu, persis yang baru saja dihindari.
+
+> **T15 naik ke posisi ketiga — diputuskan 2026-08-14.** Bukan karena ia lebih
+> penting daripada T13, tapi karena ia menempel rapat ke T14 yang tayang tepat
+> sebelumnya: T14 menutup dengan pertanyaan yang dikirim polos dan siapa pun di
+> jalur bisa menjawabnya duluan, dan T15 justru soal siapa yang berdiri di jalur
+> itu. Dua episode berturut-turut di lapis "umum → dev" adalah risikonya, dan
+> itu diterima sadar — T13 turun satu posisi, bukan dicoret.
+
+> **T16 menyusul tepat di belakang T15 — diputuskan 2026-08-14.** Alasannya satu
+> kalimat: T15 menutup dengan penjaga yang **cuma membaca label dan tidak pernah
+> membuka kotaknya**, dan T16 membuka dengan pertanyaan siapa yang bisa membaca
+> isinya. Konsekuensinya **tiga episode berturut-turut di lapis "umum → dev"**
+> (T14 → T15 → T16), dan itu risiko yang diambil sadar, bukan kelalaian: yang
+> ditukar adalah keragaman lapis dengan sambungan antar-episode yang tidak akan
+> pernah sekuat ini lagi. Kalau data retensi T15 turun tajam, yang disisipkan di
+> antaranya T13 — bukan T16 yang dipindah ke belakang.
 
 Alasan tiga yang pertama: T01 (RAM), T13 (sinyal), dan T03 (video buram) adalah
 pertanyaan yang benar-benar ditanyakan orang sehari-hari — saat membeli HP,

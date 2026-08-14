@@ -316,6 +316,9 @@ export const Kalender: React.FC<{ lembar: number; opacity?: number }> = ({
       return (
         <div
           key={i}
+          /* Keempat lembar memang bertumpuk di titik yang sama — itulah bentuk
+             kalender sobek. Yang terlihat cuma yang paling atas. */
+          data-tumpang="sengaja"
           style={{
             position: "absolute",
             inset: 0,

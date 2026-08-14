@@ -66,6 +66,14 @@ jadi tiga potong yang saling menunggu.
 **Opening & closing tidak didaftarkan di `SCENES`.** Keduanya milik `shared/`
 ([docs/10](docs/10-scene-standar.md)) supaya semua episode identik.
 
+**Mulai episode kedua, id komposisi scene berprefiks kode topik** — `t14-05-loket`,
+bukan `05-loket`. Alasannya sama persis dengan prefiks `s1-`/`s2-` di Shorts:
+`02-opening` dan `99-closing` ada di **setiap** episode, dan Remotion menolak dua
+komposisi dengan id yang sama — saat **render**, bukan saat `tsc`. Nama
+**berkasnya** tidak berubah (`scenes/05-loket.tsx`); yang berprefiks cuma id di
+`src/Root.tsx`. T01 dibiarkan tanpa prefiks supaya perintah `still` yang sudah
+tertulis di dokumennya tidak putus.
+
 **Shorts tinggal di `ideas/<slug>/scene-shorts/<short>/`, satu subfolder per
 Short.** Aturan ini berlaku utuh di dalamnya — tiga berkas per scene, nama
 identik, `index.ts`, dan satu berkas perangkai:
@@ -111,6 +119,42 @@ tapi kelasnya tidak hilang: font gagal muat, aset salah path, teks sewarna
 latar. `npm run check` menjalankan `tools/periksa-frame.mjs` yang membuktikan
 frame-nya ada isinya, tapi itu smoke test — **tetap render still dan lihat
 sendiri** sebelum menyatakan selesai.
+
+**`npm run tumpang` menutup satu kelas yang tidak terlihat dari `check`:** dua
+benda yang saling menutupi. Ia mengukur kotak elemen di dalam raman (bukan
+piksel — dari PNG, "bertumpuk" dan "memang berbentuk begitu" identik) di
+titik-titik tenang tiap beat, dan yang dihitung cuma yang bisa RUGI kalau
+tertutupi: teks, `<text>` di dalam figur, dan ikon. Permukaan — kartu, panel,
+kanvas SVG figur — tidak, karena label memang ditaruh di atasnya. **Yang memang
+sengaja bertumpuk ditandai `data-tumpang="sengaja"` di berkas scene-nya**, bukan
+dengan melonggarkan ambang di `tools/periksa-tumpang.mjs`. Ini menemukan cacat
+yang paling sering lolos ke MP4: ia cuma terjadi selama satu detik, jadi tidak
+pernah kebetulan terlihat saat scrubbing.
+
+**`npm run jahit` memeriksa satu frame yang tidak diperiksa keduanya: potongan
+antar-scene.** Tiap berkas direction membuka dengan klaim yang sama — "frame
+pertamanya = frame terakhir *scene sebelumnya*" (HARD RULE 3) — dan sampai
+sekarang klaim itu cuma hidup di `.md`. Perintah ini merender **frame terakhir
+scene N dan frame pertama scene N+1**, lalu membandingkan daftar bendanya:
+berapa yang **dipegang** (benda sama, tempat sama), yang **bergeser**, yang
+**hilang**, dan yang **muncul**. Berbeda dengan `tumpang`, di sini `path` dan
+`rect` ikut diukur — yang membuat potong keras terbaca disengaja justru benda
+besar yang tidak bergerak, dan kalau bentuk dibuang yang tersisa cuma label
+yang memang berganti tiap scene.
+
+Dua tingkat, dan cuma yang pertama menggigit: **LOMPAT** (praktis tidak ada
+yang menyeberangi potongannya, exit 1) dan **tipis** (dilaporkan, yang menilai
+mata lewat PNG-nya di `out/jahitan/`). **Sambungan yang sengaja menganga
+menulis `jahitan: menganga — <alasan>` di berkas direction scene sesudahnya**,
+bentuk yang sama dengan `data-tumpang="sengaja"` — bukan dengan melonggarkan
+ambang di `tools/periksa-jahitan.mjs`. Sambungan yang disela scene standar
+tidak diperiksa: kartu judul memang layar lain ([docs/10](docs/10-scene-standar.md)),
+dan jembatan 1 → 3 di situ murni urusan VO.
+
+Kelasnya sama dengan `tumpang` dan justru lebih tersembunyi: cacatnya ada di
+**satu frame**, tepat di sambungannya. Scene yang frame pertamanya kosong
+terbaca sebagai kedipan hitam yang tidak bisa ditunjuk penonton — dan `check`
+lulus, karena ia menyampel frame di tempat lain.
 
 ### 2. Tidak ada scene yang isinya cuma teks
 
@@ -449,6 +493,15 @@ npm run check      # tsc + bukti frame tidak kosong (tools/periksa-frame.mjs)
 npm run sisa       # placeholder + rencana VO/direction yang belum ada
                    # + scene yang masih pakai subtitel preview (VO belum ada)
                    # + nama berkas yang nomornya meleset (HARD RULE 5, exit 1)
+npm run tumpang:semua                      # figur yang saling menutupi (exit 1)
+npm run tumpang -- <slug>                  # satu keluaran saja
+npm run tumpang -- <slug> --kunci 05-loket # satu scene saja, saat menggarapnya
+npm run tumpang -- <slug> --short s1-nugget
+
+npm run jahit:semua                              # potongan antar-scene yang lompat (exit 1)
+npm run jahit -- <slug>
+npm run jahit -- <slug> --jahitan 12-ganti-loket # satu sambungan saja: kunci scene SESUDAHNYA
+npm run jahit -- <slug> --short s1-nugget
 npm run studio     # Remotion Studio — server panjang, jalankan di background
 npm run render     # episode utuh → out/
 npm run render:s1  # Short 1 utuh (9:16) → out/

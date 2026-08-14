@@ -200,9 +200,13 @@ export const BolakBalik: React.FC = () => {
               height: UKURAN_BERKAS,
             }}
           >
+            {/* Lintasannya berangkat dari DALAM lemari, jadi di awal dan akhir
+                tiap perjalanan ia memang lewat di atas berkas-berkas di laci —
+                itu justru yang membuatnya terbaca "diambil dari sana". */}
             <Ic
               n="file"
               warna="c-accent"
+              tumpang="sengaja"
               style={{ width: UKURAN_BERKAS, height: UKURAN_BERKAS }}
             />
           </div>

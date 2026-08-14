@@ -464,7 +464,9 @@ export const BedaPenyimpanan: React.FC = () => {
               })})`,
             }}
           >
-            <Ic n="x" warna="c-bad" style={{ width: 62, height: 62 }} />
+            {/* Silang di atas petirnya — satu lambang "listrik putus", bukan dua
+                benda yang kebetulan bertabrakan. */}
+            <Ic n="x" warna="c-bad" tumpang="sengaja" style={{ width: 62, height: 62 }} />
           </div>
         </div>
 

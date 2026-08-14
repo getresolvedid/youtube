@@ -190,12 +190,18 @@ export const Ic: React.FC<{
   /** Kelas warna tema: c-accent | c-ok | c-warn | c-bad | c-mute. */
   warna?: string;
   style?: React.CSSProperties;
-}> = ({ n, ukuran, warna, style }) => (
+  /** Menandai lapis yang MEMANG ditumpuk di atas benda lain — pola "ikon mute
+   *  di bawah, ikon aksen di atas, opasitasnya fungsi frame" yang dipakai di
+   *  banyak scene. Dibaca tools/periksa-tumpang.mjs; tidak memengaruhi
+   *  tampilan sama sekali. */
+  tumpang?: "sengaja" | "abaikan";
+}> = ({ n, ukuran, warna, style, tumpang }) => (
   <svg
     className={["ic", ukuran ? `ic-${ukuran}` : "", warna ?? ""]
       .filter(Boolean)
       .join(" ")}
     style={style}
+    data-tumpang={tumpang}
   >
     <use href={`#ic-${kebab(n)}`} />
   </svg>

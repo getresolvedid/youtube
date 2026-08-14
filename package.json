@@ -8,12 +8,16 @@
     "studio": "remotion studio",
     "prerender": "npm run gen",
     "render": "remotion render T01-apa-itu-ram",
+    "prerender:s1": "npm run gen",
+    "render:s1": "remotion render T01-apa-itu-ram-s1",
+    "prerender:s2": "npm run gen",
+    "render:s2": "remotion render T01-apa-itu-ram-s2",
     "prestill": "npm run gen",
     "still": "remotion still",
     "precheck": "npm run gen",
     "check": "tsc --noEmit && node tools/periksa-frame.mjs",
     "presisa": "npm run gen",
-    "sisa": "node tools/sisa-scene.mjs apa-itu-ram"
+    "sisa": "node --env-file=.env tools/sisa-scene.mjs apa-itu-ram"
   },
   "dependencies": {
     "@remotion/cli": "4.0.509",

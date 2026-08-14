@@ -29,7 +29,7 @@ const RING = 2 * Math.PI * 33; // ≈ 207,35
 /** Mark getresolved sebagai SVG inline.
  *
  *  Dipakai dua kali dengan tingkat kerumitan berbeda: pembuka cuma butuh
- *  bentuknya (kecil, 2,5 dtk harus dipakai untuk judul), penutup memainkan
+ *  bentuknya (kecil, waktu kartunya milik judul), penutup memainkan
  *  seluruh pembangunannya — cincin menggambar diri, lalu titik hijau muncul.
  *  Karena itu `bangun` opsional; kalau tidak diberikan, mark tampil utuh. */
 const Mark: React.FC<{
@@ -117,17 +117,54 @@ const Wordmark: React.FC<{
   />
 );
 
+/** Titik masuk tiap elemen kartu judul, dalam detik relatif awal scene.
+ *
+ *  Dikumpulkan di satu tempat karena yang menentukan rasa kartu ini bukan
+ *  masing-masing angkanya, melainkan JARAK antar angka — dan jarak itu tidak
+ *  terbaca kalau nilainya tersebar di enam `style` yang berjauhan.
+ *
+ *  Urutannya: brand dulu (siapa yang bicara), baru judul (tentang apa). Figur
+ *  menyusup di antara judul dan subjudul, bukan mengantre di belakang
+ *  keduanya — kanan dan kiri yang bergerak bersamaan terbaca sebagai satu
+ *  gerakan, bukan sebagai daftar. Semuanya tuntas ~1,9 dtk, menyisakan lebih
+ *  dari satu detik sebelum kartunya memudar (docs/10). */
+const BEAT = {
+  mark: 0.1,
+  wordmark: 0.42,
+  garis: 0.78,
+  judul: 1.0,
+  figur: 1.12,
+  subjudul: 1.32,
+} as const;
+
+/** Napas figur di ujung kartu — jeda panjang tidak boleh jadi frame beku
+ *  (docs/03 § Gerak). Jendelanya dihitung MUNDUR dari akhir kartu, jadi ia
+ *  ikut kalau `OPENING_SECONDS` diubah; kalau kartunya terlalu pendek untuk
+ *  punya jeda sama sekali, napasnya tidak dinyalakan daripada bertabrakan
+ *  dengan elemen yang masih masuk. */
+const NAPAS = { mulai: DUR.opening - 1.4, durasi: 1.1 };
+
 /**
- * Kartu judul — pembuka, 2,5 dtk.
+ * Kartu judul — pembuka, 4,0 dtk (`OPENING_SECONDS`).
  * BUKAN frame pertama video: ditaruh di awal babak 2, setelah hook (docs/10).
  * Tidak pernah dipakai di Shorts.
  *
  * Rata kiri, bukan di tengah. Judul yang ditengahkan bersama logo terbaca
  * sebagai poster; rata kiri terbaca sebagai kepala bab — dan itu memang
  * fungsinya di sini.
+ *
+ * KOREOGRAFINYA DITULIS UNTUK 4 DETIK, bukan diregangkan otomatis dari 2,5.
+ * Yang bertambah bukan kecepatan tiap gerakan — semuanya justru dibuat lebih
+ * lambat — melainkan JEDA di ujungnya: sekitar satu detik saat semua sudah di
+ * tempatnya dan tidak ada lagi yang datang. Itu yang membuat kartu terbaca
+ * sebagai kepala bab, bukan sebagai transisi yang buru-buru lewat.
+ *
+ * Satu-satunya angka yang dibaca dari `.env` adalah panjang kartunya sendiri
+ * (lewat DUR.opening): kapan ia memudar, dan kapan figurnya boleh bernapas.
+ * Titik masuk tiap elemen ditulis eksplisit di bawah.
  */
 export const KartuJudul: React.FC<{
-  /** Judul episode. Maks 5 kata — pada 2,5 dtk ia hanya tampil ~1,5 dtk. */
+  /** Judul episode. Maks 5 kata — pada 4 dtk ia tampil ~2,7 dtk. */
   judul: string;
   /** Baris kedua yang lebih kecil: kepanjangan akronim, atau penajam judul.
    *
@@ -136,37 +173,50 @@ export const KartuJudul: React.FC<{
    *  nama + keterangan membaca jauh lebih baik daripada membiarkannya
    *  membungkus sendiri. */
   subjudul?: string;
-}> = ({ judul, subjudul }) => {
+  /** Figur benda utama episode, ditaruh di paruh kanan yang selama ini kosong
+   *  (HARD RULE 2 — tidak ada scene yang isinya cuma teks; kartu judul pun
+   *  tidak). Dimiliki EPISODE, bukan shared/: T01 mengirim modul RAM,
+   *  episode lain mengirim bendanya sendiri.
+   *
+   *  Yang tetap milik shared/ adalah cara ia MASUK — slot ini yang menggeser
+   *  dan memudarkannya, supaya semua episode punya ritme pembuka yang sama.
+   *  Animasi di dalam figurnya (bagian yang menyala, garis yang menggambar
+   *  diri) urusan episode. */
+  figur?: React.ReactNode;
+}> = ({ judul, subjudul, figur }) => {
   const d = useDetik();
 
   return (
-    <div style={{ opacity: keluar(d, DUR.opening), width: "100%", height: "100%" }}>
+    <div
+      className="open-kartu"
+      style={{ opacity: keluar(d, DUR.opening), width: "100%", height: "100%" }}
+    >
       <Scene kelas="sc-open" tengah={false}>
         <div className="open-brand">
           <div
             style={{
               transform: `scale(${t(d, {
-                mulai: 0.05,
-                durasi: 0.45,
+                mulai: BEAT.mark,
+                durasi: 0.52,
                 dari: 0.7,
                 ke: 1,
                 ease: E.backOut(1.8),
               })})`,
               transformOrigin: "center",
-              opacity: t(d, { mulai: 0.05, durasi: 0.3, dari: 0, ke: 1 }),
+              opacity: t(d, { mulai: BEAT.mark, durasi: 0.34, dari: 0, ke: 1 }),
             }}
           >
             <Mark ukuran={104} />
           </div>
-          <Wordmark tinggi={56} d={d} mulai={0.3} />
+          <Wordmark tinggi={56} d={d} mulai={BEAT.wordmark} />
         </div>
 
         <div
           className="open-rule"
           style={{
             transform: `scaleX(${t(d, {
-              mulai: 0.55,
-              durasi: 0.45,
+              mulai: BEAT.garis,
+              durasi: 0.52,
               dari: 0,
               ke: 1,
               ease: E.expoOut,
@@ -177,10 +227,16 @@ export const KartuJudul: React.FC<{
         <h1
           className="open-judul"
           style={{
-            opacity: t(d, { mulai: 0.7, durasi: 0.4, dari: 0, ke: 1, ease: E.power3out }),
+            opacity: t(d, {
+              mulai: BEAT.judul,
+              durasi: 0.46,
+              dari: 0,
+              ke: 1,
+              ease: E.power3out,
+            }),
             transform: `translateY(${t(d, {
-              mulai: 0.7,
-              durasi: 0.5,
+              mulai: BEAT.judul,
+              durasi: 0.58,
               dari: 22,
               ke: 0,
               ease: E.power3out,
@@ -194,10 +250,10 @@ export const KartuJudul: React.FC<{
           <p
             className="open-subjudul"
             style={{
-              opacity: t(d, { mulai: 0.92, durasi: 0.4, dari: 0, ke: 1 }),
+              opacity: t(d, { mulai: BEAT.subjudul, durasi: 0.46, dari: 0, ke: 1 }),
               transform: `translateY(${t(d, {
-                mulai: 0.92,
-                durasi: 0.45,
+                mulai: BEAT.subjudul,
+                durasi: 0.52,
                 dari: 14,
                 ke: 0,
                 ease: E.power3out,
@@ -208,6 +264,44 @@ export const KartuJudul: React.FC<{
           </p>
         )}
       </Scene>
+
+      {/* Figur episode — lapis sendiri, BUKAN anak .scene-content. Blok teks
+          dibatasi 62% lebar; kalau figurnya ikut masuk ke dalamnya ia akan
+          terjepit di kolom yang sama dan mendorong judul. Sebagai lapis
+          terpisah ia memakai paruh kanan yang memang dikosongkan. */}
+      {figur && (
+        <div className="open-figur">
+          {/* Masuk di antara judul dan subjudul (BEAT.figur), lalu bernapas
+              pelan sampai kartunya memudar. Dua translateY digabung dalam satu
+              transform — dua `translateY` di elemen yang sama akan saling
+              menimpa tanpa error, dan yang hilang diam-diam adalah napasnya. */}
+          <div
+            style={{
+              opacity: t(d, { mulai: BEAT.figur, durasi: 0.44, dari: 0, ke: 1 }),
+              transform: `translateX(${t(d, {
+                mulai: BEAT.figur,
+                durasi: 0.62,
+                dari: 54,
+                ke: 0,
+                ease: E.expoOut,
+              })}px) translateY(${
+                NAPAS.mulai > 2
+                  ? tPP(d, { mulai: NAPAS.mulai, durasi: NAPAS.durasi, dari: 0, ke: -7 })
+                  : 0
+              }px) scale(${t(d, {
+                mulai: BEAT.figur,
+                durasi: 0.62,
+                dari: 0.92,
+                ke: 1,
+                ease: E.expoOut,
+              })})`,
+              transformOrigin: "center",
+            }}
+          >
+            {figur}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -219,17 +313,28 @@ export const KartuJudul: React.FC<{
  * 9:16 → 2 dtk, konten di tengah, tanpa baris deskripsi.
  *
  * Tidak ada judul di sini — itu tugas pembuka. Yang tinggal cuma: siapa yang
- * bicara barusan, dan di mana penonton bisa menemukannya lagi.
+ * bicara barusan, dan apa yang penonton lakukan berikutnya.
  *
  * Pembangunan mark yang penuh (cincin menggambar diri, titik hijau muncul)
  * ditaruh di sini karena marknya besar; pada mark 104px di pembuka, gerakan
  * itu tidak terlihat sebagai apa pun.
  */
 export const TandaBrand: React.FC<{
+  /** Baris terakhir sebelum video habis — **ajakan, bukan deskripsi channel.**
+   *
+   *  Sampai 2026-08-13 baris ini berbunyi "Penjelasan teknologi, coding, dan
+   *  engineering dalam Bahasa Indonesia." Itu keterangan tentang kami, dan
+   *  penonton yang sudah menonton tujuh menit sudah tahu; ia tidak menyuruh
+   *  siapa pun melakukan apa pun. Ini satu-satunya tempat channel ini boleh
+   *  meminta subscribe (docs/02 — tidak ada CTA di tengah video), jadi
+   *  jatahnya jangan dipakai untuk memperkenalkan diri.
+   *
+   *  Arahkan ke paruh kanan: di situlah end screen YouTube berdiri, dan
+   *  itulah yang bisa diklik selama 5 detik ini. */
   sub?: string;
   rasio?: "16x9" | "9x16";
 }> = ({
-  sub = "Penjelasan teknologi, coding, dan engineering dalam Bahasa Indonesia.",
+  sub = "Masih penasaran cara kerja yang lain? Subscribe, lalu lanjut ke video di sebelah.",
   rasio = "16x9",
 }) => {
   const d = useDetik();

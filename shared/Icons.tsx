@@ -142,6 +142,15 @@ const I = {
       <path d="M12 34h72M24 26h2M34 26h2" />
     </>
   ),
+  /* Sengaja memakai geometri `app` persis, ditambah bilah alamat: peramban
+     ADALAH sebuah aplikasi, dan dua ikon yang serupa membuat penonton membacanya
+     begitu tanpa perlu dijelaskan. Bedanya cuma garis di sebelah dua titik. */
+  browser: (
+    <>
+      <rect x="12" y="18" width="72" height="60" rx="6" />
+      <path d="M12 34h72M22 26h2M32 26h2M44 26h30" />
+    </>
+  ),
 } as const;
 
 export type NamaIkon = keyof typeof I;

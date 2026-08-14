@@ -81,7 +81,21 @@ function writeKeys(lines, slots, values) {
   writeFileSync(envPath, lines.join("\n"), "utf8");
 }
 
+/** Halaman API key memperlihatkan ID key (heksadesimal) di samping key-nya
+ *  sendiri (`sk_…`, cuma muncul sekali saat dibuat/dirotasi). Yang tersalin
+ *  hampir selalu yang pertama, dan API menolaknya dengan HTTP 400 — bukan 401 —
+ *  sehingga terbaca seperti permintaannya yang salah, bukan nilainya. */
+const idBukanKey = (k) => !k.startsWith("sk_");
+
 async function quota(key) {
+  if (idBukanKey(key)) {
+    return {
+      ok: false,
+      status: "ID",
+      detail: "nilai ini ID key, bukan key-nya — key asli berawalan sk_ dan hanya tampil sekali saat dibuat/dirotasi",
+    };
+  }
+
   const res = await fetch("https://api.elevenlabs.io/v1/user/subscription", {
     headers: { "xi-api-key": key },
   });

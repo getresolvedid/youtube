@@ -17,7 +17,10 @@ export const BelumDibuat: React.FC<{
   bagian: string;
   durasi: number;
   vo: string;
-}> = ({ id, bagian, durasi, vo }) => {
+  /** Satu baris dari daftar scene di naskah — dipakai kalau rencana VO-nya
+   *  memang belum ada, supaya kartunya tetap bilang scene ini tentang apa. */
+  ringkas: string;
+}> = ({ id, bagian, durasi, vo, ringkas }) => {
   const d = useDetik();
   const maju = t(d, { mulai: 0, durasi, dari: 0, ke: 1, ease: E.linear });
 
@@ -41,10 +44,14 @@ export const BelumDibuat: React.FC<{
           className="t-sub"
           style={{ maxWidth: "62ch", lineHeight: 1.3, ...masuk(d, { urutan: 2 }) }}
         >
-          {vo || "— scene standar —"}
+          {vo || ringkas || "— belum ada di naskah maupun rencana VO —"}
         </p>
         <p className="t-label" style={masuk(d, { urutan: 3 })}>
           {durasi.toFixed(2)} dtk
+          {/* Tanpa rencana VO durasinya cuma VO_PLACEHOLDER_SECONDS — angka yang
+              tidak berarti apa-apa. Kartunya harus mengatakannya sendiri, kalau
+              tidak ia terbaca seolah timing-nya sudah benar. */}
+          {vo ? "" : " · rencana VO belum ada, durasi masih placeholder"}
         </p>
 
         {/* Bar kemajuan — supaya durasi scene terasa saat scrubbing, bukan

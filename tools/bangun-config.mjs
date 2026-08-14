@@ -43,6 +43,13 @@ const IZIN = {
   ],
 };
 
+/* Nilai yang hanya boleh salah satu dari daftar. Divalidasi di sini, bukan di
+   komposisi: salah ketik yang baru ketahuan saat render adalah salah ketik yang
+   ketahuan enam menit terlambat. */
+const PILIHAN = {
+  SUBTITLE_MODE: ["auto", "on", "off"],
+};
+
 /* Penjaga terakhir. Kalau suatu saat ada yang menambahkan nama bernuansa
    rahasia ke IZIN, skrip berhenti alih-alih menuliskannya. */
 const BERBAHAYA = /KEY|SECRET|TOKEN|PASSWORD|CLIENT_ID|CREDENTIAL/i;
@@ -72,9 +79,23 @@ const angka = (nama) => {
   return v;
 };
 
+const pilihan = (nama, sah) => {
+  const v = ambil(nama);
+  if (!sah.includes(v)) {
+    throw new Error(
+      `tools/bangun-config.mjs: ${nama}="${v}" tidak dikenal. ` +
+        `Pilihannya: ${sah.join(" | ")}. Lihat .env.example.`,
+    );
+  }
+  return v;
+};
+
 const baris = [
   ...IZIN.angka.map((n) => `  ${n}: ${angka(n)},`),
   ...IZIN.teks.map((n) => `  ${n}: ${JSON.stringify(ambil(n))},`),
+  ...Object.entries(PILIHAN).map(
+    ([n, sah]) => `  ${n}: ${JSON.stringify(pilihan(n, sah))},`,
+  ),
 ];
 
 const isi = `/* DIGENERATE oleh tools/bangun-config.mjs — jangan disunting tangan.
@@ -94,5 +115,7 @@ export const f = (detik: number): number => Math.round(detik * FPS);
 
 writeFileSync("shared/config.gen.ts", isi);
 console.log(
-  `shared/config.gen.ts ditulis — ${IZIN.angka.length + IZIN.teks.length} nilai, 0 secret.`,
+  `shared/config.gen.ts ditulis — ${
+    IZIN.angka.length + IZIN.teks.length + Object.keys(PILIHAN).length
+  } nilai, 0 secret.`,
 );

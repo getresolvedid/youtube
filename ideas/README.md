@@ -10,7 +10,8 @@ Tidak perlu rapi, tidak perlu lengkap. Yang penting tidak hilang. Berkas lain
 ```
 ideas/apa-itu-ram/
 ├── ide.md        ← selalu ada
-├── naskah.md     ← setelah lolos 4 syarat
+├── naskah.md     ← setelah lolos 4 syarat: materi topik + daftar scene
+├── scenes/       ← per scene: <kunci>-vo.md + <kunci>-direction.md + <kunci>.tsx
 ├── vo/           ← setelah naskah beku
 └── render/       ← MP4 + thumbnail + publish.md
 ```

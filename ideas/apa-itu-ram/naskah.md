@@ -5,9 +5,12 @@ judul_kerja: Di mana data aplikasi saat aplikasi dibuka?
 pilar: P1 · Cara Kerja Sehari-hari
 lapis: umum
 what: RAM
-status: naskah
-naskah_beku:            # BELUM — lihat "Sumber", masih ada angka tanpa sumber primer
-karakter_terpakai:
+status: vo              # ketiganya masuk fase 4
+naskah_beku:
+  L: 2026-08-14
+  S1: 2026-08-14
+  S2: 2026-08-14
+karakter_terpakai: 4185   # 2026-08-14 · L 2.785 + S1 & S2 1.400 — sekali jalan, nol generate ulang
 tanggal_target:
 ---
 
@@ -21,9 +24,9 @@ Disusun mengikuti **flow 7 bagian** ([docs/02](../../docs/02-format-video.md#ana
 | 2 | **brand opening** | sting standar 1,5 dtk |
 | 3 | **[problem]** | Tempat yang muat banyak selalu lambat — prosesor habis waktu menunggu |
 | 4 | **[answer] → [what]** | Data disalin dulu ke tempat kerja yang dekat: **RAM** |
-| 5 | **[why]** | Jarak + pengulangan: satu perjalanan mahal terbayar ribuan kali |
-| 6 | **[explaining]** | RAM lupa · mejanya bertingkat · kenapa tidak semua secepat cache · saat meja penuh |
-| 7 | **[case]** | Mesin nyata, ponsel, server, kapan nambah RAM berguna |
+| 5 | **[why]** | Bukan cuma dekat: di meja tidak ada yang perlu dicari, dan satu perjalanan mahal terbayar ribuan kali |
+| 6 | **[explaining]** | kenapa ukurannya selalu kelipatan dua · wujudnya beda-beda · angka DDR di kotaknya · bedanya dengan penyimpanan, termasuk kenapa RAM lupa |
+| 7 | **[case]** | Yang bukan tugas RAM — batas yang membuat penonton berhenti menyalahkan RAM untuk hal yang bukan urusannya (`ram-tugas`) |
 
 ## Penjelasan 5 tahun
 
@@ -56,10 +59,14 @@ meja — ada meja jauh lebih kecil yang menempel padanya, namanya cache
 
 | Istilah | Kalimat L1 pembuka | Scene |
 |---|---|---|
-| penyimpanan | "Lemari arsip raksasa di gudang lantai bawah." | 007 |
-| RAM | "Meja kerja komputer." | 019 |
+| penyimpanan | "Lemari arsip raksasa di gudang lantai bawah." | `bolak-balik` |
+| RAM | "Meja kerja komputer." | `ram-analogy` |
 | cache | "Meja kecil yang menempel langsung di prosesor." | 047 |
 | swap / berkas halaman | "Memindahkan berkas dari meja kembali ke gudang." | 083 |
+| hardisk / SSD | "Benda yang memegang berkasmu waktu komputernya mati." | `beda-penyimpanan` |
+| modul RAM | "Batang yang ditancapkan ke papan induk." | `ram-bentuk` |
+| DDR | "Angka generasi yang tertulis di batangnya." | `ram-generasi` |
+| takik | "Coakan di deretan kaki batangnya — kuncinya." | `ram-generasi` |
 
 ## Sumber
 
@@ -67,14 +74,46 @@ meja — ada meja jauh lebih kecil yang menempel padanya, namanya cache
 |---|---|---|
 | Spesifikasi mesin: Intel Core i7-11700F, 8 inti, L2 4 MB, L3 16 MB, RAM 32 GB DDR4-2667, SSD NVMe | `Win32_Processor` + `Win32_PhysicalMemory` + `Get-PhysicalDisk` di mesin ini, 2026-08-13 | ✅ terverifikasi |
 | Prosesor mengerjakan miliaran perintah per detik | frekuensi 2,5 GHz dari spesifikasi di atas | ✅ terverifikasi |
-| RAM ± 50–100 ns · cache ± 1–15 ns · SSD ± puluhan µs · HDD ± milidetik | — | ⚠ **BELUM** |
-| Rasio "cache 1 detik : RAM ± 1 menit : HDD ± 2 bulan" | turunan dari angka di atas | ⚠ **BELUM** |
-| DRAM disegarkan ribuan kali per detik | — | ⚠ **BELUM** (perlu JEDEC) |
+| Latensi tiap tingkat di mesin ini: L1 1,43 ns · L2 3,11 ns · L3 68,88 ns · RAM 111,58 ns (kerja 64 MB) / 142,24 ns (kerja 512 MB) | `node tools/ukur-latensi.mjs` di mesin ini, 2026-08-14 — pointer chasing, tiga kali jalan, diambil yang tercepat | ✅ terukur sendiri |
+| Hardisk 7200 rpm: seek rata-rata baca 8,5 ms + latensi putaran 4,16 ms = **12,66 ms** sekali ambil acak | [Seagate Desktop HDD Product Manual 100686584 Rev. AA §2.6](https://www.seagate.com/content/dam/seagate/migrated-assets/www-content/product-content/barracuda-fam/desktop-hdd/barracuda-7200-14/en-us/docs/100686584aa.pdf) (seek 8,5/9,5 ms; latensi 4,16 ms); angka 4,16 ms yang sama masih berlaku di [BarraCuda SATA Product Manual 210203200 Rev A, Maret 2025](https://www.seagate.com/content/dam/seagate/assets/support/internal-hard-drive/enterprise-hard-drives/exos-x24/_shared/files/Seagate_EXOS24_CMR_ISE_SED\(10-12-16-20-24TB\).pdf) | ✅ terverifikasi |
+| Rasio "cache 1 detik : ram ± 1 menit : gudang ± 3 bulan" (dipakai di T01-S1) | turunan dua baris di atas: 111,58 / 1,43 = **78×** → 78 dtk ≈ 1,3 menit; 12,66 ms / 1,43 ns = **8,85 juta ×** → 8,85 juta dtk = 102 hari ≈ **3,4 bulan** | ✅ terhitung dari sumber |
+| DRAM harus disegarkan terus-menerus: 8.192 perintah refresh tiap 32 ms (0–85 °C) = ± 256 ribu kali per detik | [Micron 24Gb DDR5 SDRAM Die Rev C, CCM005-1684161373-48, Rev. B 04/2025](https://www.farnell.com/datasheets/4594004.pdf) — "The specification requires 8,192 refresh commands within 32ms between 0oC and 85oC" | ✅ terverifikasi |
+| RAM kehilangan seluruh isinya begitu listrik putus; penyimpanan tetap | RAM: refresh di baris atas hanya jalan selama ada listrik. Penyimpanan: [Micron NAND MT29F2G08AAD](https://media.digikey.com/pdf/Data%20Sheets/Micron%20Technology%20Inc%20PDFs/MT29F2G\(08,16\)AAD,ABD.pdf) — "Data retention: 10 years" | ✅ terverifikasi |
+| Ukuran modul RAM kelipatan dua karena alamat sel ditulis biner | [Micron 24Gb DDR5 Die Rev C](https://www.farnell.com/datasheets/4594004.pdf) Table 2 *Addressing*: alamat baris R0–R16, kolom C0–C10, 8 grup × 4 bank — semuanya rentang bit, jadi jumlah sel selalu 2ⁿ | ✅ terverifikasi |
+| Pengecualian: die 24 Gb melahirkan modul 24 GB dan 48 GB — kelipatan dua bukan hukum mutlak | [Micron 24Gb DDR5 Die Rev C](https://www.farnell.com/datasheets/4594004.pdf) Table 2 catatan 1: "For non-binary densities, a quarter of the row address space is invalid"; [Micron 288-Pin DDR5 UDIMM Core, ddr5_udimm_core.pdf Rev. E 10/21](https://gzhls.at/blob/ldb/f/a/8/7/01a8d2e592a701b7b7658543a3bc564a3c76.pdf) — densitas didukung 16Gb, 24Gb, 32Gb, 64Gb | ✅ terverifikasi |
+| RAM desktop modul panjang, laptop modul lebih pendek | UDIMM **133,35 mm × 31,25 mm, 288 pin** ([DDR5 UDIMM Core Rev. E 10/21](https://gzhls.at/blob/ldb/f/a/8/7/01a8d2e592a701b7b7658543a3bc564a3c76.pdf) Table 1) vs SODIMM **69,6 mm × 30 mm, 262 pin** ([Micron 262-Pin DDR5 SODIMM Core, ddr5_sodimm_core.pdf Rev. F 05/23](https://www.farnell.com/datasheets/4530576.pdf) Table 1) | ✅ terverifikasi |
+| RAM ponsel dipatri, tidak bisa dilepas | [Micron LPDDR5 MT62F512M64D4 / MT62F1G64D8](https://www.farnell.com/datasheets/3761269.pdf) — kemasan "441-ball TFBGA (14.0mm x 14.0mm)", bola solder, bukan modul bertepi emas | ✅ terverifikasi |
+| Kartu grafis punya memori sendiri | [NVIDIA GeForce RTX 5060 Family](https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5060-family/) — "8 GB GDDR7", antarmuka 128-bit, di kartunya sendiri | ✅ terverifikasi |
+| Takik modul digeser tiap generasi, jadi batang baru tidak masuk slot lama | DDR4 UDIMM: 288 pin, gambar mekanis **MO-309** ([Micron 8GB DDR4 UDIMM, atf4c1gx64az.pdf Rev. E 08/2020](https://www.farnell.com/datasheets/3151235.pdf) Figure 1). DDR5 UDIMM: **juga** 288 pin dan **juga** 133,35 mm, tapi takiknya di 62,9/57,8 TYP dengan catatan "(Area above notch)" ([DDR5 UDIMM Core Rev. E 10/21](https://gzhls.at/blob/ldb/f/a/8/7/01a8d2e592a701b7b7658543a3bc564a3c76.pdf) Figure 2), dan modulnya berdiri di standar terpisah [JEDEC JESD308](https://www.jedec.org/standards-documents/docs/jesd308b) — panjang dan jumlah pin sama, jadi **takik itulah satu-satunya penjaga mekanisnya** | ✅ terverifikasi |
 
-> **GERBANG BELUM BOLEH DILEWATI.** Tiga baris ⚠ harus ditopang sumber primer
-> **atau** diukur sendiri (`tools/ukur-latensi.mjs`) sebelum `naskah_beku` diisi
-> dan VO dibuat. Angka yang sekarang tertulis adalah **placeholder** yang sengaja
-> dibulatkan kasar.
+> **GERBANG SUDAH DILEWATI — 2026-08-14.** Seluruh baris di atas ditopang sumber
+> primer (datasheet vendor, standar JEDEC, spesifikasi produk) atau diukur
+> sendiri di mesin ini. Angka yang berubah karena pemeriksaan ini dicatat di
+> § Perubahan setelah verifikasi di bawah.
+>
+> **Berkas VO & direction yang ditulis sebelum tanggal ini masih menyebut
+> "baris ⚠ belum ditutup"** sebagai alasan tidak memasang angka di layar —
+> `03-bolak-balik`, `05-kenapa-cepat`, `06-ram-size`, `07-ram-bentuk`,
+> `08-ram-generasi`, `09-beda-penyimpanan`. **Keputusannya tetap berlaku**, cuma
+> alasannya berubah: angka latensi tidak dipasang karena scene-scene itu berdiri
+> di L1–L2 dan angka nanodetik tidak bisa dibayangkan siapa pun
+> ([docs/09](../../docs/09-tangga-abstraksi.md)) — bukan lagi karena sumbernya
+> belum ada. Jangan menambahkan angka ke scene itu hanya karena gerbangnya sudah
+> lewat.
+>
+> **Yang JEDEC-nya tidak diunduh:** JESD79-4/79-5 dan JESD21-C berbayar/berdaftar.
+> Yang dipakai sebagai gantinya adalah datasheet vendor yang menyatakan dirinya
+> "JEDEC JESD-79.5 compliant" dan mencantumkan angkanya — dokumen yang bisa dibuka
+> penonton tanpa akun, dan itu justru lebih baik untuk baris 🔗 Sumber di deskripsi.
+
+## Perubahan setelah verifikasi
+
+| Yang berubah | Dari | Jadi | Kenapa |
+|---|---|---|---|
+| T01-S1 scene `06-gudang` & `08-sekali-jalan` | "sekitar **dua** bulan" | "sekitar **tiga** bulan" | Sumbernya memberi 12,66 ms sekali ambil acak → 3,4 bulan di skala Short ini. "Dua bulan" perlu hardisk ± 7,4 ms, dan angka itu tidak ada di manual mana pun — ia hanya muncul kalau seek-nya dibuang. Kalender di scene itu jadi tiga lembar. |
+| Baris latensi | "± 50–100 ns · ± 1–15 ns" (dibulatkan kasar) | angka terukur di mesin ini | Pengukurannya gratis dan bisa diulang siapa pun lewat `tools/ukur-latensi.mjs`. |
+| Refresh DRAM | "ribuan kali per detik" | ± 256 ribu kali per detik | Datasheet menyebut 8.192 perintah per 32 ms. Angka ini **tidak masuk VO** — ia cuma penjaga kalau ada yang bertanya di kolom komentar. |
+| Durasi video panjang | ditahan karena 3 mnt 19 dtk < batas keras 6 mnt | dirilis apa adanya | Batas keras itu dicabut di [docs/02](../../docs/02-format-video.md) pada 2026-08-14: panjang video mengikuti materinya. Tabel flow bagian 6–7 ikut dirapikan — sub-topik yang tidak jadi dibuat (mejanya bertingkat, cache, saat meja penuh) **dicoret**, bukan ditinggal sebagai janji yang tidak ditepati. Cache tetap hidup sebagai pinned comment & umpan episode berikutnya. |
 
 ## Kamus pengucapan
 
@@ -82,8 +121,11 @@ meja — ada meja jauh lebih kecil yang menempel padanya, namanya cache
 |---|---|---|
 | kesh | cache | TTS cenderung membaca "kaks" |
 | S S D | SSD | dieja per huruf |
+| hardisk | hard disk | ditulis sesuai lafal Indonesia; "hard disk" dibaca janggal |
 | ram | RAM | dibaca sebagai kata, aman |
 | prosesor | CPU | sengaja tidak memakai "CPU" |
+| D D R lima | DDR5 | dieja per huruf, angkanya ditulis sebagai kata |
+| S O D I M M | SO-DIMM | hanya di layar, tidak pernah masuk VO |
 
 ---
 
@@ -93,24 +135,19 @@ meja — ada meja jauh lebih kecil yang menempel padanya, namanya cache
 
 | Scene | Isi | Posisi | Durasi |
 |---|---|---|---|
-| `opening` | kartu judul — **"RAM" / "Random Access Memory"** | bagian 2, setelah `hook-question` | **2,5 dtk** |
+| `opening` | kartu judul — **"RAM" / "Random Access Memory"** | bagian 2, setelah `hook-question` | **4,0 dtk** |
 | `closing` | tanda tangan brand, tanpa judul | setelah scene 083 | **5,0 dtk** |
 
 Judulnya diatur di `Episode.tsx` (`JUDUL` + `SUBJUDUL`).
 
-> **UTANG NASKAH — belum diselesaikan.** Kartu judul tayang di detik ~10 dan
-> sudah menulis "RAM" beserta kepanjangannya. Akibatnya dua scene ini mengulang
-> sesuatu yang penonton baca satu menit sebelumnya:
->
-> | Scene | Detik | VO sekarang |
-> |---|---|---|
-> | `019` | ~68 | "Tempat kerja itu namanya ram." |
-> | `020` | ~72 | "Kepanjangannya random access memory. Tapi namanya tidak penting." |
->
-> s020 paling parah: ia bilang "namanya tidak penting" tentang nama yang
-> dipampang sebagai judul. Keduanya perlu ditulis ulang sebelum naskah dibekukan
-> — kemungkinan s019 jadi penegasan ("Ya, itu RAM") dan s020 dibuang atau
-> diganti isi lain. Lihat [docs/10](../../docs/10-scene-standar.md#isi-pembuka).
+> **UTANG NASKAH — sudah lunas (2026-08-14).** Dulu scene `019` dan `020`
+> mengulang nama yang sudah dipampang kartu judul satu menit sebelumnya, dan
+> `020` bahkan bilang "namanya tidak penting" tentang nama yang jadi judul.
+> Keduanya hilang saat scene ditulis ulang: penamaannya sekarang jatuh satu kali
+> saja, sebagai penegasan di akhir [`04-ram-analogy`](scenes/04-ram-analogy-vo.md)
+> — "Ya, meja kerja itu ram." — persis setelah bendanya dipakai
+> (HARD RULE 6). Tidak ada scene yang mengeja kepanjangannya lewat VO.
+> Lihat [docs/10](../../docs/10-scene-standar.md#isi-pembuka).
 
 Keduanya **tidak ditulis di episode ini**. `tools/bangun-timing.mjs`
 menyisipkannya otomatis ke `timing.gen.ts` — `opening` setelah baris terakhir
@@ -123,95 +160,29 @@ menggabungkan tiga shot yang dulu jadi scene 001–003.
 
 ### Scene
 
-| # | Bagian | VO | Visual | Motion | Aset |
-|---|---|---|---|---|---|
-| hook-question | 1 question | Kamu buka sebuah aplikasi. Di mana datanya saat itu? Kelihatannya sepele. Tapi di mana persisnya ia ditaruh, dan di mana diproses? | Satu scene tiga tahap: ikon aplikasi + pertanyaan besar di tengah → pertanyaan naik & mengecil, "Kelihatannya sepele." muncul → dua kartu masuk dari sisi berlawanan: lemari arsip "ditaruh", keping prosesor "diproses". Pertanyaan tidak pernah hilang dari layar. Dua kartu itu adalah dua tempat yang jadi isi seluruh episode — di sini belum dijawab, cuma dinamai. | Tahap 1 ikon pop `back.out(2.0)`, pertanyaan fade + naik `expo.out`. Tahap 2 seluruh grup `scale 1→0.62` + naik 170px, `power3.out`; kicker fade. Tahap 3 tiap kartu masuk dari luar layar `expo.out` dan mendarat **tepat saat katanya diucapkan** — 6,55 dtk "ditaruh", 7,95 dtk "diproses" — bukan sebagai pasangan ber-stagger pendek. Aktivitas tengah-scene: ikon `y ±5px` `sine.inOut`. | **ditulis tangan** — `scenes/hook-question.tsx` |
-| 004 | 3 problem | Semua yang kamu punya tersimpan di satu tempat. Foto, dokumen, aplikasi, sistemnya sendiri. | Ikon penyimpanan besar, empat label mengelilinginya. | Label masuk mengelilingi ikon, stagger 0.12 dtk. | — |
-| 005 | 3 problem | Namanya penyimpanan. Hard disk, atau S S D di komputer yang lebih baru. | Label besar "PENYIMPANAN" + ikon disk. | Label slide dari bawah; ikon berdenyut sekali. | — |
-| 006 | 3 problem | Kapasitasnya luas. Ratusan gigabita, sering jauh lebih. | Angka kapasitas membesar. | Counter naik ke 512, power2.out. | — |
-| 007 | 3 problem | Bayangkan lemari arsip raksasa, di gudang, di lantai bawah. | Ilustrasi lemari tinggi, jauh di sisi kanan layar. | Lemari digambar stroke draw 1 dtk. | — |
-| 008 | 3 problem | Muat semuanya. Tapi setiap kali butuh satu berkas, kamu harus turun ke sana. | Garis panjang dari meja ke gudang. | Titik berjalan menyusuri garis, 1.2 dtk linear. | — |
-| 009 | 3 problem | Sekarang bandingkan dengan kecepatan prosesornya. | Ikon prosesor muncul di kiri. | Ikon pop, back.out(1.6). | — |
-| 010 | 3 problem | Prosesor mengerjakan miliaran perintah setiap detik. | Angka besar: miliaran per detik. | Counter naik sangat cepat lalu berhenti. | — |
-| 011 | 3 problem | Kalau ia menunggu setiap data datang dari gudang, ia lebih banyak menunggu daripada bekerja. | Bar waktu: potongan kecil "bekerja", sisanya "menunggu". | Bar tumbuh dari kiri; bagian menunggu jauh lebih panjang. | — |
-| 012 | 3 problem | Seberapa timpang? Bagi prosesor, menunggu satu berkas dari hard disk itu seperti menunggu berminggu-minggu. | Skala waktu prosesor vs skala waktu gudang. | Dua sumbu waktu dengan panjang sangat berbeda. | — |
-| 013 | 3 problem | Selama menunggu itu, ia sebenarnya bisa menyelesaikan jutaan pekerjaan lain. | Pekerjaan menumpuk tak tergarap di samping prosesor. | Kotak pekerjaan bertumpuk cepat, stagger 0.05 dtk. | — |
-| 014 | 3 problem | Inilah masalahnya. Tempat yang muat banyak, selalu lambat. | Dua kartu: "muat banyak" dan "lambat". | Dua kartu masuk dari sisi berlawanan. | — |
-| 015 | 3 problem | Dan tempat yang cepat, tidak pernah muat banyak. | Kartu ketiga muncul: "cepat, tapi kecil". | Kartu ketiga pop di tengah. | — |
-| 016 | 4 answer | Jadi jawabannya bukan membaca langsung dari gudang. | Garis panjang ke gudang dicoret. | Coret SVG tergambar 0.4 dtk. | — |
-| 017 | 4 answer | Begitu aplikasi dibuka, data yang dibutuhkan disalin lebih dulu. | Berkas melayang dari gudang ke meja. | Berkas menyusuri path lengkung 0.9 dtk. | — |
-| 018 | 4 answer | Disalin ke tempat kerja yang jauh lebih dekat, dan jauh lebih cepat. | Meja tersorot di kiri, dekat prosesor. | Sorotan indigo menyebar dari meja. | — |
-| 019 | 4 answer | Tempat kerja itu namanya ram. | Judul besar "RAM" + ikon keping RAM. | Ikon pop; huruf masuk stagger 0.06 dtk. | — |
-| 020 | 4 answer | Kepanjangannya random access memory. Tapi namanya tidak penting. | Kepanjangan muncul kecil lalu memudar. | Fade in lalu fade turun ke separuh. | — |
-| 021 | 4 answer | Yang penting fungsinya. Ram adalah meja kerja komputer. | Ikon meja besar + label RAM. | Ikon meja masuk dari bawah, y 40→0. | — |
-| 022 | 4 answer | Gudang untuk menyimpan. Meja untuk mengerjakan. | Dua kartu berdampingan: gudang vs meja. | Dua kartu masuk bergantian, stagger 0.22 dtk. | — |
-| 023 | 5 why | Tapi kenapa memindahkan data ke meja benar-benar menyelesaikan masalahnya? | Pertanyaan di tengah layar. | Teks masuk stagger per kata 0.07 dtk. | — |
-| 024 | 5 why | Alasan pertama: jarak. | Ikon penggaris besar. | Ikon pop; garis ukur memanjang. | — |
-| 025 | 5 why | Ram duduk jauh lebih dekat ke prosesor daripada gudang. | Sumbu jarak: prosesor, RAM dekat, gudang jauh. | Sumbu tergambar; titik muncul stagger 0.18 dtk. | — |
-| 026 | 5 why | Makin pendek jaraknya, makin cepat datanya sampai. | Dua garis: pendek menyala cepat, panjang menyala lambat. | Dua garis menyala dengan durasi berbeda. | — |
-| 027 | 5 why | Kalau mengambil dari ram terasa satu menit, mengambil dari hard disk terasa dua bulan. | Sumbu waktu manusiawi: 1 menit dan 2 bulan. | Counter naik; label kanan jauh di ujung. | — |
-| 028 | 5 why | Alasan kedua, dan ini yang justru lebih menentukan. | Layar bersih, ikon pengulangan. | Ikon pop di tengah. | — |
-| 029 | 5 why | Program tidak membaca datanya secara acak. | Grid data, semua sel gelap. | Grid muncul stagger cepat dari kiri atas. | — |
-| 030 | 5 why | Ia memakai bagian yang sama, berulang-ulang. | Beberapa sel yang sama menyala berkali-kali. | Sel panas berdenyut tiga kali, sisanya diam. | — |
-| 031 | 5 why | Jadi sekali data disalin ke meja, ia bisa dipakai ribuan kali tanpa turun ke gudang lagi. | Satu berkas di meja, dipakai berulang. | Denyut akses beruntun, stagger 0.15 dtk. | — |
-| 032 | 5 why | Satu perjalanan yang mahal, terbayar ribuan kali. | Neraca: satu perjalanan vs ribuan pemakaian. | Bar kanan tumbuh jauh melebihi bar kiri. | — |
-| 033 | 5 why | Tapi kecepatan itu ada harganya, dan harganya yang membuat meja tidak bisa dibuat sebesar gudang. | Dua ikon: penggaris dan koin, di bawah label meja. | Dua ikon masuk bergantian. | — |
-| 034 | 5 why | Meja selalu jauh lebih kecil, jauh lebih mahal, dan isinya tidak bertahan. | Tiga kartu kecil: kecil, mahal, tidak bertahan. | Tiga kartu masuk stagger 0.16 dtk. | — |
-| 035 | 5 why | Dan itu menjawab hal yang tadi kamu lihat di awal. | Callback: dua kartu buka ke-1 dan ke-2. | Dua kartu masuk kembali, lebih cepat. | — |
-| 036 | 5 why | Buka pertama terasa lambat karena datanya masih diambil dari gudang. | Kartu kiri tersorot, jalur ke gudang menyala. | Jalur menyala dari gudang ke meja. | — |
-| 037 | 5 why | Buka kedua langsung muncul karena datanya masih tergeletak di meja. | Kartu kanan tersorot, jalur gudang padam. | Jalur meredup; berkas berdenyut hijau. | — |
-| 038 | 6 explaining | Sekarang kita bedah mejanya. Ada tiga hal yang jarang diceritakan. | Judul bagian + angka tiga. | Angka pop lalu mengecil ke sudut. | — |
-| 039 | 6 explaining | Yang pertama, dan ini paling aneh. Ram sebenarnya tidak bisa mengingat. | Ikon tetesan. | Ikon pop; tetesan turun. | — |
-| 040 | 6 explaining | Ingatannya disimpan di wadah-wadah kecil yang bocor pelan-pelan. | Deretan wadah kecil, isinya menetes keluar. | Tetesan berulang tiga siklus, sine.inOut. | — |
-| 041 | 6 explaining | Supaya tidak hilang, isinya harus ditulis ulang terus-menerus. | Wadah diisi ulang berkali-kali. | Isi naik-turun cepat, repeat terbatas. | — |
-| 042 | 6 explaining | Ribuan kali setiap detik, selama komputermu menyala. | Angka besar per detik. | Counter naik cepat lalu berdenyut. | — |
-| 043 | 6 explaining | Berhenti sebentar saja, isinya hilang seluruhnya. | Wadah berhenti diisi, cahaya habis. | Cahaya meredup ke nol, 1.2 dtk power2.in. | — |
-| 044 | 6 explaining | Itu sebabnya pekerjaan yang belum disimpan hilang saat listrik mati. | Ikon petir, layar gelap sesaat. | Kedip gelap sekali, lalu teks masuk. | — |
-| 045 | 6 explaining | Gudang tidak begitu. Isinya tetap ada walaupun listriknya dicabut. | Ikon lemari tetap terang di layar gelap. | Latar meredup, ikon tetap terang. | — |
-| 046 | 6 explaining | Hal kedua: mejanya ternyata bukan cuma satu. | Meja tunggal pecah jadi beberapa tingkat. | Meja terbelah, stagger 0.15 dtk. | — |
-| 047 | 6 explaining | Ada meja yang jauh lebih kecil, menempel langsung di keping prosesor. | Ikon prosesor, area kecil tersorot di dalamnya. | Zoom ke keping; area berdenyut. | — |
-| 048 | 6 explaining | Namanya kesh. | Label besar "CACHE". | Label pop, back.out(2). | — |
-| 049 | 6 explaining | Ukurannya cuma beberapa megabita. Ram bisa puluhan gigabita. | Dua batang perbandingan sangat timpang. | Batang kanan tumbuh melewati kiri. | — |
-| 050 | 6 explaining | Tapi kesh jauh lebih cepat, karena jaraknya nyaris nol. | Jarak nol digambar di sebelah prosesor. | Garis jarak menyusut ke nol. | — |
-| 051 | 6 explaining | Jadi susunannya bertingkat. Kesh, ram, S S D, lalu hard disk. | Piramida empat tingkat. | Tingkat muncul dari puncak ke dasar, stagger 0.13 dtk. | — |
-| 052 | 6 explaining | Makin dekat ke prosesor: makin cepat, makin kecil, dan makin mahal. | Tiga label di sisi piramida. | Label masuk berurutan dari atas. | — |
-| 053 | 6 explaining | Lalu kenapa tidak semuanya dibuat secepat kesh? | Pertanyaan di tengah. | Teks masuk stagger per kata. | — |
-| 054 | 6 explaining | Karena kecepatan dibayar dua hal. Ruang, dan uang. | Dua kartu: penggaris dan koin. | Dua kartu masuk dari sisi berlawanan. | — |
-| 055 | 6 explaining | Kesh harus muat di dalam keping prosesor, dan ruang di sana sangat sempit. | Area cache melebar, mendesak blok lain. | Blok lain terdorong keluar bingkai. | — |
-| 056 | 6 explaining | Per gigabita, harganya berkali lipat dibanding ram biasa. | Dua batang harga sangat timpang. | Batang tumbuh dari bawah, stagger 0.15 dtk. | — |
-| 057 | 6 explaining | Jadi komputer tidak memilih salah satu. Ia memakai semuanya sekaligus. | Empat tingkat menyala bersamaan. | Empat kotak menyala berurutan cepat. | — |
-| 058 | 6 explaining | Hal ketiga: apa yang terjadi kalau mejanya penuh? | Meja penuh sesak oleh berkas. | Berkas bertambah sampai bertumpuk. | — |
-| 059 | 6 explaining | Sistem memilih berkas yang paling jarang kamu sentuh. | Satu berkas ditandai di tumpukan. | Berkas tersorot, glow kuning. | — |
-| 060 | 6 explaining | Lalu memindahkannya kembali ke gudang, supaya meja punya ruang lagi. | Berkas melayang dari meja ke gudang. | Path lengkung ke gudang, 0.9 dtk. | — |
-| 061 | 6 explaining | Kedengarannya pintar. Sampai berkas itu dibutuhkan lagi. | Berkas di gudang berdenyut merah. | Denyut merah dua kali. | — |
-| 062 | 6 explaining | Karena mengambilnya balik berarti menempuh perjalanan yang tadi kita bilang dua bulan. | Jalur ke gudang menyala merah, label dua bulan. | Jalur menyala; label pop. | — |
-| 063 | 6 explaining | Dan selama itu, semuanya berhenti menunggu. | Ikon jeda besar, layar membeku. | Elemen berhenti; ikon pop. | — |
-| 064 | 6 explaining | Itulah yang kamu rasakan saat komputer tiba-tiba tersendat parah. | Grafik responsivitas terjun bebas. | Garis grafik jatuh tajam, power4.in. | — |
-| 065 | 7 case | Sekarang, di mana ini benar-benar terlihat? | Judul bagian. | Teks masuk stagger per kata. | — |
-| 066 | 7 case | Ini komputer yang dipakai membuat video ini. | Kartu spesifikasi mulai terbentuk. | Kartu masuk dari bawah, y 40→0. | — |
-| 067 | 7 case | Keshnya sekitar dua puluh megabita. Ramnya tiga puluh dua gigabita. | Dua baris spesifikasi dengan angka. | Counter naik ke masing-masing nilai. | — |
-| 068 | 7 case | Ramnya sekitar seribu enam ratus kali lebih besar daripada keshnya. | Bar perbandingan sangat panjang. | Bar memanjang keluar layar. | — |
-| 069 | 7 case | Tapi hampir semua pekerjaan tetap lewat meja kecil yang jauh lebih sempit itu. | Bar kecil tersorot, bar besar meredup. | Sorotan berpindah ke bar kecil. | — |
-| 070 | 7 case | Di ponsel, hal yang sama terjadi setiap hari. | Ikon aplikasi. | Ikon pop. | — |
-| 071 | 7 case | Aplikasi yang baru kamu buka menempati ram. Saat ram penuh, yang lama ditutup diam-diam. | Deretan aplikasi, satu menghilang. | Satu kartu aplikasi memudar dan hilang. | — |
-| 072 | 7 case | Itu sebabnya aplikasi yang kamu tinggal sebentar kadang memuat ulang dari awal. | Aplikasi memuat ulang. | Spinner muncul lalu jendela terbentuk lagi. | — |
-| 073 | 7 case | Di server, pola yang sama justru dipakai dengan sengaja. | Ikon tumpukan server. | Ikon pop. | — |
-| 074 | 7 case | Data yang paling sering diminta ditaruh di ram supaya tidak perlu menyentuh disk sama sekali. | Data panas berpindah ke RAM. | Berkas berpindah, glow hijau. | — |
-| 075 | 7 case | Buka peramban dengan dua puluh tab, lalu aplikasi desain, lalu pemutar musik. | Tiga kelompok aplikasi memenuhi meja. | Kelompok aplikasi masuk berurutan, meja makin sesak. | — |
-| 076 | 7 case | Di komputer dengan ram delapan gigabita, meja itu penuh sebelum kamu selesai. | Meja kecil penuh, tumpukan mulai muncul. | Tumpukan bertambah di sisi meja. | — |
-| 077 | 7 case | Di enam belas gigabita, semuanya masih muat, dan tidak ada yang perlu dipindahkan. | Meja lebih lebar, semua muat, tanpa tumpukan. | Meja melebar; tumpukan tidak muncul. | — |
-| 078 | 7 case | Lalu pertanyaan yang paling sering ditanyakan. Perlu tidak menambah ram? | Judul besar pertanyaan. | Teks masuk stagger per kata. | — |
-| 079 | 7 case | Kalau mejamu memang sering penuh, tambahan ram mengubah segalanya. | Meja penuh lalu melebar, tumpukan hilang. | Meja melebar; tumpukan hilang berurutan. | — |
-| 080 | 7 case | Tapi kalau pekerjaanmu masih muat, tambahan ram tidak memberi apa-apa. Nol. | Angka nol besar. | Angka pop lalu diam. | — |
-| 081 | 7 case | Dan jangan menilai dari angka pemakaian ram. Ram yang kosong justru terbuang percuma. | Indikator delapan puluh persen dengan centang hijau. | Bar terisi lalu centang muncul. | — |
-| 082 | 7 case | Yang harus dilihat adalah seberapa sering sistem memindahkan data kembali ke gudang. | Grafik aktivitas pemindahan. | Garis grafik tergambar dengan lonjakan. | — |
-| 083 | 7 case | Di Windows namanya berkas halaman, di Linux dan Mac namanya swap. Kalau itu terus naik saat kamu bekerja, barulah menambah ram masuk akal. | Dua label sistem, lalu grafik naik dengan centang. | Dua label stagger; grafik naik; centang pop. | — |
+**Daftar isi episode, bukan tempat kalimatnya hidup.** Teks VO tiap scene ada di
+`scenes/<kunci>-vo.md` dan apa yang terjadi di layar di
+`scenes/<kunci>-direction.md` (HARD RULE 3 & 4). Yang ditetapkan tabel ini cuma
+tiga: **ada scene apa saja, urutannya, dan di bagian flow mana** — dan itulah yang
+dibaca `tools/baca-episode.mjs` untuk menghitung nomor urut tiap berkas.
+
+| # | Bagian | Ringkas |
+|---|---|---|
+| hook-question | 1 question | Aplikasi dibuka; tiga tebakan tempat datanya berada, ketiganya dicoret. Meninggalkan lubang, bukan jawaban. |
+| bolak-balik | 3 problem | Gudang penuh berkas, prosesor di seberangnya, dan tidak ada apa pun di antara keduanya. Tiap berkas dijemput ulang tiap kali dipakai, dan prosesor menunggu selama itu. |
+| ram-analogy | 4 answer | Meja kerja mengisi ruang kosong itu. Berkas disalin sekali ke sana, aslinya tetap di gudang — dan meja itu dinamai RAM. |
+| kenapa-cepat | 5 why | Kenapa lewat meja jauh lebih cepat: di gudang berkasnya masih harus dicari laci demi laci, di meja semuanya terhampar dan yang mana pun sama-sama tinggal diraih — lalu perjalanan jauh yang cuma sekali itu terbayar berkali-kali. |
+| ram-size | 6 explaining | Kenapa ukurannya selalu kelipatan dua: tiap kotak bernomor biner, tambah satu digit berarti dua kali lipat. |
+| ram-bentuk | 6 explaining | Meja yang sama, wujud yang beda-beda: batang panjang di desktop, batang pendek di laptop, chip dipatri di ponsel, dan meja sendiri di kartu grafis. |
+| ram-generasi | 6 explaining | Angka di kotaknya — D D R tiga, empat, lima. Takiknya digeser tiap generasi, jadi batangnya tidak bisa saling tukar. |
+| beda-penyimpanan | 6 explaining | Benda satunya lagi di komputer yang sama — hardisk atau S S D. Batangnya meja, yang ini gudangnya: muat jauh lebih banyak tapi isinya harus dijemput, dan begitu listrik dicabut meja langsung kosong sementara gudang tidak berubah. |
+| ram-tugas | 7 case | Mundur ke panggung utuh: apa yang dikerjakan meja, dan apa yang bukan tugasnya. Bukan yang mengerjakan, bukan tempat menyimpan, dan lebih lebar bukan berarti lebih cepat — ditutup kalimat bawa-pulang. |
 
 ### Timing — estimasi
 
-Keluaran `node --env-file=.env tools/estimate-timing.mjs ideas/apa-itu-ram/naskah.md`,
-lalu ditambah manual: +1,5 dtk (`opening` setelah `hook-question`) dan +5,0 dtk
-(`closing` setelah scene 083).
+Keluaran `node --env-file=.env tools/estimate-timing.mjs apa-itu-ram`. Opening
+(4,0 dtk) dan closing (5,0 dtk) sudah ikut terhitung di sana, jadi tidak ada
+angka yang ditambahkan manual.
 
 ### Timing — final *(setelah VO jadi)*
 
@@ -224,18 +195,89 @@ lalu ditambah manual: +1,5 dtk (`opening` setelah `hook-question`) dan +5,0 dtk
 
 **Insight:** skala jarak/waktu antar tingkat memori, dibuat manusiawi.
 **Target:** 40–60 dtk · ~110 kata · L1
+**Berkas:** `scene-shorts/s1-nugget/` — id komposisi `s1-01-…`, Short utuh `T01-apa-itu-ram-s1`.
 
-*(Ditulis setelah video panjang disetujui.)*
+Berdiri sendiri: penonton yang tidak pernah membuka video panjangnya tetap
+pulang membawa satu hal utuh — jarak itu yang jadi alasan komputer menyalin,
+bukan kecepatan bendanya. Tidak ada satu kalimat pun yang menuntut penonton
+sudah menonton yang lain.
+
+> **Angkanya belum boleh dibaca ElevenLabs.** Rasio “satu detik : satu menit :
+> tiga bulan” persis baris ⚠ di § Sumber, dan gerbang di sana berlaku untuk Short
+> ini juga. Komposisinya boleh dibangun sekarang (bisu, timing perkiraan);
+> `naskah_beku` tetap kosong sampai baris itu ditopang sumber primer atau diukur
+> sendiri.
+
+### Scene
+
+| # | Bagian | Ringkas |
+|---|---|---|
+| menunggu | hook | Prosesor berdenyut lalu berhenti; hitungan diam berjalan. Klaimnya jatuh di frame pertama, tanpa pengantar. |
+| sekejap | hook | Angka aslinya terlalu kecil untuk dibayangkan — sepersemiliar detik lewat begitu saja di layar. |
+| satu-detik | ketegangan | Undangan: anggap satu langkah prosesor itu satu detik penuh. Jam besar berdetak sekali. |
+| meja-nempel | payoff | Tempat terdekat, menempel di prosesor: satu detik. Jarum jam bergerak satu strip. |
+| meja-kerja | payoff | Meja kerja di sebelahnya: sekitar satu menit. Jarum berputar sekali penuh. |
+| gudang | payoff | Lemari di gudang: sekitar tiga bulan. Kalender membalik lembar demi lembar. |
+| namanya | payoff | Ketiga tempat itu baru dinamai: cache, ram, hardisk — nama menyusul gambarannya. |
+| sekali-jalan | tutup | Karena itu isinya disalin dulu ke meja: perjalanan tiga bulan dibayar sekali, dipakai ribuan kali. |
+| loop | tutup | Kembali ke prosesor yang menunggu — kalimat penutup menyambung ke frame pertama supaya loop-nya mulus. |
+
+### Timing — estimasi
+
+Keluaran `npm run gen`. Closing (2,0 dtk) sudah ikut terhitung; Shorts tidak
+punya opening (docs/02 § Aturan Shorts).
+
+### Timing — final *(setelah VO jadi)*
+
+| # | Berkas VO | Durasi VO | data-duration | data-start |
+|---|---|---|---|---|
 
 ## Short 2 — T01-S2 · “Jebakan”
 
 **Mitos:** "RAM lebih besar pasti bikin komputer lebih cepat."
 **Target:** 40–60 dtk · ~110 kata · L1
+**Berkas:** `scene-shorts/s2-jebakan/` — id komposisi `s2-01-…`, Short utuh `T01-apa-itu-ram-s2`.
 
-*(Ditulis setelah video panjang disetujui.)*
+Insightnya **berbeda dari Short 1** dan tidak bisa saling menggantikan: S1 soal
+*jarak* (kenapa disalin), S2 soal *kapasitas* (kenapa menambah tidak selalu
+membantu). Keduanya memakai meja yang sama sebagai gambar, tapi menjawab
+pertanyaan yang berbeda.
+
+> **Tanpa angka sama sekali.** Semua klaim di sini kualitatif — “muat” dan
+> “penuh”, bukan persentase atau benchmark. Itu bukan penghematan, itu yang
+> membuat Short ini tidak ikut tertahan gerbang ⚠ di § Sumber.
+
+### Scene
+
+| # | Bagian | Ringkas |
+|---|---|---|
+| mitos | mitos | Kalimatnya ditulis besar di layar apa adanya, dibaca datar tanpa dibantah dulu. |
+| salah | bantahan | Dicoret. "Sebagian besar waktu, itu tidak benar." |
+| meja | bantahan | Gambarannya berdiri: meja kerja, berkas yang sedang dibuka terhampar di atasnya. |
+| muat | bukti | Selama semua yang dibuka masih muat, mejanya tidak pernah jadi penghambat. |
+| lebih-lebar | bukti | Meja dua kali lebih lebar, tangan yang sama: sisi kanan kosong melompong. |
+| penuh | bukti | Meja yang benar-benar penuh — berkas baru tidak punya tempat lagi. |
+| bolak-balik | bukti | Berkas lama dikembalikan ke gudang untuk memberi tempat, lalu dijemput lagi. Itu yang terasa lambat. |
+| indikator | konsekuensi | Yang harus dilihat bukan angka terpakai, melainkan apakah bolak-baliknya terjadi. |
+| beli | konsekuensi | Nambah ram membantu kalau mejanya memang penuh, dan tidak memberi apa-apa kalau tidak. CTA halus ke video panjang. |
+
+### Timing — estimasi
+
+Keluaran `npm run gen`.
+
+### Timing — final *(setelah VO jadi)*
+
+| # | Berkas VO | Durasi VO | data-duration | data-start |
+|---|---|---|---|---|
 
 ---
 
 ## Metadata publish
 
-Diisi menjelang unggah, lalu disalin ke `render/publish.md`. Lihat [docs/06](../../docs/06-publishing.md).
+**Pindah ke [`render/publish.md`](render/publish.md).** Judul, deskripsi,
+chapter, tag, playlist, brief thumbnail, dan jadwal rilis — untuk video panjang
+dan kedua Short — hidup di sana, satu berkas yang dibuka di sebelah halaman
+unggah YouTube. Aturannya: [docs/06](../../docs/06-publishing.md).
+
+Yang tetap di sini cuma bahan mentahnya: daftar scene di atas, dan
+[§ Sumber](#sumber) yang gerbangnya masih menahan blok 🔗 Sumber di berkas itu.

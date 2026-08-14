@@ -50,6 +50,12 @@ Perhatikan tiga hal: L1 tidak menyebut satu pun istilah teknis, L2 dimulai denga
 
 ## Aturan wajib
 
+> Di level VO, aturan 2 dan 4 mengikat sebagai **HARD RULE 6** di
+> [CLAUDE.md](../CLAUDE.md): scene yang membawa gambaran baru dibuka dengan
+> mengundang penonton membayangkan, dan nama bendanya baru jatuh setelah
+> gambarannya berdiri. Cara memakainya saat menulis:
+> [docs/11 § Cara membuka scene](11-rencana-vo.md#cara-membuka-scene--hard-rule-6).
+
 1. **Blok "Penjelasan 5 tahun" ditulis sebelum naskah.** Maksimal 60 kata, tanpa
    satu pun istilah teknis. Kalau blok ini tidak bisa ditulis, riset belum
    selesai — jangan lanjut ke naskah. Tempatnya di `naskah.md`, wajib ada.

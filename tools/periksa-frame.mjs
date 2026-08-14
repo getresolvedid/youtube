@@ -57,10 +57,38 @@ const kunci = (() => {
   };
 })();
 
+/* `subtitel: false` mematikan subtitel preview (shared/Vo.tsx). Kotaknya
+   menambah warna, piksel terang, dan area gelap — persis tiga hal yang diukur
+   di bawah — jadi tanpa ini scene yang benar-benar KOSONG bisa lolos hanya
+   karena subtitelnya terlihat. Pemeriksaan yang isinya sebagian dirinya sendiri
+   tidak membuktikan apa-apa. */
 const TITIK = [
   { komposisi: kunci("opening"), frame: 40, nama: "kartu judul, setelah judul masuk" },
   { komposisi: kunci("closing"), frame: 60, nama: "tanda brand, setelah semua masuk" },
-  { komposisi: "T01-apa-itu-ram", frame: 60, nama: "episode 2 dtk, scene pertama" },
+  {
+    komposisi: "T01-apa-itu-ram",
+    frame: 60,
+    nama: "episode 2 dtk, scene pertama",
+    props: { subtitel: false },
+  },
+  /* Kedua Short ikut disampel. Panggung 9:16 punya skala tipografi dan kotak
+     aman sendiri (`.r-9x16`), jadi episode yang lolos TIDAK membuktikan apa pun
+     tentang keduanya — dan Shorts justru yang paling gampang kosong: kalau isi
+     scene disusun untuk 1920x1080, ia mendarat di luar bingkai 1080x1920 tanpa
+     ada satu pun error. */
+  {
+    komposisi: "T01-apa-itu-ram-s1",
+    frame: 60,
+    nama: "Short 1 · 2 dtk, hook",
+    props: { subtitel: false },
+  },
+  {
+    komposisi: "T01-apa-itu-ram-s2",
+    frame: 60,
+    nama: "Short 2 · 2 dtk, mitos",
+    props: { subtitel: false },
+  },
+  { komposisi: "s1-99-closing", frame: 40, nama: "tanda brand 9:16" },
 ];
 
 /* --- pembaca PNG minimal ---------------------------------------------------
@@ -205,6 +233,7 @@ for (const titik of TITIK) {
         berkas,
         "--frame",
         String(titik.frame),
+        ...(titik.props ? ["--props", JSON.stringify(titik.props)] : []),
         "--log",
         "error",
       ],

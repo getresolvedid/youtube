@@ -1,100 +1,129 @@
 /**
- * vo-durations.mjs — timing FINAL dari durasi berkas VO yang sudah jadi.
+ * vo-durations.mjs — durasi VO SEBENARNYA vs perkiraan dari jumlah kata.
  *
- * Dipakai di langkah 7 pipeline, setelah VO dibuat. Menggantikan angka
- * perkiraan dari estimate-timing.mjs dengan durasi sebenarnya.
+ * Dipakai di langkah 7 pipeline, setelah VO dibuat (docs/04 §7).
  *
- *   node --env-file=.env tools/vo-durations.mjs topics/T01-slug/vo L
- *   node --env-file=.env tools/vo-durations.mjs topics/T01-slug/vo S1
+ *   node --env-file=.env tools/vo-durations.mjs <slug>
+ *   node --env-file=.env tools/vo-durations.mjs <slug> S1
  *
- * Argumen kedua adalah awalan berkas (L, S1, S2). Butuh ffprobe di PATH
- * (atau set FFPROBE_PATH di .env).
+ * Butuh ffprobe di PATH (atau FFPROBE_PATH di .env).
  *
- * Keluaran: tabel timing siap salin + baris <audio> track VO untuk komposisi.
+ * Yang dicetak: selisih tiap scene antara durasi perkiraan (yang dipakai
+ * komposisi sekarang) dan durasi MP3 sungguhan — plus pergeseran yang MENUMPUK
+ * ke belakang, karena itulah yang membuat visual berhenti jatuh di kalimat yang
+ * benar di menit-menit terakhir, bukan selisih satu scene.
+ *
+ * Skrip ini TIDAK menulis apa pun. `timing.gen.ts` tetap turunan naskah + blok
+ * `## VO`, dan tidak pernah disunting tangan. Kalau pergeserannya sudah tidak
+ * bisa ditolerir, yang diubah adalah tools/bangun-timing.mjs supaya membaca
+ * durasi asli — bukan angka di berkas hasil generate.
  */
 
-import { readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { join } from "node:path";
+import { existsSync } from "node:fs";
 
-const PAD = Number(process.env.VO_PAD_SECONDS ?? 0.4);
-const TRACK_VO = Number(process.env.TRACK_VO ?? 8);
+import { R, bacaEpisode, bacaShort, daftarShort, wajib } from "./baca-episode.mjs";
+
+const [slug, hanya] = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+if (!slug) {
+  console.error("Pakai: node --env-file=.env tools/vo-durations.mjs <slug> [L|S1|S2]");
+  process.exit(1);
+}
+
+const PAD = wajib("VO_PAD_SECONDS");
 const FFPROBE = process.env.FFPROBE_PATH || "ffprobe";
 
-const [dir, prefix = "L"] = process.argv.slice(2);
-if (!dir) {
-  console.error("Pakai: node --env-file=.env tools/vo-durations.mjs <folder-vo> [L|S1|S2]");
-  process.exit(1);
-}
+/** Ambang pergeseran menumpuk yang masih aman. Di atas ini, scene terakhir
+ *  sudah bergeser lebih dari satu beat penuh dan visualnya tidak lagi jatuh di
+ *  kalimat yang dimaksud. */
+const AMBANG_GESER = 1.5;
 
-let files;
-try {
-  files = readdirSync(dir)
-    .filter((f) => new RegExp(`^${prefix}-\\d+\\.(mp3|wav|m4a)$`, "i").test(f))
-    .sort();
-} catch {
-  console.error(`Folder tidak ditemukan: ${dir}`);
-  process.exit(1);
-}
-
-if (!files.length) {
-  console.error(`Tidak ada berkas berawalan "${prefix}-" di ${dir}.`);
-  process.exit(1);
-}
-
-function durationOf(path) {
+const durasiOf = (path) => {
   try {
     const out = execFileSync(
       FFPROBE,
       ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", path],
-      { encoding: "utf8" }
+      { encoding: "utf8" },
     );
     const d = Number(out.trim());
     if (!Number.isFinite(d)) throw new Error("durasi tidak terbaca");
     return d;
   } catch (err) {
     if (err.code === "ENOENT") {
-      console.error(`ffprobe tidak ditemukan. Pasang: winget install Gyan.FFmpeg`);
-      console.error(`Atau set FFPROBE_PATH di .env.`);
+      console.error("ffprobe tidak ditemukan. Pasang: winget install Gyan.FFmpeg");
+      console.error("Atau set FFPROBE_PATH di .env. PATH-nya baru aktif di terminal BARU.");
       process.exit(1);
     }
     console.error(`Gagal membaca ${path}: ${err.message}`);
     process.exit(1);
   }
-}
+};
+
+const keluaran = [
+  { prefiks: "L", label: "video panjang", ...bacaEpisode(slug) },
+  ...daftarShort(slug).map((s) => ({
+    prefiks: s.prefiks,
+    label: `Short ${s.nomor} · ${s.folder}`,
+    ...bacaShort(slug, s),
+  })),
+];
 
 const f = (n) => n.toFixed(2);
-const rows = [];
-let start = 0;
+const tanda = (n) => `${n >= 0 ? "+" : ""}${f(n)}`;
+let adaYangDicek = false;
+let perluTindakan = false;
 
-for (const file of files) {
-  const vo = durationOf(join(dir, file));
-  const dur = vo + PAD;
-  rows.push({ no: file.match(/(\d+)/)[1], file, vo, dur, start });
-  start += dur;
+for (const k of keluaran) {
+  if (hanya && hanya.toUpperCase() !== k.prefiks) continue;
+
+  const punyaVO = k.timing.filter((t) => t.voAudio);
+  console.log(`\n=== ${k.label} · ${k.prefiks} ===`);
+
+  if (punyaVO.length === 0) {
+    console.log("Belum ada satu pun berkas VO di public/vo/" + slug + "/.");
+    console.log("Buat dulu: node --env-file=.env tools/bikin-vo.mjs " + slug + " --jalan");
+    continue;
+  }
+
+  adaYangDicek = true;
+  console.log(`${punyaVO.length}/${k.timing.filter((t) => !t.standar).length} scene sudah bersuara.\n`);
+  console.log("| Scene | Perkiraan | VO asli + pad | Selisih | Geser menumpuk |");
+  console.log("|---|---|---|---|---|");
+
+  let geser = 0;
+  for (const t of k.timing) {
+    if (!t.voAudio) continue;
+    const path = `public/${t.voAudio}`;
+    if (!existsSync(path)) continue;
+
+    const nyata = R(durasiOf(path) + Number(PAD));
+    const selisih = R(nyata - t.durasi);
+    geser = R(geser + selisih);
+    console.log(
+      `| ${t.kunci} | ${f(t.durasi)} | ${f(nyata)} | ${tanda(selisih)} | ${tanda(geser)} |`,
+    );
+  }
+
+  console.log(`\nPergeseran total di akhir ${k.prefiks}: ${tanda(geser)} dtk.`);
+
+  if (Math.abs(geser) > AMBANG_GESER) {
+    perluTindakan = true;
+    console.log(
+      `⚠ Di atas ambang ${AMBANG_GESER} dtk — scene terakhir sudah bergeser lebih dari\n` +
+        `  satu beat. Perbaikannya di tools/bangun-timing.mjs (baca durasi asli dari\n` +
+        `  public/vo/), BUKAN dengan menyunting timing.gen.ts (docs/04 §7).`,
+    );
+  } else {
+    console.log("Masih di dalam ambang — timing perkiraan boleh dipakai apa adanya.");
+  }
 }
 
-console.log(`\n### Tabel timing — ${prefix} (${rows.length} scene)\n`);
-console.log("| # | Berkas VO | Durasi VO | data-duration | data-start |");
-console.log("|---|---|---|---|---|");
-for (const r of rows) {
-  console.log(`| ${r.no} | ${dir}/${r.file} | ${f(r.vo)} | ${f(r.dur)} | ${f(r.start)} |`);
-}
+if (!adaYangDicek) process.exit(0);
 
-const mm = Math.floor(start / 60);
-const ss = Math.round(start % 60);
-console.log(`\nTotal: ${f(start)} dtk (${mm}:${String(ss).padStart(2, "0")})\n`);
-
-console.log(`### Track VO — salin ke komposisi (track ${TRACK_VO})\n`);
-console.log("```html");
-for (const r of rows) {
-  console.log(
-    `<audio data-start="${f(r.start)}" data-duration="${f(r.vo)}" ` +
-      `data-track-index="${TRACK_VO}" data-volume="1.0" src="../vo/${r.file}"></audio>`
-  );
-}
-console.log("```");
 console.log(
-  `\nIngat: data-duration scene = durasi VO + ${PAD} dtk padding, tapi elemen <audio>\n` +
-    `memakai durasi ASLI (tanpa padding). Geser juga semua waktu di timeline GSAP.`
+  "\nSelisih beberapa persen itu normal: perkiraan dihitung dari jumlah kata,\n" +
+    "dan orang tidak membaca dengan kecepatan tetap. Yang berbahaya adalah yang\n" +
+    "MENUMPUK — kolom terakhir, bukan kolom selisih.\n",
 );
+
+process.exit(perluTindakan ? 1 : 0);

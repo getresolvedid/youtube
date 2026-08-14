@@ -10,7 +10,7 @@
    - penutup rata kiri supaya paruh kanan bebas untuk end screen YouTube
    ======================================================================== */
 
-/* --- Pembuka: kartu judul 2,5 dtk -------------------------------------------
+/* --- Pembuka: kartu judul 4,0 dtk -------------------------------------------
    BUKAN intro pembuka video. Muncul di awal babak 2 (sekitar detik 10),
    setelah hook. Tidak pernah dipakai di Shorts.
 
@@ -40,8 +40,9 @@
   transform-origin: left center;
 }
 
-/* Judul episode. Ini elemen terpenting di scene — 2,5 dtk artinya ia hanya
-   tampil sekitar 1,5 dtk, jadi ukurannya tidak boleh kompromi. */
+/* Judul episode. Ini elemen terpenting di scene — walau kartunya
+   4 dtk, judulnya baru masuk di 1,00 dan mulai memudar di 3,72, jadi
+   ukurannya tidak boleh kompromi. */
 .sc-open .open-judul {
   font-family: var(--font-display);
   font-weight: 800;
@@ -62,8 +63,46 @@
   margin: -12px 0 0;
 }
 
+/* Figur benda utama episode — paruh kanan.
+   Blok teks di kiri berhenti di 62% lebar; sisanya selama ini kosong, dan
+   kartu judul yang isinya cuma logo + teks adalah satu-satunya scene yang
+   lolos dari HARD RULE 2 ("tidak ada scene yang isinya cuma teks"). Slot ini
+   yang menutup lubang itu.
+
+   Figurnya dikirim episode lewat prop `figur` (docs/10). Kalau tidak dikirim,
+   elemen ini tidak dirender sama sekali — kartu judul tanpa figur tetap sah
+   untuk episode yang bendanya belum digambar.
+
+   .open-kartu perlu `relative` supaya lapis ini berpatokan pada frame, bukan
+   pada panggung. Lebarnya 30%, bukan 38% sisa: 96px celah ke kolom teks
+   membuat keduanya terbaca sebagai dua blok, bukan satu baris yang penuh. */
+.open-kartu { position: relative; }
+
+.open-kartu .open-figur {
+  position: absolute;
+  top: var(--safe-top);
+  bottom: var(--safe-bottom);
+  right: var(--safe-x);
+  width: 30%;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+/* Pembungkus animasi masuk (dipasang <KartuJudul>) harus selebar slotnya:
+   sebagai item grid `place-items: center` lebarnya mengikuti isi, dan figur
+   SVG yang minta `width: 100%` di dalamnya jadi mengukur diri terhadap lebar
+   yang belum ada — hasilnya menciut ke ukuran intrinsik. */
+.open-kartu .open-figur > * { width: 100%; }
+
 .r-9x16 .sc-open .scene-content { max-width: 100%; }
 .r-9x16 .sc-open .open-brand { gap: 24px; }
+
+/* Kartu judul tidak pernah dipakai di Shorts (docs/10), jadi tidak ada tata
+   letak 9:16 yang perlu dipertahankan untuk figur ini. Kalau suatu saat
+   dipreview di frame tegak, lebih baik ia tidak tampil sama sekali daripada
+   menumpuk di atas judul dengan angka yang tidak pernah diuji. */
+.r-9x16 .open-kartu .open-figur { display: none; }
 
 /* --- Penutup: tanda tangan brand -------------------------------------------
    16:9 → 5 dtk. Konten di PARUH KIRI; paruh kanan sengaja dikosongkan untuk
@@ -101,9 +140,15 @@
   margin: 0;
 }
 
+/* Baris ajakan — bukan keterangan kaki. Sebelumnya `--ink-1` dengan berat
+   normal, dan itu pas untuk deskripsi channel yang memang boleh dilewati;
+   sekarang isinya permintaan (subscribe + tonton berikutnya), jadi ia harus
+   terbaca setara handle di atasnya. Tetap sans (handle-lah yang mono) supaya
+   keduanya tidak berebut jadi baris yang sama. */
 .sc-close .close-sub {
   font-size: var(--fs-body);
-  color: var(--ink-1);
+  font-weight: 600;
+  color: var(--ink-0);
   margin: 0;
   max-width: var(--measure);
 }

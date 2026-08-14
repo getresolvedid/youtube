@@ -1,7 +1,13 @@
 # 06 · Publishing
 
-Metadata ditulis di `render/publish.md` **sebelum** membuka halaman unggah
-YouTube. Mengarang judul di kolom unggah menghasilkan judul yang buruk.
+Metadata ditulis di `ideas/<slug>/render/publish.md` — satu berkas per episode,
+di sebelah MP4 dan thumbnail-nya ([docs/04](04-pipeline-produksi.md)) — dan
+ditulis **sebelum** membuka halaman unggah YouTube. Mengarang judul di kolom
+unggah menghasilkan judul yang buruk.
+
+Berkasnya lahir di **fase 3**, jauh sebelum ada MP4-nya. `naskah.md` cuma
+menyimpan penunjuk ke sana; judul dan deskripsi tidak pernah hidup di dua
+tempat.
 
 ---
 

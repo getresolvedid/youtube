@@ -32,12 +32,13 @@ Repo ini menyimpan **guideline, naskah, dan komposisi video** — bukan aplikasi
 | 02 | [Format video](docs/02-format-video.md) | Anatomi video panjang & Shorts, aturan durasi, pacing, retensi |
 | 03 | [Tema visual](docs/03-tema-visual.md) | Warna, tipografi, ukuran minimum, safe area, bahasa gerak, kartu brand |
 | 04 | [Pipeline produksi](docs/04-pipeline-produksi.md) | Alur 8 langkah: riset → naskah → VO → timing → komposisi → render → QA |
-| 05 | [Template naskah](docs/05-template-naskah.md) | Struktur `naskah.md`, aturan menulis VO untuk ElevenLabs, contoh terisi |
+| 05 | [Template naskah](docs/05-template-naskah.md) | Struktur `naskah.md`: materi topik + daftar scene, contoh terisi |
 | 06 | [Publishing](docs/06-publishing.md) | Judul, deskripsi, tag, thumbnail, chapter, checklist upload |
 | 07 | [Backlog topik](docs/07-backlog-topik.md) | Taksonomi topik + 12 topik pembuka beserta sudut kedua Shorts-nya |
 | 08 | [Konfigurasi & secret](docs/08-konfigurasi.md) | Semua setelan & API key jadi satu di `.env`, termasuk rotasi key |
 | 09 | [Tangga abstraksi](docs/09-tangga-abstraksi.md) | Aturan "bahasa anak 5 tahun": L1 → L2 → L3. Dibaca bersama 02 dan 05 |
 | 10 | [Scene standar](docs/10-scene-standar.md) | Kartu judul (pembuka) & tanda brand (penutup) yang identik di semua episode |
+| 11 | [Rencana VO](docs/11-rencana-vo.md) | `scenes/<kunci>-vo.md` — tempat teks VO hidup, beat, aturan menulis untuk ElevenLabs |
 
 Aset pendukung:
 
@@ -49,13 +50,15 @@ Aset pendukung:
 | [`shared/Icons.tsx`](shared/Icons.tsx) | Set ikon garis — `<Ic n="ram" />` |
 | [`shared/StandarScenes.tsx`](shared/StandarScenes.tsx) | `<KartuJudul>` & `<TandaBrand>` — dipakai apa adanya tiap episode |
 | [`shared/anim.ts`](shared/anim.ts) | Helper animasi; setiap nilai fungsi murni dari frame |
+| [`shared/Vo.tsx`](shared/Vo.tsx) | `<TrekVO>` — subtitel preview selama berkas VO belum ada, `<Audio>` begitu ada ([docs/11](docs/11-rencana-vo.md)) |
 | [`.env.example`](.env.example) | Kontrak konfigurasi; salin jadi `.env` lalu isi |
 | [`tools/bangun-config.mjs`](tools/bangun-config.mjs) | `.env` → `shared/config.gen.ts` (daftar putih, tanpa secret) |
-| [`tools/bangun-timing.mjs`](tools/bangun-timing.mjs) | `naskah.md` → `ideas/<slug>/timing.gen.ts` |
+| [`tools/baca-episode.mjs`](tools/baca-episode.mjs) | Pembaca bersama: daftar scene (`naskah.md`) + teks VO (`scenes/*-vo.md`) → timing |
+| [`tools/bangun-timing.mjs`](tools/bangun-timing.mjs) | Hasil baca-episode → `ideas/<slug>/timing.gen.ts` |
 | [`tools/periksa-frame.mjs`](tools/periksa-frame.mjs) | Bukti frame tidak kosong — pembaca PNG tanpa dependensi |
-| [`tools/sisa-scene.mjs`](tools/sisa-scene.mjs) | Berapa scene yang masih placeholder |
+| [`tools/sisa-scene.mjs`](tools/sisa-scene.mjs) | Placeholder + rencana VO/direction yang belum ada + scene yang masih bersubtitel preview |
 | [`tools/load-env.ps1`](tools/load-env.ps1) | Muat `.env` ke sesi PowerShell (`. .\tools\load-env.ps1`) |
-| [`tools/estimate-timing.mjs`](tools/estimate-timing.mjs) | Perkiraan timing dari naskah — **gratis**, dipakai sebelum VO |
+| [`tools/estimate-timing.mjs`](tools/estimate-timing.mjs) | Perkiraan timing dari rencana VO — **gratis**, dipakai sebelum VO |
 | [`tools/vo-durations.mjs`](tools/vo-durations.mjs) | Timing final dari durasi berkas VO (butuh ffprobe) |
 | [`tools/elevenlabs-keys.mjs`](tools/elevenlabs-keys.mjs) | Kelola & rotasi API key ElevenLabs |
 
@@ -75,11 +78,12 @@ youtube/                      ← ROOT PROJECT Remotion
 ├── remotion.config.ts        ← setelan CLI
 ├── tsconfig.json
 ├── package.json              ← npm run gen / check / sisa / studio / render
-├── docs/                     ← guideline (01–10)
+├── docs/                     ← guideline (01–11)
 ├── src/
 │   ├── index.ts              ← registerRoot
 │   └── Root.tsx              ← DAFTAR KOMPOSISI: episode + satu per scene
 ├── public/logos/             ← mark & wordmark (salinan brand getresolved)
+├── public/vo/<slug>/         ← keluaran ElevenLabs, L-<kunci>.mp3 per scene
 ├── shared/                   ← milik SEMUA episode
 │   ├── config.gen.ts         ← ⚙ digenerate dari .env
 │   ├── theme.css             ← token warna/tipografi/skala
@@ -89,34 +93,37 @@ youtube/                      ← ROOT PROJECT Remotion
 │   ├── anim.ts               ← helper animasi berbasis frame
 │   ├── Icons.tsx             ← set ikon garis
 │   ├── StandarScenes.tsx     ← <KartuJudul> + <TandaBrand>
+│   ├── Vo.tsx                ← <TrekVO>: subtitel preview / VO asli per scene
 │   ├── Placeholder.tsx       ← <BelumDibuat>
 │   └── fonts.ts              ← Manrope + JetBrains Mono
 ├── tools/
 │   ├── bangun-config.mjs     ← .env → shared/config.gen.ts
-│   ├── bangun-timing.mjs     ← naskah.md → ideas/<slug>/timing.gen.ts
+│   ├── baca-episode.mjs      ← naskah.md + scenes/*-vo.md → timing (dipakai bersama)
+│   ├── bangun-timing.mjs     ← hasilnya → ideas/<slug>/timing.gen.ts
 │   ├── periksa-frame.mjs     ← bukti frame tidak kosong
-│   ├── sisa-scene.mjs        ← sisa scene placeholder
+│   ├── sisa-scene.mjs        ← placeholder + rencana VO/direction + status VO
 │   ├── load-env.ps1          ← muat .env ke sesi PowerShell
 │   ├── git-setup.ps1         ← init git + hook penolak secret
-│   ├── estimate-timing.mjs   ← timing perkiraan dari naskah (gratis)
+│   ├── estimate-timing.mjs   ← timing perkiraan dari rencana VO (gratis)
 │   ├── vo-durations.mjs      ← timing final dari berkas VO
 │   └── elevenlabs-keys.mjs   ← kelola & rotasi API key
 └── ideas/                    ← SEMUA ide + seluruh produksinya hidup di sini
     ├── README.md             ← alur & template ide
     └── <slug>/
         ├── ide.md            ← ide mentah + uji 4 syarat (selalu ada)
-        ├── naskah.md         ← SUMBER KEBENARAN: outline + VO + visual per scene
-        ├── timing.gen.ts     ← ⚙ digenerate dari naskah.md
+        ├── naskah.md         ← materi topik + DAFTAR scene (docs/05)
+        ├── timing.gen.ts     ← ⚙ digenerate dari naskah.md + scenes/*-vo.md
         ├── Episode.tsx       ← merangkai <Sequence>, tanpa isi scene
         ├── scenes/index.ts   ← daftar SCENES: id → komponen
-        ├── scenes/15-s016.tsx ← satu scene = satu berkas (HARD RULE 1)
-        ├── vo/               ← keluaran ElevenLabs, satu berkas per scene
+        ├── scenes/01-hook-question-vo.md        ← teks VO (HARD RULE 4, docs/11)
+        ├── scenes/01-hook-question-direction.md ← apa di layar (HARD RULE 3)
+        ├── scenes/01-hook-question.tsx          ← komposisi (HARD RULE 1)
         └── render/           ← MP4 final + thumbnail + metadata publish
 ```
 
 ⚙ = digenerate, di-ignore git, dibangun ulang `npm run gen`. Sumber kebenarannya
-`.env` dan `naskah.md`; menyunting berkas generate akan hilang saat build
-berikutnya.
+`.env`, `naskah.md`, dan `scenes/*-vo.md`; menyunting berkas generate akan hilang
+saat build berikutnya.
 
 ## Prasyarat (status di mesin ini, dicek 2026-08-13)
 

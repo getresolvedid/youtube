@@ -55,14 +55,17 @@ youtube/                        ← ROOT PROJECT Remotion
 ├── package.json                gen/check/sisa/studio/render (versi dipatok tepat)
 ├── src/Root.tsx                DAFTAR KOMPOSISI: episode + satu per scene
 ├── public/logos/               aset — lewat staticFile()
+├── public/vo/<slug>/           <prefiks>-<kunci>.mp3 — keluaran ElevenLabs, satu per scene
+│                               L = video panjang · S1/S2 = kedua Short
 ├── shared/                     tema, ikon, figur, scene standar, helper animasi
 └── ideas/apa-itu-ram/
-    ├── naskah.md               sumber kebenaran (lihat docs/05)
-    ├── timing.gen.ts           ⚙ digenerate dari naskah.md
+    ├── naskah.md               daftar scene + materi topik (docs/05)
+    ├── timing.gen.ts           ⚙ digenerate dari naskah.md + scenes/*-vo.md
     ├── Episode.tsx             merangkai <Sequence>
     ├── scenes/index.ts         SCENES: id → komponen
-    ├── scenes/15-s016.tsx      satu scene = satu berkas, bernomor urut
-    ├── vo/L-001.mp3 …          satu berkas per scene
+    ├── scenes/01-hook-question-vo.md         teks VO scene itu (docs/11)
+    ├── scenes/01-hook-question-direction.md  apa yang terjadi di layar
+    ├── scenes/01-hook-question.tsx           komposisinya, turunan dua di atas
     └── render/
         ├── T01-L.mp4 · T01-S1.mp4 · T01-S2.mp4
         ├── thumb.png
@@ -75,6 +78,12 @@ youtube/                        ← ROOT PROJECT Remotion
 import { staticFile } from "remotion";
 <img src={staticFile("logos/getresolved-mark.svg")} />
 ```
+
+**Berkas VO ikut tinggal di `public/`**, bukan di dalam `ideas/<slug>/` —
+`staticFile()` hanya melayani isi `public/`. Berkas di luar sana harus diimpor
+statis satu per satu, dan daftar impor yang ditulis tangan adalah sumber
+kebenaran kedua yang meleset dari naskah begitu satu scene disisipkan.
+Semuanya sudah di-ignore git (`*.mp3`).
 
 **Penamaan:** `T{nn}-{slug-kebab}`. Kode episode `T01-L`, `T01-S1`, `T01-S2`
 dipakai konsisten di nama berkas, judul commit, dan metadata. ID komposisi
@@ -96,11 +105,19 @@ Sebelum menulis satu kalimat pun:
 - Cek apakah materinya cukup untuk 8 menit **dan** untuk dua sudut Shorts yang
   berbeda. Kalau tidak, gabung dengan topik lain atau turunkan jadi Shorts saja.
 
-## 2 · Naskah
+## 2 · Naskah + rencana VO + direction
 
-Tulis `naskah.md` mengikuti [template di docs/05](05-template-naskah.md). VO dan
-deskripsi visual lahir **bersamaan** di satu tabel — jangan menulis VO dulu lalu
-memikirkan visualnya belakangan. Kolom visual yang kosong berarti nanti ada scene
+Tiga berkas, ditulis dalam urutan ini:
+
+1. **`naskah.md`** — [template di docs/05](05-template-naskah.md). Materi
+   topiknya (penjelasan 5 tahun, tangga, sumber angka) plus **daftar scene**:
+   ada scene apa saja, urutannya, di bagian flow mana.
+2. **`scenes/<kunci>-vo.md`** — kalimat yang diucapkan tiap scene,
+   [docs/11](11-rencana-vo.md). Nomor `<kunci>` didapat dari `npm run gen`.
+3. **`scenes/<kunci>-direction.md`** — apa yang terjadi di layar.
+
+VO dan direction lahir **bersamaan** — jangan menulis semua VO dulu lalu
+memikirkan visualnya belakangan. Direction yang kosong berarti nanti ada scene
 yang dikarang saat membangun komposisi, dan di situlah naskah mulai melenceng
 dari video.
 
@@ -108,7 +125,8 @@ Cek sebelum lanjut:
 
 - [ ] Total kata VO panjang: 1.000–1.200 (≈ `VO_WORDS_PER_MINUTE` 140).
 - [ ] Hook ≤ 15 detik, bahasa L1, tanpa sapaan.
-- [ ] Setiap scene punya kolom visual yang konkret (bukan "animasi keren").
+- [ ] `npm run sisa` tidak melaporkan rencana VO atau direction yang kosong.
+- [ ] Setiap direction konkret (bukan "animasi keren").
 - [ ] Setiap angka punya sumber.
 - [ ] Checklist ELI5 di [09](09-tangga-abstraksi.md#checklist-dipakai-saat-qa-naskah) lolos.
 - [ ] Dua Shorts punya insight yang berbeda.
@@ -118,22 +136,28 @@ Cek sebelum lanjut:
 Hitung perkiraan durasi tiap scene dari jumlah kata — tanpa menyentuh API.
 
 ```powershell
-node --env-file=.env tools/estimate-timing.mjs ideas/<slug>/naskah.md
+node --env-file=.env tools/estimate-timing.mjs <slug>
 ```
 
 Keluarannya tabel timing untuk dibaca manusia, plus **total durasi** dan
 **hitungan karakter** (= perkiraan kredit ElevenLabs yang nanti terpakai).
 
 Timing yang dipakai komposisi **tidak disalin tangan** dari sini. `npm run gen`
-menghitung ulang dari naskah yang sama ke `ideas/<slug>/timing.gen.ts` dengan
-rumus identik, dan `Episode.tsx` membaca berkas itu. Yang perlu disunting
-selamanya cuma `naskah.md`.
+menghitung ulang dari sumber yang sama ke `ideas/<slug>/timing.gen.ts` lewat
+modul yang sama (`tools/baca-episode.mjs`), dan `Episode.tsx` membaca berkas itu.
+Yang perlu disunting selamanya cuma daftar scene di `naskah.md` dan blok `## VO`
+di rencana VO tiap scene.
 
-Rumusnya:
+Rumusnya — per **beat** (satu baris di blok `## VO`), lalu dijumlahkan:
 
 ```
-durasi_perkiraan = jumlah_kata / VO_WORDS_PER_MINUTE * 60 + VO_PAD_SECONDS
+durasi_beat      = jumlah_kata / VO_WORDS_PER_MINUTE * 60
+durasi_perkiraan = jumlah durasi_beat + VO_PAD_SECONDS
 ```
+
+Detik tiap beat ikut masuk `timing.gen.ts`, jadi komposisi bisa menjatuhkan
+gerakan tepat di kalimat yang bersangkutan lewat `beat("hook-question", 2)`
+alih-alih mengetik angka hasil hitungan tangan ([docs/11](11-rencana-vo.md)).
 
 Kalau totalnya meleset jauh dari target ([02](02-format-video.md)), perbaiki
 naskahnya **sekarang** — di titik ini memperbaiki masih gratis.
@@ -147,7 +171,16 @@ itu diselesaikan di langkah 7.
 Bangun seluruh komposisi **tanpa audio sama sekali**. Tonton di Studio, dan
 iterasi sepuasnya di sini — semua ini gratis.
 
-Setiap scene satu berkas (HARD RULE 1). Dua langkah:
+Bisu, tapi tidak buta: selama berkas VO sebuah scene belum ada, teks VO-nya
+tampil sebagai **subtitel preview** yang berganti mengikuti beat, jadi ritme
+scene bisa dinilai tanpa membayar satu karakter pun
+([docs/11](11-rencana-vo.md#subtitel-preview--sampai-vonya-jadi)). Subtitel itu
+hilang sendiri per scene begitu berkas VO-nya ada — tidak ada saklar yang perlu
+dimatikan sebelum render final.
+
+Setiap scene satu berkas (HARD RULE 1), dan **rencana VO + direction-nya harus
+sudah ada** — `.tsx` adalah turunan keduanya, bukan tebakan yang mendahului.
+Dua langkah:
 
 ```tsx
 // ideas/apa-itu-ram/scenes/15-s016.tsx
@@ -194,14 +227,17 @@ Yang wajib dan paling mudah terlewat:
 - **Jangan tulis durasi scene di dalam scene.** Durasinya dari naskah, dipasang
   `Episode.tsx` lewat `<Sequence>`. Scene hanya tahu detik ke berapa dirinya
   sedang berjalan.
-- **Jangan pernah menyunting `timing.gen.ts`.** Ubah `naskah.md`, lalu
-  `npm run gen`.
+- **Jangan pernah menyunting `timing.gen.ts`.** Ubah rencana VO scene itu (atau
+  daftar scene di `naskah.md`), lalu `npm run gen`.
+- **Jangan mengetik detik VO di dalam `.tsx`.** Pakai `beat("<id>", i)` dari
+  `timing.gen.ts` — angka tangan tidak ikut bergeser saat kalimatnya berubah.
 - Ikon lewat `<Ic n="..." />`, figur lewat kelas di
   [`shared/figur.css`](../shared/figur.css) — HARD RULE 2.
 
-Audio ditambahkan di langkah 7, memakai `<Audio>` Remotion di dalam
-`<Sequence>` scene yang bersangkutan. Volume musik latar dari `MUSIC_VOLUME`
-di `.env`.
+Audio VO **tidak ditempel tangan**. `<TrekVO>` di `Episode.tsx` memasang
+`<Audio>` sendiri untuk setiap scene yang berkas VO-nya sudah ada di
+`public/vo/<slug>/`, dan menampilkan subtitel preview untuk yang belum. Musik
+latar tetap dipasang manual, volumenya dari `MUSIC_VOLUME` di `.env`.
 
 **Opening dan closing tidak dibuat sendiri.** `Episode.tsx` sudah memasang
 `<KartuJudul judul={...}/>` dan `<TandaBrand/>` dari
@@ -223,7 +259,9 @@ npm run check     # tsc + bukti frame tidak kosong
 berarti membayar generate ulang. Jangan lewati satu pun baris di bawah.
 
 Baca naskah **sambil menonton preview bisu**, dari awal sampai akhir, satu kali
-penuh tanpa jeda. Untuk setiap scene:
+penuh tanpa jeda. Subtitel preview di layar sudah menampilkan kalimat yang
+sedang berjalan, jadi kecocokan VO–visual bisa dinilai langsung tanpa membaca
+berkas di sebelah. Untuk setiap scene:
 
 - [ ] **Kalimat VO cocok dengan apa yang tampil di layar** pada scene itu — bukan
       scene sebelumnya, bukan sesudahnya.
@@ -237,21 +275,34 @@ Lalu cek keseluruhan:
 
 - [ ] Total karakter ≤ `ELEVENLABS_MAX_CHARS_PER_TOPIC`.
 - [ ] Ejaan istilah asing sudah disesuaikan untuk TTS
-      ([docs/05](05-template-naskah.md#aturan-menulis-vo-untuk-elevenlabs)) —
+      ([docs/11](11-rencana-vo.md#aturan-menulis-vo-untuk-elevenlabs)) —
       **ini penyebab generate ulang nomor satu**, jadi teliti di sini.
 - [ ] Angka ditulis sesuai cara baca, bukan sebagai angka.
-- [ ] Tidak ada tanda kurung, simbol mentah, atau markdown di kolom VO.
+- [ ] Tidak ada tanda kurung, simbol mentah, atau markdown di blok `## VO`.
+- [ ] `npm run sisa` bersih — tidak ada rencana VO yang belum ada atau kosong.
 - [ ] Checklist ELI5 lolos ([09](09-tangga-abstraksi.md#checklist-dipakai-saat-qa-naskah)).
 
 Kalau semua tercentang, tandai di frontmatter `naskah.md`:
 
 ```yaml
 status: vo
-naskah_beku: 2026-08-20
+naskah_beku:
+  L: 2026-08-20
+  S1: 2026-08-20
+  S2: 2026-08-20
 ```
 
-Setelah tanggal ini tertulis, **kolom VO tidak boleh disunting** kecuali dengan
-keputusan sadar bahwa akan ada biaya generate ulang.
+**Bekunya per keluaran, bukan per topik.** Video panjang dan kedua Short bisa
+matang di waktu berbeda — Shorts sudah sesuai spek sementara video panjangnya
+masih kurang durasi, misalnya. Satu tanggal untuk bertiga memaksa memilih antara
+menahan yang sudah siap atau membekukan yang belum, dan yang kedua yang selalu
+dipilih orang yang sedang buru-buru. `tools/bikin-vo.mjs` melewati keluaran yang
+barisnya masih kosong, dan mengatakannya di layar.
+
+Setelah tanggal ini tertulis, **blok `## VO` di rencana VO mana pun tidak boleh
+disunting** kecuali dengan keputusan sadar bahwa akan ada biaya generate ulang.
+Bagian lain berkas itu — catatan, tabel sinkron — tetap boleh diperbaiki; yang
+beku cuma kalimatnya.
 
 ## 6 · Voice over ElevenLabs — sekali jalan
 
@@ -287,29 +338,91 @@ Pilihan model:
    lanjut ke sisanya. Biayanya beberapa ratus karakter untuk menghindari
    kesalahan sepuluh ribu karakter.
 3. **Jangan generate ulang karena "kurang pas".** Kalau pengucapannya salah,
-   perbaiki **ejaannya di naskah**, lalu generate ulang scene itu saja. Mengulang
+   perbaiki **ejaannya di rencana VO scene itu** (dan catat di § Kamus
+   pengucapan `naskah.md`), lalu generate ulang scene itu saja. Mengulang
    dengan setelan yang sama akan memberi hasil yang hampir sama — itu membakar
    kredit tanpa hasil.
 4. **Jangan pernah generate dari naskah yang belum melewati gerbang langkah 5.**
 5. Catat total karakter terpakai di `naskah.md` setelah selesai, supaya perkiraan
    biaya episode berikutnya makin akurat.
 
-Penamaan berkas: `vo/L-001.mp3`, nomornya sama persis dengan nomor scene di
-`naskah.md`. Nomor yang tidak sinkron akan merusak langkah 7.
+Penamaan berkas: `public/vo/<slug>/<prefiks>-<kunci>.mp3` — mis.
+`public/vo/apa-itu-ram/L-01-hook-question.mp3` untuk video panjang, dan
+`S1-01-menunggu.mp3` / `S2-01-mitos.mp3` untuk kedua Short. **Prefiksnya yang
+memisahkan ketiga keluaran di satu folder**: tanpa itu `01-hook` milik Short dan
+`01-hook-question` milik video panjang berebut ruang nama yang sama. Satu bentuk
+nama untuk berkas VO, rencana VO, komposisi, dan ID komposisi Remotion. **Nama inilah saklarnya:**
+begitu berkasnya ada dan `npm run gen` dijalankan, scene itu berhenti memakai
+subtitel preview dan mulai bicara ([docs/11](11-rencana-vo.md#subtitel-preview--sampai-vonya-jadi)).
+Nama yang meleset satu huruf berarti scene tetap bisu — `npm run sisa` yang
+memberi tahu, jangan menunggu ketahuan saat menonton hasil render.
+
+### Perintahnya
+
+```powershell
+node --env-file=.env tools/bikin-vo.mjs <slug>                    # rencana saja — GRATIS
+node --env-file=.env tools/bikin-vo.mjs <slug> --scene 01-hook-question --target L --jalan
+node --env-file=.env tools/bikin-vo.mjs <slug> --jalan            # sisanya, setelah didengar
+```
+
+**Tanpa `--jalan` skrip itu tidak mengirim apa pun** — ia mencetak daftar berkas
+yang akan dibuat beserta hitungan karakternya, lalu berhenti. Default yang tidak
+membelanjakan apa-apa adalah satu-satunya default yang benar untuk API berbayar:
+perintah yang salah ketik harus berakhir sebagai tabel di layar.
+
+Yang diperiksa sebelum satu byte pun dikirim:
+
+1. `naskah_beku` di frontmatter naskah wajib terisi — inilah gerbang §5 yang
+   dijalankan mesin, bukan diingat orang.
+2. Total karakter topik ≤ `ELEVENLABS_MAX_CHARS_PER_TOPIC`.
+3. Scene yang MP3-nya sudah ada dilewati diam-diam; menimpanya perlu `--paksa`.
+4. Sisa kuota key aktif dicek lebih dulu — kurang berarti berhenti sebelum
+   mulai, karena setengah episode yang jadi lebih merepotkan daripada nol.
+
+Kalimat tetangga ikut dikirim sebagai `previous_text` / `next_text` (tidak
+disuarakan, tidak ditagih) supaya intonasi sambungan antar-scene tidak patah —
+scene ditulis terpisah tapi ditonton beruntun (HARD RULE 7).
 
 **Dengarkan hasilnya sendiri.** Claude tidak bisa menilai audio — pengucapan
 istilah teknis, nama library, dan akronim wajib dicek manusia.
+
+### Ratakan loudness — satu perintah, jangan dilewati
+
+```powershell
+node --env-file=.env tools/rata-vo.mjs <slug>            # rencana
+node --env-file=.env tools/rata-vo.mjs <slug> --jalan
+```
+
+Keluaran ElevenLabs duduk di sekitar **−24 LUFS**, sepuluh LU di bawah
+`TARGET_LUFS`. **YouTube tidak menaikkan yang pelan** — ia hanya menurunkan yang
+keras — jadi video yang diunggah sepelan itu akan terdengar pelan di sebelah
+video orang lain, selamanya, dan tidak ada yang bisa diperbaiki setelah tayang
+selain mengunggah ulang.
+
+Perataannya dikerjakan pada **MP3 di `public/vo/`, bukan pada MP4 hasil render**.
+Kalau ditempel di keluaran, MP4 di `render/` berhenti bisa dihasilkan ulang dari
+`npm run render` — dan berkas yang tidak bisa dibuat ulang adalah berkas yang
+tidak bisa diperbaiki. Metodenya loudnorm dua langkah dengan `linear=true`, jadi
+dinamika kalimat tidak dipompa; berkas yang sudah di ±0,5 LU dari target
+dilewati, jadi aman dijalankan berkali-kali.
+
+MP4 utuhnya nanti terukur satu-dua LU di bawah target — itu wajar, karena jeda
+antar-scene dan closing yang bisu ikut masuk hitungan integrated loudness.
 
 ## 7 · Re-timing dengan durasi asli + render final
 
 Sekarang ganti timing perkiraan dengan angka sebenarnya.
 
 ```powershell
-node --env-file=.env tools/vo-durations.mjs ideas/<slug>/vo L
+node --env-file=.env tools/vo-durations.mjs <slug>        # ketiga keluaran
+node --env-file=.env tools/vo-durations.mjs <slug> S1     # satu saja
 ```
 
-Skrip ini menjalankan `ffprobe` untuk tiap berkas dan mengeluarkan tabel durasi
-VO sebenarnya. Rumus timing-nya:
+Skrip ini menjalankan `ffprobe` untuk tiap berkas dan membandingkan durasi VO
+sebenarnya dengan perkiraan yang sedang dipakai komposisi. **Kolom yang penting
+adalah "geser menumpuk", bukan selisih per scene** — selisih 0,3 dtk di sepuluh
+scene berarti scene terakhir jatuh 3 detik dari tempatnya. Skrip keluar dengan
+kode 1 kalau pergeserannya lewat 1,5 dtk. Rumus timing-nya:
 
 ```
 durasi_scene  = durasi_vo + VO_PAD_SECONDS
@@ -318,8 +431,8 @@ start_scene(n) = start_scene(n-1) + durasi_scene(n-1)
 
 Lalu:
 
-1. **Perbarui kolom VO di `naskah.md`** kalau ada perbedaan kata (seharusnya
-   tidak ada — naskah sudah beku), lalu `npm run gen`. Timing seluruh episode
+1. **Perbarui blok `## VO` scene yang bersangkutan** kalau ada perbedaan kata
+   (seharusnya tidak ada — naskah sudah beku), lalu `npm run gen`. Timing seluruh episode
    dihitung ulang sekaligus. Tidak ada angka yang disalin tangan, jadi tidak ada
    scene yang tertinggal saat satu durasi bergeser.
 
@@ -328,12 +441,14 @@ Lalu:
    > yang benar, tambahkan `tools/bangun-timing.mjs` membaca durasi asli dari
    > `vo/` — jangan menambal `timing.gen.ts` dengan tangan.
 
-2. Tambahkan audio, satu `<Audio>` per scene, di dalam `<Sequence>` scene itu:
+2. **Audio VO sudah terpasang sendiri** begitu berkasnya ada di
+   `public/vo/<slug>/` dan `npm run gen` dijalankan — `<TrekVO>` yang
+   memasangnya, dan subtitel preview scene itu ikut hilang. Yang masih manual
+   cuma musik latar:
 
 ```tsx
 import { Audio, staticFile } from "remotion";
 
-<Audio src={staticFile("vo/apa-itu-ram/L-042.mp3")} />
 <Audio src={staticFile("music/tenang.mp3")} volume={CFG.MUSIC_VOLUME} />
 ```
 
@@ -350,7 +465,9 @@ npm run render -- --out ideas/<slug>/render/T01-L.mp4
 - **Selalu `npm run check` sebelum render.** Jauh lebih murah daripada menunggu
   render enam menit baru ketahuan salah.
 - **`npm run sisa` harus nol.** Scene placeholder tampil sebagai kartu kuning
-  bergaris; kalau ikut masuk MP4 final, itu ketahuan penonton.
+  bergaris; kalau ikut masuk MP4 final, itu ketahuan penonton. Perintah yang
+  sama juga menyebut scene yang masih memakai **subtitel preview** (berkas VO-nya
+  belum ada) dan berkas VO yang namanya tidak cocok dengan kunci mana pun.
 - `--concurrency 1` kalau render tidak stabil di komposisi berat media.
 - `npm run studio` adalah server yang berjalan terus — jalankan di background,
   jangan sebagai perintah biasa.
@@ -370,7 +487,8 @@ Wajib dilewati sebelum publish. Jangan tandai selesai kalau ada yang belum dicek
 
 **Teknis**
 
-- [ ] `npm run sisa` melaporkan **nol** placeholder.
+- [ ] `npm run sisa` melaporkan **nol** placeholder **dan nol scene bersubtitel
+      preview** — subtitel oranye berbingkai putus-putus tidak boleh ada di MP4.
 - [ ] Durasi total sesuai target ([02](02-format-video.md)); Shorts ≤ 60 dtk.
 - [ ] Tidak ada celah/tumpang tindih antar scene (frame hitam berkedip).
 - [ ] Semua scene muncul — cek dengan menggulir folder `scene` di sidebar Studio,

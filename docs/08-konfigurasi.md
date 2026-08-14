@@ -49,11 +49,15 @@ di daftar putihnya** ke `shared/config.gen.ts`:
 import { CFG, FPS, f } from "../../shared/config.gen";
 ```
 
-Dua hal yang mengikat:
+Tiga hal yang mengikat:
 
 1. **Variabel baru yang dibutuhkan komposisi wajib ditambahkan ke `IZIN` di
    `tools/bangun-config.mjs`** — kalau tidak, ia tidak sampai ke sana.
-2. **Jangan pernah menambahkan nama yang bernuansa secret ke daftar itu.**
+2. **Variabel yang nilainya cuma boleh salah satu dari beberapa pilihan**
+   (mis. `SUBTITLE_MODE=auto|on|off`) didaftarkan di `PILIHAN`, bukan di
+   `IZIN.teks` — supaya salah ketik menghentikan `npm run gen`, bukan diam-diam
+   mengubah perilaku komposisi saat render.
+3. **Jangan pernah menambahkan nama yang bernuansa secret ke daftar itu.**
    Bundle Remotion dikirim ke browser dan bisa ikut masuk berkas render;
    apa pun yang tersalin ke sana sama saja dengan dibocorkan. Skrip punya
    penjaga pola (`KEY|SECRET|TOKEN|PASSWORD|CLIENT_ID|CREDENTIAL`) yang
@@ -68,7 +72,7 @@ Dua hal yang mengikat:
 | Identitas channel | `CHANNEL_NAME`, `CHANNEL_HANDLE`, `CTA_URL` | [01](01-positioning.md), [06](06-publishing.md) |
 | ElevenLabs | `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`, `ELEVENLABS_MODEL_ID`, setelan suara | [04 §3](04-pipeline-produksi.md#3-voice-over-elevenlabs) |
 | Spesifikasi video | `LONG_WIDTH/HEIGHT`, `SHORT_WIDTH/HEIGHT`, `VIDEO_FPS`, durasi target | [02](02-format-video.md) |
-| Timing VO | `VO_PAD_SECONDS`, `VO_WORDS_PER_MINUTE`, `MUSIC_VOLUME` | [04 §3](04-pipeline-produksi.md#3-timing-estimasi-gratis) |
+| Timing VO | `VO_PAD_SECONDS`, `VO_WORDS_PER_MINUTE`, `VO_PLACEHOLDER_SECONDS`, `MUSIC_VOLUME`, `SUBTITLE_MODE` | [04 §3](04-pipeline-produksi.md#3-timing-estimasi-gratis) · [11](11-rencana-vo.md) |
 | Scene standar | `OPENING_SECONDS`, `CLOSING_LONG_SECONDS`, `CLOSING_SHORT_SECONDS` | [10](10-scene-standar.md) |
 | Render | `FFMPEG_PATH`, `FFPROBE_PATH`, `CHROME_PATH` | [04 §7](04-pipeline-produksi.md) |
 | Loudness | `TARGET_LUFS`, `MUSIC_DUCK_LUFS` | [02](02-format-video.md) |

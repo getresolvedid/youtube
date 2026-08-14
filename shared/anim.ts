@@ -75,6 +75,28 @@ export const tPP = (detik: number, o: Tween): number => {
   );
 };
 
+/** Getaran teredam mendatar — "salah", "ditolak", "tidak muat".
+ *
+ *  Amplitudonya meluruh eksponensial sampai nol, jadi ia berhenti dengan
+ *  sendirinya di posisi semula. Getar berdurasi tetap yang dipotong di tengah
+ *  ayunan meninggalkan elemen beberapa piksel dari tempatnya — pergeseran yang
+ *  tidak pernah kembali dan terbaca sebagai tata letak yang meleset.
+ *
+ *  Di luar rentangnya nilainya 0, bukan diekstrapolasi: `Math.sin` tidak
+ *  menjepit dirinya sendiri seperti `interpolate`, dan tanpa penjagaan ini
+ *  elemennya akan bergetar selamanya sampai scene habis. */
+export const getar = (
+  detik: number,
+  o: { mulai: number; durasi?: number; jauh?: number; putaran?: number },
+): number => {
+  const durasi = o.durasi ?? 0.5;
+  const u = (detik - o.mulai) / durasi;
+  if (u <= 0 || u >= 1) return 0;
+  return (
+    (o.jauh ?? 12) * Math.exp(-4.2 * u) * Math.sin(2 * Math.PI * (o.putaran ?? 3) * u)
+  );
+};
+
 /* --------------------------------------------------------------------------
    Masuk & keluar scene
 

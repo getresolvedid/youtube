@@ -7,9 +7,9 @@ React 19, TypeScript.
 ## Perintah
 
 ```powershell
-npm run gen        # .env → shared/config.gen.ts, naskah.md → ideas/*/timing.gen.ts
+npm run gen        # .env → config.gen.ts · naskah.md + scenes/*-vo.md → timing.gen.ts
 npm run check      # tsc --noEmit + tools/periksa-frame.mjs
-npm run sisa       # scene yang masih placeholder
+npm run sisa       # placeholder + rencana VO/direction yang belum ada
 npm run studio     # Remotion Studio (server panjang — jalankan di background)
 npm run render     # episode utuh
 npm run still      # `npm run still -- 15-s016 out/s016.png`
@@ -42,11 +42,13 @@ shared/
   theme.css figur.css scenes.css
 public/logos/             aset — diakses lewat staticFile()
 ideas/<slug>/
-  naskah.md               SUMBER KEBENARAN
-  timing.gen.ts           DIGENERATE dari naskah.md — jangan disunting
+  naskah.md               materi topik + DAFTAR scene
+  timing.gen.ts           DIGENERATE dari naskah.md + scenes/*-vo.md — jangan disunting
   Episode.tsx             merangkai <Sequence>, tidak berisi scene
   scenes/index.ts         SCENES: id → komponen
-  scenes/01-hook-question.tsx   satu scene = satu berkas, bernomor urut
+  scenes/01-hook-question-vo.md         teks VO scene itu (HARD RULE 4)
+  scenes/01-hook-question-direction.md  apa yang terjadi di layar (HARD RULE 3)
+  scenes/01-hook-question.tsx           satu scene = satu berkas, bernomor urut
 ```
 
 ## Aturan yang mengikat
@@ -69,8 +71,11 @@ ideas/<slug>/
    sebagai modul.
 6. **Font lewat `@remotion/google-fonts`** (`shared/fonts.ts`), bukan `@import`
    di CSS — loader-nya menahan render sampai font siap.
-7. **Jangan sunting berkas `*.gen.ts`.** Ubah sumbernya (`.env` / `naskah.md`)
-   lalu `npm run gen`.
+7. **Jangan sunting berkas `*.gen.ts`.** Ubah sumbernya (`.env` / `naskah.md` /
+   `scenes/<kunci>-vo.md`) lalu `npm run gen`.
+8. **Detik VO tidak diketik di dalam scene.** Pakai `beat("<id>", i)` dari
+   `timing.gen.ts` — ia dihitung dari rencana VO scene itu, jadi ikut bergeser
+   sendiri saat kalimatnya berubah (HARD RULE 4).
 
 ## Setelah menyunting komposisi
 

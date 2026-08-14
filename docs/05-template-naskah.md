@@ -1,59 +1,29 @@
 # 05 · Template Naskah
 
-`naskah.md` adalah **sumber kebenaran** satu topik. VO, visual, timing, sumber
-fakta, dan penjelasan L1 hidup di satu berkas. Komposisi HTML dan berkas VO
-adalah turunan — kalau ada yang berubah, ubah naskah dulu.
+`naskah.md` adalah **sumber kebenaran satu topik**: penjelasan L1, tangga
+abstraksi, kamus istilah, sumber fakta, dan **daftar scene** — scene apa saja,
+urutannya, dan di bagian flow mana.
+
+Yang **tidak** ada di sini:
+
+| Yang mana | Di mana | Aturan |
+|---|---|---|
+| Teks VO tiap scene | `scenes/<kunci>-vo.md` | [11 · Rencana VO](11-rencana-vo.md) · HARD RULE 4 |
+| Apa yang terjadi di layar | `scenes/<kunci>-direction.md` | HARD RULE 3 |
+
+Dulu ketiganya berdesakan di satu tabel, satu sel per scene. Sel tabel tidak
+punya tempat untuk alasan — kenapa kata ini bukan kata itu, kenapa kartunya masuk
+dari kiri — dan alasan yang tidak punya tempat akan hilang. Naskah sekarang
+menjawab "ada scene apa saja", dua berkas di sebelah scene-nya menjawab "isinya
+apa".
 
 Naskah juga yang menentukan biaya: VO baru dibuat setelah naskah **beku**
-([pipeline §5](04-pipeline-produksi.md#5-gerbang--bekukan-naskah)), jadi kualitas
-berkas ini yang menentukan berapa kali kita membayar ElevenLabs.
+([pipeline §5](04-pipeline-produksi.md#5-gerbang--bekukan-naskah)).
 
----
-
-## Aturan menulis VO untuk ElevenLabs
-
-Naskah yang bagus dibaca ≠ naskah yang bagus disintesis. Aturan berikut khusus
-supaya keluaran ElevenLabs terdengar wajar dan pengucapannya benar **pada
-percobaan pertama** — setiap kesalahan di sini berarti generate ulang berbayar.
-
-**Struktur kalimat**
-
-- Maksimal **18 kata per kalimat**. Kalimat panjang bikin intonasi TTS melantur.
-- Satu paragraf = satu scene = satu berkas VO. Jangan menggabung dua ide.
-- Hindari anak kalimat bertingkat ("yang mana, ketika, sehingga…"). Pecah jadi
-  dua kalimat.
-- Akhiri kalimat dengan titik. Tanda seru dipakai hemat — TTS menaikkan energi
-  cukup banyak untuk itu.
-
-**Jeda dan ritme**
-
-- Koma menghasilkan jeda pendek; titik jeda sedang; paragraf baru jeda panjang.
-  Manfaatkan itu, jangan mengandalkan tag khusus.
-- Jeda dramatis sebelum kalimat kunci diatur di **timing scene** (padding), bukan
-  di dalam teks VO.
-
-**Angka dan istilah** — ini penyebab generate ulang nomor satu
-
-- Tulis angka sesuai cara baca: `"seratus milidetik"`, bukan `"100 ms"`.
-  Kecuali angka besar yang memang dibaca sebagai angka: `"dua ribu dua puluh enam"`.
-- Akronim yang dieja per huruf tulis dengan pemisah: `"H T T P"`, `"S Q L"`,
-  `"A P I"`. Yang dibaca sebagai kata biarkan utuh: `"cache"`, `"JSON"`.
-- Istilah Inggris di kalimat Indonesia sering salah baca. Kalau hasilnya keliru,
-  **tulis fonetik Indonesia** di naskah VO dan simpan bentuk aslinya di kolom
-  visual. Contoh: `cache → kesh`, `queue → kyu`, `deadlock → dedlok`,
-  `schema → skima`.
-- Kumpulkan perbaikan pengucapan di bagian **Kamus pengucapan** naskah supaya
-  konsisten antar-episode — dan supaya kesalahan yang sama tidak dibayar dua kali.
-
-**Yang dihindari**
-
-- Tanda kurung — TTS sering membacanya sebagai jeda aneh. Jadikan kalimat terpisah.
-- Simbol mentah: `→`, `&`, `%`, `/`. Tulis: "menjadi", "dan", "persen", "atau".
-- Emoji dan markdown (`**tebal**`) di dalam teks VO.
-- Menyebut nomor scene, timecode, atau instruksi visual di dalam teks VO.
-
-**Audio tag** (hanya `eleven_v3`): `[excited]`, `[whispers]`, dan sejenisnya.
-Jangan dipakai di `eleven_multilingual_v2` — tag akan ikut dibaca sebagai teks.
+> **Aturan menulis VO untuk ElevenLabs** (batas 18 kata, angka ditulis sesuai
+> cara baca, akronim dipisah, tanpa tanda kurung) pindah ke
+> [11 · Rencana VO](11-rencana-vo.md#aturan-menulis-vo-untuk-elevenlabs) —
+> di sanalah kalimatnya sekarang ditulis.
 
 ---
 
@@ -69,7 +39,10 @@ judul_kerja: Kenapa query jadi 1000x lebih cepat dengan index
 pilar: P2 · Di Balik Aplikasi
 lapis: umum → dev        # umum | umum → dev | dev
 status: riset | naskah | vo | komposisi | render | publish
-naskah_beku:            # diisi tanggal saat lolos gerbang (docs/04 §5)
+naskah_beku:            # tanggal per keluaran saat lolos gerbang (docs/04 §5)
+  L:                    #   video panjang
+  S1:                   #   Short 1
+  S2:                   #   Short 2
 karakter_terpakai:      # diisi setelah VO dibuat, untuk kalibrasi biaya
 tanggal_target: YYYY-MM-DD
 ---
@@ -128,7 +101,7 @@ memperkenalkannya di kemunculan pertama.
 | # | Bagian | Tangga | Isi | Perkiraan |
 |---|---|---|---|---|
 | 1 | [question] | L1 | ... | 0:00–0:20 |
-| 2 | brand opening | — | scene standar 2,5 dtk (kartu judul) | |
+| 2 | brand opening | — | scene standar 4,0 dtk (kartu judul) | |
 | 3 | [problem] | L1 | ... | 0:22–1:22 |
 | 4 | [answer] → [what] | L1→L2 | ... | 1:22–2:07 |
 | 5 | [why] | L2 | ... | 2:07–3:32 |
@@ -137,19 +110,22 @@ memperkenalkannya di kemunculan pertama.
 
 ### Scene
 
-| # | Bagian | VO | Visual | Motion | Aset |
-|---|---|---|---|---|---|
-| 001 | 1 Hook | Query yang sama. Satu jalan sepuluh detik, satu jalan tiga milidetik. | Dua panel gelap berdampingan, angka besar Mono 800 di masing-masing. | Counter naik ke 10.000 ms di kiri; kanan berhenti di 3 ms lalu pulse hijau. | — |
-| 002 | 1 Hook | Bedanya bukan mesinnya. Bedanya cara data itu dicari. | Panel menyatu jadi satu, teks judul masuk dari bawah. | fade + y 24→0, power3.out | — |
+Daftar isi episode. Teks VO tiap scene ada di `scenes/<kunci>-vo.md`, apa yang
+terjadi di layar di `scenes/<kunci>-direction.md`.
+
+| # | Bagian | Ringkas |
+|---|---|---|
+| 001 | 1 question | Query yang sama, satu sepuluh detik satu tiga milidetik. Bedanya bukan mesinnya. |
+| 002 | 3 problem | Tanpa index, setiap baris harus dilihat satu per satu. |
 
 ### Timing — estimasi *(langkah 3, gratis)*
 
-Keluaran `node --env-file=.env tools/estimate-timing.mjs`. Dipakai untuk
-membangun komposisi bisu.
+Keluaran `node --env-file=.env tools/estimate-timing.mjs <slug>`. Dipakai untuk
+membangun komposisi bisu. Opening & closing sudah ikut terhitung.
 
-| # | kata | estimasi VO | data-duration | data-start |
+| # | kunci | kata | durasi | mulai |
 |---|---|---|---|---|
-| 001 | 15 | 6.43 | 6.83 | 0.00 |
+| 1 | 1-s001 | 15 | 6.83 | 0.00 |
 
 ### Timing — final *(langkah 7, setelah VO jadi)*
 
@@ -167,13 +143,13 @@ render final.**
 **Insight yang diambil:** <satu insight utuh, berdiri sendiri>
 **Target:** 40–60 dtk · ~110 kata · 8–14 scene · tangga L1 (+ sedikit L2)
 
-| # | Beat | VO | Teks layar | Visual | Motion |
-|---|---|---|---|---|---|
-| 001 | Hook | ... | ... | ... | ... |
+| # | Bagian | Ringkas |
+|---|---|---|
+| 001 | Hook | ... |
 
 ### Timing — estimasi
 
-| # | kata | estimasi VO | data-duration | data-start |
+| # | kunci | kata | durasi | mulai |
 |---|---|---|---|---|
 
 ### Timing — final
@@ -188,13 +164,13 @@ render final.**
 **Mitos yang dibantah:** <pernyataan yang banyak dipercaya tapi salah>
 **Target:** 40–60 dtk · ~110 kata · 8–14 scene · tangga L1 (+ sedikit L2)
 
-| # | Beat | VO | Teks layar | Visual | Motion |
-|---|---|---|---|---|---|
-| 001 | Mitos | ... | ... | ... | ... |
+| # | Bagian | Ringkas |
+|---|---|---|
+| 001 | Mitos | ... |
 
 ### Timing — estimasi
 
-| # | kata | estimasi VO | data-duration | data-start |
+| # | kunci | kata | durasi | mulai |
 |---|---|---|---|---|
 
 ### Timing — final
@@ -206,34 +182,67 @@ render final.**
 
 ## Metadata publish
 
-Diisi menjelang unggah, lalu disalin ke `render/publish.md`. Lihat docs/06.
+**Pindah ke [`render/publish.md`](render/publish.md).** Judul, deskripsi,
+chapter, tag, playlist, brief thumbnail, dan jadwal rilis — untuk video panjang
+dan kedua Short — ditulis di sana langsung di fase 3, bukan disalin ke sana
+belakangan. Lihat docs/06.
 ````
 
-> **Catatan format:** `tools/estimate-timing.mjs` mengenali tabel scene dari
-> kolom yang berjudul **persis `VO`**, dan nomor scene di kolom pertama. Jangan
-> mengganti judul kolom itu — tabel timing memakai judul lain (`Berkas VO`,
-> `Durasi VO`) supaya tidak ikut terbaca.
+> **Catatan format:** `tools/baca-episode.mjs` mengenali tabel scene dari kolom
+> berjudul **persis `Bagian`** di bawah heading `### Scene`, dengan id scene di
+> kolom pertama (nomor `004` → `s004`, atau nama `hook-question`). Jangan
+> mengganti judul kolom itu — tabel timing memakai judul lain supaya tidak ikut
+> terbaca.
+>
+> **Shorts ikut dihitung.** Tabel `### Scene` di bawah `## Short 1` dan
+> `## Short 2` dibaca dengan aturan yang sama persis (kolom berjudul `Bagian`,
+> id di kolom pertama), dan tiap Short dapat `timing.gen.ts` sendiri di
+> `ideas/<slug>/scene-shorts/<short>/`. Penomorannya mulai `01` lagi di tiap
+> subfolder, closing tetap dipatok 99, dan opening tidak ada sama sekali —
+> [02 § Di mana berkasnya](02-format-video.md#di-mana-berkasnya).
 
 ---
 
 ## Contoh terisi (potongan)
 
-Tiga scene pembuka video panjang untuk topik *"Kenapa query jadi 1000× lebih
-cepat dengan index"*.
+Dua scene pembuka video panjang untuk topik *"Kenapa query jadi 1000× lebih cepat
+dengan index"* — **tiga berkas**, bukan satu baris tabel.
 
-| # | Babak | VO | Visual | Motion |
-|---|---|---|---|---|
-| 001 | 1 Hook | Query yang sama, tabel yang sama. Satu selesai dalam sepuluh detik, satu dalam tiga milidetik. | Layar dibagi dua. Kiri: label `TANPA INDEX`, angka Mono 800 120px. Kanan: `DENGAN INDEX`, angka hijau. | Counter kiri naik 0→10.000 dalam 2 dtk (`power2.out`); kanan berhenti di 3, pulse `--ok`. |
-| 002 | 1 Hook | Mesin databasenya sama persis. Yang berbeda cuma satu hal: cara barisnya dicari. | Dua panel menyatu jadi satu panel gelap; judul masuk dari bawah. | `y 24→0` + fade, `power3.out`, 0.2 dtk setelah scene mulai. |
-| 003 | 2 Kontrak | Delapan menit ke depan kamu akan tahu persis apa yang terjadi di dalam. Kenapa index bisa secepat itu, dan kenapa kadang justru diabaikan. | Peta tiga babak: `B-Tree` → `Jalur query` → `Kapan gagal`. Kartu judul 2,5 dtk sebelum peta. | Tiga kartu masuk stagger 0.12 dtk; garis penghubung SVG tergambar `power2.out`. |
+`naskah.md` cuma mendaftar:
 
-**Yang bikin baris-baris ini lolos standar:**
+| # | Bagian | Ringkas |
+|---|---|---|
+| 001 | 1 question | Query yang sama, tabel yang sama, satu seribu kali lebih lambat. |
+| 002 | 1 question | Mesin databasenya identik; yang berbeda cuma cara barisnya dicari. |
 
-- Kolom VO ≤ 18 kata per kalimat, angka ditulis untuk dibaca ("sepuluh detik",
-  bukan "10 dtk").
-- Bahasa L1 di babak Hook — tidak ada satu pun istilah teknis di scene 001–002.
-- Kolom visual menyebut posisi, ukuran, dan warna konkret.
-- Kolom motion menyebut properti + durasi + ease yang bisa langsung diterjemahkan
-  ke helper di [`shared/anim.ts`](../shared/anim.ts) tanpa menebak. Nama ease
-  ditulis dengan konvensi GSAP (`power3.out`, `back.out(1.6)`, `expo.out`) —
-  padanannya sudah tersedia sebagai `E.power3out`, `E.backOut(1.6)`, `E.expoOut`.
+`scenes/1-s001-vo.md` yang memegang kalimatnya:
+
+```markdown
+## VO
+
+Query yang sama, tabel yang sama.
+Satu selesai dalam sepuluh detik, satu dalam tiga milidetik.
+```
+
+`scenes/1-s001-direction.md` yang memegang layarnya:
+
+```markdown
+Layar dibagi dua. Kiri: label TANPA INDEX, angka Mono 800 120px.
+Kanan: DENGAN INDEX, angka hijau.
+
+motion:
+  - counter kiri naik 0 -> 10.000 dalam 2 dtk, power2.out
+  - kanan berhenti di 3, pulse --ok
+```
+
+**Yang bikin potongan ini lolos standar:**
+
+- VO ≤ 18 kata per kalimat, angka ditulis untuk dibaca ("sepuluh detik", bukan
+  "10 dtk") — [docs/11](11-rencana-vo.md#aturan-menulis-vo-untuk-elevenlabs).
+- Dua baris VO, dua beat: angka kiri dan angka kanan tidak mendarat bersamaan.
+- Bahasa L1 di bagian question — tidak ada satu pun istilah teknis.
+- Direction menyebut posisi, ukuran, dan warna konkret, plus properti + durasi +
+  ease yang bisa langsung diterjemahkan ke helper di
+  [`shared/anim.ts`](../shared/anim.ts) tanpa menebak. Nama ease ditulis dengan
+  konvensi GSAP (`power3.out`, `back.out(1.6)`, `expo.out`) — padanannya sudah
+  tersedia sebagai `E.power3out`, `E.backOut(1.6)`, `E.expoOut`.

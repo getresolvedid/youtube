@@ -32,25 +32,70 @@ import "./figur.css";
 import { SpriteIkon } from "./Icons";
 
 /** Tinggi huruf kapital Manrope 800 = 0,72 x ukuran hurufnya. Syarat docs/06
- *  adalah >= 90px, jadi ukuran huruf minimumnya 125px. Dipakai apa adanya —
- *  kalau sebuah judul tidak muat pada ukuran ini, yang dipendekkan KATANYA,
- *  bukan hurufnya. Thumbnail yang tidak terbaca di feed sama saja dengan
- *  thumbnail yang tidak ada. */
-const FS_JUDUL = 132;
+ *  adalah >= 90px pada kartu 1280x720, jadi ukuran huruf minimumnya 125px.
+ *  Dipakai apa adanya — kalau sebuah judul tidak muat pada ukuran ini, yang
+ *  dipendekkan KATANYA, bukan hurufnya. Thumbnail yang tidak terbaca di feed
+ *  sama saja dengan thumbnail yang tidak ada. */
 const CAP_RATIO = 0.72;
 
-/** Marjin aman. TV-safe tidak berlaku di sini, tapi durasi tayang YouTube
- *  menaruh badge durasi di kanan bawah — jadi sudut itu tidak boleh dipakai
- *  untuk apa pun yang harus terbaca. */
-const PADDING = 64;
+/** Setelan per rasio. Angkanya beda BUKAN karena selera: kartu 9:16 tiga kali
+ *  lebih tinggi resolusinya (2160x3840, docs/06), jadi ukuran huruf yang sama
+ *  akan mengecil jadi sepertiganya di layar. Yang dijaga sama adalah porsinya
+ *  terhadap lebar kartu — itu yang menentukan keterbacaan, bukan pikselnya. */
+const SETELAN = {
+  "16x9": { fs: 132, padding: 64, pitaFigur: 300, bawah: 50 },
+  /* 9:16 — teks tidak menempel di dasar kartu. Di feed dan halaman hasil
+     pencarian, judul Short ditumpuk di bawah kovernya; kata yang ditaruh di
+     100px terbawah akan tertutup di separuh permukaan tempat ia muncul.
+
+     Pita figurnya SANGAT tinggi (2100 dari 3840) dan itu disengaja: kartu 9:16
+     punya kelebihan tinggi, dan kelebihan yang tidak dipakai tidak jadi ruang
+     napas melainkan zona mati di tengah — figur mengambang di atas, teks
+     menempel di bawah, dan yang di antaranya kosong tanpa alasan. */
+  "9x16": { fs: 260, padding: 150, pitaFigur: 2100, bawah: 620 },
+} as const;
+
+export type RasioThumb = keyof typeof SETELAN;
+
+/** Lebar kartu tiap rasio — dipakai penjaga panjang baris di bawah. Angka
+ *  ini kembar dengan THUMB_WIDTH/THUMB_SHORT_WIDTH di .env, dan itu satu-
+ *  satunya kembaran yang dibiarkan: config.gen.ts diimpor src/Root.tsx untuk
+ *  UKURAN komposisi, sementara yang dibutuhkan di sini cuma untuk MEMERIKSA —
+ *  dan pemeriksaan yang ikut mati kalau .env belum digenerate tidak berguna. */
+const LEBAR: Record<RasioThumb, number> = { "16x9": 1280, "9x16": 2160 };
 
 export const KartuThumbnail: React.FC<{
   /** Maksimal dua baris, maksimal empat kata SELURUHNYA (docs/06). Baris
    *  pertama biasanya yang beraksen, baris kedua yang memikul klaimnya. */
   baris: readonly [string, string];
+  /** 16:9 untuk video panjang, 9:16 untuk kover Short. */
+  rasio?: RasioThumb;
   /** Figur dari videonya sendiri — bukan gambar baru. Menempati pita atas. */
   children: React.ReactNode;
-}> = ({ baris, children }) => {
+}> = ({ baris, rasio = "16x9", children }) => {
+  const S = SETELAN[rasio];
+
+  /* Lebar rata-rata satu huruf kapital Manrope 800 ~ 0,60 x ukuran hurufnya.
+     Hampiran, dan sengaja: yang dijaga bukan lebar persis, melainkan supaya
+     baris yang KEPANJANGAN tidak lolos diam-diam.
+
+     Tanpa penjaga ini, baris yang tidak muat MELIPAT jadi baris ketiga — dan
+     kartu tiga baris tidak gagal di mana pun. Ia cuma berhenti terbaca dalam
+     seperempat detik, dan itu ketahuannya setelah diunggah. Persis terjadi di
+     kover Short 2: "TANGAN SAMA" 11 huruf pada kartu yang cuma muat 10. */
+  const MUAT = Math.floor((LEBAR[rasio] - 2 * S.padding) / (0.6 * S.fs));
+  const kepanjangan = baris.filter((b) => b.length > MUAT);
+  if (kepanjangan.length > 0) {
+    throw new Error(
+      `Baris thumbnail kepanjangan untuk kartu ${rasio}: ` +
+        kepanjangan.map((b) => `"${b}" (${b.length} huruf)`).join(", ") +
+        `. Muatnya ${MUAT} huruf per baris pada ukuran ${S.fs}px. ` +
+        `Pendekkan KATANYA — mengecilkan hurufnya melanggar syarat tinggi ` +
+        `huruf kapital docs/06, dan baris yang melipat jadi kartu tiga baris ` +
+        `yang tidak terbaca di feed.`,
+    );
+  }
+
   const kata = baris.join(" ").trim().split(/\s+/).filter(Boolean).length;
   if (kata > 4) {
     /* Dilempar, bukan diperingatkan: render yang lolos dengan lima kata akan
@@ -64,7 +109,7 @@ export const KartuThumbnail: React.FC<{
   }
 
   return (
-    <AbsoluteFill className="panggung r-16x9">
+    <AbsoluteFill className={`panggung r-${rasio}`}>
       <SpriteIkon />
 
       {/* Pita figur — sepertiga atas lebih sedikit. Figurnya dipusatkan sendiri
@@ -73,10 +118,10 @@ export const KartuThumbnail: React.FC<{
       <div
         style={{
           position: "absolute",
-          left: PADDING,
-          right: PADDING,
-          top: PADDING,
-          height: 300,
+          left: S.padding,
+          right: S.padding,
+          top: S.padding,
+          height: S.pitaFigur,
         }}
       >
         {children}
@@ -88,15 +133,20 @@ export const KartuThumbnail: React.FC<{
       <div
         style={{
           position: "absolute",
-          left: PADDING,
-          right: PADDING,
-          bottom: PADDING - 14,
+          left: S.padding,
+          right: S.padding,
+          bottom: S.bawah,
           fontFamily: "var(--font-display)",
           fontWeight: 800,
-          fontSize: FS_JUDUL,
+          fontSize: S.fs,
           lineHeight: 1.02,
           letterSpacing: "-0.02em",
           textTransform: "uppercase",
+          /* Sabuk pengaman kedua di samping penjaga panjang baris di atas:
+             kalau hampiran lebar hurufnya meleset, yang terjadi adalah baris
+             yang menjorok keluar bingkai — kelihatan langsung — bukan baris
+             ketiga yang diam-diam muncul dan tetap terlihat rapi. */
+          whiteSpace: "nowrap",
         }}
       >
         <div style={{ color: "var(--accent-ink)" }}>{baris[0]}</div>
@@ -106,6 +156,10 @@ export const KartuThumbnail: React.FC<{
   );
 };
 
-/** Tinggi huruf kapital yang benar-benar dipakai — dicetak `npm run check`
- *  supaya syarat >= 90px docs/06 punya angka, bukan perasaan. */
-export const TINGGI_KAPITAL = Math.round(FS_JUDUL * CAP_RATIO);
+/** Tinggi huruf kapital yang benar-benar dipakai, per rasio — supaya syarat
+ *  >= 90px docs/06 punya angka, bukan perasaan. Untuk 9:16 angkanya dibaca
+ *  relatif: 216px pada kartu selebar 2160 setara 128px pada kartu 1280. */
+export const TINGGI_KAPITAL: Record<RasioThumb, number> = {
+  "16x9": Math.round(SETELAN["16x9"].fs * CAP_RATIO),
+  "9x16": Math.round(SETELAN["9x16"].fs * CAP_RATIO),
+};

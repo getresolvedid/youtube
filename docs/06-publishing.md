@@ -138,9 +138,37 @@ dilanggar. Peringatan di terminal akan terlewat; render yang gagal tidak.
 
 **Sudut kanan bawah tidak dipakai** — di situ YouTube menempelkan badge durasi.
 
-Shorts tidak dibuatkan thumbnail: YouTube memakai frame dari videonya sendiri,
-dan frame pertama Shorts kita memang sudah dirancang berdiri sendiri
-([docs/02 § Anatomi Shorts](02-format-video.md#anatomi-shorts)).
+### Kover Short — 9:16, dan bacalah batasnya
+
+Kedua Short punya kover sendiri, ukuran **2160×3840** (rasio 9:16, angka yang
+disebut halaman bantuan YouTube untuk thumbnail Shorts):
+
+```
+ideas/<slug>/scene-shorts/thumb-s1.tsx     di LUAR folder scene-nya
+ideas/<slug>/scene-shorts/thumb-s2.tsx     (npm run sisa memeriksa isi folder scene)
+
+npx remotion still T01-thumb-s1 ideas/apa-itu-ram/render/thumb-s1.png
+npx remotion still T01-thumb-s2 ideas/apa-itu-ram/render/thumb-s2.png
+```
+
+**Yang perlu diketahui sebelum berharap:** halaman bantuan YouTube menyatakan
+*"You can't upload a custom thumbnail for Shorts like you can with long form
+videos. You can select a frame from your Short to use as the thumbnail"* —
+sementara di bagian ukuran, halaman yang sama menyebut *"For Shorts or Shorts
+ads, upload a thumbnail with an aspect ratio of 9:16 (2160 x 3840 pixels
+resolution)"*. Keduanya tertulis di
+[satu halaman yang sama](https://support.google.com/youtube/answer/72431).
+Jalur unggahnya berbeda-beda menurut perangkat dan pengguna.
+
+Jadi: **PNG-nya dibuat, dan dipakai kalau kolom unggahnya menerimanya.** Kalau
+yang tersedia cuma pilih-frame, pilih frame tempat gambaran kunci Short itu
+mendarat — bukan frame pertama yang masih kosong.
+
+**Jangan menempelkan kartu kover sebagai frame pertama Short.** Itu jalan
+pintas yang sering dipakai orang supaya frame-nya bisa dipilih, dan ia membayar
+dengan satu-satunya detik yang menentukan hidup-matinya sebuah Short
+([docs/02 § Anatomi Shorts](02-format-video.md#anatomi-shorts)). Kover yang
+tidak terpasang lebih murah daripada hook yang tertunda satu detik.
 
 ## Playlist
 

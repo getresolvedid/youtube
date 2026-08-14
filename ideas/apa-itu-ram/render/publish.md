@@ -180,6 +180,27 @@ Penjelasan utuhnya: <url video panjang>
 #Shorts
 ```
 
+### Kover
+
+Teks: **1 DETIK, 3 BULAN** — angkanya, bukan akibatnya. Judulnya sudah menyebut
+akibatnya ("Prosesormu lebih sering menunggu"), jadi nol kata yang diulang.
+
+Figur: prosesor + meja yang menempel padanya di atas, lemari arsip jauh di
+bawah, garis putus-putus panjang di antaranya. **Jaraknya digambar sebagai
+jarak sungguhan**, memakai kelebihan tinggi kartu 9:16 untuk hal yang isinya
+memang ketinggian.
+
+**Sudah jadi** — `thumb-s1.png`, 2160×3840, 1,6 MB.
+
+```powershell
+npx remotion still T01-thumb-s1 ideas/apa-itu-ram/render/thumb-s1.png
+```
+
+Sumbernya [`../scene-shorts/thumb-s1.tsx`](../scene-shorts/thumb-s1.tsx).
+Batasnya di [docs/06 § Kover Short](../../../docs/06-publishing.md) — kalau
+kolom unggah cuma menawarkan pilih-frame, pilih frame tempat ketiga tempat
+sudah berdiri, dan **jangan** menempelkan kartu ini sebagai frame pertama.
+
 ---
 
 ## Short 2 — T01-S2 · “Jebakan”
@@ -208,6 +229,27 @@ Penjelasan utuhnya: <url video panjang>
 
 #Shorts
 ```
+
+### Kover
+
+Teks: **MEJA LEBAR, SAMA SAJA** — bahasa gambarannya, sementara judulnya
+memakai bahasa bendanya ("Nambah RAM belum tentu bikin cepat"). Nol kata yang
+sama, dan yang membaca judul dengan yang melihat kover dapat dua pegangan
+berbeda pada gagasan yang sama.
+
+Figur: dua meja, yang bawah dua kali lebih lebar, **dengan jumlah berkas yang
+sama**. Separuh kanan meja lebar dibiarkan kosong melompong — kekosongan itulah
+argumennya, dan ia tidak butuh satu kata pun untuk terbaca.
+
+**Sudah jadi** — `thumb-s2.png`, 2160×3840, 1,7 MB.
+
+```powershell
+npx remotion still T01-thumb-s2 ideas/apa-itu-ram/render/thumb-s2.png
+```
+
+> Kata keduanya sempat "TANGAN SAMA" dan itu **melipat jadi kartu tiga baris**
+> tanpa ada yang gagal — 11 huruf pada kartu yang muat 10.
+> `shared/Thumbnail.tsx` sekarang menolaknya sebelum render.
 
 ---
 
@@ -251,6 +293,9 @@ Shorts — **MP4 sudah jadi, tinggal ditonton lalu diunggah:**
 - [ ] **Tonton keduanya utuh dan dengarkan pengucapannya** — "kesh", "ram",
       "hardisk", "D D R". Ini satu-satunya pemeriksaan yang tidak bisa
       diwakilkan ke skrip.
+- [x] Kover 9:16 jadi (`thumb-s1.png`, `thumb-s2.png`), lolos uji ukuran feed.
+- [ ] Kover dipasang **kalau** kolom unggahnya menerima berkas; kalau cuma
+      pilih-frame, pilih frame yang gambarannya sudah berdiri (docs/06).
 - [ ] Teks di layar patuh safe area dan terbaca tanpa suara.
 - [ ] `<url video panjang>` diganti URL sungguhan di kedua deskripsi — **dan
       sampai video panjangnya tayang, baris itu belum bisa diisi.** Pilihannya:

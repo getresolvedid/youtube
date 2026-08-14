@@ -36,6 +36,8 @@ import { Panggung, type Rasio } from "../shared/Stage";
 import { TrekVO } from "../shared/Vo";
 import { Episode, isiScene } from "../ideas/apa-itu-ram/Episode";
 import { Thumb } from "../ideas/apa-itu-ram/thumb";
+import { ThumbS1 } from "../ideas/apa-itu-ram/scene-shorts/thumb-s1";
+import { ThumbS2 } from "../ideas/apa-itu-ram/scene-shorts/thumb-s2";
 import { TIMING, TOTAL, cari } from "../ideas/apa-itu-ram/timing.gen";
 import {
   Short as ShortS1,
@@ -76,6 +78,15 @@ const UKURAN_9x16 = {
 const UKURAN_THUMB = {
   width: CFG.THUMB_WIDTH,
   height: CFG.THUMB_HEIGHT,
+} as const;
+
+/** Kover Short — 2160x3840, angka yang disebut halaman bantuan YouTube untuk
+ *  thumbnail 9:16. Tiga kali lebih besar daripada Short-nya sendiri
+ *  (1080x1920): kover diperbesar di halaman pencarian dan di kisi channel,
+ *  frame videonya tidak. */
+const UKURAN_THUMB_SHORT = {
+  width: CFG.THUMB_SHORT_WIDTH,
+  height: CFG.THUMB_SHORT_HEIGHT,
 } as const;
 
 /** Pabrik komponen "satu scene berdiri sendiri di panggung penuh".
@@ -149,13 +160,29 @@ export const RemotionRoot: React.FC = () => (
     />
 
     {/* Satu frame saja — ini gambar, bukan video:
-        npx remotion still T01-thumb ideas/apa-itu-ram/render/thumb.png */}
+        npx remotion still T01-thumb    ideas/apa-itu-ram/render/thumb.png
+        npx remotion still T01-thumb-s1 ideas/apa-itu-ram/render/thumb-s1.png
+        npx remotion still T01-thumb-s2 ideas/apa-itu-ram/render/thumb-s2.png */}
     <Composition
       id="T01-thumb"
       component={Thumb}
       durationInFrames={1}
       fps={FPS}
       {...UKURAN_THUMB}
+    />
+    <Composition
+      id="T01-thumb-s1"
+      component={ThumbS1}
+      durationInFrames={1}
+      fps={FPS}
+      {...UKURAN_THUMB_SHORT}
+    />
+    <Composition
+      id="T01-thumb-s2"
+      component={ThumbS2}
+      durationInFrames={1}
+      fps={FPS}
+      {...UKURAN_THUMB_SHORT}
     />
 
     {/* Folder Studio — 83 scene di daftar yang sama dengan episode akan

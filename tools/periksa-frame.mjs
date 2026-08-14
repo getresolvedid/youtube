@@ -95,6 +95,8 @@ const TITIK = [
      sesudah itu tidak ada yang membukanya lagi. Ukurannya juga sendiri
      (1280x720), jadi episode yang lolos tidak membuktikan apa pun tentangnya. */
   { komposisi: "T01-thumb", frame: 0, nama: "thumbnail 1280x720" },
+  { komposisi: "T01-thumb-s1", frame: 0, nama: "kover Short 1 · 2160x3840" },
+  { komposisi: "T01-thumb-s2", frame: 0, nama: "kover Short 2 · 2160x3840" },
 ];
 
 /* --- pembaca PNG minimal ---------------------------------------------------

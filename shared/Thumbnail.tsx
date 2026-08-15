@@ -42,8 +42,25 @@ const CAP_RATIO = 0.72;
  *  lebih tinggi resolusinya (2160x3840, docs/06), jadi ukuran huruf yang sama
  *  akan mengecil jadi sepertiganya di layar. Yang dijaga sama adalah porsinya
  *  terhadap lebar kartu — itu yang menentukan keterbacaan, bukan pikselnya. */
+/* UKURAN HURUFNYA DIPATOK DARI STILL, BUKAN DARI HITUNGAN. Dinaikkan
+   15 Agustus 2026 (16:9 132 → 144, 9:16 260 → 280) dan yang menentukan batasnya
+   bukan syarat docs/06 — keduanya sudah jauh di atas 90px — melainkan **baris
+   terpanjang yang sudah ada**: "BUKAN GUDANG"/"BUKAN DAFTAR" 12 huruf di 16:9,
+   "MEJA LEBAR," 11 huruf di 9:16.
+
+   Percobaan pertama menaikkan 16:9 ke 160 dan itu **menjorok keluar bingkai** —
+   penjaga panjang baris di bawah meloloskannya, karena hampiran 0,6 lebar huruf
+   ternyata terlalu murah hati untuk huruf lebar (U, D, A, N, G). Lebar
+   sungguhannya, diukur dari PNG: 0,64 x ukuran huruf untuk "BUKAN GUDANG",
+   0,54 untuk "MEJA LEBAR," yang punya koma dan spasi. Satu angka tidak bisa
+   mewakili keduanya, jadi penjaganya sengaja dibiarkan longgar dan **still-nya
+   yang memutuskan** — sama seperti `npm run check` yang tidak membuktikan
+   gambarnya ada.
+
+   Mau lebih besar lagi? Yang dipendekkan KATANYA. Pada kartu 1280 dengan marjin
+   64, baris 12 huruf sudah memakan hampir seluruh lebarnya di 144. */
 const SETELAN = {
-  "16x9": { fs: 132, padding: 64, pitaFigur: 300, bawah: 50 },
+  "16x9": { fs: 144, padding: 64, pitaFigur: 300, bawah: 50 },
   /* 9:16 — teks tidak menempel di dasar kartu. Di feed dan halaman hasil
      pencarian, judul Short ditumpuk di bawah kovernya; kata yang ditaruh di
      100px terbawah akan tertutup di separuh permukaan tempat ia muncul.
@@ -52,7 +69,7 @@ const SETELAN = {
      punya kelebihan tinggi, dan kelebihan yang tidak dipakai tidak jadi ruang
      napas melainkan zona mati di tengah — figur mengambang di atas, teks
      menempel di bawah, dan yang di antaranya kosong tanpa alasan. */
-  "9x16": { fs: 260, padding: 150, pitaFigur: 2100, bawah: 620 },
+  "9x16": { fs: 280, padding: 150, pitaFigur: 2100, bawah: 620 },
 } as const;
 
 export type RasioThumb = keyof typeof SETELAN;

@@ -173,7 +173,7 @@ belajar coding, programming indonesia
 **fase 1** dan hidup di [`../thumbnail.md`](../thumbnail.md); jangan disalin ke
 berkas ini. Yang perlu ada di sebelah halaman unggah cuma berkasnya:
 
-`LOKET, BUKAN DAFTAR` · `thumb.png` di sebelah berkas ini, 1280×720, 247 KB.
+`LOKET, BUKAN DAFTAR` · `thumb.png` di sebelah berkas ini, 1280×720, 248 KB.
 
 ```powershell
 npx remotion still T14-thumb ideas/dns-server/render/thumb.png

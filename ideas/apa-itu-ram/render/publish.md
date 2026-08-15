@@ -126,8 +126,8 @@ belajar komputer, teknologi indonesia, belajar coding, programming indonesia
 **fase 1** dan hidup di [`../thumbnail.md`](../thumbnail.md); jangan disalin ke
 berkas ini. Yang perlu ada di sebelah halaman unggah cuma berkasnya:
 
-`MEJA, BUKAN GUDANG` · `thumb.png` di sebelah berkas ini, 1280×720, 230 KB ·
-uji 210×118 **lolos**.
+`MEJA, BUKAN GUDANG` · `thumb.png` di sebelah berkas ini, 1280×720, 246 KB ·
+uji 210×118 **lolos** pada ukuran huruf lama (lihat `../thumbnail.md`).
 
 ```powershell
 npx remotion still T01-thumb ideas/apa-itu-ram/render/thumb.png

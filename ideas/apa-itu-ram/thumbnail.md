@@ -37,16 +37,20 @@ antaranya. Kelas `.meja` dan `.lemari` yang sama dengan scene `04-ram-analogy` �
 benda yang sama yang dilihat penonton, bukan gambar baru yang mirip. Latar
 `--bg`, aksen Indigo. Meja terang, lemari redup; panahnya cuma menegaskan.
 
-**Sudah jadi** — `render/thumb.png`, 1280×720, 230 KB. Dibangun di fase 4 dari
+**Sudah jadi** — `render/thumb.png`, 1280×720, 246 KB. Dibangun di fase 4 dari
 [`thumb.tsx`](thumb.tsx).
 
 ```powershell
 npx remotion still T01-thumb ideas/apa-itu-ram/render/thumb.png
 ```
 
-**Uji 210×118: lolos.** Tinggi huruf kapital 95px (syarat ≥ 90). Panahnya
-sengaja panjang dari tepi lemari sampai tepi meja — versi pendeknya terbaca
-sebagai tanda, bukan sebagai jarak, padahal jarak itulah isi videonya.
+**Uji 210×118: lolos** — pada ukuran huruf lama (132px, tinggi kapital 95px).
+Kartunya dirender ulang 15 Agustus 2026 pada **144px** (tinggi kapital 104px)
+dan ujinya belum diulang; huruf yang lebih besar cuma bisa membantu, tapi itu
+dugaan, bukan pemeriksaan.
+
+Panahnya sengaja panjang dari tepi lemari sampai tepi meja — versi pendeknya
+terbaca sebagai tanda, bukan sebagai jarak, padahal jarak itulah isi videonya.
 
 ---
 
@@ -63,7 +67,7 @@ di bawah, garis putus-putus panjang di antaranya. **Jaraknya digambar sebagai
 jarak sungguhan**, memakai kelebihan tinggi kartu 9:16 untuk hal yang isinya
 memang ketinggian.
 
-**Sudah jadi** — `render/thumb-s1.png`, 2160×3840, 1,6 MB. Sumbernya
+**Sudah jadi** — `render/thumb-s1.png`, 2160×3840, 1,7 MB. Sumbernya
 [`scene-shorts/thumb-s1.tsx`](scene-shorts/thumb-s1.tsx).
 
 ```powershell

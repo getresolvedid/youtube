@@ -47,14 +47,14 @@ Dua loket saja, bukan empat: di 210×118 anak tangga ketiga dan keempat menyusut
 jadi noda. Yang perlu terbaca cuma "ada lebih dari satu, dan yang satu menunjuk
 yang lain".
 
-**Sudah jadi** — `render/thumb.png`, 1280×720, 247 KB. Dibangun di fase 4 dari
+**Sudah jadi** — `render/thumb.png`, 1280×720, 248 KB. Dibangun di fase 4 dari
 [`thumb.tsx`](thumb.tsx).
 
 ```powershell
 npx remotion still T14-thumb ideas/dns-server/render/thumb.png
 ```
 
-Tinggi huruf kapital 95px (syarat ≥ 90, dihitung `TINGGI_KAPITAL` di
+Tinggi huruf kapital 104px (syarat ≥ 90, dihitung `TINGGI_KAPITAL` di
 `shared/Thumbnail.tsx`). **Uji 210×118 belum dikerjakan** — itu pemeriksaan
 mata, bukan angka: kecilkan PNG-nya ke ukuran itu dan lihat sendiri. Kalau tidak
 terbaca, ulangi; jangan diloloskan.

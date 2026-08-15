@@ -25,10 +25,13 @@ for f in $staged; do
 done
 
 # --- 2. Pola secret di dalam isi berkas -------------------------------------
-# sk_...  = API key ElevenLabs / OpenAI
+# AIza.../AQ.... = API key Google (Gemini) — DUA bentuk, dan keduanya beredar.
+#                  Kunci `AQ.` yang panjangnya bervariasi itu yang dipakai repo
+#                  ini; `AIza` bentuk lama yang masih diterbitkan AI Studio.
+# sk_...  = API key OpenAI (dan dulu ElevenLabs)
 # ghp_/gho_ = token GitHub
 # AKIA... = access key AWS
-patterns='sk_[A-Za-z0-9]{20,}|gh[pos]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
+patterns='AIza[0-9A-Za-z_-]{35}|AQ\.[A-Za-z0-9_-]{30,}|sk_[A-Za-z0-9]{20,}|gh[pos]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
 
 for f in $staged; do
   # .env.example boleh memuat nama variabel, asal nilainya kosong

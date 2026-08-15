@@ -13,14 +13,14 @@ Repo ini menyimpan **guideline, naskah, dan komposisi video** — bukan aplikasi
 **Tooling yang dipakai** (sudah diputuskan):
 
 - **[Remotion](https://www.remotion.dev)** — tulis React/CSS, render jadi MP4. Setiap frame adalah fungsi murni dari nomor frame, jadi render selalu reproducible dan tiap scene bisa di-preview satuan.
-- **[ElevenLabs](https://elevenlabs.io/docs/overview/models)** — voice over Bahasa Indonesia, voice **George**, model `eleven_multilingual_v2`.
+- **[Gemini TTS](https://ai.google.dev/gemini-api/docs/speech-generation)** — voice over Bahasa Indonesia. Suara & arahan pembacaan per topik di `ideas/<slug>/vo-gemini-profile.yaml`.
 - **Tema visual** — turunan brand [`wargasipil/getresolved`](https://github.com/wargasipil/getresolved) (`branding/guidelines/brand.html`): Indigo `#4F46E5`, Green `#10B981`, Ink `#0F172A`, tipografi Manrope.
 
 **Tiga aturan yang mengikat seluruh alur kerja:**
 
 1. **Satu video, dua lapis penonton.** Khalayak umum harus bertahan sampai babak 4; developer dapat kedalamannya di babak 5. Dijembatani tangga **L1 → L2 → L3** → [09 · Tangga abstraksi](docs/09-tangga-abstraksi.md).
 2. **Bahasa anak 5 tahun.** Topik yang belum bisa dijelaskan dalam 60 kata tanpa istilah teknis belum boleh masuk produksi.
-3. **VO paling akhir.** ElevenLabs dibayar per karakter, jadi komposisi dibangun dan ditonton dulu dalam keadaan **bisu** dengan timing perkiraan. VO baru dibuat setelah naskah **beku** → [04 · Pipeline](docs/04-pipeline-produksi.md).
+3. **VO paling akhir.** TTS berbayar dan tidak deterministik, jadi komposisi dibangun dan ditonton dulu dalam keadaan **bisu** dengan timing perkiraan. VO baru dibuat setelah naskah **beku** → [04 · Pipeline](docs/04-pipeline-produksi.md).
 
 ---
 
@@ -38,7 +38,7 @@ Repo ini menyimpan **guideline, naskah, dan komposisi video** — bukan aplikasi
 | 08 | [Konfigurasi & secret](docs/08-konfigurasi.md) | Semua setelan & API key jadi satu di `.env`, termasuk rotasi key |
 | 09 | [Tangga abstraksi](docs/09-tangga-abstraksi.md) | Aturan "bahasa anak 5 tahun": L1 → L2 → L3. Dibaca bersama 02 dan 05 |
 | 10 | [Scene standar](docs/10-scene-standar.md) | Kartu judul (pembuka) & tanda brand (penutup) yang identik di semua episode |
-| 11 | [Rencana VO](docs/11-rencana-vo.md) | `scenes/<kunci>-vo.md` — tempat teks VO hidup, beat, aturan menulis untuk ElevenLabs |
+| 11 | [Rencana VO](docs/11-rencana-vo.md) | `scenes/<kunci>-vo.md` — tempat teks VO hidup, beat, aturan menulis untuk TTS, profil Gemini |
 
 Aset pendukung:
 
@@ -60,7 +60,6 @@ Aset pendukung:
 | [`tools/load-env.ps1`](tools/load-env.ps1) | Muat `.env` ke sesi PowerShell (`. .\tools\load-env.ps1`) |
 | [`tools/estimate-timing.mjs`](tools/estimate-timing.mjs) | Perkiraan timing dari rencana VO — **gratis**, dipakai sebelum VO |
 | [`tools/vo-durations.mjs`](tools/vo-durations.mjs) | Timing final dari durasi berkas VO (butuh ffprobe) |
-| [`tools/elevenlabs-keys.mjs`](tools/elevenlabs-keys.mjs) | Kelola & rotasi API key ElevenLabs |
 
 ## Struktur repo
 
@@ -83,7 +82,7 @@ youtube/                      ← ROOT PROJECT Remotion
 │   ├── index.ts              ← registerRoot
 │   └── Root.tsx              ← DAFTAR KOMPOSISI: episode + satu per scene
 ├── public/logos/             ← mark & wordmark (salinan brand getresolved)
-├── public/vo/<slug>/         ← keluaran ElevenLabs, L-<kunci>.mp3 per scene
+├── public/vo/<slug>/         ← keluaran TTS, L-<kunci>.mp3 per scene
 ├── shared/                   ← milik SEMUA episode
 │   ├── config.gen.ts         ← ⚙ digenerate dari .env
 │   ├── theme.css             ← token warna/tipografi/skala
@@ -106,7 +105,6 @@ youtube/                      ← ROOT PROJECT Remotion
 │   ├── git-setup.ps1         ← init git + hook penolak secret
 │   ├── estimate-timing.mjs   ← timing perkiraan dari rencana VO (gratis)
 │   ├── vo-durations.mjs      ← timing final dari berkas VO
-│   └── elevenlabs-keys.mjs   ← kelola & rotasi API key
 └── ideas/                    ← SEMUA ide + seluruh produksinya hidup di sini
     ├── README.md             ← alur & template ide
     └── <slug>/
@@ -133,7 +131,7 @@ saat build berikutnya.
 | Google Chrome | ✅ terpasang | Remotion mengunduh Headless Shell-nya sendiri saat render pertama (±113 MB) |
 | FFmpeg + ffprobe | ✅ `9.0-full_build` | via `winget install Gyan.FFmpeg`; PATH aktif di terminal baru. Remotion membawa FFmpeg sendiri; ini untuk `tools/vo-durations.mjs` |
 | Pipeline render | ✅ **terbukti** | kartu judul & tanda brand sudah dirender jadi PNG 1920×1080 dan diperiksa |
-| `.env` terisi | ✅ identitas channel & spesifikasi video terisi | API key ElevenLabs perlu dicek: `node tools/elevenlabs-keys.mjs status` |
+| `.env` terisi | ✅ identitas channel & spesifikasi video terisi | `GEMINI_API_KEY` wajib diisi |
 
 Penyiapan di mesin baru:
 
@@ -156,7 +154,7 @@ Sudah ditetapkan:
 |---|---|
 | Channel | **Get Resolved** — [youtube.com/@GetResolved](https://www.youtube.com/@GetResolved) |
 | Website / CTA | [getresolved.id](https://getresolved.id) |
-| Voice ElevenLabs | **George** (`JBFqnCBsd6RMkjVDRZzb`), model `eleven_multilingual_v2` |
+| Voice Gemini | **Charon**, model `gemini-2.5-flash-preview-tts` |
 | Audiens | **Khalayak umum + developer** dalam satu video, dijembatani tangga L1→L2→L3 |
 | Episode pertama | **T01 · Apa itu RAM** — [ide](ideas/apa-itu-ram/ide.md) · [backlog](docs/07-backlog-topik.md) |
 

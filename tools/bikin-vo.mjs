@@ -1,5 +1,9 @@
 /**
- * bikin-vo.mjs — generate VO ElevenLabs, satu berkas MP3 per scene.
+ * bikin-vo.mjs — generate VO, satu berkas MP3 per scene.
+ *
+ * Mesinnya tools/tts-gemini.mjs. Arahan pembacaan per topik dibaca dari
+ * ideas/<slug>/vo-gemini-profile.yaml — suara, gaya, aksen, pace, dan tempo,
+ * masing-masing bisa ditimpa per keluaran (L/S1/S2). Lihat docs/11.
  *
  *   node --env-file=.env tools/bikin-vo.mjs <slug>                 rencana saja (GRATIS)
  *   node --env-file=.env tools/bikin-vo.mjs <slug> --jalan         benar-benar generate
@@ -13,17 +17,16 @@
  *   --scene <kunci>    hanya satu scene — inilah cara "generate satu scene uji dulu"
  *   --paksa            timpa berkas MP3 yang sudah ada (generate ulang berbayar)
  *
- * KENAPA DEFAULT-NYA TIDAK JALAN: API ini dibayar per karakter dan tidak bisa
+ * KENAPA DEFAULT-NYA TIDAK JALAN: API ini berbayar dan tidak bisa
  * dibatalkan setelah terkirim. Perintah yang salah ketik harus berakhir sebagai
  * tabel di layar, bukan sebagai tagihan. docs/04 §6.
  *
  * Yang dijaga skrip ini, semuanya sebelum satu byte pun dikirim:
  *   1. `naskah_beku` di frontmatter naskah wajib terisi (gerbang docs/04 §5).
- *   2. Total karakter topik ≤ ELEVENLABS_MAX_CHARS_PER_TOPIC.
+ *   2. Total karakter topik ≤ VO_MAX_CHARS_PER_TOPIC.
  *   3. Scene yang MP3-nya sudah ada dilewati — kecuali --paksa.
- *   4. Sisa kuota key aktif dicek dulu; kurang = berhenti, bukan setengah jadi.
- *
- * Teks yang dibaca ElevenLabs diambil dari blok `## VO` tiap rencana VO lewat
+  *
+ * Teks yang dibaca Gemini diambil dari blok `## VO` tiap rencana VO lewat
  * tools/baca-episode.mjs — modul yang sama dengan yang menghitung timing. Tidak
  * ada tempat kedua yang menyimpan kalimatnya (HARD RULE 4).
  */
@@ -54,47 +57,31 @@ const SCENE = opt("--scene");
 
 /* --- setelan, semuanya dari .env (docs/08) ---------------------------------- */
 
-/** `wajib()` dari baca-episode.mjs mengembalikan Number — benar untuk setelan
- *  timing, tapi salah untuk voice id dan nama model. Yang dipakai di sini
- *  teksnya apa adanya; kalau tidak, key dan model diam-diam jadi "NaN" dan yang
- *  ketahuan cuma saat API menolaknya. */
-const wajibTeks = (nama) => {
-  const v = process.env[nama];
-  if (v === undefined || v === "") {
-    throw new Error(`${nama} kosong di .env — lihat docs/08-konfigurasi.md.`);
-  }
-  return v.trim();
-};
+/** Pagar panjang naskah — bukan pagar tagihan. Gemini menagih per token dan
+ *  tidak punya endpoint sisa kuota, jadi inilah satu-satunya rem otomatis yang
+ *  ada sebelum satu topik diam-diam menghabiskan kuota sebulan. */
+const MAX_CHARS = wajib("VO_MAX_CHARS_PER_TOPIC");
 
-const API_KEY = wajibTeks("ELEVENLABS_API_KEY");
+/* --- mesin TTS --------------------------------------------------------------
+ *
+ * Sisa berkas ini — gerbang naskah beku, daftar pekerjaan, penulisan lewat
+ * .part — tidak tahu mesin apa yang sedang jalan, dan memang tidak perlu tahu.
+ * Yang khas Gemini semuanya ada di tools/tts-gemini.mjs. */
 
-/* Halaman API key ElevenLabs memperlihatkan DUA nilai: ID key (32/64 karakter
-   heksadesimal, boleh dilihat kapan saja) dan key-nya sendiri yang berawalan
-   `sk_` dan cuma muncul sekali, saat dibuat atau dirotasi. Yang gampang tersalin
-   adalah yang pertama — dan API menolaknya dengan HTTP 400, bukan 401, jadi
-   terbaca seperti permintaannya yang salah bentuk. Dicegat di sini supaya
-   pesannya menyebut penyebabnya. */
-if (!API_KEY.startsWith("sk_")) {
-  console.error(
-    `\nELEVENLABS_API_KEY di .env tidak berawalan "sk_" (${API_KEY.length} karakter).\n\n` +
-      `Itu ID key-nya, bukan key-nya. Key aslinya cuma ditampilkan sekali —\n` +
-      `saat dibuat atau dirotasi di https://elevenlabs.io/app/settings/api-keys\n` +
-      `Rotasi key itu, salin nilai yang berawalan sk_, lalu:\n\n` +
-      `  node tools/elevenlabs-keys.mjs add sk_xxx\n` +
-      `  node tools/elevenlabs-keys.mjs rotate      # jadikan aktif\n`,
-  );
+/** Setelan yang belum lengkap adalah kesalahan yang paling wajar terjadi (profil
+ *  baru ditulis, .env belum diisi) — jadi ia berhak atas pesan, bukan stack
+ *  trace. Semua ini berjalan sebelum satu byte pun terkirim. */
+let mesin;
+try {
+  mesin = (await import("./tts-gemini.mjs")).siapkan(slug);
+} catch (err) {
+  console.error(`
+Mesin Gemini belum siap.
+
+  ${err.message}
+`);
   process.exit(1);
 }
-const VOICE_ID = wajibTeks("ELEVENLABS_VOICE_ID");
-const MODEL_ID = wajibTeks("ELEVENLABS_MODEL_ID");
-const OUTPUT_FORMAT = wajibTeks("ELEVENLABS_OUTPUT_FORMAT");
-const MAX_CHARS = wajib("ELEVENLABS_MAX_CHARS_PER_TOPIC");
-const VOICE_SETTINGS = {
-  stability: wajib("ELEVENLABS_STABILITY"),
-  similarity_boost: wajib("ELEVENLABS_SIMILARITY_BOOST"),
-  style: wajib("ELEVENLABS_STYLE"),
-  use_speaker_boost: wajibTeks("ELEVENLABS_SPEAKER_BOOST") === "true",
-};
 
 /* --- gerbang 1: naskah beku, PER KELUARAN ----------------------------------- */
 
@@ -223,7 +210,7 @@ if (SCENE && pekerjaan.length === 0) {
 
 const charsSekarang = pekerjaan.reduce((n, p) => n + p.chars, 0);
 
-console.log(`\nVO ${slug} — suara ${VOICE_ID}, model ${MODEL_ID}, ${OUTPUT_FORMAT}`);
+console.log(`\nVO ${slug} — mesin ${mesin.nama} · ${mesin.deskripsi}`);
 console.log(
   `Beku: ${[...beku].map(([p, t]) => `${p} ${t}`).join(" · ")} — gerbang docs/04 §5 lewat.\n`,
 );
@@ -239,6 +226,13 @@ for (const p of pekerjaan) {
   if (p.label !== target) {
     target = p.label;
     console.log(`  ${target}`);
+    /* Arahan tiap keluaran diperlihatkan DI RENCANA, bukan cuma di berkas
+       profilnya: Short boleh menimpa tempo dan gaya milik video panjang, dan
+       timpaan yang tidak terlihat sebelum membayar adalah timpaan yang baru
+       ketahuan setelah sembilan berkas jadi. */
+    const pr = mesin.profil?.(p.prefiks);
+    if (pr?.arahan) console.log(`    arahan: "${pr.arahan}"`);
+    if (pr) console.log(`    suara ${pr.voice} · tempo ${pr.tempoAngka}`);
   }
   console.log(
     `    ${p.prefiks}-${p.kunci}.mp3  ${String(p.chars).padStart(4)} kar` +
@@ -251,7 +245,7 @@ console.log(`  ${totalTopik} karakter untuk seluruh topik (batas ${MAX_CHARS})`)
 
 if (Number(totalTopik) > Number(MAX_CHARS)) {
   console.error(
-    `\nTopik ini ${totalTopik} karakter, di atas ELEVENLABS_MAX_CHARS_PER_TOPIC ` +
+    `\nTopik ini ${totalTopik} karakter, di atas VO_MAX_CHARS_PER_TOPIC ` +
       `(${MAX_CHARS}).\nPendekkan naskahnya atau naikkan batasnya di .env dengan sadar — ` +
       `batas itu ada supaya satu topik tidak diam-diam menghabiskan kuota bulanan.\n`,
   );
@@ -259,7 +253,7 @@ if (Number(totalTopik) > Number(MAX_CHARS)) {
 }
 
 if (!JALAN) {
-  console.log(`\nIni baru rencana — belum ada yang dikirim ke ElevenLabs.`);
+  console.log(`\nIni baru rencana — belum ada yang dikirim ke Gemini.`);
   console.log(`Jalankan sungguhan dengan menambahkan --jalan\n`);
   console.log(`Disarankan: satu scene uji dulu, DENGARKAN, baru sisanya (docs/04 §6).`);
   console.log(`  node --env-file=.env tools/bikin-vo.mjs ${slug} --scene ${pekerjaan[0].kunci} --target ${pekerjaan[0].prefiks} --jalan\n`);
@@ -273,60 +267,19 @@ if (!JALAN) {
  * terbaca seperti skrip ini rusak, padahal yang terjadi cuma key ditolak. Jadi
  * sisanya hidup di dalam fungsi: keluar = `return`, kodenya lewat exitCode. */
 const jalankan = async () => {
-const langganan = await fetch("https://api.elevenlabs.io/v1/user/subscription", {
-  headers: { "xi-api-key": API_KEY },
-});
-
-if (!langganan.ok) {
-  const detail = await langganan.text().catch(() => "");
-  const kurangIzin = detail.includes("missing_permissions");
-
-  if (!kurangIzin) {
-    console.error(
-      `\nKey aktif ditolak (${langganan.status}). Cek atau rotasi:\n` +
-        `  node tools/elevenlabs-keys.mjs check\n` +
-        `  node tools/elevenlabs-keys.mjs rotate --auto\n` +
-        `  node tools/elevenlabs-keys.mjs add sk_xxx     (kalau belum ada cadangan)\n\n` +
-        `${detail.slice(0, 300)}\n\n` +
-        `Nol karakter terpakai — gerbang ini memang berdiri sebelum berkas pertama.\n`,
-    );
-    process.exitCode = 1;
-    return;
-  }
-
-  /* Key tanpa izin `user_read` tetap bisa membuat suara — yang tidak bisa cuma
-     MELIHAT sisa kuotanya. Menghentikan generate karena pemeriksaannya sendiri
-     gagal adalah menukar satu risiko dengan kepastian: yang hilang cuma
-     peringatan dini, bukan kemampuan kerjanya. Jadi ini peringatan, bukan
-     gerbang — dan disebutkan supaya "kok tidak ada baris kuota" tidak jadi
-     misteri di sesi berikutnya. */
-  console.log(
-    `\n  ⚠ Sisa kuota tidak bisa dibaca — key ini tidak punya izin "user_read".\n` +
-      `    Generate tetap jalan (izin text_to_speech terpisah), tapi kalau kuota\n` +
-      `    habis di tengah jalan, ketahuannya baru saat satu berkas gagal.\n` +
-      `    Scene yang sudah jadi tidak perlu dibuat ulang.`,
-  );
-} else {
-  const d = await langganan.json();
-  const sisa = Math.max(0, (d.character_limit ?? 0) - (d.character_count ?? 0));
-  console.log(`\n  Sisa kuota key aktif: ${sisa} karakter (tier ${d.tier ?? "?"})`);
-
-  if (sisa < charsSekarang) {
-    console.error(
-      `\nSisa kuota ${sisa} < ${charsSekarang} yang dibutuhkan. Berhenti sebelum mulai —\n` +
-        `setengah episode yang jadi lebih repot daripada nol. Rotasi key dulu:\n` +
-        `  node tools/elevenlabs-keys.mjs rotate --auto\n`,
-    );
-    process.exitCode = 1;
-    return;
-  }
-}
+/* Gemini menagih per token dan tidak punya endpoint sisa kuota, jadi gerbang
+   kuota mesin lama hilang bersamanya. Yang tersisa cuma pagar panjang
+   naskah di atas — dan itu disebutkan, supaya "kok tidak ada baris kuota" tidak
+   jadi misteri di sesi berikutnya. */
+console.log(
+  `\n  Sisa kuota tidak diperiksa — Gemini tidak punya endpoint untuk itu.\n` +
+    `  Yang menjaga tetap pagar ${MAX_CHARS} karakter per topik di atas.`,
+);
 
 /* --- jalan ------------------------------------------------------------------ */
 
 mkdirSync(dirVO, { recursive: true });
 
-const url = `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}?output_format=${OUTPUT_FORMAT}`;
 let terpakai = 0;
 let jadi = 0;
 
@@ -334,23 +287,17 @@ console.log("");
 for (const p of pekerjaan) {
   process.stdout.write(`  ${p.prefiks}-${p.kunci} … `);
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "xi-api-key": API_KEY, "content-type": "application/json" },
-    body: JSON.stringify({
-      text: p.teks,
-      model_id: MODEL_ID,
-      voice_settings: VOICE_SETTINGS,
-      /* Konteks tetangga: memperbaiki intonasi sambungan, tidak ikut disuarakan. */
-      ...(p.sebelum ? { previous_text: p.sebelum } : {}),
-      ...(p.sesudah ? { next_text: p.sesudah } : {}),
-    }),
-  });
-
-  if (!res.ok) {
-    const detail = await res.text().catch(() => "");
-    console.log(`GAGAL ${res.status}`);
-    console.error(`\n${detail.slice(0, 400)}\n`);
+  let buf;
+  try {
+    buf = await mesin.suarakan({
+      teks: p.teks,
+      sebelum: p.sebelum,
+      sesudah: p.sesudah,
+      prefiks: p.prefiks,
+    });
+  } catch (err) {
+    console.log("GAGAL");
+    console.error(`\n${err.message}\n`);
     console.error(
       `Berhenti di sini. ${jadi} berkas sudah jadi dan TIDAK perlu dibuat ulang —\n` +
         `jalankan lagi perintah yang sama, scene yang sudah ada akan dilewati.\n`,
@@ -361,7 +308,6 @@ for (const p of pekerjaan) {
 
   /* Tulis lewat berkas sementara: kalau proses mati di tengah unduhan, yang
      tertinggal bukan MP3 terpotong yang lolos pemeriksaan "berkasnya ada". */
-  const buf = Buffer.from(await res.arrayBuffer());
   const tmp = `${p.berkas}.part`;
   writeFileSync(tmp, buf);
   renameSync(tmp, p.berkas);

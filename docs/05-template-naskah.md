@@ -20,9 +20,9 @@ apa".
 Naskah juga yang menentukan biaya: VO baru dibuat setelah naskah **beku**
 ([pipeline §5](04-pipeline-produksi.md#5-gerbang--bekukan-naskah)).
 
-> **Aturan menulis VO untuk ElevenLabs** (batas 18 kata, angka ditulis sesuai
+> **Aturan menulis VO untuk TTS** (batas 18 kata, angka ditulis sesuai
 > cara baca, akronim dipisah, tanpa tanda kurung) pindah ke
-> [11 · Rencana VO](11-rencana-vo.md#aturan-menulis-vo-untuk-elevenlabs) —
+> [11 · Rencana VO](11-rencana-vo.md#aturan-menulis-vo-untuk-tts) —
 > di sanalah kalimatnya sekarang ditulis.
 
 ---
@@ -238,7 +238,7 @@ motion:
 **Yang bikin potongan ini lolos standar:**
 
 - VO ≤ 18 kata per kalimat, angka ditulis untuk dibaca ("sepuluh detik", bukan
-  "10 dtk") — [docs/11](11-rencana-vo.md#aturan-menulis-vo-untuk-elevenlabs).
+  "10 dtk") — [docs/11](11-rencana-vo.md#aturan-menulis-vo-untuk-tts).
 - Dua baris VO, dua beat: angka kiri dan angka kanan tidak mendarat bersamaan.
 - Bahasa L1 di bagian question — tidak ada satu pun istilah teknis.
 - Direction menyebut posisi, ukuran, dan warna konkret, plus properti + durasi +

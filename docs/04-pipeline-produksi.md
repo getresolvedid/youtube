@@ -3,7 +3,7 @@
 Alur dari ide sampai MP4 siap unggah.
 
 **Prinsip yang mengikat seluruh alur: VO adalah langkah terakhir sebelum render.**
-API ElevenLabs dibayar per karakter, jadi kita tidak boleh membuat suara untuk
+API TTS berbayar, jadi kita tidak boleh membuat suara untuk
 naskah yang masih mungkin berubah. Komposisi dibangun dan ditonton dulu dalam
 keadaan **bisu**, memakai timing perkiraan yang dihitung gratis dari jumlah kata.
 Baru setelah naskah dan visual benar-benar cocok, VO dibuat **sekali**.
@@ -12,7 +12,7 @@ Baru setelah naskah dan visual benar-benar cocok, VO dibuat **sekali**.
 1 Riset → 2 Naskah → 3 Timing estimasi → 4 Komposisi (bisu) → 5 GERBANG: naskah beku
                                                 ↑______ iterasi gratis ______|
                                                                     ↓
-   9 Publish ← 8 QA ← 7 Re-timing + render final ← 6 VO ElevenLabs (sekali)
+   9 Publish ← 8 QA ← 7 Re-timing + render final ← 6 VO Gemini (sekali)
 ```
 
 Iterasi terjadi di langkah 3–4 dan tidak berbiaya. Setelah melewati gerbang di
@@ -55,7 +55,7 @@ youtube/                        ← ROOT PROJECT Remotion
 ├── package.json                gen/check/sisa/studio/render (versi dipatok tepat)
 ├── src/Root.tsx                DAFTAR KOMPOSISI: episode + satu per scene
 ├── public/logos/               aset — lewat staticFile()
-├── public/vo/<slug>/           <prefiks>-<kunci>.mp3 — keluaran ElevenLabs, satu per scene
+├── public/vo/<slug>/           <prefiks>-<kunci>.mp3 — keluaran TTS, satu per scene
 │                               L = video panjang · S1/S2 = kedua Short
 ├── shared/                     tema, ikon, figur, scene standar, helper animasi
 └── ideas/apa-itu-ram/
@@ -140,7 +140,7 @@ node --env-file=.env tools/estimate-timing.mjs <slug>
 ```
 
 Keluarannya tabel timing untuk dibaca manusia, plus **total durasi** dan
-**hitungan karakter** (= perkiraan kredit ElevenLabs yang nanti terpakai).
+**hitungan karakter** (= perkiraan biaya TTS yang nanti terpakai).
 
 Timing yang dipakai komposisi **tidak disalin tangan** dari sini. `npm run gen`
 menghitung ulang dari sumber yang sama ke `ideas/<slug>/timing.gen.ts` lewat
@@ -273,9 +273,9 @@ berkas di sebelah. Untuk setiap scene:
 
 Lalu cek keseluruhan:
 
-- [ ] Total karakter ≤ `ELEVENLABS_MAX_CHARS_PER_TOPIC`.
+- [ ] Total karakter ≤ `VO_MAX_CHARS_PER_TOPIC`.
 - [ ] Ejaan istilah asing sudah disesuaikan untuk TTS
-      ([docs/11](11-rencana-vo.md#aturan-menulis-vo-untuk-elevenlabs)) —
+      ([docs/11](11-rencana-vo.md#aturan-menulis-vo-untuk-tts)) —
       **ini penyebab generate ulang nomor satu**, jadi teliti di sini.
 - [ ] Angka ditulis sesuai cara baca, bukan sebagai angka.
 - [ ] Tidak ada tanda kurung, simbol mentah, atau markdown di blok `## VO`.
@@ -304,30 +304,37 @@ disunting** kecuali dengan keputusan sadar bahwa akan ada biaya generate ulang.
 Bagian lain berkas itu — catatan, tabel sinkron — tetap boleh diperbaiki; yang
 beku cuma kalimatnya.
 
-## 6 · Voice over ElevenLabs — sekali jalan
+## 6 · Voice over Gemini — sekali jalan
 
-### Voice & model
+### Voice, model & arahan
 
 | | Nilai | Dari |
 |---|---|---|
-| Voice | **George** — pria, hangat, gaya pencerita | `ELEVENLABS_VOICE_ID` |
-| Model | `eleven_multilingual_v2` | `ELEVENLABS_MODEL_ID` |
-| Format | `mp3_44100_128` | `ELEVENLABS_OUTPUT_FORMAT` |
-| Setelan | stability `0.45` · similarity `0.75` · style `0.0` · speaker boost on | `ELEVENLABS_*` |
+| Voice | **Charon** | `voice` di `ideas/<slug>/vo-gemini-profile.yaml` |
+| Model | `gemini-2.5-flash-preview-tts` | `GEMINI_TTS_MODEL` |
+| Format | PCM 24 kHz mono, dikonversi ke MP3 oleh ffmpeg | `GEMINI_TTS_MP3_BITRATE` |
+| Arahan | profile · style · accent · pace | profil topik ([docs/11](11-rencana-vo.md)) |
+| Tempo | pengali `atempo` sesudah audio jadi | `tempo` di profil topik |
 
-Pilihan model:
+**Cuma `voice` yang medan API sungguhan.** Empat medan arahan melebur jadi satu
+kalimat di depan teks VO — permintaan, bukan jaminan. Detailnya di
+[docs/11 § Profil VO Gemini](11-rencana-vo.md).
 
-| Model | Kapan dipakai |
-|---|---|
-| **`eleven_multilingual_v2`** | **Default channel.** Narasi rapi dan stabil, 29 bahasa termasuk Indonesia. Paling konsisten antar-episode — dan konsistensi suara itu identitas channel. |
-| `eleven_v3` | Kalau butuh ekspresi lebih kaya. Mendukung audio tag seperti `[excited]`. Lebih ekspresif, lebih sulit dijaga konsisten, **dan lebih mahal untuk dicoba-coba**. |
-| `eleven_flash_v2_5` | **Jangan** untuk produksi final — model latensi rendah untuk aplikasi real-time. |
+### Tiga sifat Gemini yang mengubah cara kerja
 
-> **Catatan tentang George:** ini voice berbahasa Inggris (aksen Britania).
-> Dipakai untuk narasi Bahasa Indonesia lewat `eleven_multilingual_v2`, hasilnya
-> tetap terbaca tapi biasanya membawa warna aksen asing. Dengarkan satu scene
-> pendek dulu sebelum generate seluruh episode — kalau warnanya tidak cocok,
-> menggantinya sekarang jauh lebih murah daripada setelah 70 berkas jadi.
+1. **Tidak deterministik.** Teks sama, setelan sama, durasi berayun sampai
+   **31%** antar-panggilan — lebih besar daripada seluruh jangkauan aman pengali
+   `tempo`. Tidak ada setelan yang menghilangkan ini.
+2. **Buta terhadap tetangga.** Tidak ada padanan `previous_text`, jadi scene
+   yang disintesis sendiri-sendiri tidak menyambung di suaranya. Ditutup dengan
+   mensintesis seluruh Short dalam **satu permintaan**
+   (`npm run vo:utuh`), lalu memotongnya per scene.
+3. **Model bahasa, bukan mesin TTS murni.** Ia bisa memparafrase. Ditutup
+   `npm run vo:cocok`, yang mencocokkan transkripsi audio dengan naskah **per
+   kata** — di T14 hasilnya 97,3%, dan satu-satunya selisih artefak ejaan.
+
+24 kHz itu bawaan Gemini, bukan pilihan encoding — lebih rendah daripada 44,1 kHz
+dan tidak bisa dinaikkan.
 
 ### Aturan hemat biaya
 
@@ -374,7 +381,7 @@ Yang diperiksa sebelum satu byte pun dikirim:
 
 1. `naskah_beku` di frontmatter naskah wajib terisi — inilah gerbang §5 yang
    dijalankan mesin, bukan diingat orang.
-2. Total karakter topik ≤ `ELEVENLABS_MAX_CHARS_PER_TOPIC`.
+2. Total karakter topik ≤ `VO_MAX_CHARS_PER_TOPIC`.
 3. Scene yang MP3-nya sudah ada dilewati diam-diam; menimpanya perlu `--paksa`.
 4. Sisa kuota key aktif dicek lebih dulu — kurang berarti berhenti sebelum
    mulai, karena setengah episode yang jadi lebih merepotkan daripada nol.
@@ -393,7 +400,7 @@ node --env-file=.env tools/rata-vo.mjs <slug>            # rencana
 node --env-file=.env tools/rata-vo.mjs <slug> --jalan
 ```
 
-Keluaran ElevenLabs duduk di sekitar **−24 LUFS**, sepuluh LU di bawah
+Keluaran TTS duduk jauh di bawah target siar, beberapa LU di bawah
 `TARGET_LUFS`. **YouTube tidak menaikkan yang pelan** — ia hanya menurunkan yang
 keras — jadi video yang diunggah sepelan itu akan terdengar pelan di sebelah
 video orang lain, selamanya, dan tidak ada yang bisa diperbaiki setelah tayang
@@ -526,5 +533,4 @@ mengunggah, bukan mengarang metadata di kolom unggah YouTube.
   perusahaan di atas ambang tertentu butuh lisensi berbayar, cek sendiri sebelum
   channel ini jadi entitas berbadan hukum
 - Aturan framework di repo ini: [AGENTS.md](../AGENTS.md)
-- ElevenLabs — [daftar model](https://elevenlabs.io/docs/overview/models) ·
-  [text to speech](https://elevenlabs.io/docs/overview/capabilities/text-to-speech)
+- Gemini TTS — [speech generation](https://ai.google.dev/gemini-api/docs/speech-generation)

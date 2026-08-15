@@ -26,7 +26,7 @@
  * sengaja. Yang diperiksa karena itu bukan frame acak melainkan titik TENANG —
  * sesaat setelah gerak masuk satu beat selesai, dan sesaat sebelum beat
  * berikutnya mengubah layar. Beat-nya dari tools/baca-episode.mjs, modul yang
- * sama dengan yang menghitung timing dan mengirim ke ElevenLabs.
+ * sama dengan yang menghitung timing dan mengirim ke mesin TTS.
  *
  * SATU TINGKAT SAJA, dan ia menggigit (exit 1). Beda dengan vo-script-audit
  * yang punya tingkat B: "dua kotak beririsan 40%" bukan sesuatu yang perlu

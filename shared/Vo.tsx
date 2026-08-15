@@ -6,7 +6,7 @@
    bisu berarti menilai timing tanpa tahu kalimat mana yang sedang jalan: scene
    terasa "kepanjangan" padahal kalimatnya memang panjang, atau gerakan terasa
    telat padahal ia jatuh di kata yang benar. Subtitel menutup lubang itu tanpa
-   membayar satu karakter pun ke ElevenLabs.
+   membayar satu karakter pun ke mesin TTS.
 
    Saklarnya BUKAN saklar. Yang menentukan preview atau final adalah ada
    tidaknya berkas `public/vo/<slug>/L-<kunci>.mp3` — dideteksi saat

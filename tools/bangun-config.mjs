@@ -7,7 +7,7 @@
    REMOTION_* akan memutus tools/*.mjs yang sudah membacanya, jadi .env tetap
    satu-satunya sumber dan berkas ini yang jadi jembatannya.
 
-   Kenapa daftar putih, bukan salin semua. .env berisi API key ElevenLabs dan
+   Kenapa daftar putih, bukan salin semua. .env berisi API key Gemini dan
    kelak token YouTube. Bundle Remotion dikirim ke browser dan bisa ikut masuk
    ke berkas render — apa pun yang tersalin ke sini sama saja dengan dibocorkan.
    Hanya nama yang tercantum di IZIN yang boleh lewat, dan setiap nilai masih

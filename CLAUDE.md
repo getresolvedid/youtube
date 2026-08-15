@@ -220,7 +220,7 @@ ideas/<slug>/scenes/01-hook-question.tsx              ← komposisi   (turunan k
 ```
 
 **Rencana VO adalah sumber teks VO — bukan `naskah.md`.** Kalimat yang dibaca
-ElevenLabs diambil dari blok `## VO` di berkas ini. `naskah.md` tinggal jadi
+Gemini diambil dari blok `## VO` di berkas ini. `naskah.md` tinggal jadi
 daftar isi episode: scene apa saja, urutannya, dan di bagian flow mana. Format
 lengkapnya: [docs/11](docs/11-rencana-vo.md).
 
@@ -253,6 +253,22 @@ sebelah kalimatnya, di berkas yang sama dengan scene-nya.
 
 **Opening & closing tidak punya rencana VO.** Keduanya memang tidak bicara
 (docs/10); durasinya dari `.env`.
+
+**Blok `## VO` punya EMPAT pembaca**, dan mesin TTS cuma satu di antaranya:
+penghitung timing, subtitel preview, daftar sambungan yang dicetak
+`npm run sisa`, dan nanti berkas subtitel penonton. Dua akibatnya mengikat, dan
+keduanya **tidak bergantung model**:
+
+- **Audio tag (`[slow]`, `[long pause]`) dan `<break>` dilarang di sana** —
+  walaupun Gemini memahaminya. Ia terhitung sebagai kata, muncul di subtitel,
+  dan mengotori daftar sambungan. `npm run vo-script-audit` menolaknya sebagai
+  tingkat A. Tempatnya di batas TTS: `bikin-vo-utuh.mjs` yang menyuntikkannya.
+- **Ejaan fonetik (`D N S`) sah, tapi hanya untuk istilah yang terdaftar** di
+  tabel `## Kamus pengucapan` di `naskah.md`. Gemini tidak punya kamus
+  pengucapan, jadi tidak ada lagi jalan ketiga — tapi tabel itu tetap berdiri
+  sebagai daftar periksa saat mendengarkan, dan `vo-script-audit` memakainya
+  untuk invarian yang masih tajam: **akronim boleh ada jika dan hanya jika ada
+  barisnya di tabel.** → [docs/11](docs/11-rencana-vo.md).
 
 ### 5. Memecah atau menyisipkan scene = menomori ulang semua scene sesudahnya
 
@@ -441,7 +457,7 @@ sesi berikutnya akan "memperbaikinya". Detail & contoh:
   daripada video yang kurang keren. Kalau sebuah angka (benchmark, kompleksitas,
   versi, perilaku API) tidak bisa diverifikasi, jangan sebutkan — atau sebutkan
   dengan sumbernya di `naskah.md`. Setiap klaim angka wajib punya baris `sumber:`.
-- **Jangan mengarang API.** Remotion, ElevenLabs, dan flag CLI-nya sudah
+- **Jangan mengarang API.** Remotion, Gemini, dan flag CLI-nya sudah
   didokumentasikan di [docs/04-pipeline-produksi.md](docs/04-pipeline-produksi.md).
   Kalau butuh perilaku yang tidak tercatat di sana, cek dokumentasi resminya dulu
   ([remotion.dev/docs](https://www.remotion.dev/docs)), lalu perbarui dokumen itu.
@@ -465,7 +481,7 @@ sesi berikutnya akan "memperbaikinya". Detail & contoh:
   boleh muncul sebelum benda yang diwakilinya sudah digambarkan. Di level VO
   aturan ini mengikat sebagai **HARD RULE 6** — undangan dulu, nama belakangan.
   → [docs/09](docs/09-tangga-abstraksi.md) · [docs/11](docs/11-rencana-vo.md).
-- **VO paling akhir, sekali jalan.** ElevenLabs dibayar per karakter. Bangun
+- **VO paling akhir, sekali jalan.** Gemini berbayar dan tidak deterministik. Bangun
   komposisi bisu dengan timing perkiraan (`tools/estimate-timing.mjs`), cocokkan
   rencana VO dengan visual, bekukan naskah, **baru** generate VO.
   → [docs/04 §5](docs/04-pipeline-produksi.md#5-gerbang--bekukan-naskah) ·
@@ -520,15 +536,51 @@ npx remotion render 01-hook-question out/hook.mp4
 npx remotion still  s1-01-menunggu out/s1-hook.png
 npx remotion still  s2-01-mitos    out/s2-mitos.png
 
-# VO & timing
+# VO & timing — mesinnya Gemini (docs/11)
 . .\tools\load-env.ps1                      # muat .env ke sesi PowerShell
-node tools/elevenlabs-keys.mjs status       # cek / rotasi API key ElevenLabs
 node --env-file=.env tools/estimate-timing.mjs <slug>
+
+# JALUR BAKU untuk Short: satu permintaan untuk seluruh Short, lalu dipotong.
+npm run vo:utuh -- <slug> --target S1                     # rencana — gratis
+npm run vo:utuh -- <slug> --target S1 --coba --jalan      # ke out/voicetest/
+npm run vo:utuh -- <slug> --target S1 --jalan --pisah 1   # hook dipisah, ke public/vo/
+npm run vo:utuh -- <slug> --target S1 --jalan --pakai-wav # potong ulang, nol biaya
+
+npm run vo:cocok -- <slug> --target S1   # transkripsi vs naskah, per kata
+npm run vo:coba  -- <slug> --scene <kunci> --voice A,B --model X,Y   # banding suara
+
+# per scene — untuk menambal satu scene, bukan untuk membuat Short dari nol
 node --env-file=.env tools/bikin-vo.mjs <slug>          # RENCANA saja — gratis
 node --env-file=.env tools/bikin-vo.mjs <slug> --jalan  # baru ini yang membayar
+
 node --env-file=.env tools/rata-vo.mjs <slug> --jalan   # ratakan ke TARGET_LUFS
 node --env-file=.env tools/vo-durations.mjs <slug>      # durasi asli vs perkiraan
 ```
+
+**Satu Short = satu permintaan, bukan sembilan.** Gemini dipanggil per scene itu
+buta terhadap tetangganya, dan terukur: teks sama, setelan sama, durasi mentahnya
+berayun **31%** antar-panggilan. Sembilan potongan jatuh di tempo yang acak satu
+sama lain, dan pencerita yang berganti kecepatan tanpa sebab di tiap potongan
+adalah lawan dari terdengar wajar. Dikirim sekaligus, kesembilan scene dibaca
+sebagai satu pertunjukan — dan sambungan HARD RULE 7 tersambung di **suaranya**,
+bukan cuma di naskahnya.
+
+Batasnya lalu dibaca dari **cap waktu per kata** (`vo:cocok`), bukan ditebak dari
+senyap: jeda antar-kalimat di dalam scene dan jeda antar-scene secara akustik
+adalah benda yang sama. Pencocokan itu sekaligus membuktikan **Gemini
+mengucapkan naskahnya, bukan parafrasenya** — satu-satunya penjaga yang kita
+punya terhadap sifat Gemini sebagai model bahasa.
+
+**Hook Short dipisah (`--pisah 1`).** Bacaan utuh membeli keseragaman dengan
+membayar jangkauan dinamis: hook jadi rata bersama yang lain. Beat pertama
+Nugget adalah klaim yang berdiri sendiri (docs/02), jadi memisahnya mengikuti
+bentuk naskahnya, bukan mengakalinya.
+
+**Arahan pembacaan per topik ada di `ideas/<slug>/vo-gemini-profile.yaml`** —
+`voice`, `profile`, `style`, `accent`, `pace`, `tempo`, bisa ditimpa per keluaran
+(L/S1/S2). Dari keenamnya **cuma `voice` yang medan API sungguhan**; empat medan
+arahan melebur jadi satu kalimat prompt dan boleh diabaikan model, dan `tempo`
+pengali ffmpeg sesudah audionya jadi. → [docs/11](docs/11-rencana-vo.md).
 
 `gen` dijalankan otomatis lewat npm pre-script sebelum `studio`, `render`,
 `check`, dan `sisa` — tidak perlu diingat, tapi perlu diketahui kenapa

@@ -11,7 +11,7 @@
  * tidak bisa diperbaiki. Diratakan di sumbernya, setiap render sesudahnya benar
  * dengan sendirinya.
  *
- * Keluaran ElevenLabs duduk di sekitar −24 LUFS. YouTube TIDAK menaikkan yang
+ * Keluaran TTS duduk jauh di bawah target siar. YouTube TIDAK menaikkan yang
  * pelan — ia cuma menurunkan yang keras — jadi video yang dikirim sepelan itu
  * akan terdengar pelan di sebelah Shorts orang lain, selamanya.
  *

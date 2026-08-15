@@ -1,0 +1,66 @@
+# Profil VO Gemini — T14 · dns-server
+#
+# Dibaca tools/baca-profil-vo.mjs, dipakai tools/tts-gemini.mjs saat
+# TTS_ENGINE=gemini. Tanpa berkas ini semuanya jatuh ke .env.
+#
+# DARI ENAM MEDAN DI BAWAH, CUMA `voice` YANG MEDAN API SUNGGUHAN.
+#
+#   voice     -> prebuiltVoiceConfig.voiceName        dijamin mesin
+#   profile  ─┐
+#   style     ├─ melebur jadi satu kalimat arahan di depan teks VO.
+#   accent    │  Gemini tidak punya medan untuk ketiganya; ini PERMINTAAN,
+#   pace     ─┘  dan model boleh mengabaikannya. Dengarkan, jangan percaya.
+#   tempo     -> pengali ffmpeg atempo SETELAH audionya jadi — pasti.
+#
+# `pace` dan `tempo` bukan medan yang sama dan tidak saling menggantikan:
+# `pace` mengatur PEMBAWAAN (dan hasilnya berayun sampai 24% antar-generate),
+# `tempo` mengatur DURASI (dan hasilnya persis). Yang satu tidak bisa
+# mengerjakan pekerjaan yang satunya.
+#
+# Aturan yang tetap berlaku di sini:
+#   - Jangan menaruh API key di berkas ini. Kuncinya tetap di .env (docs/08).
+#   - Jangan menulis pengucapan fonetik di sini — itu urusan
+#     `## Kamus pengucapan` di naskah.md (docs/11).
+#   - Suara adalah identitas channel (docs/08 aturan 4). Mengganti `voice`
+#     antar-topik berarti menerima channel yang bersuara ganti-ganti.
+
+voice: Charon
+
+# Ruang dan bentuk rekamannya — bukan effectsProfileId Cloud TTS, yang memang
+# tidak ada di Gemini.
+profile: narasi video edukasi, satu orang bicara ke kamera, ruangan kecil tanpa gema
+
+style: pencerita yang menjelaskan — tenang, yakin, tidak menggurui
+
+accent: Indonesia netral, bukan logat daerah, istilah asing diucapkan wajar
+
+pace: sedang dan mantap, kalimat pendek sedikit lebih cepat
+
+# 1.10 karena Charon terukur ~126 wpm rata-rata di topik ini, sementara VO T14
+# yang sudah tayang berjalan 137 wpm (955 kata / 417 dtk). 126 x 1.10 = 139.
+tempo: 1.10
+
+# Timpaan per keluaran. Short bukan versi pendek video panjang — hooknya harus
+# menampar di detik nol (docs/02 § Anatomi Shorts), dan batas 60 detiknya keras
+# sementara video panjang tidak punya batas atas.
+keluaran:
+  S1:
+    style: to the point, sedikit menantang, seperti membuka rahasia kecil
+    pace: cepat dan ringan, tanpa jeda dramatis
+    tempo: 1.15
+  S2:
+    style: to the point, membantah dengan tenang — bukan menang-menangan
+    pace: cepat dan ringan, tanpa jeda dramatis
+    tempo: 1.15
+
+# Timpaan per scene. Menang atas `keluaran`, dan cuma berarti untuk scene yang
+# disintesis SENDIRI (--pisah di bikin-vo-utuh.mjs) — di bacaan gabungan arahan
+# melebur ke sembilan kalimat dan tidak bisa ditujukan ke satu baris.
+scene:
+  # Hook Short 1. Arahan S1 ("membuka rahasia kecil", "ringan") membuat baris
+  # 8 kata ini terdengar GEMBIRA, dan itu membatalkan tugasnya: catatan di
+  # 01-dari-belakang-vo.md meminta rasa GANJIL — "terdengar seperti sesuatu
+  # yang salah, dan rasa salah itulah yang menahan penonton".
+  01-dari-belakang:
+    style: datar dan yakin, seperti menyebut fakta yang ganjil — tanpa senyum, tanpa nada menjual
+    pace: mantap dan langsung, tanpa menahan

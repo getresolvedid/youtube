@@ -10,7 +10,7 @@
  * (tools/baca-episode.mjs): daftar scene dari naskah.md, teks VO dari
  * ideas/<slug>/scenes/<kunci>-vo.md. Yang ditambahkan berkas ini cuma
  * pembacaan untuk manusia — tabel, hitungan karakter sebagai perkiraan kredit
- * ElevenLabs, dan peringatan terhadap target durasi.
+ * TTS, dan peringatan terhadap target durasi.
  *
  * Angka perkiraan ini CUKUP untuk menilai ritme dan tata letak, tapi TIDAK
  * frame-akurat. Timing sebenarnya diambil dari tools/vo-durations.mjs setelah
@@ -27,7 +27,7 @@ if (!arg) {
 /* Terima slug maupun path naskah — perintah lama di dokumen menyebut path. */
 const slug = arg.replace(/^.*ideas[\\/]/, "").replace(/[\\/].*$/, "");
 
-const MAX_CHARS = wajib("ELEVENLABS_MAX_CHARS_PER_TOPIC");
+const MAX_CHARS = wajib("VO_MAX_CHARS_PER_TOPIC");
 const LONG_TARGET = wajib("LONG_TARGET_SECONDS");
 
 const { WPM, PAD, timing, TOTAL } = bacaEpisode(slug);
@@ -66,11 +66,11 @@ if (TOTAL < lo) console.log(`⚠  Di bawah target (~${f(LONG_TARGET)} dtk) — m
 if (TOTAL > hi) console.log(`⚠  Di atas target (~${f(LONG_TARGET)} dtk) — pangkas bagian 6 dulu.`);
 
 console.log(`\n─────────────────────────────────────────────`);
-console.log(`${chars} karakter ≈ ${chars} kredit ElevenLabs`);
+console.log(`${chars} karakter naskah`);
 if (chars > MAX_CHARS) {
-  console.log(`⚠  Lewat pagar ELEVENLABS_MAX_CHARS_PER_TOPIC (${MAX_CHARS}).`);
+  console.log(`⚠  Lewat pagar VO_MAX_CHARS_PER_TOPIC (${MAX_CHARS}).`);
 } else {
-  console.log(`   Pagar ELEVENLABS_MAX_CHARS_PER_TOPIC: ${MAX_CHARS} — aman.`);
+  console.log(`   Pagar VO_MAX_CHARS_PER_TOPIC: ${MAX_CHARS} — aman.`);
 }
 
 console.log(

@@ -4,7 +4,7 @@
  *   node --env-file=.env tools/vo-script-audit.mjs <slug>
  *
  * Namanya sengaja menyebut "script": yang diperiksa di sini teks di blok `## VO`.
- * Memeriksa audionya — apakah ElevenLabs benar-benar mengucapkannya seperti
+ * Memeriksa audionya — apakah TTS benar-benar mengucapkannya seperti
  * dugaan — pekerjaan lain, di lapis lain, dan belum ada.
  *
  * DUA TINGKAT, dan bedanya bukan soal keparahan melainkan soal SIAPA YANG BISA
@@ -26,7 +26,7 @@
  * dimatikan orang dalam seminggu, dan tingkat A ikut mati bersamanya.
  *
  * Sumber teksnya lewat baca-episode.mjs — modul yang sama dengan yang menghitung
- * timing dan yang mengirim ke ElevenLabs. Parser kedua akan berbeda diam-diam.
+ * timing dan yang mengirim ke TTS. Parser kedua akan berbeda diam-diam.
  */
 
 import { existsSync, readFileSync } from "node:fs";
@@ -52,27 +52,21 @@ const MAKS_KATA_KALIMAT = 18;
    pun. */
 const CV_DATAR = 0.3;
 
-/* Audio tag cuma didukung eleven_v3. Di model lain ia IKUT DIBACA sebagai teks —
-   "excited" benar-benar diucapkan — dan ketahuannya setelah dibayar. Karena itu
-   model yang berlaku dibaca dari .env, tidak diasumsikan: begitu Shorts pindah
-   ke v3, aturan yang sama berbalik jadi sah. */
-/* Dibaca sebagai TEKS, bukan lewat `wajib()` yang mengembalikan Number — kalau
-   tidak, nama modelnya diam-diam jadi NaN dan semua aturan tag ikut salah tanpa
-   satu pun error. Dan dibaca SAAT DIPAKAI, bukan saat modul dimuat: kalau tidak,
-   sekadar mengimpor `tingkatA` dari proses tanpa --env-file akan melempar
-   sebelum satu baris pun diperiksa. */
-let _model;
-const model = () => {
-  if (_model === undefined) {
-    const v = process.env.ELEVENLABS_MODEL_ID;
-    if (!v?.trim()) throw new Error("ELEVENLABS_MODEL_ID kosong di .env — lihat docs/08.");
-    _model = v.trim();
-  }
-  return _model;
-};
-const tagSah = () => model() === "eleven_v3";
-/* Sebaliknya: <break> didukung model v2 dan TIDAK didukung v3. */
-const breakSah = () => model() !== "eleven_v3";
+/* Audio tag dan <break> DILARANG di blok `## VO`, dan larangannya tidak lagi
+   bergantung model.
+
+   Dulu aturannya dibaca dari nama model TTS: tag sah di sebagian model, <break>
+   sah di v2. Itu keliru arah — ia menilai apa yang MODEL sanggup baca, padahal
+   yang menentukan adalah siapa saja yang membaca blok itu. Blok `## VO` punya
+   empat pembaca: penghitung timing di baca-episode.mjs, subtitel preview,
+   daftar sambungan yang dicetak `npm run sisa`, dan nanti berkas subtitel
+   penonton. Mesin TTS cuma satu dari empat.
+
+   Jadi `[slow]` tetap salah walaupun Gemini memahaminya — ia terhitung sebagai
+   kata, muncul di subtitel, dan mengotori daftar sambungan. Tempat yang benar
+   untuk arahan pembacaan adalah profil topik
+   (ideas/<slug>/vo-gemini-profile.yaml, docs/11), sama seperti pengucapan
+   tinggal di `## Kamus pengucapan` dan bukan diketik fonetik ke naskah. */
 
 /* --- kamus pengucapan ------------------------------------------------------- */
 
@@ -128,21 +122,15 @@ export const tingkatA = (teks) => {
   const t = [];
 
   const tag = teks.match(/\[[a-zA-Z][a-zA-Z ]*\]/g);
-  if (tag && !tagSah())
-    t.push(`audio tag ${tag.join(" ")} — DIBACA sebagai teks di ${model()}`);
+  if (tag)
+    t.push(
+      `audio tag ${tag.join(" ")} di blok VO — ikut terhitung sebagai kata, ` +
+        `tampil di subtitel preview, dan ikut tercetak saat menilai sambungan`,
+    );
 
   const brk = teks.match(/<break[^>]*>/g);
-  if (brk) {
-    if (!breakSah()) t.push(`<break> tidak didukung ${model()}`);
-    else
-      t.push(
-        `<break> mentah di blok VO — ikut terhitung sebagai kata dan tampil di subtitel`,
-      );
-    for (const b of brk) {
-      const d = /time="([\d.]+)s"/.exec(b);
-      if (d && Number(d[1]) > 3) t.push(`${b} melebihi batas 3 detik`);
-    }
-  }
+  if (brk)
+    t.push(`<break> di blok VO — tidak didukung Gemini, dan ikut terhitung sebagai kata`);
 
   for (const s of teks.match(/[→&%/]/g) ?? [])
     t.push(`simbol mentah "${s}" — tulis kata-katanya`);
@@ -252,7 +240,7 @@ const laporan = (nama, timing, { ritmePerScene }) => {
 /* --- jalan ------------------------------------------------------------------ */
 
 if (DIJALANKAN_LANGSUNG) {
-  console.log(`\nvo-script-audit · ${slug} · model ${model()}`);
+  console.log(`\nvo-script-audit · ${slug}`);
   console.log(`Kamus pengucapan: ${KAMUS.size} entri — ${[...KAMUS].join(", ") || "(kosong)"}`);
 
   laporan(`${slug} — video panjang`, bacaEpisode(slug).timing, { ritmePerScene: true });

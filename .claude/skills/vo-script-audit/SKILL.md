@@ -16,7 +16,7 @@ Memeriksa **naskah** VO, bukan suaranya. Yang dinilai teks di blok `## VO` tiap
 Pemeriksaan naskah VO terbelah tajam, dan belahannya bukan soal keparahan
 melainkan soal **siapa yang bisa memutuskan**:
 
-- Mesin tahu `[excited]` salah di `eleven_multilingual_v2` tanpa membaca
+- Mesin tahu `[excited]` salah di blok `## VO` tanpa membaca
   kalimatnya. Itu `tools/vo-script-audit.mjs`, tingkat A, `exit 1`.
 - Mesin **tidak** bisa tahu apakah "Dekatnya memang membantu. Tapi bukan cuma
   itu." adalah dua kalimat yang berdesakan atau jembatan terbaik di episode.

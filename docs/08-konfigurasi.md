@@ -10,13 +10,12 @@ skrip, tidak ada nilai yang dititipkan di berkas komposisi.
 | `.env` | ❌ tidak | Nilai asli di mesin ini, termasuk secret |
 | `.gitignore` | ✅ ya | Mengunci `.env` (dan keluaran render) agar tidak ikut ter-commit |
 | `tools/load-env.ps1` | ✅ ya | Memuat `.env` ke sesi PowerShell |
-| `tools/elevenlabs-keys.mjs` | ✅ ya | Kelola & rotasi API key ElevenLabs |
 
 ## Mulai
 
 ```powershell
 Copy-Item .env.example .env      # sekali saja
-# isi ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID, CHANNEL_NAME, ...
+# isi GEMINI_API_KEY, CHANNEL_NAME, ...
 ```
 
 ## Cara memakainya
@@ -70,7 +69,7 @@ Tiga hal yang mengikat:
 | Kelompok | Contoh variabel | Mengikat ke |
 |---|---|---|
 | Identitas channel | `CHANNEL_NAME`, `CHANNEL_HANDLE`, `CTA_URL` | [01](01-positioning.md), [06](06-publishing.md) |
-| ElevenLabs | `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`, `ELEVENLABS_MODEL_ID`, setelan suara | [04 §3](04-pipeline-produksi.md#3-voice-over-elevenlabs) |
+| Gemini | `GEMINI_API_KEY` di sini; arahan pembacaan per topik di `ideas/<slug>/vo-gemini-profile.yaml` | [11 § Profil VO Gemini](11-rencana-vo.md#profil-vo-gemini--ideasslugvo-gemini-profileyaml) |
 | Spesifikasi video | `LONG_WIDTH/HEIGHT`, `SHORT_WIDTH/HEIGHT`, `VIDEO_FPS`, durasi target | [02](02-format-video.md) |
 | Timing VO | `VO_PAD_SECONDS`, `VO_WORDS_PER_MINUTE`, `VO_PLACEHOLDER_SECONDS`, `MUSIC_VOLUME`, `SUBTITLE_MODE` | [04 §3](04-pipeline-produksi.md#3-timing-estimasi-gratis) · [11](11-rencana-vo.md) |
 | Scene standar | `OPENING_SECONDS`, `CLOSING_LONG_SECONDS`, `CLOSING_SHORT_SECONDS` | [10](10-scene-standar.md) |
@@ -121,50 +120,34 @@ riwayat dan tetap bisa dibaca siapa pun yang meng-clone.
 
 1. **Cabut key-nya lebih dulu** di dashboard. Ini langkah yang benar-benar
    menghentikan kerugian; sisanya cuma kebersihan.
-2. Terbitkan key baru → `node tools/elevenlabs-keys.mjs add sk_baru` → `rotate`.
+2. Terbitkan key baru di AI Studio, ganti nilainya di `.env`.
 3. Baru bersihkan riwayat (`git filter-repo`, atau buat repo baru kalau
    riwayatnya masih pendek), lalu force-push.
 
 Urutannya penting: membersihkan riwayat lebih dulu tanpa mencabut key hanya
 membuat kita merasa aman, padahal key-nya masih hidup.
 
-## Rotasi API key ElevenLabs
+## Rotasi API key Gemini
 
-Key ElevenLabs bisa dirotasi tanpa menyunting berkas secara manual. Yang dipakai
-semua skrip **selalu** `ELEVENLABS_API_KEY`; `ELEVENLABS_API_KEY_2`, `_3`, dan
-seterusnya adalah cadangan — bisa key dari akun lain, atau key pengganti yang
-sudah disiapkan untuk rotasi keamanan.
+Gemini tidak punya mekanisme rotasi seperti dulu — tidak ada slot cadangan, tidak
+ada perintah `rotate`, dan tidak ada endpoint sisa kuota yang bisa dipakai
+memutuskan kapan harus berpindah. Yang ada cuma satu nilai:
 
-```powershell
-node tools/elevenlabs-keys.mjs status        # daftar key (nilainya disamarkan)
-node tools/elevenlabs-keys.mjs check         # sisa kuota tiap key (memanggil API)
-node tools/elevenlabs-keys.mjs add sk_xxx    # tambah cadangan
-node tools/elevenlabs-keys.mjs rotate        # promosikan cadangan jadi aktif
-node tools/elevenlabs-keys.mjs rotate --auto # rotasi HANYA kalau key aktif habis/ditolak
-node tools/elevenlabs-keys.mjs drop 2        # buang key slot ke-2
+```
+GEMINI_API_KEY=
 ```
 
-`rotate` menggeser urutan key di `.env` dan menulis ulang berkasnya **di tempat** —
-komentar, urutan baris, dan variabel lain tidak tersentuh. Key lama tidak dibuang,
-hanya turun jadi cadangan, jadi rotasi bisa dibalik.
+Menggantinya berarti menerbitkan key baru di
+[Google AI Studio](https://aistudio.google.com/apikey), menempelkannya ke `.env`,
+lalu **mencabut yang lama di sana**. Menghapusnya dari `.env` tidak menonaktifkan
+apa pun.
 
-Setelah rotasi, terminal yang sedang terbuka masih memegang nilai lama. Muat ulang:
-
-```powershell
-. .\tools\load-env.ps1
-```
-
-**Kapan merotasi:**
-
-| Situasi | Tindakan |
-|---|---|
-| Kuota key aktif habis di tengah produksi | `rotate --auto`, lanjutkan generate VO |
-| Rotasi keamanan berkala | terbitkan key baru → `add` → `rotate` → **cabut key lama di dashboard** → `drop` |
-| Key bocor (ter-commit, ter-share, masuk screenshot) | **cabut di dashboard lebih dulu**, baru `add` + `rotate` |
-
-`drop` hanya menghapus key dari `.env` — **itu tidak menonaktifkan key-nya**.
-Pencabutan hanya sah kalau dilakukan di
-[dashboard ElevenLabs](https://elevenlabs.io/app/settings/api-keys).
+**Konsekuensi yang perlu diketahui:** dulu `bikin-vo.mjs` memeriksa sisa kuota
+sebelum berkas pertama dibuat, jadi "kehabisan di tengah topik" tertangkap lebih
+dulu. Sekarang tidak ada yang bisa memeriksanya — satu-satunya rem otomatis
+adalah `VO_MAX_CHARS_PER_TOPIC`, dan itu mengukur panjang naskah, bukan
+tagihan. Kalau kuota habis di tengah jalan, ketahuannya saat satu permintaan
+gagal; berkas yang sudah jadi tidak perlu dibuat ulang.
 
 ## Aturan
 
@@ -177,11 +160,11 @@ Pencabutan hanya sah kalau dilakukan di
    diambil dari `.env`, bukan diketik ulang di skrip. Kalau angkanya berubah,
    ubah di `.env` **dan** di dokumen guideline yang bersangkutan — keduanya harus
    sepakat.
-4. **`ELEVENLABS_VOICE_ID` dikunci untuk seluruh channel.** Menggantinya di tengah
+4. **Suara dikunci untuk seluruh channel** (`voice` di `ideas/<slug>/vo-gemini-profile.yaml`). Menggantinya di tengah
    jalan mengubah identitas channel; perlakukan seperti perubahan brand, bukan
    perubahan setelan.
 5. Kalau `.env` bocor (ter-commit, ter-share, masuk screenshot): **cabut API key
-   di dashboard ElevenLabs**, terbitkan yang baru, jangan sekadar menghapus berkasnya.
+   di Google AI Studio**, terbitkan yang baru, jangan sekadar menghapus berkasnya.
 
 ## Kalau nanti ada mesin/orang lain
 

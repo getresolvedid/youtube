@@ -12,7 +12,7 @@ ideas/apa-itu-ram/scenes/01-hook-question.tsx            turunan keduanya
 
 `naskah.md` tetap sumber kebenaran **topik** — penjelasan 5 tahun, tangga
 abstraksi, kamus istilah, sumber angka, daftar scene ([docs/05](05-template-naskah.md)).
-Yang pindah ke sini hanya kalimat yang dibaca ElevenLabs.
+Yang pindah ke sini hanya kalimat yang dibaca mesin TTS.
 
 ## Kenapa dipisah
 
@@ -69,7 +69,7 @@ durasi_beat  = kata / VO_WORDS_PER_MINUTE * 60
 durasi_scene = jumlah durasi_beat + VO_PAD_SECONDS
 ```
 
-Yang dikirim ke ElevenLabs tetap **satu berkas audio per scene** — baris di sini
+Yang dikirim ke TTS tetap **satu berkas audio per scene** — baris di sini
 bukan potongan TTS, melainkan titik sinkron untuk animasi.
 
 Komposisi memanggilnya dari `timing.gen.ts`, tidak pernah mengetik detiknya:
@@ -222,7 +222,7 @@ Nah, sekarang kita bahas ukuran ram.      Oke, lanjut ke bagian berikutnya.
 Sebelum itu, mari kita lihat dulu…        Di scene ini kita akan…
 ```
 
-Semuanya sudah dilarang di [§ Aturan menulis VO](#aturan-menulis-vo-untuk-elevenlabs)
+Semuanya sudah dilarang di [§ Aturan menulis VO](#aturan-menulis-vo-untuk-tts)
 (menyebut nomor scene / instruksi visual), tapi bentuk halusnya lolos terus:
 kalimat yang mengumumkan perpindahan **adalah** perpindahan yang tidak
 dijembatani, cuma diberi label.
@@ -315,10 +315,10 @@ kalau ada berkas VO yang tidak cocok dengan kunci mana pun; itu tanda scene-nya
 dinomori ulang setelah VO dibuat (HARD RULE 5), dan scene itu diam-diam kembali
 bisu. Ganti nama berkas VO-nya, **jangan generate ulang** — itu berbayar.
 
-## Aturan menulis VO untuk ElevenLabs
+## Aturan menulis VO untuk TTS
 
 Naskah yang bagus dibaca ≠ naskah yang bagus disintesis. Aturan berikut khusus
-supaya keluaran ElevenLabs terdengar wajar dan pengucapannya benar **pada
+supaya keluaran TTS terdengar wajar dan pengucapannya benar **pada
 percobaan pertama** — setiap kesalahan di sini berarti generate ulang berbayar.
 
 **Struktur kalimat**
@@ -347,66 +347,49 @@ percobaan pertama** — setiap kesalahan di sini berarti generate ulang berbayar
 
 ## Kamus pengucapan
 
-Dulu perbaikan pengucapan ditulis langsung ke blok `## VO`: `cache` diketik
-`kesh`, `SSD` diketik `S S D`. Itu berhasil untuk ElevenLabs dan **merusak
-empat pembaca lain** — blok `## VO` juga sumber subtitel preview, sumber
-hitungan kata untuk timing, yang dicetak `npm run sisa` saat kamu menilai
-sambungan, dan nanti sumber berkas subtitel penonton. Salah eja yang disengaja
-untuk menyenangkan satu pembaca dibayar oleh empat lainnya.
+**Gemini tidak punya kamus pengucapan.** ElevenLabs punya
+(`pronunciation_dictionary_locators`, aturan alias per topik); Gemini tidak,
+dan tidak ada padanannya. Doktrin lamanya mati bersama mesinnya.
 
-Sekarang pemetaannya hidup di luar naskah, di **kamus pengucapan ElevenLabs**.
+Yang TIDAK mati adalah tabelnya. `## Kamus pengucapan` di `naskah.md` tetap ada,
+dengan tugas yang berbeda: **daftar istilah yang pengucapannya wajib diperiksa
+dengan telinga.**
 
-**Sumbernya tabel `## Kamus pengucapan` di `naskah.md`**, dan arahnya kiri ke
-kanan — naskah menulis ejaan normal, alias yang dikirim ke TTS:
-
-| Tulis di VO | Alias ke TTS | Kenapa |
+| Tulis di VO | Maksudnya | Catatan |
 |---|---|---|
-| cache | kesh | TTS cenderung membaca "kaks" |
-| SSD | S S D | dieja per huruf |
-| DDR4 | D D R empat | dieja per huruf, angkanya jadi kata |
+| D N S | DNS | dieja per huruf; ditulis utuh "DNS" berisiko dibaca "dens" |
+| cache | cache | dengarkan — tidak ada yang menjaminnya |
 
-Kamusnya berdiri di akun ElevenLabs dan `id` + `version`-nya disimpan di
-frontmatter naskah, **satu kamus per topik**:
+Dua alasan tabel itu tetap berdiri:
 
-```yaml
-kamus:
-  id: XIVGhYQEqXXJmNBpHY7Z
-  version: lxPnmq4DGvjvzzXPd8Aj
-```
+1. **`npm run vo-script-audit` memakainya.** Invariannya masih tajam dan tidak
+   bergantung mesin: **akronim boleh ada di blok `## VO` jika dan hanya jika ada
+   barisnya di tabel ini.** Itu memaksa tiap akronim jadi keputusan sadar, bukan
+   sesuatu yang menyelinap masuk.
+2. **Ia daftar periksa saat mendengarkan.** Setelah VO jadi, istilah di tabel
+   inilah yang didengarkan satu per satu — sisanya boleh dipercaya.
 
-Endpoint-nya, semuanya `POST` ke `https://api.elevenlabs.io/v1/pronunciation-dictionaries`:
+**Kendali yang tersisa cuma dua**, dan keduanya lemah:
 
-| Operasi | Jalur | Hasil |
-|---|---|---|
-| Buat | `…/add-from-rules` | `{id, version_id}` |
-| Tambah aturan | `…/{id}/add-rules` | versi baru |
-| Hapus aturan | `…/{id}/remove-rules` | versi baru |
+- `accent` dan `style` di `ideas/<slug>/vo-gemini-profile.yaml` — permintaan,
+  bukan jaminan (§ Profil VO Gemini).
+- **Ejaan di blok `## VO` itu sendiri.** Ini yang berhasil di T14: naskahnya
+  menulis `D N S` terpisah, dan Gemini membacanya benar.
 
-lalu dipakai lewat `pronunciation_dictionary_locators` (maks 3) di panggilan
-text-to-speech.
+Poin kedua menghidupkan lagi ketegangan yang dulu diselesaikan kamus: blok
+`## VO` punya empat pembaca, dan mengeja `D N S` untuk menyenangkan TTS
+dibayar oleh subtitel yang ikut menulis `D N S`. Bedanya sekarang tidak ada
+pilihan ketiga. **Jadi ejaan fonetik di blok `## VO` sah, tapi hanya untuk
+istilah yang ada di tabel** — dan itu batas yang menjaganya tidak menyebar.
 
-**Hanya aturan `alias` yang dipakai.** Aturan `phoneme` cuma didukung
-`eleven_flash_v2` — model yang dilarang untuk produksi di `.env`. Untuk
-`eleven_multilingual_v2` kendali pengucapan berarti substitusi kata, bukan
-fonetik.
+**Yang tidak boleh masuk tabel: pilihan kata.** `CPU → prosesor` adalah aturan
+penulisan ([docs/09](09-tangga-abstraksi.md)), bukan pengucapan. Taruh di tabel
+`## Pilihan kata` yang terpisah.
 
-**`version` disematkan, tidak dibiarkan mengikuti yang terbaru.** Locator boleh
-mengabaikannya, tapi versi kamus adalah riwayat, bukan alamat isi: menghapus
-aturan yang baru ditambahkan menghasilkan versi **ketiga**, bukan kembali ke
-yang pertama. Tanpa disematkan, tidak akan pernah bisa dibuktikan versi mana
-yang menghasilkan audio yang ada. Konsekuensinya mengikat — **tabel berubah
-berarti dua tempat naik**, kamus di server dan baris `version` di sini.
-
-**Yang tidak boleh masuk kamus: pilihan kata.** `CPU → prosesor` adalah aturan
-penulisan ([docs/09](09-tangga-abstraksi.md)), bukan pengucapan. Kalau ia jadi
-aturan alias, ElevenLabs menutupi pelanggaran kosakata L1 alih-alih
-membiarkannya ketahuan, dan naskah yang salah lolos karena terdengar benar.
-Taruh di tabel `## Pilihan kata` yang terpisah.
-
-**Topik yang sudah beku tidak dibersihkan.** Naskah T01 masih menulis `S S D`
-karena VO-nya sudah dibayar; kamusnya inert terhadap teks itu dan baru aktif
-saat digenerate ulang. Membersihkan teks tanpa generate ulang memisahkan naskah
-dari audio yang sudah ada — dan tidak ada yang akan memberitahumu.
+**Apa yang benar-benar diperiksa mesin:** `tools/cocokkan-vo.mjs` membandingkan
+transkripsi audio dengan naskah **per kata** — jadi kata yang hilang, bertambah,
+atau berganti tertangkap. **Bunyinya tidak.** "Dens" dan "D-N-S" ditranskripsi
+jadi token yang sama. Pengucapan tetap urusan telinga.
 
 **Yang dihindari di blok `## VO`**
 
@@ -415,8 +398,115 @@ dari audio yang sudah ada — dan tidak ada yang akan memberitahumu.
 - Emoji dan markdown (`**tebal**`) di dalam teks VO.
 - Menyebut nomor scene, timecode, atau instruksi visual.
 
-**Audio tag** (hanya `eleven_v3`): `[excited]`, `[whispers]`, dan sejenisnya.
-Jangan dipakai di `eleven_multilingual_v2` — tag akan ikut dibaca sebagai teks.
+**Audio tag** (`[slow]`, `[long pause]`, `[whispers]`): Gemini memahaminya,
+tapi **jangan pernah diketik ke blok `## VO`** — ia terhitung sebagai kata,
+muncul di subtitel preview, dan mengotori daftar sambungan. Tempatnya di batas
+TTS: `tools/bikin-vo-utuh.mjs` menyuntikkan `[long pause]` sebagai pemisah scene
+di sana, bukan di naskah. `npm run vo-script-audit` menolaknya sebagai tingkat A.
+
+## Profil VO Gemini — `ideas/<slug>/vo-gemini-profile.yaml`
+
+Berlaku saat `TTS_ENGINE=gemini` di `.env`. Arahan pembacaan **per topik**, bukan
+global: episode penjelasan dan Short yang hooknya harus menampar di detik nol
+bukan varian dari satu setelan.
+
+```yaml
+voice: Charon
+profile: narasi video edukasi, satu orang bicara ke kamera, ruangan kecil tanpa gema
+style: pencerita yang menjelaskan — tenang, yakin, tidak menggurui
+accent: Indonesia netral, bukan logat daerah
+pace: sedang dan mantap, kalimat pendek sedikit lebih cepat
+tempo: 1.10
+
+keluaran:            # timpaan per keluaran; sisanya diwarisi
+  S1:
+    pace: cepat dan ringan, tanpa jeda dramatis
+    tempo: 1.15
+```
+
+**Dari enam medan itu, cuma `voice` yang medan API sungguhan.**
+
+| Medan | Jadi apa | Dijamin? |
+|---|---|---|
+| `voice` | `prebuiltVoiceConfig.voiceName` | ya |
+| `profile` `style` `accent` `pace` | satu kalimat arahan di depan teks VO | **tidak** — permintaan |
+| `tempo` | pengali `atempo` ffmpeg setelah audio jadi | ya |
+
+**`pace` dan `tempo` tidak saling menggantikan.** `pace` mengatur *pembawaan* dan
+dijawab model — empat generate teks yang sama terukur berayun **24%** dari ujung
+ke ujung. `tempo` mengatur *durasi* dan berlaku setelah audionya jadi, jadi ia
+pasti. Yang satu tidak bisa mengerjakan pekerjaan yang satunya: `pace` saja
+membuat durasi jadi undian, `tempo` saja membuat semua kalimat dibacakan dengan
+pembawaan yang sama lalu diregangkan.
+
+**`tempo` itu pengali, bukan target wpm.** Menyetel tiap scene ke satu angka akan
+meratakan yang justru tidak boleh rata — VO T14 yang sudah tayang bergerak antara
+115 dan 167 wpm karena hook dibaca cepat dan kalimat penjelasan dibaca pelan
+(gabungannya 137 wpm, dan `VO_WORDS_PER_MINUTE=136` meleset 1% dari itu).
+
+Tanpa berkas profil, semuanya jatuh ke `GEMINI_TTS_*` di `.env`, dan
+`GEMINI_TTS_STYLE_PROMPT` dipakai sebagai arahan **utuh**. Arahan yang berlaku
+tiap keluaran dicetak `bikin-vo.mjs` di rencananya — sebelum membayar.
+
+**Yang tidak boleh masuk berkas ini:** API key (tetap di `.env`, docs/08) dan
+pengucapan fonetik (tetap di `## Kamus pengucapan`, § di atas).
+
+## Satu Short = satu permintaan, lalu dipotong
+
+```powershell
+npm run vo:utuh -- <slug> --target S1 --coba          # rencana
+npm run vo:utuh -- <slug> --target S1 --coba --jalan  # jalan, ke out/voicetest/
+npm run vo:utuh -- <slug> --target S1 --jalan         # ke public/vo/
+```
+
+**Kenapa tidak satu permintaan per scene.** Gemini dipanggil per scene itu buta
+terhadap tetangganya, dan terukur: teks sama, setelan sama, durasi mentahnya
+berayun **31%** antar-panggilan — lebih besar daripada seluruh jangkauan aman
+pengali `tempo`. Sembilan potongan Short jadi jatuh di tempo yang acak satu sama
+lain. Pencerita yang berganti kecepatan tanpa sebab di tiap potongan adalah
+lawan dari terdengar wajar.
+
+Dikirim sebagai satu naskah, kesembilan scene dibaca sebagai satu pertunjukan:
+**155 wpm konsisten** di seluruh Short. Sambungan HARD RULE 7 tersambung di
+suaranya, bukan cuma di naskahnya.
+
+### Batas scene: cap waktu kata, bukan senyap
+
+Setelah audionya jadi, ia harus dipotong kembali jadi satu berkas per scene.
+Menebak batas dari senyap **tidak bisa bekerja**: jeda antar-kalimat *di dalam*
+scene dan jeda *antar* scene secara akustik adalah benda yang sama. Terukur di
+Short T14 — jeda dalam-scene 0,52–0,65 dtk, jeda antar-scene 0,65–0,99 dtk,
+tumpang tindih. Satu scene terpotong jadi 2,10 dtk untuk 11 kata (314 wpm).
+
+Jadi batasnya tidak dicari, melainkan **dibaca**:
+
+```powershell
+npm run vo:cocok -- <slug> --target S1
+```
+
+mentranskripsi audionya dengan cap waktu per kata, menyejajarkannya dengan
+urutan kata dari blok `## VO` (Needleman–Wunsch, jadi satu kata hilang tidak
+menggeser sisanya), lalu menulis batasnya ke `out/voicetest/<slug>/batas-<T>.json`.
+`vo:utuh` memanggilnya sendiri — `--senyap` mengembalikan heuristik lama, dan itu
+cuma untuk saat transkripsi gagal.
+
+**Bayaran keduanya lebih berharga daripada batasnya.** Pencocokan yang sama
+menjawab pertanyaan yang sebelumnya tidak punya penjaga sama sekali: **apakah
+yang diucapkan sama dengan yang ditulis.** Gemini itu model bahasa — ia bisa
+memparafrase — sementara naskahnya beku dan seluruh timing dihitung dari jumlah
+katanya. Di T14 hasilnya 97,3%, dan satu-satunya selisih adalah `D N S` (3 token
+naskah) vs `dns` (1 token transkrip): artefak ejaan fonetik, bukan pergeseran.
+
+### Penjaganya menggigit
+
+Potongan ditulis ke `.part`, **diukur**, baru dinamai. Kalau ada satu potongan
+yang durasinya di luar 0,6–1,7× perkiraan dari jumlah katanya, **nol berkas**
+ditulis. Penjaga versi pertama mengukur potongan *sebelum* tepinya dipangkas —
+dan meloloskan potongan 330 wpm yang mustahil. Penjaga yang memeriksa angka yang
+bukan angka yang ditulis adalah penjaga yang tidak ada.
+
+`--pakai-wav` memakai ulang aliran utuh yang sudah dibayar, jadi menyetel
+pemotong tidak pernah membayar sintesis ulang.
 
 ## Audit naskah VO — dua lapis
 

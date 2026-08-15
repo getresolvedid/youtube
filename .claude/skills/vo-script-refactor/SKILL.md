@@ -111,7 +111,7 @@ catat di `## Catatan`.
 
 **Ejaan kamus.** Ubah ke kolom kiri `## Kamus pengucapan` (`SSD`, bukan `S S D`)
 **hanya untuk topik yang belum beku**. Kalau istilahnya belum ada di tabel,
-tambahkan barisnya, lalu perbarui kamus di ElevenLabs (`add-rules`) **dan**
+tambahkan barisnya di tabel `## Kamus pengucapan`, lalu **dengarkan** —
 `kamus.version` di frontmatter — keduanya, atau jangan sama sekali.
 
 **Undangan dan sambungan.** Perbaikan sambungan yang lompat hampir selalu ada di

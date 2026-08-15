@@ -70,6 +70,6 @@ catatan:
    - **nol angka.** berapa lama yang di luar menunggu sebelum menyerah butuh
      sumber (`naskah.md § Sumber`). yang dipakai jarak antar pengulangan yang
      melebar.
-   - insight scene ini dipakai lagi sebagai seluruh isi Short 1 (fase 2). yang
+   - insight scene ini dipakai lagi sebagai seluruh isi Short 1 (fase 3). yang
      boleh diwarisi ke sana cuma komponen visualnya, tidak pernah urutan beat-nya
      ([docs/02 § Aturan Shorts](../../../docs/02-format-video.md)).

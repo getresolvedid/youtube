@@ -183,9 +183,10 @@ render final.**
 ## Metadata publish
 
 **Pindah ke [`render/publish.md`](render/publish.md).** Judul, deskripsi,
-chapter, tag, playlist, brief thumbnail, dan jadwal rilis — untuk video panjang
-dan kedua Short — ditulis di sana langsung di fase 3, bukan disalin ke sana
-belakangan. Lihat docs/06.
+chapter, tag, playlist, dan jadwal rilis — untuk video panjang dan kedua Short —
+ditulis di sana langsung di fase 4, bukan disalin ke sana belakangan. Lihat
+docs/06. Brief thumbnail-nya **tidak** di situ: ia keluaran fase 1 dan tinggal
+di [`thumbnail.md`](thumbnail.md).
 ````
 
 > **Catatan format:** `tools/baca-episode.mjs` mengenali tabel scene dari kolom

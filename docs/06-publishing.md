@@ -5,9 +5,13 @@ di sebelah MP4 dan thumbnail-nya ([docs/04](04-pipeline-produksi.md)) — dan
 ditulis **sebelum** membuka halaman unggah YouTube. Mengarang judul di kolom
 unggah menghasilkan judul yang buruk.
 
-Berkasnya lahir di **fase 3**, jauh sebelum ada MP4-nya. `naskah.md` cuma
+Berkasnya lahir di **fase 4**, jauh sebelum ada MP4-nya. `naskah.md` cuma
 menyimpan penunjuk ke sana; judul dan deskripsi tidak pernah hidup di dua
 tempat.
+
+**Thumbnail bukan salah satunya.** Ia direncanakan di **fase 1** — sebelum
+naskahnya ada — dan tinggal di `ideas/<slug>/thumbnail.md`, bukan di sini.
+Alasannya di [CLAUDE.md § Fase kerja](../CLAUDE.md) dan di § Thumbnail bawah.
 
 ---
 
@@ -109,17 +113,64 @@ Tag sekadar sinyal pendukung — judul, thumbnail, dan retensi jauh lebih menent
   melengkapi: judul menjelaskan, thumbnail menarik.
 - Konsisten: posisi teks, palet, dan gaya tetap sama antar-episode supaya video
   channel dikenali dari kejauhan di feed.
+
+### Direncanakan di fase 1 — `thumbnail.md`
+
+Thumbnail adalah **keluaran pertama** sebuah topik, bukan yang terakhir. Sebelum
+satu baris naskah ditulis, `ideas/<slug>/thumbnail.md` sudah berisi tiga hal,
+urut:
+
+**1. Ketegangannya, satu kalimat.** Bukan topiknya — *apa yang penonton kira
+benar tapi ternyata tidak*, atau apa yang ia rasa aneh tapi tidak bisa jelaskan.
+"Video tentang caching" adalah topik dan nol tarikan; "kenapa halaman yang sama
+lambat cuma di rumah kamu" adalah ketegangan. Kartu ini menggambarkan kalimat
+kedua. **Kalau kalimat ini tidak ketemu, topiknya berhenti di sini** — jangan
+naik ke fase 2 sambil berharap ketegangannya muncul sendiri saat menulis naskah.
+
+**2. Polanya, dipilih dari daftar — bukan dari kanvas kosong.** Satu saja,
+jangan dicampur:
+
+| Pola | Bentuknya | Paling cocok untuk |
+|---|---|---|
+| **Koreksi** | yang benar terang, yang salah redup + dicoret | keyakinan yang salah |
+| **Sebelum → sesudah** | dua keadaan bersebelahan, bedanya mencolok | perbaikan / dampak |
+| **Anomali** | benda familiar di tempat yang salah | hal yang terasa janggal |
+| **Proses terpotong** | mekanismenya kelihatan, ujungnya belum | "gimana caranya" |
+| **Angka mengagetkan** | satu angka besar + satu benda | klaim terukur |
+
+Dua episode pertama keduanya **koreksi** (`MEJA, BUKAN GUDANG` ·
+`LOKET, BUKAN DAFTAR`) dan itu bukan kebetulan: channel ini menjelaskan benda
+yang penonton kira sudah ia pahami.
+
+**3. Kata-katanya (≤ 4) dan gambaran yang dijanjikan.** Gambarannya ditulis
+sebagai **benda**, bukan sebagai suasana — "dua loket yang saling menunjuk",
+bukan "kesan berlapis". Bedanya penting karena baris ini adalah **pesanan ke
+fase 2**: benda itu wajib benar-benar jadi scene di videonya. Itu yang membuat
+larangan "jangan menjanjikan gambar yang tidak ada di videonya" jadi mustahil
+dilanggar, bukan sekadar terlarang.
+
+Fase 1 berhenti di situ. **Tidak ada `.tsx` yang ditulis** — figurnya wajib
+komponen yang sama dengan scene-nya, dan komponen itu baru ada setelah fase 2.
+Kover kedua Short menyusul di `thumbnail.md` yang sama pada fase 3, setelah
+hook masing-masing Short ditulis ulang dari nol.
+
 ### Dirender dari Remotion, bukan digambar terpisah
 
 Tiap episode punya satu komposisi thumbnail sendiri:
 
 ```
-ideas/<slug>/thumb.tsx        kata-katanya + figurnya (milik episode)
+ideas/<slug>/thumbnail.md     keputusannya — ketegangan, pola, kata (fase 1)
+ideas/<slug>/thumb.tsx        kata-katanya + figurnya (milik episode, fase 4)
 shared/Thumbnail.tsx          tata letak, ukuran huruf, posisi teks (milik channel)
 src/Root.tsx                  id komposisi "T<nn>-thumb", 1280x720 dari .env
 
 npx remotion still T01-thumb ideas/apa-itu-ram/render/thumb.png
 ```
+
+**Arahnya satu: `thumbnail.md` → `thumb.tsx`**, sama seperti direction →
+komposisi (HARD RULE 3). Kalau kartunya sudah dirender tapi terasa meleset dari
+briefnya, yang benar briefnya — ubah komposisinya, jangan menulis ulang brief
+supaya cocok dengan yang terlanjur digambar.
 
 **Yang milik episode cuma dua: kata-katanya dan figurnya.** Sisanya —
 posisi teks di kiri bawah, ukuran huruf, palet, marjin — hidup di

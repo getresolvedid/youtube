@@ -109,6 +109,7 @@ youtube/                      ← ROOT PROJECT Remotion
     ├── README.md             ← alur & template ide
     └── <slug>/
         ├── ide.md            ← ide mentah + uji 4 syarat (selalu ada)
+        ├── thumbnail.md      ← ketegangan + pola + ≤4 kata (fase 1, docs/06)
         ├── naskah.md         ← materi topik + DAFTAR scene (docs/05)
         ├── timing.gen.ts     ← ⚙ digenerate dari naskah.md + scenes/*-vo.md
         ├── Episode.tsx       ← merangkai <Sequence>, tanpa isi scene

@@ -2,13 +2,13 @@
 kode: T14
 slug: dns-server
 pilar: P2 · Di Balik Aplikasi
-fase: 4 · VO jadi, tinggal render & unggah
+fase: 5 · VO jadi, tinggal render & unggah
 tanggal_tayang:
 ---
 
 # T14 · Metadata publish
 
-Keluaran **fase 3**, dilanjutkan **fase 4** ([CLAUDE.md § Fase kerja](../../../CLAUDE.md)). Aturannya:
+Keluaran **fase 4**, dilanjutkan **fase 5** ([CLAUDE.md § Fase kerja](../../../CLAUDE.md)). Aturannya:
 [docs/06](../../../docs/06-publishing.md). Daftar scene, VO, dan direction-nya
 ada di [`../naskah.md`](../naskah.md), [`../scenes/`](../scenes/), dan
 [`../scene-shorts/`](../scene-shorts/).
@@ -169,40 +169,19 @@ belajar coding, programming indonesia
 
 ### Thumbnail
 
-Teks: **LOKET, BUKAN DAFTAR** (3 kata). Nol kata yang sama dengan judul — judul
-menjelaskan *kenapa harus ditanya dulu*, thumbnail menaruh **gambarannya**, dan
-sekaligus jalan buntu yang ditutup episode ini.
+**Keputusannya bukan di sini.** Ketegangan, pola, kata, dan gambarannya keluaran
+**fase 1** dan hidup di [`../thumbnail.md`](../thumbnail.md); jangan disalin ke
+berkas ini. Yang perlu ada di sebelah halaman unggah cuma berkasnya:
 
-> **Brief pertama menulis "BUKAN BUKU", dan itu keliru.** Jalan buntu di
-> `04-daftar-yang-basi` digambar sebagai **tabel** — nama di kiri, nomor di
-> kanan — bukan sebagai buku. Kartu yang menjanjikan buku akan menjanjikan
-> gambar yang tidak ada di videonya: menaikkan CTR sambil menurunkan retensi,
-> dan YouTube menghitung yang kedua
-> ([docs/06](../../../docs/06-publishing.md#dirender-dari-remotion-bukan-digambar-terpisah)).
-
-Isi: dua loket yang saling menunjuk di kiri (lacinya terbuka, yang atas berisi
-dan beraksen), tabel nama→nomor yang redup dan tercoret di kanan. Loketnya
-komponen `Loket` dari [`../panggung-loket.tsx`](../panggung-loket.tsx) — benda
-yang sama dengan yang dilihat penonton di `05-loket` dan `06-tangga`, bukan
-gambar baru yang mirip. Latar `--bg`, aksen Indigo. Loket terang, tabel redup:
-ini kartu **koreksi**, dan yang dibaca dalam seperempat detik adalah
-kontrasnya — coretannya cuma menegaskan.
-
-**Sudah jadi** — `thumb.png` di sebelah berkas ini, 1280×720, 247 KB.
+`LOKET, BUKAN DAFTAR` · `thumb.png` di sebelah berkas ini, 1280×720, 247 KB.
 
 ```powershell
 npx remotion still T14-thumb ideas/dns-server/render/thumb.png
 ```
 
-Sumbernya [`../thumb.tsx`](../thumb.tsx) (kata & figur) di atas
-[`shared/Thumbnail.tsx`](../../../shared/Thumbnail.tsx) (tata letak channel).
-Kalau kata-katanya diganti, render ulang perintah di atas — jangan menyunting
-PNG-nya.
-
-Tinggi huruf kapital 95px (syarat ≥ 90, dihitung `TINGGI_KAPITAL` di
-`shared/Thumbnail.tsx`). **Uji 210×118 belum dikerjakan** — itu pemeriksaan
-mata, bukan angka: kecilkan PNG-nya ke ukuran itu dan lihat sendiri. Kalau tidak
-terbaca, ulangi; jangan diloloskan.
+**Uji 210×118 belum dikerjakan** — itu pemeriksaan mata, bukan angka: kecilkan
+PNG-nya ke ukuran itu dan lihat sendiri. Kalau tidak terbaca, ulangi; jangan
+diloloskan.
 
 ### Pinned comment
 
@@ -250,42 +229,18 @@ Penjelasan utuhnya: <url video panjang>
 
 ### Kover
 
-Teks: **KANAN DULUAN** (2 kata). Nol kata yang sama dengan judul: judul menyebut
-*arahnya* ("dari belakang"), kover menyebut *urutannya*.
+**Keputusannya di [`../thumbnail.md`](../thumbnail.md) § Kover Short 1.**
 
-> **Brief pertama menulis "KANAN DULU, KIRI TERAKHIR" dan ditolak sebelum
-> render.** Kartu 9:16 cuma muat **11 huruf per baris** pada 260px, dan "Kiri
-> Terakhir" 13 huruf — penjaga panjang baris di `shared/Thumbnail.tsx`
-> melemparnya, persis seperti "TANGAN SAMA" di
-> [T01](../../apa-itu-ram/render/publish.md). Yang dipendekkan **katanya**,
-> bukan hurufnya: mengecilkan huruf melanggar syarat tinggi kapital docs/06, dan
-> baris yang melipat jadi kartu tiga baris yang tidak terbaca di feed.
-
-Figur: nama situs terpecah tiga di atas dengan potongan paling kanan menyala dan
-dua lainnya redup, penanda segitiga di atasnya, tiga loket menurun ke
-bawah-kanan — yang **terendah** beraksen, karena dialah yang dibuka potongan
-paling kanan. Komponen `Loket` dari [`../panggung-loket.tsx`](../panggung-loket.tsx),
-susunan yang sama dengan `06-ujung`. Kelebihan tinggi kartu 9:16 dipakai untuk
-hal yang isinya memang ketinggian: tangganya.
-
-> Garis penghubungnya **berhenti di atap loket**, bukan diteruskan ke jendelanya.
-> Tiap loket duduk tepat di bawah potongannya, jadi garisnya persis tegak — dan
-> garis tegak yang masuk ke dalam badan loket berhenti terbaca sebagai
-> penghubung, mulai terbaca sebagai **tali gantungan**. Ketahuan dari still-nya,
-> tidak dari kode.
-
-**Sudah jadi** — `thumb-s1.png`, 2160×3840, 1,7 MB.
+`KANAN DULUAN` · `thumb-s1.png`, 2160×3840, 1,7 MB.
 
 ```powershell
 npx remotion still T14-thumb-s1 ideas/dns-server/render/thumb-s1.png
 ```
 
-Sumbernya [`../scene-shorts/thumb-s1.tsx`](../scene-shorts/thumb-s1.tsx).
-
-Batasnya di [docs/06 § Kover Short](../../../docs/06-publishing.md#kover-short--916-dan-bacalah-batasnya)
-— kalau kolom unggah cuma menawarkan pilih-frame, pilih frame tempat tangganya
+Kalau kolom unggah cuma menawarkan pilih-frame, pilih frame tempat tangganya
 sudah berdiri utuh (sekitar detik 30–36), dan **jangan** menempelkan kartu ini
-sebagai frame pertama Short.
+sebagai frame pertama Short
+([docs/06 § Kover Short](../../../docs/06-publishing.md#kover-short--916-dan-bacalah-batasnya)).
 
 ---
 
@@ -322,35 +277,13 @@ Penjelasan utuhnya: <url video panjang>
 
 ### Kover
 
-Teks: **SEKALI, DI AWAL** (3 kata). Judul membantah ("Ganti DNS tidak bikin
-internet cepat"); kover menaruh **buktinya** — bagian yang berubah itu potongan
-paling depan, dan cuma itu. Nol kata yang sama.
+**Keputusannya di [`../thumbnail.md`](../thumbnail.md) § Kover Short 2.**
 
-> **Brief pertama menulis "TERBUKA, BUKAN KENCANG" dan ditolak sebelum render.**
-> "Bukan Kencang" 13 huruf pada kartu yang muat 11. Memendekkannya jadi "Bukan
-> Cepat" akan **mengulang kata dari judulnya**, jadi yang diambil sudut lain:
-> bukan kesimpulannya, melainkan gambar yang membawanya. Kesimpulan "terbuka,
-> bukan kencang" tetap hidup di VO `07-terbuka` dan di deskripsi.
-
-Figur: bilah waktu satu halaman melintang — potongan bertanya di paling depan
-beraksen, sisanya panjang dan abu — di atas lantai dengan loket di pojok kiri,
-sosok berjalan, dan tempat tujuan jauh di kanan. Porsi `tanya` sama persis
-dengan `BILAH.tanya` di
-[`../scene-shorts/jalur-tanya.tsx`](../scene-shorts/jalur-tanya.tsx); kover yang
-memakai porsi berbeda menjanjikan perbandingan yang tidak ada di videonya.
-Lantainya bukan hiasan — ia yang membuat bilah di atasnya terbaca sebagai
-**waktu perjalanan**, bukan sebagai bilah pemuatan biasa.
-
-**Perbandingan panjangnya yang jadi argumen**, dan ia tidak butuh satu angka
-pun — penting justru karena angka itu masih baris ⚠ di `../naskah.md § Sumber`.
-
-**Sudah jadi** — `thumb-s2.png`, 2160×3840, 1,6 MB.
+`SEKALI, DI AWAL` · `thumb-s2.png`, 2160×3840, 1,6 MB.
 
 ```powershell
 npx remotion still T14-thumb-s2 ideas/dns-server/render/thumb-s2.png
 ```
-
-Sumbernya [`../scene-shorts/thumb-s2.tsx`](../scene-shorts/thumb-s2.tsx).
 
 ---
 

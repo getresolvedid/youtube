@@ -10,19 +10,50 @@ Indonesia. Bukan codebase aplikasi — isinya guideline, naskah, komposisi
 
 ## Fase kerja satu topik
 
-Satu topik dikerjakan dalam empat fase, **berurutan**. Jangan meloncat ke fase
+Satu topik dikerjakan dalam lima fase, **berurutan**. Jangan meloncat ke fase
 berikutnya selama fase sebelumnya belum tuntas.
 
-1. **Rencanakan & bangun video panjang** — naskah, rencana VO, direction, dan
+1. **Rencanakan thumbnail** — ketegangan topiknya, polanya, dan ≤ 4 katanya,
+   ditulis di `ideas/<slug>/thumbnail.md`
+   ([docs/06 § Thumbnail](docs/06-publishing.md#thumbnail)). Belum menggambar
+   apa pun.
+2. **Rencanakan & bangun video panjang** — naskah, rencana VO, direction, dan
    komposisi scene di `ideas/<slug>/scenes/`.
-2. **Rencanakan & bangun Shorts** — 2 Short di `ideas/<slug>/scene-shorts/<short>/`,
+3. **Rencanakan & bangun Shorts** — 2 Short di `ideas/<slug>/scene-shorts/<short>/`,
    hook ditulis ulang dari nol ([docs/02 § Anatomi Shorts](docs/02-format-video.md#anatomi-shorts)).
-3. **Rencanakan judul & deskripsi** — untuk video panjang **dan** kedua Short.
-4. **Rilis** — generate VO, render produksi video panjang & Shorts, lalu unggah.
+4. **Rencanakan judul & deskripsi** — untuk video panjang **dan** kedua Short;
+   di fase ini juga `thumb.tsx` dan kedua kover Short akhirnya dibangun.
+5. **Rilis** — generate VO, render produksi video panjang & Shorts, lalu unggah.
 
-VO berbayar dan render itu mahal waktunya, jadi keduanya baru terjadi di fase 4:
-fase 1–3 dikerjakan bisu dengan timing perkiraan
+VO berbayar dan render itu mahal waktunya, jadi keduanya baru terjadi di fase 5:
+fase 1–4 dikerjakan bisu dengan timing perkiraan
 ([docs/04 §5](docs/04-pipeline-produksi.md#5-gerbang--bekukan-naskah)).
+
+**Kenapa thumbnail didahulukan padahal ia yang paling belakangan dipakai.**
+Karena ia penyaring topik yang paling murah yang kita punya. Topik yang tidak
+bisa dijadikan satu kartu yang bikin orang berhenti menggulir hampir selalu
+kurang **ketegangan**, bukan kurang desain — dan itu jauh lebih murah diketahui
+sekarang daripada setelah delapan puluh scene jadi. Empat syarat di
+[docs/07](docs/07-backlog-topik.md) menyaring apakah topiknya layak; fase ini
+menyaring apakah topiknya bisa **dijual dalam seperempat detik**.
+
+**Fase 1 mengikat fase 2.** [docs/06](docs/06-publishing.md) melarang thumbnail
+menjanjikan gambar yang tidak ada di videonya — CTR naik, retensi turun, dan
+YouTube menghitung yang kedua. Selama thumbnail dibuat belakangan, larangan itu
+cuma bisa ditegakkan dengan disiplin. Dibuat duluan, ia berbalik jadi pesanan:
+gambaran yang ditulis di `thumbnail.md` adalah scene yang **wajib** benar-benar
+ada di videonya.
+
+**Judul tetap di fase 4, dan itu disengaja.** docs/06 mensyaratkan judul dan
+thumbnail tidak berbagi kata — yang satu menjelaskan, yang satu menarik. Yang
+ruangnya paling sempit yang harus dibekukan duluan: thumbnail cuma punya empat
+kata dan tidak bisa mengelak, judul punya enam puluh karakter untuk menghindari
+kata yang sudah terpakai.
+
+**Yang TIDAK dikerjakan di fase 1: menggambar.** Figur thumbnail wajib komponen
+yang sama persis dengan scene-nya (docs/06), dan komponen itu baru lahir di
+fase 2. Karena itu `thumb.tsx` dibangun di fase 4, dari `thumbnail.md` —
+arahnya satu, sama seperti direction → komposisi (HARD RULE 3).
 
 ## HARD RULE — jangan pernah dilanggar
 

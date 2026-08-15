@@ -5,7 +5,7 @@ judul_kerja: Di mana data aplikasi saat aplikasi dibuka?
 pilar: P1 · Cara Kerja Sehari-hari
 lapis: umum
 what: RAM
-status: vo              # ketiganya masuk fase 4
+status: vo              # ketiganya masuk fase 5
 naskah_beku:
   L: 2026-08-14
   S1: 2026-08-14

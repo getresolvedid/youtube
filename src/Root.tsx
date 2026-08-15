@@ -297,7 +297,7 @@ export const RemotionRoot: React.FC = () => (
       {...UKURAN_16x9}
     />
 
-    {/* Thumbnail & kover T14 — keluaran fase 3 (render/publish.md):
+    {/* Thumbnail & kover T14 — dibangun di fase 4 dari brief fase 1 (thumbnail.md):
         npx remotion still T14-thumb    ideas/dns-server/render/thumb.png
         npx remotion still T14-thumb-s1 ideas/dns-server/render/thumb-s1.png
         npx remotion still T14-thumb-s2 ideas/dns-server/render/thumb-s2.png */}

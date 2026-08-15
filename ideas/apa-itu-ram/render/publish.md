@@ -2,13 +2,13 @@
 kode: T01
 slug: apa-itu-ram
 pilar: P1 · Cara Kerja Sehari-hari
-fase: 3 · judul & deskripsi — SELESAI
+fase: 4 · judul & deskripsi — SELESAI
 tanggal_tayang:
 ---
 
 # T01 · Metadata publish
 
-Keluaran **fase 3** ([CLAUDE.md § Fase kerja](../../../CLAUDE.md)). Aturannya:
+Keluaran **fase 4** ([CLAUDE.md § Fase kerja](../../../CLAUDE.md)). Aturannya:
 [docs/06](../../../docs/06-publishing.md). Daftar scene, VO, dan direction-nya
 ada di [`../naskah.md`](../naskah.md) dan [`../scenes/`](../scenes/).
 
@@ -122,29 +122,16 @@ belajar komputer, teknologi indonesia, belajar coding, programming indonesia
 
 ### Thumbnail
 
-Teks: **MEJA, BUKAN GUDANG** (3 kata). Tidak mengulang satu kata pun dari judul
-— judul menjelaskan *kenapa disalin*, thumbnail menaruh gambarannya.
+**Keputusannya bukan di sini.** Ketegangan, pola, kata, dan gambarannya keluaran
+**fase 1** dan hidup di [`../thumbnail.md`](../thumbnail.md); jangan disalin ke
+berkas ini. Yang perlu ada di sebelah halaman unggah cuma berkasnya:
 
-Isi: figur meja kerja (berkas terhampar) di kiri, lemari arsip gudang di kanan,
-panah salin di antaranya — kelas `.meja` dan `.lemari` yang sama dengan scene
-`04-ram-analogy`. Latar `--bg`, aksen Indigo. Meja terang, lemari redup: ini
-kartu **koreksi**, dan yang dibaca dalam seperempat detik adalah kontrasnya,
-bukan panahnya.
-
-**Sudah jadi** — `thumb.png` di sebelah berkas ini, 1280×720, 230 KB.
+`MEJA, BUKAN GUDANG` · `thumb.png` di sebelah berkas ini, 1280×720, 230 KB ·
+uji 210×118 **lolos**.
 
 ```powershell
 npx remotion still T01-thumb ideas/apa-itu-ram/render/thumb.png
 ```
-
-Sumbernya [`../thumb.tsx`](../thumb.tsx) (kata & figur) di atas
-[`shared/Thumbnail.tsx`](../../../shared/Thumbnail.tsx) (tata letak channel).
-Kalau kata-katanya diganti, render ulang perintah di atas — jangan menyunting
-PNG-nya.
-
-**Uji 210×118: lolos.** Tinggi huruf kapital 95px (syarat ≥ 90). Panahnya
-sengaja panjang dari tepi lemari sampai tepi meja — versi pendeknya terbaca
-sebagai tanda, bukan sebagai jarak, padahal jarak itulah isi videonya.
 
 ### Pinned comment
 
@@ -182,24 +169,17 @@ Penjelasan utuhnya: <url video panjang>
 
 ### Kover
 
-Teks: **1 DETIK, 3 BULAN** — angkanya, bukan akibatnya. Judulnya sudah menyebut
-akibatnya ("Prosesormu lebih sering menunggu"), jadi nol kata yang diulang.
+**Keputusannya di [`../thumbnail.md`](../thumbnail.md) § Kover Short 1.**
 
-Figur: prosesor + meja yang menempel padanya di atas, lemari arsip jauh di
-bawah, garis putus-putus panjang di antaranya. **Jaraknya digambar sebagai
-jarak sungguhan**, memakai kelebihan tinggi kartu 9:16 untuk hal yang isinya
-memang ketinggian.
-
-**Sudah jadi** — `thumb-s1.png`, 2160×3840, 1,6 MB.
+`1 DETIK, 3 BULAN` · `thumb-s1.png`, 2160×3840, 1,6 MB.
 
 ```powershell
 npx remotion still T01-thumb-s1 ideas/apa-itu-ram/render/thumb-s1.png
 ```
 
-Sumbernya [`../scene-shorts/thumb-s1.tsx`](../scene-shorts/thumb-s1.tsx).
-Batasnya di [docs/06 § Kover Short](../../../docs/06-publishing.md) — kalau
-kolom unggah cuma menawarkan pilih-frame, pilih frame tempat ketiga tempat
-sudah berdiri, dan **jangan** menempelkan kartu ini sebagai frame pertama.
+Kalau kolom unggah cuma menawarkan pilih-frame, pilih frame tempat ketiga
+tempat sudah berdiri, dan **jangan** menempelkan kartu ini sebagai frame
+pertama ([docs/06 § Kover Short](../../../docs/06-publishing.md#kover-short--916-dan-bacalah-batasnya)).
 
 ---
 
@@ -232,24 +212,13 @@ Penjelasan utuhnya: <url video panjang>
 
 ### Kover
 
-Teks: **MEJA LEBAR, SAMA SAJA** — bahasa gambarannya, sementara judulnya
-memakai bahasa bendanya ("Nambah RAM belum tentu bikin cepat"). Nol kata yang
-sama, dan yang membaca judul dengan yang melihat kover dapat dua pegangan
-berbeda pada gagasan yang sama.
+**Keputusannya di [`../thumbnail.md`](../thumbnail.md) § Kover Short 2.**
 
-Figur: dua meja, yang bawah dua kali lebih lebar, **dengan jumlah berkas yang
-sama**. Separuh kanan meja lebar dibiarkan kosong melompong — kekosongan itulah
-argumennya, dan ia tidak butuh satu kata pun untuk terbaca.
-
-**Sudah jadi** — `thumb-s2.png`, 2160×3840, 1,7 MB.
+`MEJA LEBAR, SAMA SAJA` · `thumb-s2.png`, 2160×3840, 1,7 MB.
 
 ```powershell
 npx remotion still T01-thumb-s2 ideas/apa-itu-ram/render/thumb-s2.png
 ```
-
-> Kata keduanya sempat "TANGAN SAMA" dan itu **melipat jadi kartu tiga baris**
-> tanpa ada yang gagal — 11 huruf pada kartu yang muat 10.
-> `shared/Thumbnail.tsx` sekarang menolaknya sebelum render.
 
 ---
 

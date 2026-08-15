@@ -388,6 +388,14 @@ ini, dan kenapa password manager mengubah perhitungannya.
 4. **Bisa diverifikasi.** Setiap klaim bisa ditelusuri ke dokumentasi, spesifikasi,
    atau kode sumber. Topik yang jawabannya "kata orang" tidak masuk.
 
+**Ada satu saringan lagi sesudah keempatnya, dan tempatnya bukan di sini.**
+Topik yang masuk backlog belum tentu bisa dijual dalam seperempat detik — itu
+diuji di **fase 1**, dengan menulis `ideas/<slug>/thumbnail.md` sebelum satu
+baris naskah pun ada ([06 § Thumbnail](06-publishing.md#direncanakan-di-fase-1--thumbnailmd)).
+Kalau ketegangannya tidak ketemu di situ, topiknya berhenti dan tetap di
+backlog — jangan naik ke fase 2 sambil berharap ketegangannya muncul sendiri
+saat menulis naskah.
+
 ## Urutan rilis yang disarankan
 
 Enam episode pertama menentukan persepsi channel — dan untuk channel baru,

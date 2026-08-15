@@ -10,6 +10,7 @@ Tidak perlu rapi, tidak perlu lengkap. Yang penting tidak hilang. Berkas lain
 ```
 ideas/apa-itu-ram/
 ├── ide.md        ← selalu ada
+├── thumbnail.md  ← fase 1: ketegangan + pola + ≤4 kata, SEBELUM naskah
 ├── naskah.md     ← setelah lolos 4 syarat: materi topik + daftar scene
 ├── scenes/       ← per scene: <kunci>-vo.md + <kunci>-direction.md + <kunci>.tsx
 ├── vo/           ← setelah naskah beku
@@ -19,9 +20,9 @@ ideas/apa-itu-ram/
 ## Alur sebuah ide
 
 ```
-ideas/<slug>/ide.md      →   docs/07-backlog-topik.md   →   ideas/<slug>/naskah.md
-   ide mentah                 lolos 4 syarat,                naskah, VO, komposisi,
-   (siapa pun, kapan pun)     dapat kode T{nn}               render
+ideas/<slug>/ide.md  →  docs/07-backlog-topik.md  →  ideas/<slug>/thumbnail.md  →  naskah.md
+   ide mentah             lolos 4 syarat,             fase 1: ada kartu yang       naskah, VO,
+   (siapa pun, kapan pun) dapat kode T{nn}            bikin berhenti scroll?       komposisi, render
        ↓ tidak lolos
    status: ditolak
    (tetap disimpan, beserta alasannya)

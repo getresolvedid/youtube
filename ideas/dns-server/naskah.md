@@ -5,7 +5,7 @@ judul_kerja: Dari mana komputermu tahu harus pergi ke mana?
 pilar: P2 · Di Balik Aplikasi
 lapis: umum → dev
 what: DNS server
-status: vo                # ketiganya masuk fase 4
+status: vo                # ketiganya masuk fase 5
 naskah_beku:              # gerbang § Sumber dibuka lebih dulu — keenam baris ⚠ ditutup
   L: 2026-08-14
   S1: 2026-08-14

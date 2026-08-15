@@ -5,7 +5,7 @@ judul_kerja: Kenapa yang kamu ketik tidak bisa dibaca di jalan?
 pilar: P5 · Keamanan & Privasi
 lapis: umum → dev
 what: enkripsi
-status: komposisi   # video panjang selesai dibangun; Shorts = fase 2
+status: komposisi   # video panjang selesai dibangun; Shorts = fase 3
 naskah_beku:
   L:
   S1:

@@ -466,7 +466,7 @@ npm run check                    # tsc + bukti frame tidak kosong
 npm run sisa                     # WAJIB nol placeholder sebelum render final
 npm run studio                   # Studio (server panjang — jalankan di background)
 
-npm run render -- --out ideas/<slug>/render/T01-L.mp4
+npm run render -- ideas/<slug>/render/T01-L.mp4
 ```
 
 - **Selalu `npm run check` sebelum render.** Jauh lebih murah daripada menunggu
@@ -475,6 +475,11 @@ npm run render -- --out ideas/<slug>/render/T01-L.mp4
   bergaris; kalau ikut masuk MP4 final, itu ketahuan penonton. Perintah yang
   sama juga menyebut scene yang masih memakai **subtitel preview** (berkas VO-nya
   belum ada) dan berkas VO yang namanya tidak cocok dengan kunci mana pun.
+- **Tempat keluarnya argumen posisional, bukan flag.** `--out` bukan flag
+  Remotion: ia **diabaikan diam-diam**, dan MP4-nya mendarat di
+  `out/<id-komposisi>.mp4` sementara berkas di `ideas/<slug>/render/` dibiarkan
+  utuh — jadi tidak ada error, cuma hasil render yang tidak muncul di tempat
+  yang diminta. Ketahuan 15 Agustus 2026 saat render ulang T14.
 - `--concurrency 1` kalau render tidak stabil di komposisi berat media.
 - `npm run studio` adalah server yang berjalan terus — jalankan di background,
   jangan sebagai perintah biasa.

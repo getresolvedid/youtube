@@ -33,7 +33,7 @@ import {
   Ketukan,
   Lantai,
   N_PINTU,
-  Sosok,
+  Penjaga,
   X_GEDUNG,
   X_LUAR,
   X_PENJAGA,
@@ -128,7 +128,7 @@ export const KeluarJuga: React.FC = () => {
           </g>
 
           {/* --- penjaga: berputar di tempat --- */}
-          <Sosok x={X_PENJAGA} y={Y_LANTAI} topi hadap={putar} />
+          <Penjaga x={X_PENJAGA} y={Y_LANTAI} hadap={putar} />
 
           {/* --- tahap 4 & 5: kiriman berangkat ke luar --- */}
           {[0, 1, 2].map((k) => {
@@ -168,10 +168,9 @@ export const KeluarJuga: React.FC = () => {
           />
 
           {/* --- tahap 7: penjaga versi lama, siluet yang tidak beranimasi --- */}
-          <Sosok
+          <Penjaga
             x={X_PENJAGA - 330}
             y={Y_LANTAI}
-            topi
             hadap={1}
             skala={0.9}
             opacity={0.35 * lama}

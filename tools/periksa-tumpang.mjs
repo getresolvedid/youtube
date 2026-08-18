@@ -2,7 +2,7 @@
  *
  *   node --env-file=.env tools/periksa-tumpang.mjs <slug> [opsi]
  *
- *     --prefiks <p>   awalan id komposisi scene (mis. t14). Lihat catatan di
+ *     --prefiks <p>   awalan id komposisi scene (mis. t15). Lihat catatan di
  *                     PREFIKS di tools/prefiks.mjs — sumbernya src/Root.tsx.
  *     --short <fld>   periksa satu Short, mis. s1-nugget (prefiksnya ikut)
  *     --kunci <k>     satu scene saja — dipakai saat menggarap scene itu
@@ -75,7 +75,7 @@ const opsi = (nama) => {
   const i = argv.indexOf(`--${nama}`);
   return i === -1 ? null : argv[i + 1];
 };
-const slug = argv[0] && !argv[0].startsWith("--") ? argv[0] : "apa-itu-ram";
+const slug = argv[0] && !argv[0].startsWith("--") ? argv[0] : "apa-itu-firewall";
 const folderShort = opsi("short");
 const kunciSatu = opsi("kunci");
 const simpanSemua = argv.includes("--simpan");
@@ -111,10 +111,9 @@ const sumber = (() => {
      `.nomor` untuk menemukan bagian "## Short N" di naskah.md. */
   const s = bacaShort(slug, pilih);
   /* Awalan id Short DUA LAPIS: kode topik + nomor subfoldernya —
-     `s1-01-hook` (T01, tanpa kode topik) dan `t14-s1-01-dari-belakang`
-     (src/Root.tsx · tools/prefiks.mjs). Slug-nya wajib ikut: tanpa itu,
-     memeriksa `09-loop` milik T14 diam-diam memeriksa scene T01 yang namanya
-     kebetulan sama — dan lulus. */
+     `t15-s1-01-hook` (src/Root.tsx · tools/prefiks.mjs). Slug-nya
+     wajib ikut: tanpa itu, memeriksa `09-loop` milik satu episode diam-diam
+     memeriksa scene episode lain yang namanya kebetulan sama — dan lulus. */
   return {
     nama: `${slug} · ${folderShort}`,
     timing: s.timing,
@@ -184,7 +183,8 @@ process.stdout.write = (chunk, ...sisa) =>
   String(chunk).includes(PENANDA) ? true : tulisAsli(chunk, ...sisa);
 
 /* Satu subfolder per sasaran. Kalau semuanya menumpuk di satu folder, mengaudit
-   T01 menghapus bukti PNG T14 yang laporannya baru saja menyuruh dibuka. */
+   satu topik menghapus bukti PNG topik lain yang laporannya baru saja menyuruh
+   dibuka. */
 const dirBukti = join(KELUARAN, folderShort ? `${slug}-${folderShort}` : slug);
 rmSync(dirBukti, { recursive: true, force: true });
 mkdirSync(dirBukti, { recursive: true });

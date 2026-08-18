@@ -151,7 +151,7 @@ dilanggar, bukan sekadar terlarang.
 
 Fase 1 berhenti di situ. **Tidak ada `.tsx` yang ditulis** — figurnya wajib
 komponen yang sama dengan scene-nya, dan komponen itu baru ada setelah fase 2.
-Kover kedua Short menyusul di `thumbnail.md` yang sama pada fase 3, setelah
+Kover keempat Short menyusul di `thumbnail.md` yang sama pada fase 3, setelah
 hook masing-masing Short ditulis ulang dari nol.
 
 ### Dirender dari Remotion, bukan digambar terpisah
@@ -164,7 +164,7 @@ ideas/<slug>/thumb.tsx        kata-katanya + figurnya (milik episode, fase 4)
 shared/Thumbnail.tsx          tata letak, ukuran huruf, posisi teks (milik channel)
 src/Root.tsx                  id komposisi "T<nn>-thumb", 1280x720 dari .env
 
-npx remotion still T01-thumb ideas/apa-itu-ram/render/thumb.png
+npx remotion still T15-thumb ideas/apa-itu-firewall/render/thumb.png
 ```
 
 **Arahnya satu: `thumbnail.md` → `thumb.tsx`**, sama seperti direction →
@@ -198,8 +198,8 @@ disebut halaman bantuan YouTube untuk thumbnail Shorts):
 ideas/<slug>/scene-shorts/thumb-s1.tsx     di LUAR folder scene-nya
 ideas/<slug>/scene-shorts/thumb-s2.tsx     (npm run sisa memeriksa isi folder scene)
 
-npx remotion still T01-thumb-s1 ideas/apa-itu-ram/render/thumb-s1.png
-npx remotion still T01-thumb-s2 ideas/apa-itu-ram/render/thumb-s2.png
+npx remotion still T15-thumb-s1 ideas/apa-itu-firewall/render/thumb-s1.png
+npx remotion still T15-thumb-s2 ideas/apa-itu-firewall/render/thumb-s2.png
 ```
 
 **Yang perlu diketahui sebelum berharap:** halaman bantuan YouTube menyatakan
@@ -236,8 +236,23 @@ Setiap video panjang masuk tepat satu playlist. Shorts tidak dimasukkan playlist
 | H | Video panjang tayang. |
 | H (+2 jam) | **Short 1 (Nugget)** tayang — arahkan ke video panjang di deskripsi. |
 | H+3 | **Short 2 (Jebakan)** tayang. |
+| H+5 | **Short 3 (Beda tipis)** tayang. |
+| H+7 | **Short 4 (Coba sendiri)** tayang. |
 
-Alasan jeda: dua Shorts di hari yang sama saling memakan jangkauan.
+**Alasan jeda: dua Shorts di hari yang sama saling memakan jangkauan** — dan
+sejak naik jadi empat (2026-08-17), itu berhenti jadi soal kerapian. Empat Short
+yang dilepas berdekatan bukan empat kali jangkauan, melainkan satu jangkauan
+yang dibagi empat: feed menahan berapa banyak yang ia tunjukkan dari satu kanal
+ke orang yang sama.
+
+**Jarak minimalnya 48 jam antar-Short**, dan urutannya bukan selera:
+Nugget duluan karena dialah yang dioptimalkan untuk jangkauan dan menarik
+penonton baru; Coba sendiri paling belakang karena ia yang paling berguna bagi
+penonton yang **sudah** mengenal kanalnya.
+
+**Satu topik sekarang menempati sembilan hari.** Kalau jadwal rilis topik
+berikutnya lebih rapat dari itu, yang bertabrakan Short topik lama dengan video
+panjang topik baru — dan yang kalah selalu Short-nya.
 
 ## Checklist unggah
 

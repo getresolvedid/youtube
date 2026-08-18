@@ -33,7 +33,7 @@ Salin blok di bawah ke `ideas/<slug>/naskah.md`.
 
 ````markdown
 ---
-kode: T01
+kode: T06
 slug: cara-kerja-index-database
 judul_kerja: Kenapa query jadi 1000x lebih cepat dengan index
 pilar: P2 · Di Balik Aplikasi
@@ -47,7 +47,7 @@ karakter_terpakai:      # diisi setelah VO dibuat, untuk kalibrasi biaya
 tanggal_target: YYYY-MM-DD
 ---
 
-# T01 · <Judul kerja>
+# T{nn} · <Judul kerja>
 
 ## Penjelasan 5 tahun  ← WAJIB, ditulis sebelum naskah
 
@@ -92,7 +92,7 @@ memperkenalkannya di kemunculan pertama.
 
 ---
 
-## Video panjang — T01-L
+## Video panjang — T{nn}-L
 
 **Target:** 7–9 menit · ~1.100 kata · 55–90 scene
 
@@ -138,7 +138,7 @@ render final.**
 
 ---
 
-## Short 1 — T01-S1 · “Nugget”
+## Short 1 — T{nn}-S1 · “Nugget”
 
 **Insight yang diambil:** <satu insight utuh, berdiri sendiri>
 **Target:** 40–60 dtk · ~110 kata · 8–14 scene · tangga L1 (+ sedikit L2)
@@ -159,7 +159,7 @@ render final.**
 
 ---
 
-## Short 2 — T01-S2 · “Jebakan”
+## Short 2 — T{nn}-S2 · “Jebakan”
 
 **Mitos yang dibantah:** <pernyataan yang banyak dipercaya tapi salah>
 **Target:** 40–60 dtk · ~110 kata · 8–14 scene · tangga L1 (+ sedikit L2)
@@ -183,7 +183,7 @@ render final.**
 ## Metadata publish
 
 **Pindah ke [`render/publish.md`](render/publish.md).** Judul, deskripsi,
-chapter, tag, playlist, dan jadwal rilis — untuk video panjang dan kedua Short —
+chapter, tag, playlist, dan jadwal rilis — untuk video panjang dan keempat Short —
 ditulis di sana langsung di fase 4, bukan disalin ke sana belakangan. Lihat
 docs/06. Brief thumbnail-nya **tidak** di situ: ia keluaran fase 1 dan tinggal
 di [`thumbnail.md`](thumbnail.md).

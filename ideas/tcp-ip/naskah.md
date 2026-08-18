@@ -1,0 +1,245 @@
+---
+kode: T18
+slug: tcp-ip
+judul_kerja: Apa Itu TCP/IP?
+pilar: P2 · Di Balik Aplikasi
+lapis: umum
+what: TCP/IP
+status: komposisi
+naskah_beku:
+  L:
+  S1:
+  S2:
+  S3:
+  S4:
+karakter_terpakai: 0
+tanggal_target:
+---
+
+# T18 · Apa Itu TCP/IP?
+
+> **DIBANGUN DARI STORYBOARD USULAN, ATAS KEPUTUSAN USER 2026-08-18.**
+> Sumbernya [`storyboard-usulan.md`](storyboard-usulan.md), dipakai sebagai
+> kerangka apa adanya. Penyimpangannya dari kontrak repo dicatat di
+> [§ Penyimpangan tercatat](#penyimpangan-tercatat) di bawah — **bukan** untuk
+> ditawar ulang, tapi supaya sesi berikutnya tidak "memperbaikinya" dan supaya
+> jelas mana yang keputusan sadar dan mana yang kelalaian.
+
+## Penyimpangan tercatat
+
+Topik ini **tidak** mengikuti sebagian aturan yang mengikat episode lain. Semua
+di bawah ini disengaja dan diputuskan user; tidak satu pun boleh "dirapikan"
+tanpa keputusan baru.
+
+| Yang dilanggar | Bentuknya di sini | Aturan aslinya |
+|---|---|---|
+| **HARD RULE 6** — nama menyusul gambaran | "TCP/IP" jatuh di scene 1 baris ketiga, dan scene 3 adalah definisi | `[what]` dinamai sekali di bagian 4 |
+| **Flow 7 bagian** | urutannya definisi → analogi → komponen → contoh → kesimpulan; tidak ada `[problem]` | docs/02 § Anatomi video panjang |
+| **docs/09 aturan 4** — satu analogi | empat: buku aturan, paket kurir, rumah bernomor, sepuluh kotak | satu analogi per episode |
+| **Kosakata L1** | "protokol", "data", "packet", "request", "server", "routing" dipakai di VO | docs/09 § Kosakata L1 |
+| **Batas T05/T14** | scene 10 dan 11 membuka DNS dan "perjalanan satu alamat web" | batas yang dipatok 2026-08-18 di docs/07 |
+| **Bahasa teks layar** | sebagian teks layar berbahasa Inggris, mengikuti storyboard | channel berbahasa Indonesia |
+
+**Yang TETAP ditegakkan**, karena struktural dan bukan gaya:
+
+- **Satu scene = tiga berkas** (`-vo.md`, `-direction.md`, `.tsx`) — HARD RULE 1 · 3 · 4.
+- **Opening & closing standar** dari `shared/` — docs/10. Storyboard tidak
+  punya keduanya; `tools/baca-episode.mjs` menyisipkannya sendiri. Scene 12
+  storyboard tetap ada sebagai `penutup`, di depan kartu brand.
+- **Timing tidak diketik tangan.** Timecode di storyboard (00:00–00:15 dst.)
+  **tidak dipakai** — durasi dihitung `npm run gen` dari jumlah kata tiap baris
+  `## VO`. Angka storyboard-nya meleset dari perhitungan itu (VO scene 1 saja
+  ±22 dtk, bukan 15) dan yang mengikat perhitungannya.
+- **30 fps, 1920×1080, dari `.env`.** Storyboard menulis 24 fps; angka itu
+  diabaikan — spesifikasi video milik `.env` (docs/08), bukan dokumen naskah.
+- **Deterministik** — nol `Math.random()`/`Date.now()` di komposisi.
+- **SFX tidak dibangun.** Repo ini belum punya jalur produksi SFX sama sekali
+  (tidak ada folder, tidak ada aturan level, tidak ada perintah). Seluruh blok
+  SFX di storyboard disimpan di berkas direction sebagai catatan untuk nanti,
+  tidak dieksekusi.
+
+## Penjelasan 5 tahun
+
+> Kirimanmu dipotong jadi banyak amplop kecil, dan tiap amplop diberi nomor
+> urut. Tukang antarnya cuma berusaha — ada amplop yang telat, nyasar, atau
+> hilang. Di ujung sana ada yang menyusun ulang menurut nomornya, lalu menagih
+> yang belum datang. Makanya yang kamu terima selalu utuh dan urut, padahal
+> jalannya berantakan.
+
+*(51 kata, nol istilah teknis.)* Diambil dari [`ide.md`](ide.md). **Tidak
+tercermin di VO episode ini** — VO-nya mengikuti storyboard, yang membuka dengan
+definisi. Blok ini tetap ditulis karena ia syarat topik masuk backlog.
+
+## Satu kalimat bawa-pulang
+
+> IP mengurus **ke mana** kirimannya pergi. TCP mengurus **apakah ia sampai
+> dengan benar**. Keduanya tugas yang berbeda, dan itulah kenapa namanya ditulis
+> dua.
+
+## Naik tangga
+
+| Tangga | Isi |
+|---|---|
+| **L1** | Data dipecah jadi potongan kecil bernomor, tiap potongan mencari jalannya sendiri, lalu disusun ulang di tujuan. |
+| **L2** | IP = alamat & jalur. TCP = kelengkapan & urutan, termasuk meminta ulang potongan yang tidak sampai. |
+| **L3** | *Tidak digarap di episode ini.* Salaman tiga langkah, jendela kirim, dan kehilangan sebagai sinyal kendali semuanya di luar storyboard — lihat [`ide.md`](ide.md) kalau topik ini digarap ulang. |
+
+## Sumber
+
+| Klaim | Sumber | Status |
+|---|---|---|
+| IP mengurus pengalamatan dan penerusan menuju tujuan | spesifikasi IP | ⚠ **belum dibuka** |
+| TCP mengurus kelengkapan, urutan, dan pengiriman ulang | spesifikasi TCP (perhatikan versinya — dokumen lama sudah digantikan) | ⚠ **belum dibuka** |
+| Data dipecah jadi potongan yang bisa menempuh jalur berbeda | spesifikasi IP | ⚠ **belum dibuka** |
+| UDP dipakai saat kecepatan lebih penting daripada pengiriman ulang | spesifikasi UDP | ⚠ **belum dibuka** |
+| DNS menerjemahkan nama jadi alamat | sudah tayang sebagai T14 — pakai sumber episode itu | ⚠ **belum disalin** |
+
+> **GERBANG MASIH TERTUTUP.** Naskah ini **tidak boleh dibekukan** dan VO-nya
+> **tidak boleh digenerate** selama masih ada baris ⚠ di atas
+> ([docs/04 §5](../../docs/04-pipeline-produksi.md#5-gerbang--bekukan-naskah)).
+> Komposisi boleh dibangun lebih dulu — itu memang urutannya.
+>
+> **Angka yang tampil di layar sengaja bukan klaim.** `192.168.1.10` dan
+> `93.184.xxx.xxx` dipakai apa adanya dari storyboard sebagai **contoh bentuk**,
+> bukan alamat yang mengklaim milik siapa pun. Nomor potongan 01–10 juga cuma
+> "banyak dan berurutan", bukan ukuran yang sebenarnya.
+
+## Kamus pengucapan
+
+| Tulis di VO | Maksudnya | Catatan |
+|---|---|---|
+| TCP/IP | T C P garis miring I P | dieja per huruf, **terdaftar** |
+| IP | I P | dieja per huruf, **terdaftar** |
+| TCP | T C P | dieja per huruf, **terdaftar** |
+| UDP | U D P | dieja per huruf, **terdaftar** |
+| DNS | D N S | dieja per huruf, **terdaftar** |
+| HTTP | H T T P | dieja per huruf, **terdaftar** |
+| HTTPS | H T T P S | dieja per huruf, **terdaftar** |
+| packet | paket | dibaca "paket", bukan ejaan Inggris |
+
+---
+
+## Video panjang — T18-L
+
+### Scene standar (tanpa VO)
+
+| Scene | Isi | Posisi | Durasi |
+|---|---|---|---|
+| `opening` | kartu judul — **"TCP/IP" / "Aturan yang dipakai internet"** | setelah `hook` | `OPENING_SECONDS` |
+| `closing` | tanda tangan brand, tanpa judul | setelah `penutup` | `CLOSING_LONG_SECONDS` |
+
+Judulnya diatur di `Episode.tsx` (`JUDUL` + `SUBJUDUL`); `tools/bangun-timing.mjs`
+yang menyisipkan kedua scene itu ke `timing.gen.ts`.
+
+### Scene
+
+**Daftar isi episode, bukan tempat kalimatnya hidup.** Teks VO tiap scene ada di
+`scenes/<kunci>-vo.md` dan apa yang terjadi di layar di
+`scenes/<kunci>-direction.md` (HARD RULE 3 & 4).
+
+| # | Bagian | Ringkas |
+|---|---|---|
+| hook | 1 question | Laptop di meja, halaman sedang dimuat. Kamera masuk ke layar, titik cahaya keluar jadi paket, lalu mundur cepat memperlihatkan jaringan besar. Nama topiknya jatuh di tengah jaringan. |
+| apa-itu | definisi | Paket mengecil jadi jaringan berisi laptop, ponsel, desktop, server. Tiga label — kirim, alamat, sampaikan — melebur jadi satu nama, lalu berubah jadi buku aturan. |
+| analogi-paket | analogi | Dunia nyata: kotak dilabeli pengirim dan tujuan, dibawa kendaraan, melewati persimpangan. Kotak berubah jadi paket data, jalan berubah jadi jalur jaringan. |
+| ip-address | ip | Deretan rumah bernomor, kurir mencari yang cocok. Rumah berubah jadi komputer, nomor rumah berubah jadi alamat. |
+| jadi-paket | packet | Satu pesan utuh dipecah jadi empat potongan bernomor. Tiap potongan berangkat lewat jalur yang berbeda, semuanya menuju tujuan yang sama. |
+| peran-tcp | tcp | Potongan tiba satu per satu, tapi nomor dua tidak pernah datang. Penerima menandai lubangnya, meminta ulang, dan potongan itu dikirim lagi sampai lengkap. |
+| analogi-tcp | analogi | Sepuluh kotak bernomor tiba tidak berurutan, disusun ulang di tujuan. Satu kotak hilang, diminta lagi, lalu barisannya utuh. |
+| tcp-plus-ip | gabungan | Layar dibelah dua: satu sisi alamat dan jalur, satu sisi pemeriksaan dan penyusunan. Keduanya bergerak ke tengah dan menyatu. |
+| bukan-hanya | protokol lain | Kamera mundur: nama itu ternyata payung untuk beberapa nama lain, masing-masing dengan satu pekerjaan yang berbeda. |
+| buka-website | contoh | Satu perjalanan utuh dari mengetik alamat sampai halaman tampil, menyambung semua yang sudah ditunjukkan. |
+| kesimpulan | kesimpulan | Kembali ke jaringan besar. Tiga hal dirangkum berdampingan: alamat, keandalan, dan gabungan keduanya. |
+| penutup | penutup | Jaringan mengecil jadi satu titik cahaya, lalu mekar lagi jadi peta. Kartu akhir. |
+
+**Kalau kepanjangan, yang dipangkas duluan `analogi-tcp`** — ia mengulang
+mekanisme yang sudah ditunjukkan `peran-tcp`, dan storyboard-nya sendiri
+mencatat itu. Berikutnya `bukan-hanya`. `jadi-paket` dan `peran-tcp` tidak boleh
+disentuh: keduanya inti episode.
+
+### Timing — estimasi
+
+Keluaran `npm run gen`. Opening dan closing sudah ikut terhitung di sana.
+
+### Timing — final *(setelah VO jadi)*
+
+| # | Berkas VO | Durasi VO | data-duration | data-start |
+|---|---|---|---|---|
+
+---
+
+## Short 1 — T18-S1 · "Bagaimana internet tahu data harus ke mana?"
+
+**Sudut:** alamat & jalur.
+**Target:** 40–60 dtk · L1
+**Berkas:** `scene-shorts/s1-alamat/` — id komposisi `s1-01-…`, Short utuh `T18-tcp-ip-s1`.
+
+> **FASE 3 — BELUM DIGARAP.** Tabel ini rencana, bukan produksi. Yang menentukan
+> sebuah Short ada adalah **subfoldernya**, dan subfolder itu belum dibuat:
+> selama belum ada, `npm run gen` tidak membaca bagian ini sama sekali. Video
+> panjang tuntas dulu (CLAUDE.md § Fase kerja satu topik).
+
+### Scene
+
+| # | Bagian | Ringkas |
+|---|---|---|
+| paket | hook | Sebuah kotak di meja, labelnya cuma "untuk seseorang". Tidak cukup untuk dikirim ke mana pun. |
+| alamat | penjelasan | Label alamat ditempelkan. Sekarang kotaknya punya tujuan. |
+| jadi-alamat-ip | penjelasan | Kotak berubah jadi paket digital, labelnya berubah jadi alamat angka. |
+| cari-jalur | payoff | Paket di persimpangan jaringan. Satu jalur menyala, sisanya tidak. |
+| sampai | tutup | Paket tiba. Rangkuman satu baris: alamat dan jalur. |
+
+## Short 2 — T18-S2 · "Data kamu sebenarnya tidak dikirim sekaligus"
+
+**Sudut:** pemecahan jadi potongan.
+**Target:** 40–60 dtk · L1
+**Berkas:** `scene-shorts/s2-potongan/` — Short utuh `T18-tcp-ip-s2`.
+
+> **FASE 3 — BELUM DIGARAP.**
+
+### Scene
+
+| # | Bagian | Ringkas |
+|---|---|---|
+| terlalu-besar | hook | Satu berkas besar mencoba lewat dan tidak muat. |
+| dipecah | penjelasan | Berkas terbelah jadi lima potongan bernomor. |
+| jalur-beda | payoff | Kelimanya berangkat lewat jalur yang berbeda-beda. |
+| disusun | payoff | Di tujuan, kelimanya disatukan kembali. |
+| utuh | tutup | Berkasnya terbuka utuh. Rangkuman satu baris. |
+
+## Short 3 — T18-S3 · "Apa yang terjadi kalau satu potongan hilang?"
+
+**Sudut:** kelengkapan & kirim ulang.
+**Target:** 40–60 dtk · L1
+**Berkas:** `scene-shorts/s3-hilang/` — Short utuh `T18-tcp-ip-s3`.
+
+> **FASE 3 — BELUM DIGARAP.**
+
+### Scene
+
+| # | Bagian | Ringkas |
+|---|---|---|
+| lima-potongan | hook | Lima potongan berangkat menuju penerima. |
+| satu-hilang | ketegangan | Nomor tiga tidak pernah sampai. Lubangnya terlihat. |
+| ketahuan | ketegangan | Penerima menandai nomor yang belum datang. |
+| minta-lagi | payoff | Permintaan dikirim balik ke pengirim. |
+| lengkap | payoff | Nomor tiga datang. Semua tanda jadi centang. |
+| namanya | tutup | Nama untuk pekerjaan itu baru disebut di sini. |
+
+## Short 4 — T18-S4 · "Apa bedanya TCP dan IP?"
+
+**Sudut:** dua tugas yang berbeda.
+**Target:** 40–60 dtk · L1
+**Berkas:** `scene-shorts/s4-beda/` — Short utuh `T18-tcp-ip-s4`.
+
+> **FASE 3 — BELUM DIGARAP.**
+
+### Scene
+
+| # | Bagian | Ringkas |
+|---|---|---|
+| pertanyaan | hook | Dua nama yang selalu disebut bersamaan. Apa bedanya? |
+| sisi-ip | penjelasan | Paket di persimpangan, satu tujuan dipilih dari tiga. |
+| sisi-tcp | penjelasan | Potongan diperiksa dan diurutkan di tujuan. |
+| bersama | payoff | Layar dibelah dua, lalu keduanya menyatu. |
+| namanya | tutup | Gabungan keduanya, dan kenapa namanya ditulis dua. |

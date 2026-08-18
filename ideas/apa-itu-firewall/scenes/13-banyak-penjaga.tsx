@@ -28,7 +28,7 @@ import {
   Ketukan,
   Lantai,
   N_PINTU,
-  Sosok,
+  Penjaga,
   X_GEDUNG,
   X_LUAR,
   X_PENJAGA,
@@ -106,10 +106,9 @@ export const BanyakPenjaga: React.FC = () => {
 
             {/* penjaga kedua dari scene 12, masih terlihat sekilas lalu memudar
                 — dialah yang dijemput baris pertama VO scene ini */}
-            <Sosok
+            <Penjaga
               x={X_GEDUNG + 330}
               y={Y_LANTAI}
-              topi
               hadap={1}
               skala={0.86}
               opacity={0.55 * t(d, { mulai: B_TIDAK1 + 0.6, durasi: 0.9, dari: 1, ke: 0 })}
@@ -117,10 +116,9 @@ export const BanyakPenjaga: React.FC = () => {
 
             {/* penjaga asli — TIDAK boleh hilang saat kamera mundur, karena
                 scene 14 kembali ke dia */}
-            <Sosok
+            <Penjaga
               x={X_PENJAGA}
               y={Y_LANTAI}
-              topi
               hadap={1}
               opacity={0.55 + 0.45 * Math.max(rumah, 1 - mundur)}
             />
@@ -134,7 +132,7 @@ export const BanyakPenjaga: React.FC = () => {
                 strokeWidth={7}
                 strokeLinejoin="round"
               />
-              <Sosok x={X_GERBANG} y={Y_LANTAI} topi hadap={1} skala={1.05} />
+              <Penjaga x={X_GERBANG} y={Y_LANTAI} hadap={1} skala={1.05} />
             </g>
 
             {/* --- tahap 5: gedung sewaan, penjaga di tiap kamar --- */}
@@ -161,7 +159,7 @@ export const BanyakPenjaga: React.FC = () => {
                     strokeWidth={4}
                     opacity={0.5}
                   />
-                  <Sosok x={X_SEWAAN - 60} y={Y_LANTAI - 30} topi hadap={1} skala={0.44} />
+                  <Penjaga x={X_SEWAAN - 60} y={Y_LANTAI - 30} hadap={1} skala={0.44} />
                 </g>
               ))}
             </g>

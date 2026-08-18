@@ -18,7 +18,8 @@ mendapat dua gambar yang kebetulan berurutan.
    (VO: "Yang kurang, seseorang yang memilih.")
 
 3. dari garis lantai di titik itu, satu sosok penjaga TUMBUH ke atas. satu benda
-   utuh, bukan dirakit bagian per bagian. topinya beraksen.
+   utuh, bukan dirakit bagian per bagian. figurnya `Penjaga` — siluet berseragam
+   dengan topi puncak, dasi, dan sabuk (docs/03 § Figur manusia).
    (VO: "Jadi di depan pintu ditaruh satu penjaga.")
 
 4. ketukan yang berdatangan berhenti di satu garis tegak di depannya, mengantre
@@ -54,9 +55,14 @@ catatan:
      yang barusan dilihat bekerja (HARD RULE 6).
    - **penjaganya menghadap KIRI**, ke arah ketukan, dan tetap begitu sampai
      scene 11. arah itu mengikat sepuluh scene (`../panggung-gedung.tsx`).
-   - **topi beraksen adalah satu-satunya pembeda penjaga dari sosok biasa.**
-     tanpa itu, penjaga di sini dan sosok di scene 14 tidak bisa dibedakan — dan
-     scene 14 justru bertumpu pada bedanya.
+   - **yang membedakan penjaga dari sosok biasa sekarang seluruh bentuknya**,
+     bukan lagi satu topi beraksen. dulu pembedanya cuma topi, dan pembeda
+     sebesar itu berhenti terbaca pada skala 0,44 yang dipakai scene 13 —
+     padahal scene 13 dan 14 justru bertumpu pada bedanya.
+   - **penjaganya tidak beraksen lagi.** warna aksen di episode ini dipegang
+     benda yang sedang dibicarakan VO saat itu (docs/03), dan penjaga yang
+     beraksen permanen sejak scene 6 memakainya selama sepuluh scene berturut-
+     turut — yang berarti tidak ada satu pun yang beraksen.
    - **tahap 6 sengaja cepat dan tidak dramatis.** penjaganya belum boleh terasa
      pintar; kepintarannya milik scene 7, dan kontras itu yang membuat buku
      catatannya terasa sebagai penemuan.

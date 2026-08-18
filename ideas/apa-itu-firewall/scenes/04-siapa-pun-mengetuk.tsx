@@ -25,8 +25,11 @@ import {
   N_PINTU,
   PINTU_HIDUP,
   PINTU,
+  Peretas,
   X_GEDUNG,
   X_LUAR,
+  X_PERETAS,
+  Y_LANTAI,
   AKSEN,
   kamera,
   posPintu,
@@ -82,6 +85,14 @@ export const SiapaPunMengetuk: React.FC = () => {
   const pSusur = t(d, { mulai: B_SUSUR - 0.2, durasi: 0.4, dari: 0, ke: 1 });
   const susurPadam = t(d, { mulai: B_MALAM - 0.3, durasi: 0.4, dari: 1, ke: 0 });
 
+  /* --- yang mengetuk: berdiri sejak ketukan pertama, padam bersama ketukan ---
+     Ia tidak pernah bergerak dan tidak pernah mendekat. Yang bekerja di scene
+     ini kerapatan ketukannya, dan figur yang ikut berjalan maju akan merebut
+     perhatian dari satu-satunya hal yang perlu terbaca: bahwa ketukannya tidak
+     berhenti-henti. */
+  const hadirPeretas = t(d, { mulai: B_SIAPA - 0.3, durasi: 0.7, dari: 0, ke: 1 });
+  const padamKetuk = t(d, { mulai: B_SUSUR - 0.4, durasi: 0.5, dari: 1, ke: 0 });
+
   /* --- tahap 7: kamera masuk lewat salah satu pintu yang hidup --- */
   const pMasuk = t(d, { mulai: B_MALAM, durasi: 1.6, dari: 0, ke: 1, ease: E.expoOut });
   const pTuju = posPintu(PINTU_HIDUP[0]);
@@ -113,6 +124,14 @@ export const SiapaPunMengetuk: React.FC = () => {
 
             <Gedung pintu={PINTU_TETAP} opacity={1 - 0.15 * dalam} />
 
+            {/* Ketukan yang paling rendah berangkat dari dalam siluetnya
+                selama kurang dari sedetik, dan memang harus begitu — di situlah
+                ia terbaca sebagai ketukan ORANG ITU, bukan gelombang yang
+                kebetulan lewat. */}
+            <g data-tumpang="sengaja" opacity={hadirPeretas * padamKetuk * (1 - pMasuk)}>
+              <Peretas x={X_PERETAS} y={Y_LANTAI} skala={0.92} />
+            </g>
+
             {KETUK.map((k, i) => {
               const mulai = (i === 0 ? B_SIAPA : i === 1 ? B_BUKAN : B_BANYAK) + k.tunda;
               const maju = t(d, {
@@ -122,7 +141,7 @@ export const SiapaPunMengetuk: React.FC = () => {
                 ke: 1,
                 ease: E.power1out,
               });
-              const padam = t(d, { mulai: B_SUSUR - 0.4, durasi: 0.5, dari: 1, ke: 0 });
+              const padam = padamKetuk;
               return (
                 <Ketukan
                   key={i}

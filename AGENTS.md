@@ -11,8 +11,8 @@ npm run gen        # .env → config.gen.ts · naskah.md + scenes/*-vo.md → ti
 npm run check      # tsc --noEmit + tools/periksa-frame.mjs
 npm run sisa       # placeholder + rencana VO/direction yang belum ada
 npm run studio     # Remotion Studio (server panjang — jalankan di background)
-npm run render     # episode utuh
-npm run still      # `npm run still -- 15-s016 out/s016.png`
+npm run render:t15 # episode utuh (satu skrip per topik, `:t<nn>`)
+npm run still      # `npm run still -- t15-05-dikunci-semua out/dikunci.png`
 ```
 
 `gen` jalan otomatis sebagai pre-script sebelum `studio` / `render` / `check` /

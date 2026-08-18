@@ -94,6 +94,24 @@ export const JALUR_Y = Y_LANTAI - 200;
 /** Tepi kiri tempat ketukan lahir, dan tempat benda keluar frame. */
 export const X_LUAR = 120;
 
+/** Tempat berdirinya yang mengetuk — di titik yang SAMA dengan lahirnya ketukan.
+ *
+ *  Sampai sebelum ini yang mengetuk tidak digambar sama sekali: yang terlihat
+ *  cuma gelombangnya, datang dari tepi kiri tanpa siapa-siapa di belakangnya.
+ *  Sekarang `Peretas` berdiri persis di titik lahirnya, jadi gelombang pertama
+ *  tiap scene berangkat DARI badannya, bukan dari tepi frame.
+ *
+ *  Gelombangnya TETAP ada dan tetap yang membawa seluruh koreografinya. Ketukan
+ *  melintas pada ketinggian pintu — 430 sampai 800, sementara lantainya di 880 —
+ *  jadi figur yang berdiri tidak akan pernah bisa menggantikannya; yang berubah
+ *  bukan apa yang terbang, melainkan siapa yang melemparkannya.
+ *
+ *  Akibatnya satu ketukan yang paling rendah berangkat dari dalam siluetnya
+ *  selama kurang dari sedetik. Itu disengaja — di situlah ia terbaca sebagai
+ *  ketukan ORANG ITU — dan scene yang memuatnya menandainya
+ *  `data-tumpang="sengaja"` (CLAUDE.md), bukan menggeser jalurnya. */
+export const X_PERETAS = X_LUAR;
+
 /** Daftar aturan saat ia jadi benda PENDAMPING (scene 6, 7, 8, 12, 14):
  *  melayang di atas kepala penjaga, di luar dinding gedung.
  *
@@ -328,47 +346,22 @@ export const Ketukan: React.FC<{
   </g>
 );
 
-/** Sosok netral — penjaga, dan siapa pun yang berdiri di luar.
+/** Tiga figur manusia episode ini — TIDAK digambar di sini.
  *
- *  `hadap` 1 = menghadap KIRI (ke luar, ke arah ketukan), -1 = menghadap KANAN
- *  (ke dalam, ke gedung). Scene 11 memutarnya, dan itu satu-satunya scene yang
- *  boleh. `topi` yang membedakan penjaga dari sosok biasa: tanpa itu, penjaga
- *  di scene 6 dan sosok di scene 14 tidak bisa dibedakan. */
-export const Sosok: React.FC<{
-  x: number;
-  y: number;
-  skala?: number;
-  opacity?: number;
-  hadap?: number;
-  topi?: boolean;
-  warna?: string;
-}> = ({ x, y, skala = 1, opacity = 1, hadap = 1, topi = false, warna = ABU }) => (
-  <g transform={`translate(${x} ${y}) scale(${skala})`} opacity={opacity}>
-    <g transform={`scale(${hadap} 1)`}>
-      <circle cx={0} cy={-116} r={31} fill="var(--bg)" stroke={warna} strokeWidth={6} />
-      {topi && (
-        <path
-          d="M-34 -140h68M-26 -140v-10a26 26 0 0 1 52 0v10"
-          fill="none"
-          stroke={AKSEN}
-          strokeWidth={6}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      )}
-      {/* hidung kecil — satu-satunya penanda arah hadap yang tetap terbaca
-          waktu sosoknya kecil */}
-      <path d={`M-31 -112h-12`} stroke={warna} strokeWidth={6} strokeLinecap="round" />
-    </g>
-    <path
-      d="M-48 0v-32a48 48 0 0 1 96 0V0"
-      fill="none"
-      stroke={warna}
-      strokeWidth={6}
-      strokeLinecap="round"
-    />
-  </g>
-);
+ *  Ketiganya siluet bersama milik [`shared/figures/`](../../shared/figures/)
+ *  (docs/03 § Figur manusia), diteruskan dari sini supaya scene tetap mengimpor
+ *  seluruh isi panggungnya dari satu tempat.
+ *
+ *  Yang berdiri di sini dulu: satu `Sosok` garis dengan prop `topi` yang
+ *  membedakan penjaga dari orang biasa. Pembeda sebesar topi itu berhenti
+ *  terbaca pada skala 0,44 yang dipakai scene 13, dan sekarang `Penjaga` beda
+ *  seluruh bentuknya — topi puncak, dasi, sabuk.
+ *
+ *  ARAH HADAP: 1 = menghadap KIRI (ke luar, ke arah ketukan), -1 = menghadap
+ *  KANAN (ke dalam, ke gedung). Scene 11 memutarnya, dan itu satu-satunya scene
+ *  yang boleh. Dari ketiganya cuma `Penjaga` yang gambarnya benar-benar berubah
+ *  saat dibalik — topinya yang punya arah; dua lainnya menghadap penonton. */
+export { Penjaga, Peretas, Sosok } from "../../shared/figures";
 
 /** Daftar aturan — benda paling penting di bagian 5 dan 6.
  *

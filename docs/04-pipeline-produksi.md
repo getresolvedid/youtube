@@ -56,18 +56,18 @@ youtube/                        ← ROOT PROJECT Remotion
 ├── src/Root.tsx                DAFTAR KOMPOSISI: episode + satu per scene
 ├── public/logos/               aset — lewat staticFile()
 ├── public/vo/<slug>/           <prefiks>-<kunci>.mp3 — keluaran TTS, satu per scene
-│                               L = video panjang · S1/S2 = kedua Short
+│                               L = video panjang · S1–S4 = keempat Short
 ├── shared/                     tema, ikon, figur, scene standar, helper animasi
-└── ideas/apa-itu-ram/
+└── ideas/apa-itu-firewall/
     ├── naskah.md               daftar scene + materi topik (docs/05)
     ├── timing.gen.ts           ⚙ digenerate dari naskah.md + scenes/*-vo.md
     ├── Episode.tsx             merangkai <Sequence>
     ├── scenes/index.ts         SCENES: id → komponen
-    ├── scenes/01-hook-question-vo.md         teks VO scene itu (docs/11)
-    ├── scenes/01-hook-question-direction.md  apa yang terjadi di layar
-    ├── scenes/01-hook-question.tsx           komposisinya, turunan dua di atas
+    ├── scenes/05-dikunci-semua-vo.md         teks VO scene itu (docs/11)
+    ├── scenes/05-dikunci-semua-direction.md  apa yang terjadi di layar
+    ├── scenes/05-dikunci-semua.tsx           komposisinya, turunan dua di atas
     └── render/
-        ├── T01-L.mp4 · T01-S1.mp4 · T01-S2.mp4
+        ├── T15-L.mp4 · T15-S1.mp4 · T15-S2.mp4
         ├── thumb.png
         └── publish.md          judul/deskripsi/tag final (lihat docs/06)
 ```
@@ -85,9 +85,9 @@ statis satu per satu, dan daftar impor yang ditulis tangan adalah sumber
 kebenaran kedua yang meleset dari naskah begitu satu scene disisipkan.
 Semuanya sudah di-ignore git (`*.mp3`).
 
-**Penamaan:** `T{nn}-{slug-kebab}`. Kode episode `T01-L`, `T01-S1`, `T01-S2`
+**Penamaan:** `T{nn}-{slug-kebab}`. Kode episode `T15-L`, `T15-S1`, `T15-S2`
 dipakai konsisten di nama berkas, judul commit, dan metadata. ID komposisi
-Remotion: `T01-apa-itu-ram` untuk episode, `s-<id>` untuk scene satuan.
+Remotion: `T15-apa-itu-firewall` untuk episode, `t15-<kunci>` untuk scene satuan.
 
 ---
 
@@ -129,7 +129,9 @@ Cek sebelum lanjut:
 - [ ] Setiap direction konkret (bukan "animasi keren").
 - [ ] Setiap angka punya sumber.
 - [ ] Checklist ELI5 di [09](09-tangga-abstraksi.md#checklist-dipakai-saat-qa-naskah) lolos.
-- [ ] Dua Shorts punya insight yang berbeda.
+- [ ] Keempat Shorts punya PERAN yang berbeda, bukan cuma sudut yang berbeda
+      (docs/02 § Anatomi Shorts). Uji: tukar isi dua Short — kalau keduanya
+      masih masuk akal di tempat yang lain, salah satunya ditulis ulang.
 
 ## 3 · Timing estimasi (gratis)
 
@@ -183,7 +185,7 @@ sudah ada** — `.tsx` adalah turunan keduanya, bukan tebakan yang mendahului.
 Dua langkah:
 
 ```tsx
-// ideas/apa-itu-ram/scenes/15-s016.tsx
+// ideas/apa-itu-firewall/scenes/15-s016.tsx
 import type React from "react";
 import { Ic } from "../../../shared/Icons";
 import { masuk, useDetik } from "../../../shared/anim";
@@ -204,7 +206,7 @@ export const S042: React.FC = () => {
 ```
 
 ```ts
-// ideas/apa-itu-ram/scenes/index.ts
+// ideas/apa-itu-firewall/scenes/index.ts
 import { S042 } from "./s042";
 export const SCENES = { s042: S042 };
 ```
@@ -214,7 +216,7 @@ Begitu terdaftar, scene itu otomatis masuk episode pada timing dari naskah,
 
 ```powershell
 npm run studio                       # server panjang — jalankan di background
-npx remotion still 15-s016 out/s016.png --frame 15
+npx remotion still t15-15-s016 out/s016.png --frame 15
 ```
 
 Yang wajib dan paling mudah terlewat:
@@ -292,7 +294,7 @@ naskah_beku:
   S2: 2026-08-20
 ```
 
-**Bekunya per keluaran, bukan per topik.** Video panjang dan kedua Short bisa
+**Bekunya per keluaran, bukan per topik.** Video panjang dan keempat Short bisa
 matang di waktu berbeda — Shorts sudah sesuai spek sementara video panjangnya
 masih kurang durasi, misalnya. Satu tanggal untuk bertiga memaksa memilih antara
 menahan yang sudah siap atau membekukan yang belum, dan yang kedua yang selalu
@@ -354,8 +356,8 @@ dan tidak bisa dinaikkan.
    biaya episode berikutnya makin akurat.
 
 Penamaan berkas: `public/vo/<slug>/<prefiks>-<kunci>.mp3` — mis.
-`public/vo/apa-itu-ram/L-01-hook-question.mp3` untuk video panjang, dan
-`S1-01-menunggu.mp3` / `S2-01-mitos.mp3` untuk kedua Short. **Prefiksnya yang
+`public/vo/apa-itu-firewall/L-05-dikunci-semua.mp3` untuk video panjang, dan
+`S1-01-hook.mp3` … `S4-01-perintah.mp3` untuk keempat Short. **Prefiksnya yang
 memisahkan ketiga keluaran di satu folder**: tanpa itu `01-hook` milik Short dan
 `01-hook-question` milik video panjang berebut ruang nama yang sama. Satu bentuk
 nama untuk berkas VO, rencana VO, komposisi, dan ID komposisi Remotion. **Nama inilah saklarnya:**
@@ -409,9 +411,41 @@ selain mengunggah ulang.
 Perataannya dikerjakan pada **MP3 di `public/vo/`, bukan pada MP4 hasil render**.
 Kalau ditempel di keluaran, MP4 di `render/` berhenti bisa dihasilkan ulang dari
 `npm run render` — dan berkas yang tidak bisa dibuat ulang adalah berkas yang
-tidak bisa diperbaiki. Metodenya loudnorm dua langkah dengan `linear=true`, jadi
-dinamika kalimat tidak dipompa; berkas yang sudah di ±0,5 LU dari target
-dilewati, jadi aman dijalankan berkali-kali.
+tidak bisa diperbaiki.
+
+**Metodenya penguatan seragam lalu limiter true-peak — bukan loudnorm.** Di sini
+dulu berdiri loudnorm dua langkah dengan `linear=true` dan seluruh `measured_*`,
+persis resep yang seharusnya membuat penguatannya linier. ffmpeg mengabaikannya:
+keluaran TTS duduk di −17 LUFS dengan puncak yang sudah menyentuh −1,5 dBTP
+(satu aliran T14 malah **+0,09**), jadi penguatan yang dibutuhkan melanggar batas
+puncaknya — dan saat itu terjadi loudnorm **diam-diam jatuh ke mode dinamis**.
+Terbaca dari laporan ffmpeg sendiri di ketiga berkas T14 yang diperiksa:
+
+```
+"normalization_type" : "dynamic"
+input_lra 5,70  ->  output_lra 21,70
+```
+
+Itu persis pemompaan yang seharusnya dihindari, dan hasilnya mendarat di tempat
+yang berbeda-beda tiap berkas (−14,99 / −14,33 / −14,07 dari target yang sama) —
+terdengar sebagai pencerita yang maju-mundur dari mikrofon antar-scene.
+
+Gantinya dua bagian yang masing-masing cuma mengerjakan satu hal: `volume`
+dengan satu angka dB yang sama untuk seluruh berkas (inilah yang benar-benar
+linier), lalu `alimiter` **di 4× laju cuplik** — tanpa oversampling itu limiter
+bekerja di puncak cuplik dan true-peak-nya menyelinap 0,85 dB di atas ambang.
+Karena limiter memakan sebagian penguatan, gain-nya dicari berulang (≤ 5 putaran)
+sampai mendarat di ±0,15 LU.
+
+Tiap putaran menulis **MP3**, bukan WAV, dan yang mendarat itulah yang dipakai:
+encode 128k sendiri menggeser loudness sekitar 0,45 LU, jadi mencari di WAV lalu
+menulis MP3 menghasilkan berkas yang "mendarat di −14,00" tapi muncul lagi
+sebagai −14,45 di jalan berikutnya. Tiap putaran meng-encode dari berkas **asli**,
+jadi empat putaran tetap satu generasi.
+
+Berkas yang sudah di ±0,2 LU dari target dilewati, jadi aman dijalankan
+berkali-kali. Hasil terukur di T14: 29 berkas, sebaran **3,2 LU → 0,3 LU**,
+semuanya di −1,50 dBTP, LRA nyaris tak berubah.
 
 MP4 utuhnya nanti terukur satu-dua LU di bawah target — itu wajar, karena jeda
 antar-scene dan closing yang bisu ikut masuk hitungan integrated loudness.
@@ -466,7 +500,7 @@ npm run check                    # tsc + bukti frame tidak kosong
 npm run sisa                     # WAJIB nol placeholder sebelum render final
 npm run studio                   # Studio (server panjang — jalankan di background)
 
-npm run render -- ideas/<slug>/render/T01-L.mp4
+npm run render:t15 -- ideas/apa-itu-firewall/render/T15-L.mp4
 ```
 
 - **Selalu `npm run check` sebelum render.** Jauh lebih murah daripada menunggu

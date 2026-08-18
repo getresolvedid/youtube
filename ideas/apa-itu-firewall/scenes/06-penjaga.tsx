@@ -33,7 +33,9 @@ import {
   N_PINTU,
   P_DAFTAR,
   SKALA_DAFTAR_SISI,
-  Sosok,
+  /* Dinamai ulang karena scene INI juga bernama `Penjaga` — ia scene tempat
+     [what] akhirnya dinamai (HARD RULE 6), dan namanya dikunci `index.ts`. */
+  Penjaga as FigurPenjaga,
   X_LUAR,
   X_PENJAGA,
   Y_LANTAI,
@@ -152,7 +154,7 @@ export const Penjaga: React.FC = () => {
           <g
             transform={`translate(${X_PENJAGA} ${Y_LANTAI}) scale(1 ${tumbuh}) translate(${-X_PENJAGA} ${-Y_LANTAI})`}
           >
-            <Sosok x={X_PENJAGA} y={Y_LANTAI} topi hadap={1} />
+            <FigurPenjaga x={X_PENJAGA} y={Y_LANTAI} hadap={1} />
           </g>
 
           {/* --- tahap 4: tiga ketukan mengantre --- */}

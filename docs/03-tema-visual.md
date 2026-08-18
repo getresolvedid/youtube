@@ -126,6 +126,40 @@ Semua ikon mewarisi `currentColor`, jadi kelas warna tema (`.c-accent`, `.c-ok`,
 **Ukuran:** `.ic` 120px · `.ic-sm` 72px · `.ic-lg` 180px · `.ic-xl` 260px.
 Di 9:16 semuanya otomatis lebih besar.
 
+### Figur manusia — siluet, bukan garis
+
+Satu-satunya pengecualian dari gaya garis di atas, dan pengecualian yang
+disengaja: **manusia digambar sebagai siluet padat, benda tetap garis berongga.**
+Ketiganya ada di [`shared/figures/`](../shared/figures/) dengan tinggi baku,
+titik tumpu, dan prop yang sama, jadi scene boleh menukar yang satu dengan yang
+lain tanpa menata ulang apa pun:
+
+| Figur | Perannya | Sumber |
+|---|---|---|
+| `Sosok` | orang biasa — siapa pun yang kebetulan berdiri di situ | [person-silhouette](https://www.svgrepo.com/svg/483875/person-silhouette) |
+| `Penjaga` | petugas: topi puncak, dasi, sabuk | [policeman](https://www.svgrepo.com/svg/483471/policeman) |
+| `Peretas` | yang datang tanpa mau dikenali | [hacker](https://www.svgrepo.com/svg/483652/hacker) + badan `person-silhouette` |
+
+Alasan campurannya: manusia satu-satunya benda di panggung yang perlu dikenali
+dari jauh sebagai **siapa**, bukan sebagai apa. Yang padat maju, yang berongga
+mundur — jadi mata menemukan orangnya lebih dulu tanpa satu pun warna aksen
+dipakai untuk itu. Versi garisnya membedakan penjaga dari orang lewat cuma
+dengan satu topi kecil, dan pembeda sebesar itu berhenti terbaca pada skala 0,44
+yang dipakai scene ramai.
+
+Batasnya tiga, dan ketiganya mengikat:
+
+- **Tidak ada wajah.** Begitu ada mata dan mulut, penonton mulai membaca
+  perasaannya, dan figur ini tidak pernah jadi tokoh. Dua lensa `Peretas`
+  bukan mata — ia bagian bentuk yang membuatnya dikenali, sama seperti topi
+  `Penjaga`.
+- **Tidak ada warna bahaya.** `Peretas` memakai `warna` yang sama dengan figur
+  lain. Merah pada figur itu mengubah setiap scene yang memuatnya jadi
+  peringatan, dan peringatan membuat orang menutup video.
+- **Ketiganya dari satu koleksi.** Bahu, kepala, dan tebal bentuknya digambar
+  tangan yang sama. Figur manusia keempat diambil dari koleksi yang sama, bukan
+  dicari yang paling mirip.
+
 ### Aturan pakai
 
 - **Satu ikon per scene** sebagai penanda utama. Dua ikon hanya kalau memang
@@ -229,7 +263,12 @@ jadi scene standar di `shared/scenes.*`, lihat [10 · Scene standar](10-scene-st
 
 **Jangan**
 
-- Stock footage orang mengetik / "hacker" hoodie.
+- Stock footage orang mengetik, dan **foto/ilustrasi** "hacker" hoodie.
+  Yang dilarang di sini medianya, bukan sosoknya: figur `Peretas` di
+  [§ Figur manusia](#figur-manusia--siluet-bukan-garis) sah dan memang dipakai —
+  siluet tanpa wajah, tanpa warna bahaya, sebentuk dengan figur lain di
+  panggung. Larangan ini berdiri sejak sebelum figur itu ada, dan dipersempit
+  (bukan dicabut) waktu ia lahir.
 - Efek transisi di setiap potongan.
 - Emoji sebagai ikon utama.
 - Musik latar yang naik sampai menutupi VO.

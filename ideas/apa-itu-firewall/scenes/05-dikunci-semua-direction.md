@@ -52,6 +52,10 @@ motion:
    - tanda centang & silang: `masuk()` lalu `keluar()`-nya sendiri di tahap 8
 
 catatan:
+   - **`Peretas` PADAM di B_LIHAT, bersama pantulannya.** sisa scene ini milik
+     permintaan yang berangkat dari dalam dan jawaban yang pulang — dua benda
+     yang bukan miliknya. figur yang dibiarkan berdiri di situ akan terbaca
+     sebagai pengirimnya, dan itu membalik seluruh arti tahap 4 dan 5.
    - **ini satu-satunya tempat "dinding tertutup" jadi gambaran utama di seluruh
      episode**, dan ia muncul sebagai jalan yang DITUTUP (`naskah.md § Analogi
      utama`). nama "firewall" memang berarti dinding, tapi dinding tidak memilih.

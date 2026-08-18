@@ -120,7 +120,7 @@ pertama dipotong. `buku-catatan` dan `baris-terakhir` tidak boleh disentuh:
 keduanya seluruh isi `[why]`.
 
 **Kartu judul menulis "Firewall" di sekitar detik sepuluh, dan itu disengaja** —
-sama seperti T01 dan T14. Yang dilarang HARD RULE 6 adalah **VO** yang menyebut
+sama seperti T14. Yang dilarang HARD RULE 6 adalah **VO** yang menyebut
 nama sebelum bendanya berdiri; karena itu penamaan di `penjaga` ditulis sebagai
 penegasan ("penjaga itu namanya firewall"), bukan perkenalan.
 

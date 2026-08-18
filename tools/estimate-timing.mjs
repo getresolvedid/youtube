@@ -4,7 +4,7 @@
  * Dipakai di langkah 3 pipeline: membangun komposisi bisu dengan timing
  * perkiraan supaya naskah & rencana VO bisa diiterasi gratis sebelum VO dibuat.
  *
- *   node --env-file=.env tools/estimate-timing.mjs apa-itu-ram
+ *   node --env-file=.env tools/estimate-timing.mjs apa-itu-firewall
  *
  * Sumbernya sama persis dengan yang dipakai `npm run gen`
  * (tools/baca-episode.mjs): daftar scene dari naskah.md, teks VO dari

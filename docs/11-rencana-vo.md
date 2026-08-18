@@ -5,9 +5,9 @@ Satu berkas per scene, nama identik dengan komposisi dan direction-nya
 (HARD RULE 4 di [CLAUDE.md](../CLAUDE.md)):
 
 ```
-ideas/apa-itu-ram/scenes/01-hook-question-vo.md          apa yang DIKATAKAN
-ideas/apa-itu-ram/scenes/01-hook-question-direction.md   apa yang TERJADI di layar
-ideas/apa-itu-ram/scenes/01-hook-question.tsx            turunan keduanya
+ideas/apa-itu-firewall/scenes/05-dikunci-semua-vo.md          apa yang DIKATAKAN
+ideas/apa-itu-firewall/scenes/05-dikunci-semua-direction.md   apa yang TERJADI di layar
+ideas/apa-itu-firewall/scenes/05-dikunci-semua.tsx            turunan keduanya
 ```
 
 `naskah.md` tetap sumber kebenaran **topik** — penjelasan 5 tahun, tangga
@@ -17,9 +17,9 @@ Yang pindah ke sini hanya kalimat yang dibaca mesin TTS.
 ## Kenapa dipisah
 
 Sebelum ini satu scene = satu sel tabel di naskah. Sel tabel tidak punya tempat
-untuk mencatat **kenapa** kalimatnya begitu — kenapa "disalin" bukan "dipindah",
-kenapa "ram" ditulis huruf kecil, kenapa satu kalimat sengaja dipotong dua baris
-supaya animasinya punya waktu. Keputusan-keputusan itu mahal kalau hilang:
+untuk mencatat **kenapa** kalimatnya begitu — kenapa "ditanyakan" bukan
+"dicari", kenapa "D N S" dieja bukan dibaca "dins", kenapa satu kalimat sengaja
+dipotong dua baris supaya animasinya punya waktu. Keputusan-keputusan itu mahal kalau hilang:
 
 - Pengucapan yang salah = **generate ulang berbayar**. Alasannya harus menempel
   di sebelah kalimatnya, bukan di riwayat chat.
@@ -85,15 +85,15 @@ semua beat sesudahnya bergeser sendiri; angka yang diketik tangan tidak ikut
 bergeser dan diam-diam jadi bohong.
 
 **Memotong kalimat jadi dua baris itu sah** — dan sering benar. Contoh dari
-`04-ram-analogy-vo.md`:
+`06-tangga-vo.md`:
 
 ```
-Dari lemari arsip di gudang,
-ke meja kerja yang jauh lebih dekat.
+Dari loket di dekat rumahmu,
+naik ke loket yang tahu siapa yang menyimpan namanya.
 ```
 
-Perjalanan berkas dari lemari ke meja makan waktu lebih lama daripada satu
-tarikan napas. Kalau kalimatnya utuh satu baris, keberangkatan dan pendaratan
+Perjalanan pertanyaan dari loket satu ke loket berikutnya makan waktu lebih lama
+daripada satu tarikan napas. Kalau kalimatnya utuh satu baris, keberangkatan dan pendaratan
 jatuh di beat yang sama, dan animasinya harus menebak sendiri kapan bergerak.
 
 ## Cara membuka scene — HARD RULE 6
@@ -132,10 +132,10 @@ yang sama, dan memang begitu seharusnya scene lanjutan dibuka.
 ### Yang salah, dan kenapa
 
 ```
-Ram adalah tempat penyimpanan sementara.        <- nama mendahului gambaran
-Prosesor mengambil data dari memori utama.      <- tiga istilah, nol gambar
-Di scene ini kita akan membahas ukuran ram.     <- menyebut scene, dan menunda
-Bayangkan sebuah meja. Bayangkan lemari arsip.  <- dua undangan, satu scene
+D N S adalah sistem penerjemah nama.            <- nama mendahului gambaran
+Resolver mengirim query ke root server.         <- tiga istilah, nol gambar
+Di scene ini kita akan membahas umur catatan.   <- menyebut scene, dan menunda
+Bayangkan sebuah loket. Bayangkan buku telepon. <- dua undangan, satu scene
 ```
 
 Yang keempat paling halus: dua ajakan membayangkan di satu scene berarti dua
@@ -177,8 +177,8 @@ cara memakainya saat menulis berkas `-vo.md`.
 **Sambungannya cuma dua baris**, dan keduanya ada di berkas yang berbeda:
 
 ```
-scenes/04-ram-analogy-vo.md    baris TERAKHIR di blok ## VO
-scenes/05-kenapa-cepat-vo.md   baris PERTAMA di blok ## VO
+scenes/05-loket-vo.md     baris TERAKHIR di blok ## VO
+scenes/06-tangga-vo.md    baris PERTAMA di blok ## VO
 ```
 
 Itu sebabnya jenis kesalahan ini tidak pernah terlihat dari dalam satu berkas.
@@ -189,9 +189,9 @@ Scene digarap satu-satu; sambungannya milik dua berkas sekaligus, jadi ia milik
 
 | Bentuk | Baris terakhir scene N | Baris pertama scene N+1 |
 |---|---|---|
-| **Celah → tutup** | "Selama dijemput, prosesor cuma menunggu." | "Jadi berkasnya disalin dulu." |
-| **Belum selesai** | "Ya, meja kerja itu ram." | "Dekatnya memang membantu. Tapi bukan cuma itu." |
-| **Mundur sejenak** | "Jadi batang baru tidak masuk ke slot lama." | "Sekarang mundur sedikit, lihat mejanya utuh lagi." |
+| **Celah → tutup** | "Selama namanya belum ketemu, halamanmu cuma putih." | "Jadi yang ditanyakan duluan bukan halamannya." |
+| **Belum selesai** | "Ya, loket itu D N S." | "Dekatnya memang membantu. Tapi bukan cuma itu." |
+| **Mundur sejenak** | "Jadi catatan lama tidak ikut berubah." | "Sekarang mundur sedikit, lihat loketnya utuh lagi." |
 
 Ketiganya punya satu ciri sama: **baris pertama scene N+1 tidak bisa dibaca
 sendirian.** "Tapi bukan cuma itu" — bukan cuma *apa*? Kalimat yang menuntut
@@ -205,8 +205,8 @@ masih masuk akal utuh, ia bukan jembatan — ia pembukaan bab baru.
 Sambungan yang lompat tidak pernah terasa salah, ia cuma terasa **tiba-tiba**:
 
 ```
-… berkas yang sama dipakai lagi ribuan kali.            <- scene 5 tutup rapat
-Pernah sadar ukuran ram selalu delapan, enam belas?     <- scene 6 mulai dari nol
+… nama yang sama ditanyakan lagi ribuan kali.           <- scene 7 tutup rapat
+Pernah sadar catatan itu punya tanggal kedaluwarsa?     <- scene 8 mulai dari nol
 ```
 
 Tidak ada yang keliru di kedua kalimat itu. Yang hilang adalah alasan kenapa
@@ -218,7 +218,7 @@ barunya: gantung sesuatu di sana.
 ### Jangan dijembatani dengan kalimat tentang videonya
 
 ```
-Nah, sekarang kita bahas ukuran ram.      Oke, lanjut ke bagian berikutnya.
+Nah, sekarang kita bahas umur catatan.    Oke, lanjut ke bagian berikutnya.
 Sebelum itu, mari kita lihat dulu…        Di scene ini kita akan…
 ```
 
@@ -245,8 +245,8 @@ mencetak tiap sambungan berpasangan, urut tayang:
 
 ```
 Sambungan antar-scene — HARD RULE 7 (jembatan, bukan pengumuman):
-  04-ram-analogy -> 05-kenapa-cepat
-    …"Ya, meja kerja itu ram."
+  05-loket -> 06-tangga
+    …"Ya, loket itu D N S."
      "Dekatnya memang membantu. Tapi bukan cuma itu."…
 ```
 
@@ -257,7 +257,7 @@ Sambungan yang sengaja dibiarkan menganga (potongan kejut, pergantian babak
 yang memang harus terasa) ditulis alasannya di `## Catatan`:
 
 ```markdown
-- Sambungan dari `05-kenapa-cepat` sengaja tidak dijembatani: di sini babak
+- Sambungan dari `06-tangga` sengaja tidak dijembatani: di sini babak
   berganti dan jeda itu yang bikin pertanyaannya terasa baru.
 ```
 
@@ -508,6 +508,73 @@ bukan angka yang ditulis adalah penjaga yang tidak ada.
 `--pakai-wav` memakai ulang aliran utuh yang sudah dibayar, jadi menyetel
 pemotong tidak pernah membayar sintesis ulang.
 
+**Pembandingnya jumlah durasi sesudah dipangkas, bukan durasi aliran utuh.**
+Jeda antar-scene milik sambungannya dan dibuang dari kedua tepi tiap potongan —
+di S1 T14 ia 13 dtk dari 47,6, **27% yang tidak pernah mendarat di berkas mana
+pun**. Diukur terhadap total mentah, setiap potongan terlihat kependekan segitu,
+dan dua scene yang jedanya paling lebar jatuh lewat ambang tanpa ada yang salah
+pada bacaannya. Dengan pembanding yang setara, sebaran S1 jadi 0,77–1,20.
+Ambangnya sendiri tidak pernah dilonggarkan: penjaga yang dikendurkan sampai
+lolos adalah penjaga yang tidak ada, sama seperti penjaga yang mengukur angka
+yang bukan angka yang ditulis.
+
+### Video panjang: beberapa permintaan, bukan satu dan bukan sebelas
+
+**Gemini memotong permintaan yang terlalu panjang tanpa mengeluh.** Naskah L T14
+(738 kata, ≈5,4 menit) dikirim utuh dan kembali sebagai audio **50,31 dtk** —
+880 wpm, dan cuma 81 dari 747 kata yang benar-benar diucapkan. Tidak ada error
+dari API; yang menangkapnya pencocokan per kata, yang jatuh ke 10,8% dan membuat
+penjaga menulis nol berkas. Harganya **5.026 karakter hangus**, 2026-08-15.
+
+Kesimpulan yang diambil saat itu — "vo:utuh itu jalur Short; video panjang per
+scene" — **sudah dicabut**, karena harganya baru terbaca belakangan. VO T14 yang
+lahir dari sebelas panggilan per scene berayun **119–161 wpm (36%)**, lebih
+buruk daripada ayunan 31% yang justru jadi alasan `vo:utuh` dibuat. Yang paling
+terdengar: hook-nya melambat sendirian, jadi episode dibuka oleh orang yang
+terdengar lain dari yang melanjutkannya.
+
+Jalan tengahnya **batch** — beberapa scene per permintaan:
+
+```powershell
+npm run vo:utuh -- <slug> --target L --pecah-di 06-penjaga,09-dari-atas,12-label-bukan-isi
+npm run vo:utuh -- <slug> --target L --batch 4     # jalan cepat, buat mencoba
+```
+
+Di dalam satu batch semuanya tetap satu tarikan napas: satu tempo, satu
+pembawaan, sambungan HARD RULE 7 tersambung di suaranya. Yang dibeli batch cuma
+**sedikit** sambungan yang menyeberangi permintaan, bukan nol.
+
+**Batasnya ditaruh di batas BAGIAN FLOW, bukan di angka bulat** — itu sebabnya
+`--pecah-di` yang dipakai untuk keluaran sungguhan dan `--batch <n>` cuma untuk
+mencoba-coba. Batas batch adalah satu-satunya tempat tempo boleh bergeser, jadi
+ia harus jatuh di sambungan yang paling tahan digeser. Yang paling tidak boleh:
+**sambungan 3 → 4**, tempat `[what]` akhirnya dinamai ([HARD RULE 6](../CLAUDE.md)).
+Di situ celahnya paling lebar dan justru harus terdengar seperti jawaban;
+pencerita yang berganti tempo persis di situ membatalkan seluruh bagian 3.
+
+Berapa besar satu batch yang aman **tidak punya angka pasti**, dan tidak usah
+ditebak — sejak sekarang penggalan ditangkap penjaganya sendiri, di tempat
+kejadiannya:
+
+> `POTONG GAGAL — batch 2/4 kembali 4,29 dtk untuk 52 kata (727 wpm, perkiraan
+> 136). Aliran ini terpenggal — Gemini berhenti sebelum naskahnya habis.`
+
+Diperiksa terhadap `VO_WORDS_PER_MINUTE` di `.env`, **di sintesis, bukan di
+pemotong** — pemotong akan melaporkannya sebagai "batas tidak ketemu", yang
+gejala, bukan sebabnya. Diukur di T14, batch 150–210 kata lolos dengan nyaman.
+
+**Nol berkas berlaku lintas batch.** Batch 1 dan 2 yang sudah terpotong tetap
+tinggal sebagai `.part` sampai batch terakhir lolos penjaganya; satu batch gagal
+berarti semuanya dibuang. Keluaran yang separuh scene-nya dari bacaan lama dan
+separuh dari bacaan baru adalah cacat yang paling susah ditunjuk saat
+mendengarkan — dan dengan batch, "bacaan lama" itu bisa berarti batch yang baru
+saja gagal beberapa detik lalu.
+
+Penjaga tabrakan berkas juga pindah **ke depan**, sebelum satu permintaan pun
+dikirim. Dulu ia duduk di dalam pemotong, dan itu cukup selama cuma ada satu
+aliran. Dengan batch ia jadi jebakan: batch 1 dan 2 dibayar, lalu batch 3
+berhenti karena berkasnya sudah ada — dan yang sudah dibayar tidak kembali.
+
 ## Audit naskah VO — dua lapis
 
 Memeriksa naskah VO terbelah tajam, dan belahannya **bukan soal keparahan
@@ -569,8 +636,8 @@ supaya episode tetap bisa di-scrub, dan `npm run sisa` menyebutnya satu per satu
 
 ```
 2 sumber scene belum lengkap:
-  5-ram-forgets-vo.md — belum ada
-  5-ram-forgets-direction.md — belum ada
+  08-umur-catatan-vo.md — belum ada
+  08-umur-catatan-direction.md — belum ada
 ```
 
 Tapi **komposisinya belum boleh dibangun** selama blok `## VO`-nya kosong —

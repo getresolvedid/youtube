@@ -5,41 +5,37 @@
  * tools/periksa-tumpang.mjs memegang salinannya sendiri, dan alat kedua yang
  * butuh id komposisi berarti dua tempat yang bisa lupa diperbarui saat episode
  * ketiga masuk.
- *
- * T01 sengaja tanpa awalan — lihat komentar di src/Root.tsx: perintah `still`
- * yang sudah tertulis di dokumen T01 tidak boleh putus.
  */
 
 export const PREFIKS = {
-  "apa-itu-ram": "",
-  "dns-server": "t14",
-  /* T15 sudah punya folder `ideas/` dan sudah masuk skrip npm, tapi BELUM
-     didaftarkan di src/Root.tsx. Nilainya di sini mengikuti aturan yang sama
-     (kode topik, CLAUDE.md HARD RULE 1); kalau nanti Root.tsx memakai yang lain,
-     yang benar Root.tsx dan baris ini yang menyesuaikan — bukan sebaliknya. */
   "apa-itu-firewall": "t15",
-  "apa-itu-enkripsi": "t16",
+  /* PROVISIONAL — topiknya belum ada di docs/07, jadi kodenya belum resmi.
+     Alasan lengkapnya di src/Root.tsx, yang tetap jadi sumbernya. */
+  enkripsi: "t17",
+  /* PROVISIONAL — sama seperti enkripsi. Topiknya masih `mentah` di
+     ideas/tcp-ip/ide.md dan belum masuk docs/07. T18 dipakai karena id
+     komposisi butuh awalan yang stabil SEKARANG, dan karena T17 sudah dipegang
+     enkripsi. Yang pasti: BUKAN T16, yang dibatalkan dan tidak dipakai ulang. */
+  "tcp-ip": "t18",
 };
 
 /** Awalan untuk video panjang sebuah slug. `null` kalau slug-nya belum dikenal —
  *  pemanggilnya yang memutuskan mau berhenti atau memakai `--prefiks`. */
 export const prefiksEpisode = (slug) => (slug in PREFIKS ? PREFIKS[slug] : null);
 
-/** Awalan id scene Short — DUA LAPIS sejak Shorts T14 didaftarkan (2026-08-14):
+/** Awalan id scene Short — DUA LAPIS:
  *
- *    s1-01-menunggu        Short 1 T01   (slug tanpa awalan episode)
- *    t14-s1-01-dari-belakang  Short 1 T14
+ *    t15-s1-01-hook  Short 1 T15
  *
  *  Lapis `s<n>` memisahkan Short dari video panjang; lapis kode topik memisahkan
- *  episode dari episode. Yang kedua dulu ditulis di sini sebagai utang yang akan
- *  jatuh tempo, dan memang jatuh: `09-loop` dan `99-closing` ada di Short 1 KEDUA
- *  episode, jadi tanpa lapis ini `s1-09-loop` bertabrakan — dan Remotion menolak
- *  dua komposisi dengan id yang sama saat RENDER, bukan saat `tsc`.
+ *  episode dari episode. Yang kedua bukan hiasan: `09-loop` dan `99-closing` ada
+ *  di Short 1 SETIAP episode, jadi tanpa lapis ini `s1-09-loop` bertabrakan —
+ *  dan Remotion menolak dua komposisi dengan id yang sama saat RENDER, bukan
+ *  saat `tsc`.
  *
- *  Yang lebih halus, dan itu alasan `slug` sekarang wajib: sebelum lapis ini
- *  dipasang, memeriksa `s1-09-loop` milik T14 diam-diam memeriksa scene T01 yang
- *  namanya kebetulan sama — lulus, tanpa satu pun tanda bahwa yang diperiksa
- *  scene episode lain.
+ *  Yang lebih halus, dan itu alasan `slug` wajib: tanpa lapis ini, memeriksa
+ *  `s1-09-loop` milik satu episode diam-diam memeriksa scene episode lain yang
+ *  namanya kebetulan sama — lulus, tanpa satu pun tanda.
  *
  *  Aturannya sama persis dengan scene video panjang (CLAUDE.md HARD RULE 1), dan
  *  sumbernya tetap src/Root.tsx — kalau di sana berbeda, yang benar Root.tsx dan

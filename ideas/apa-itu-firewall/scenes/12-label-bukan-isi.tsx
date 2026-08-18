@@ -26,9 +26,9 @@ import {
   Lantai,
   PINTU,
   P_DAFTAR,
+  Penjaga,
   Pintu,
   SKALA_DAFTAR_SISI,
-  Sosok,
   X_LUAR,
   X_PENJAGA,
   Y_LANTAI,
@@ -118,7 +118,7 @@ export const LabelBukanIsi: React.FC = () => {
               Blok ini yang dicabut kalau klaim "jauh lebih lambat" tidak dapat
               sumber. Sisa scene tetap utuh tanpanya. */}
           <g opacity={jenis}>
-            <Sosok x={P_PINTU.x + 300} y={Y_LANTAI} topi hadap={1} skala={0.86} />
+            <Penjaga x={P_PINTU.x + 300} y={Y_LANTAI} hadap={1} skala={0.86} />
             {/* meja periksa, dengan satu kotak yang TERBUKA di atasnya */}
             <path
               d={`M${P_PINTU.x + 390} ${Y_LANTAI - 150}h220`}
@@ -145,7 +145,7 @@ export const LabelBukanIsi: React.FC = () => {
 
           {/* --- penjaga pertama --- */}
           <g transform={`rotate(${tunduk} ${X_PENJAGA} ${Y_LANTAI - 116})`}>
-            <Sosok x={X_PENJAGA} y={Y_LANTAI} topi hadap={1} />
+            <Penjaga x={X_PENJAGA} y={Y_LANTAI} hadap={1} />
           </g>
 
           {/* --- daftar, muncul sebentar saat dicocokkan --- */}

@@ -19,9 +19,9 @@ berikutnya selama fase sebelumnya belum tuntas.
    apa pun.
 2. **Rencanakan & bangun video panjang** — naskah, rencana VO, direction, dan
    komposisi scene di `ideas/<slug>/scenes/`.
-3. **Rencanakan & bangun Shorts** — 2 Short di `ideas/<slug>/scene-shorts/<short>/`,
+3. **Rencanakan & bangun Shorts** — 4 Short di `ideas/<slug>/scene-shorts/<short>/`,
    hook ditulis ulang dari nol ([docs/02 § Anatomi Shorts](docs/02-format-video.md#anatomi-shorts)).
-4. **Rencanakan judul & deskripsi** — untuk video panjang **dan** kedua Short;
+4. **Rencanakan judul & deskripsi** — untuk video panjang **dan** keempat Short;
    di fase ini juga `thumb.tsx` dan kedua kover Short akhirnya dibangun.
 5. **Rilis** — generate VO, render produksi video panjang & Shorts, lalu unggah.
 
@@ -89,21 +89,20 @@ naskah; `hook-question.tsx` untuk scene yang menggabungkan beberapa shot.
 Kolom pertama tabel scene di `naskah.md` adalah ID-nya — nomor atau nama,
 keduanya sah — dan itu yang jadi kunci di `SCENES`.
 
-**Beberapa shot yang satu beat digabung jadi satu scene.** Hook T01 dulu tiga
-scene (001–003) yang isinya satu pertanyaan yang sama; sekarang satu scene tiga
-tahap. Pecah berkas itu soal bisa di-preview, bukan alasan memotong satu gagasan
-jadi tiga potong yang saling menunggu.
+**Beberapa shot yang satu beat digabung jadi satu scene.** Hook yang dulu tiga
+scene berisi satu pertanyaan yang sama lebih baik jadi satu scene tiga tahap.
+Pecah berkas itu soal bisa di-preview, bukan alasan memotong satu gagasan jadi
+tiga potong yang saling menunggu.
 
 **Opening & closing tidak didaftarkan di `SCENES`.** Keduanya milik `shared/`
 ([docs/10](docs/10-scene-standar.md)) supaya semua episode identik.
 
-**Mulai episode kedua, id komposisi scene berprefiks kode topik** — `t14-05-loket`,
-bukan `05-loket`. Alasannya sama persis dengan prefiks `s1-`/`s2-` di Shorts:
+**Id komposisi scene berprefiks kode topik** — `t15-05-dikunci-semua`, bukan
+`05-dikunci-semua`. Alasannya sama persis dengan prefiks `s1-`/`s2-` di Shorts:
 `02-opening` dan `99-closing` ada di **setiap** episode, dan Remotion menolak dua
 komposisi dengan id yang sama — saat **render**, bukan saat `tsc`. Nama
-**berkasnya** tidak berubah (`scenes/05-loket.tsx`); yang berprefiks cuma id di
-`src/Root.tsx`. T01 dibiarkan tanpa prefiks supaya perintah `still` yang sudah
-tertulis di dokumennya tidak putus.
+**berkasnya** tidak berubah (`scenes/05-dikunci-semua.tsx`); yang berprefiks cuma id di
+`src/Root.tsx`.
 
 **Shorts tinggal di `ideas/<slug>/scene-shorts/<short>/`, satu subfolder per
 Short.** Aturan ini berlaku utuh di dalamnya — tiga berkas per scene, nama
@@ -118,7 +117,7 @@ ideas/<slug>/scene-shorts/s1-nugget/Short.tsx  ← perangkai, seperti Episode.ts
 ideas/<slug>/scene-shorts/s2-jebakan/…
 ```
 
-**Penomoran mulai dari `01` lagi di tiap subfolder.** Dua Short adalah dua
+**Penomoran mulai dari `01` lagi di tiap subfolder.** Empat Short adalah empat
 urutan tayang yang berdiri sendiri, bukan satu daftar panjang — dan HARD RULE 5
 berlaku di dalam masing-masing, tidak pernah menyeberang. Id komposisinya
 berprefiks nama subfolder supaya tidak pernah bertabrakan dengan scene video
@@ -276,7 +275,7 @@ Jangan menempel `<Audio>` VO sendiri di komposisi. → [docs/11](docs/11-rencana
 
 Alasannya: sebelum ini VO tinggal di satu sel tabel naskah, satu baris panjang
 tanpa tempat untuk mencatat kenapa kalimatnya begitu — kenapa "disalin" bukan
-"dipindah", kenapa "ram" huruf kecil, kenapa satu kalimat sengaja dipotong dua
+"dipindah", kenapa "D N S" dieja, kenapa satu kalimat sengaja dipotong dua
 baris supaya animasinya punya waktu. Semua itu keputusan yang dibayar mahal kalau
 hilang: VO yang salah baca berarti generate ulang berbayar, dan VO yang berubah
 kata berarti seluruh timing scene bergeser. Sekarang keputusan itu menempel di
@@ -338,7 +337,7 @@ ke-10 mengubah `01-hook-question` jadi `01-hook-question` — **semua** berkas, 
 yang baru saja. `npm run sisa` yang menyebutkannya satu per satu.
 
 Alasannya: nomor berkas bukan hiasan. Ia sekaligus **id komposisi Remotion** dan
-**urutan tayang**, dan itulah yang membuat `npx remotion still 06-ram-size` bisa
+**urutan tayang**, dan itulah yang membuat `npx remotion still t15-06-penjaga` bisa
 dipercaya. Begitu satu scene disisipi tanpa menomori ulang, `ls scenes/` diam-diam
 berhenti berarti urutan tayang, dan perintah `still` yang sudah tertulis di
 dokumen mulai menunjuk scene yang keliru — tanpa error, tanpa tanda apa pun.
@@ -369,9 +368,9 @@ sekadar scene baru.
 
 **Nama benda menyusul, tidak pernah mendahului.** Selama bendanya belum berdiri
 dan belum dipakai di layar, ia disebut dengan kata sehari-hari, bukan namanya.
-Yang paling dilarang: kalimat VO yang **membuka dengan namanya**. "RAM itu
-memori sementara" adalah definisi kamus, dan penonton belum punya apa pun untuk
-menggantungkannya.
+Yang paling dilarang: kalimat VO yang **membuka dengan namanya**. "D N S itu
+sistem penerjemah nama" adalah definisi kamus, dan penonton belum punya apa pun
+untuk menggantungkannya.
 
 Dua batas yang mengikat:
 
@@ -419,8 +418,8 @@ berkas, melainkan satu kalimat panjang — dan seluruh sambungannya cuma dua
 baris:
 
 ```
-baris TERAKHIR  scenes/04-ram-analogy-vo.md   "Ya, meja kerja itu ram."
-baris PERTAMA   scenes/05-kenapa-cepat-vo.md  "Dekatnya memang membantu. Tapi bukan cuma itu."
+baris TERAKHIR  scenes/05-loket-vo.md   "Ya, loket itu D N S."
+baris PERTAMA   scenes/06-tangga-vo.md  "Dekatnya memang membantu. Tapi bukan cuma itu."
 ```
 
 **Setiap sambungan wajib dijembatani salah satu dari dua baris itu.** Bentuk
@@ -433,7 +432,7 @@ Kata sambung yang menopang berat: *jadi*, *tapi*, *makanya*, *bukan cuma itu*,
 **videonya**, bukan bendanya:
 
 ```
-Nah, sekarang kita bahas ukuran ram.      <- daftar isi yang dibacakan
+Nah, sekarang kita bahas umur catatan.    <- daftar isi yang dibacakan
 Oke, lanjut ke bagian berikutnya.         <- nol isi, cuma penanda
 Sebelum itu, mari kita lihat dulu…        <- menunda tanpa membayar
 Di scene ini kita akan…                   <- menyebut scene (dilarang docs/11)
@@ -481,7 +480,7 @@ sesi berikutnya akan "memperbaikinya". Detail & contoh:
   jadi apa pun. Yang lolos 4 syarat naik ke [`docs/07`](docs/07-backlog-topik.md)
   dan dapat kode `T{nn}`; ide yang ditolak tetap disimpan beserta alasannya.
   Jangan menulis ide baru langsung ke backlog.
-- **Satu topik = 1 video panjang + 2 Shorts.** Jangan kirim topik setengah jadi.
+- **Satu topik = 1 video panjang + 4 Shorts.** Jangan kirim topik setengah jadi.
   Shorts diturunkan dari topik yang sama, tapi **hook-nya ditulis ulang**, bukan
   potongan mentah video panjang.
 - **Akurasi teknis di atas gaya.** Ini konten edukasi; klaim yang salah lebih mahal
@@ -547,25 +546,21 @@ npm run tumpang -- <slug> --short s1-nugget
 
 npm run jahit:semua                              # potongan antar-scene yang lompat (exit 1)
 npm run jahit -- <slug>
-npm run jahit -- <slug> --jahitan 12-ganti-loket # satu sambungan saja: kunci scene SESUDAHNYA
+npm run jahit -- <slug> --jahitan 06-penjaga     # satu sambungan saja: kunci scene SESUDAHNYA
 npm run jahit -- <slug> --short s1-nugget
 npm run studio     # Remotion Studio — server panjang, jalankan di background
-npm run render     # episode utuh → out/
-npm run render:s1  # Short 1 utuh (9:16) → out/
-npm run render:s2  # Short 2 utuh (9:16) → out/
+npm run render:t15     # episode utuh → out/   (satu skrip per topik, `:t<nn>`)
 
-# thumbnail — komposisi sendiri (docs/06 § Thumbnail)
-npx remotion still T01-thumb    ideas/apa-itu-ram/render/thumb.png      # 16:9 1280x720
-npx remotion still T01-thumb-s1 ideas/apa-itu-ram/render/thumb-s1.png   # 9:16 2160x3840
-npx remotion still T01-thumb-s2 ideas/apa-itu-ram/render/thumb-s2.png
+# Short & thumbnail baru punya skrip/komposisi setelah topiknya sampai ke fase
+# 3 dan fase 4 — belum ada satu pun sekarang. Bentuk perintahnya saat lahir:
+#   npm run render:t15:s1                          # Short 1 utuh (9:16) → out/
+#   npx remotion still T15-thumb    ideas/apa-itu-firewall/render/thumb.png     # 16:9 1280x720
+#   npx remotion still T15-thumb-s1 ideas/apa-itu-firewall/render/thumb-s1.png  # 9:16 2160x3840
+#   npx remotion still t15-s1-01-hook out/s1-hook.png   # scene Short: id BERPREFIKS
 
 # satu scene saja — inilah gunanya HARD RULE 1
-npx remotion still  01-hook-question out/hook.png
-npx remotion render 01-hook-question out/hook.mp4
-
-# scene Short: id-nya BERPREFIKS, supaya tidak bertabrakan dengan video panjang
-npx remotion still  s1-01-menunggu out/s1-hook.png
-npx remotion still  s2-01-mitos    out/s2-mitos.png
+npx remotion still  t15-05-dikunci-semua out/dikunci.png
+npx remotion render t15-05-dikunci-semua out/dikunci.mp4
 
 # VO & timing — mesinnya Gemini (docs/11)
 . .\tools\load-env.ps1                      # muat .env ke sesi PowerShell
@@ -576,6 +571,11 @@ npm run vo:utuh -- <slug> --target S1                     # rencana — gratis
 npm run vo:utuh -- <slug> --target S1 --coba --jalan      # ke out/voicetest/
 npm run vo:utuh -- <slug> --target S1 --jalan --pisah 1   # hook dipisah, ke public/vo/
 npm run vo:utuh -- <slug> --target S1 --jalan --pakai-wav # potong ulang, nol biaya
+
+# JALUR BAKU untuk video panjang: beberapa permintaan (batch), lalu dipotong.
+# Batasnya ditaruh di batas BAGIAN FLOW — jangan pernah di sambungan 3 → 4.
+npm run vo:utuh -- <slug> --target L --pecah-di 06-penjaga,09-dari-atas
+npm run vo:utuh -- <slug> --target L --batch 4            # jalan cepat, buat mencoba
 
 npm run vo:cocok -- <slug> --target S1   # transkripsi vs naskah, per kata
 npm run vo:coba  -- <slug> --scene <kunci> --voice A,B --model X,Y   # banding suara
@@ -607,9 +607,21 @@ membayar jangkauan dinamis: hook jadi rata bersama yang lain. Beat pertama
 Nugget adalah klaim yang berdiri sendiri (docs/02), jadi memisahnya mengikuti
 bentuk naskahnya, bukan mengakalinya.
 
+**Video panjang dibatch, bukan dikirim sekaligus dan bukan per scene.** Satu
+permintaan untuk 5 menit dipenggal Gemini tanpa mengeluh — naskah L T14 kembali
+sebagai 50,31 dtk dari 5,4 menit yang diminta. Tapi jatuh ke jalan per scene
+membayar lebih mahal lagi: VO T14 yang lahir dari sebelas panggilan berayun
+**119–161 wpm (36%)**, lebih buruk daripada 31% yang jadi alasan `vo:utuh`
+dibuat. `--pecah-di <kunci,…>` menaruh batas permintaan di **batas bagian flow**,
+dan di dalam tiap batch semuanya tetap satu tarikan napas. Yang paling tidak
+boleh dilewati batas batch: **sambungan 3 → 4**, tempat `[what]` dinamai
+(HARD RULE 6) — di situ pergantian tempo membatalkan seluruh bagian 3.
+Penggalan sekarang ditangkap penjaganya sendiri (`wpm > 2× VO_WORDS_PER_MINUTE`),
+dan satu batch gagal berarti **nol berkas** untuk seluruh keluaran.
+
 **Arahan pembacaan per topik ada di `ideas/<slug>/vo-gemini-profile.yaml`** —
 `voice`, `profile`, `style`, `accent`, `pace`, `tempo`, bisa ditimpa per keluaran
-(L/S1/S2). Dari keenamnya **cuma `voice` yang medan API sungguhan**; empat medan
+(L/S1–S4). Dari keenamnya **cuma `voice` yang medan API sungguhan**; empat medan
 arahan melebur jadi satu kalimat prompt dan boleh diabaikan model, dan `tempo`
 pengali ffmpeg sesudah audionya jadi. → [docs/11](docs/11-rencana-vo.md).
 

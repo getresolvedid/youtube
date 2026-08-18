@@ -30,8 +30,11 @@ import {
   Ketukan,
   Lantai,
   N_PINTU,
+  Peretas,
   X_GEDUNG,
   X_LUAR,
+  X_PERETAS,
+  Y_LANTAI,
   kamera,
 } from "../panggung-gedung";
 import { beat } from "../timing.gen";
@@ -97,6 +100,14 @@ export const DikunciSemua: React.FC = () => {
           <g transform={kamera({ skala: 1 + 0.14 * geser, dx: 130 * geser })}>
             <Lantai />
             <Gedung pintu={pintu} />
+
+            {/* Yang mengetuk, dan ia PADAM bersama pantulannya di B_LIHAT.
+                Sisa scene ini milik permintaan yang berangkat dari dalam dan
+                jawaban yang pulang — dua benda yang bukan miliknya. Figur yang
+                dibiarkan berdiri di situ akan terbaca sebagai pengirimnya. */}
+            <g data-tumpang="sengaja" opacity={pantulPadam}>
+              <Peretas x={X_PERETAS} y={Y_LANTAI} skala={0.92} />
+            </g>
 
             {/* --- tahap 2: dua ketukan memantul --- */}
             {[p1, p2].map((p, i) => (

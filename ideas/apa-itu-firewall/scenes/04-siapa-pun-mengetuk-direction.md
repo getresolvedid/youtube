@@ -4,8 +4,27 @@ Tujuh baris VO = tujuh tahap.
 Panggung sama persis dengan scene 3, kamera kembali ke skala 1: gedung utuh,
 tiga pintu menyala, lima tergembok. Yang bertambah cuma penghuninya.
 
-Tugasnya menetapkan **siapa** yang mengetuk — dan jawabannya harus terasa
-sebagai "bukan siapa-siapa", bukan sebagai "penjahat".
+Tugasnya menetapkan **siapa** yang mengetuk, dan jawabannya digambar: satu
+`Peretas` berdiri di tepi kiri, di titik lahirnya ketukan, sejak baris pertama
+sampai penanda nomor mulai menyusuri pintu.
+
+**Ini pembalikan keputusan yang berdiri sampai revisi ini, dan pembalikannya
+disengaja.** Versi sebelumnya sengaja tidak menggambar pengetuknya sama sekali —
+yang terlihat cuma gelombangnya, supaya masalahnya terasa "bukan siapa-siapa"
+dan bukan "penjahat", karena penjahat memindahkan masalahnya jadi masalah orang
+lain. Yang membuatnya dibalik: tanpa siapa pun di belakangnya, gelombang itu
+terbaca sebagai cuaca — sesuatu yang memang begitu adanya — dan cuaca tidak
+membuat orang memeriksa pintunya.
+
+Yang menahan efek samping lamanya ada tiga, dan ketiganya mengikat:
+
+- **ia tidak bergerak dan tidak pernah mendekat.** yang bekerja di scene ini
+  kerapatan ketukannya; figur yang ikut berjalan maju merebut perhatian dari
+  satu-satunya hal yang perlu terbaca — bahwa ketukannya tidak berhenti.
+- **tanpa warna bahaya.** `warna` yang sama dengan figur lain di panggung
+  (docs/03 § Figur manusia). merah di figur ini mengubah scene jadi peringatan.
+- **ketukannya tetap seragam.** semua digambar identik, dan keseragaman itu yang
+  masih membawa "siapa pun, tanpa perlu tahu namamu" di tahap 4 dan 5.
 
 1. satu ketukan masuk dari tepi kiri di ketinggian `JALUR_Y`, mendarat di salah
    satu pintu yang menyala. pelan, jelas, satu-satunya yang bergerak.
@@ -45,9 +64,15 @@ motion:
      lalu isi layar tenang menyala di baliknya
 
 catatan:
-   - **pengetuknya tidak punya wajah, tudung, atau warna bahaya.** intinya justru
-     bahwa siapa pun yang kebetulan lewat bisa melakukannya. begitu ia digambar
-     sebagai penjahat, masalahnya berubah jadi masalah orang lain.
+   - **pengetuknya punya tudung, tapi tetap tanpa wajah dan tanpa warna bahaya.**
+     `Peretas` adalah siluet tanpa mata dan tanpa mulut — dua lensanya bagian
+     bentuk yang membuatnya dikenali, bukan ekspresi. begitu ia punya wajah,
+     penonton mulai membaca perasaannya dan ia jadi tokoh; begitu ia merah,
+     scene ini jadi peringatan.
+   - **satu ketukan berangkat dari dalam siluetnya** selama kurang dari sedetik,
+     dan itu ditandai `data-tumpang="sengaja"` di berkas scene-nya. di situlah
+     ia terbaca sebagai ketukan ORANG ITU dan bukan gelombang yang kebetulan
+     lewat — jadi tumpangnya isi, bukan cacat.
    - **ketukan juga mendarat di pintu yang TERGEMBOK**, dan itu penting: yang
      mengetuk tidak tahu mana yang terkunci sebelum mencoba. ini yang membuat
      `10-diam` nanti masuk akal.

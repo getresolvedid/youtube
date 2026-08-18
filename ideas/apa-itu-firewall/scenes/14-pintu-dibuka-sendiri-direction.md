@@ -39,7 +39,8 @@ mungkin.
    (VO: "Bukan cuma buat temanmu.")
 
 9. rapatnya jauh melebihi pintu mana pun sebelumnya di episode ini, dan tidak ada
-   satu pun yang berhenti.
+   satu pun yang berhenti. satu `Peretas` muncul di tepi kiri, di sebelah
+   temannya — temannya TIDAK hilang dan tetap `Sosok` biasa.
    (VO: "Dan yang paling rajin mengetuk di situ bukan temanmu.")
 
 motion:
@@ -61,6 +62,11 @@ catatan:
      tidak ada tanda bahaya. yang berubah cuma siapa saja yang sekarang boleh
      mencoba — menggambar kebobolan mengubah scene ini jadi ancaman, dan ancaman
      membuat orang menutup video, bukan memeriksa daftarnya.
-   - **sosok di tahap 4 tanpa topi.** ia bukan penjaga, dan bedanya harus terlihat
-     sekilas — itu sebabnya topi beraksen dipatok sejak scene 6.
+   - **sosok di tahap 4 adalah `Sosok`, bukan `Penjaga` dan bukan `Peretas`.** ia
+     temannya, dan itu harus terbaca sekilas — tiga figur di episode ini beda
+     seluruh bentuknya, bukan beda satu topi (docs/03 § Figur manusia).
+   - **`Peretas` di tahap 9 BERDAMPINGAN dengan temannya, tidak menggantikannya.**
+     kalau temannya menghilang waktu ia datang, yang terbaca "ternyata temanmu
+     jahat" — kebalikan persis dari kalimat yang sedang diucapkan. dan ia cuma
+     berdiri: catatan tahap 7–9 di atas tetap berlaku, tidak ada yang jebol.
    - tidak ada merek dan tidak ada satu pun angka di layar.

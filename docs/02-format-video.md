@@ -1,7 +1,15 @@
 # 02 · Format Video
 
-Satu topik = **1 video panjang + 2 Shorts**. Dokumen ini mengunci durasi,
-struktur, dan pacing ketiganya.
+Satu topik = **1 video panjang + 4 Shorts**. Dokumen ini mengunci durasi,
+struktur, dan pacing kelimanya.
+
+> **Naik dari 2 jadi 4 pada 2026-08-17**, atas keputusan user. Yang bertambah
+> bukan cuma jumlahnya: dua peran lama (Nugget, Jebakan) sudah menghabiskan
+> tugasnya masing-masing, jadi dua peran baru harus punya **pekerjaan** yang
+> berbeda — bukan sekadar sudut yang berbeda. Kalau Short ketiga cuma "Nugget
+> kedua", ia akan memakan jangkauan Short pertama alih-alih menambahnya.
+> Empat peran di bawah dipilih supaya tidak ada dua yang bisa saling
+> menggantikan.
 
 ---
 
@@ -24,9 +32,9 @@ dari `ffprobe` berkas VO asli — lihat [pipeline §4](04-pipeline-produksi.md#4
 
 ### Durasi itu patokan, bukan batas keras — diubah 2026-08-14
 
-Versi sebelumnya menulis "batas keras 6–12 menit", dan angka itu **menahan T01
-yang sudah selesai** cuma karena ia 3 menit 19 detik. Keputusannya dibalik:
-**panjang video mengikuti materinya, bukan sebaliknya.**
+Versi sebelumnya menulis "batas keras 6–12 menit", dan angka itu **menahan satu
+episode yang sudah selesai** cuma karena ia kurang dari 3 menit 20 detik.
+Keputusannya dibalik: **panjang video mengikuti materinya, bukan sebaliknya.**
 
 Alasannya bukan kompromi. Menambah menit ke topik yang sudah tuntas berarti
 menambah bagian yang tidak dibutuhkan penonton — dan yang jatuh duluan justru
@@ -45,15 +53,13 @@ Yang **tetap mengikat**, karena ketiganya soal isi, bukan panjang:
 7–9 menit tetap ditulis sebagai patokan karena topik yang benar-benar padat
 biasanya mendarat di situ. Video yang jauh lebih pendek adalah **pertanyaan**,
 bukan pelanggaran: apakah materinya memang sesingkat itu, atau ada bagian yang
-belum digarap? T01 dijawab dengan yang pertama.
+belum digarap? Episode pertama dijawab dengan yang pertama — ia dirilis di
+sekitar 3 mnt 20 dtk · ~430 kata · 11 scene.
 
 Dua angka lain di tabel ringkasan — **kata VO** dan **jumlah scene** — cuma
 turunan durasi, jadi keduanya ikut jadi patokan. Angka yang mengikat tetap
 `SHORT_MAX_SECONDS` untuk Shorts (60 detik itu batas YouTube, bukan selera kita)
 dan syarat chapter di atas.
-
-T01 mendarat di **3 mnt 22 dtk · 434 kata · 11 scene**, dan itu versi yang
-dirilis.
 
 ---
 
@@ -113,7 +119,60 @@ Kalau durasi kepanjangan, yang dipangkas duluan **[explaining]** — bukan
 
 ## Anatomi Shorts
 
-Dua Shorts per topik punya **peran berbeda** — jangan bikin dua-duanya sejenis.
+Empat Shorts per topik punya **peran berbeda** — jangan bikin dua di antaranya
+sejenis.
+
+**Yang membedakan keempatnya PEKERJAANNYA, bukan sudutnya.** Ini pembedaan yang
+paling gampang hilang saat digarap: empat sudut menarik dari topik yang sama
+tetap bisa jadi empat Short yang terasa persis sama kalau keempatnya mengerjakan
+hal yang sama pada penonton. Patokannya satu pertanyaan per Short — *apa yang
+berubah pada penonton setelah menontonnya?*
+
+| # | Peran | Pekerjaannya | Yang dituju |
+|---|---|---|---|
+| 1 | **Nugget** | Membuat penonton **kaget** oleh satu hal yang ternyata benar | jangkauan |
+| 2 | **Jebakan** | **Mengoreksi** sesuatu yang sudah terlanjur dipercaya | komentar & share |
+| 3 | **Beda tipis** | **Memisahkan** dua hal yang dikira sama | simpanan (save) |
+| 4 | **Coba sendiri** | Memindahkan penonton dari *tahu* ke **melakukan** | kirim ke teman |
+
+Uji cepatnya: tukar isi dua Short. Kalau keduanya masih masuk akal di tempat
+yang lain, berarti perannya belum benar-benar berbeda dan salah satunya harus
+ditulis ulang.
+
+### Bentuk kedua: SERIAL
+
+Empat peran di atas adalah **bentuk baku**. Ada bentuk kedua yang juga sah:
+keempat Short menceritakan **satu cerita berurutan**, satu babak per Short —
+perjalanan → masalah → jalan keluar → jawaban. Dipilih per topik, dan
+diputuskan di `naskah.md` sebelum satu scene pun ditulis.
+
+**Serial membeli kedalaman dengan membayar jangkauan**, dan harganya perlu
+diketahui sebelum dipilih: penonton Shorts mendarat dari feed, satu per satu,
+hampir tidak pernah berurutan. Yang membuka dengan "di video sebelumnya" atau
+menyebut "pesan ini" tanpa memperkenalkannya sudah kehilangan penonton di detik
+kedua — dan Short kedua sampai keempat berakhir hidup dari sisa penonton Short
+pertama alih-alih membawa penontonnya sendiri.
+
+**Karena itu serial punya satu syarat keras: SEPULUH DETIK PERTAMA TIAP SHORT
+HARUS BERDIRI SENDIRI.** Bukan seluruh Short-nya — cuma pembukanya, dan itu
+sudah cukup:
+
+- **Bendanya diperkenalkan ulang, sekali, dalam satu frasa.** Bukan "pesan ini",
+  melainkan "satu kalimat yang lagi jalan di internet". Satu frasa itu memakan
+  ±1 detik dan menyelamatkan seluruh sisanya.
+- **Dilarang membuka dengan "di video sebelumnya".** Ia memberi tahu penonton
+  bahwa ia terlambat — dan penonton yang merasa terlambat menggeser. Kalau
+  babak sebelumnya perlu diringkas, ringkas **bendanya**, bukan videonya:
+  tunjukkan lagi dalam dua detik, jangan ceritakan.
+- **CTA "Lanjut ke Short berikutnya" itu bonus, bukan syarat.** Ia mengundang
+  yang sudah tertarik; ia tidak boleh jadi satu-satunya cara Short itu masuk
+  akal.
+- **Tiap Short tetap punya satu hal yang utuh di dalamnya** — satu temuan yang
+  bernilai walaupun penonton berhenti di situ. Babak yang cuma menyiapkan babak
+  berikutnya adalah trailer, dan trailer tidak ditonton sampai habis.
+
+Yang **tidak** berubah di bentuk serial: batas 60 detik, hook ditulis ulang dari
+nol, teks di layar wajib, berhenti di L1/L2, dan tanpa intro brand.
 
 ### Short 1 — “Nugget” (berdiri sendiri)
 
@@ -138,6 +197,41 @@ Ini yang biasanya mengundang komentar dan share.
 | Bantahan | `0:04–0:12` | "Salah — dan ini yang sebenarnya terjadi." |
 | Bukti | `0:12–0:40` | Demo/diagram/angka. |
 | Konsekuensi + CTA | `0:40–0:55` | Apa ruginya kalau tetap salah, lalu arahkan ke video panjang. |
+
+### Short 3 — "Beda tipis" (dua benda yang dikira satu)
+
+Dua hal yang penonton kira sama, dipisahkan sampai batasnya jelas. Ini bentuk
+yang paling sering **disimpan** penonton, karena ia berguna sebagai rujukan
+nanti — bukan cuma sebagai tontonan sekali lewat.
+
+**Bedanya dengan Jebakan:** Jebakan membantah sesuatu yang **salah**; Beda tipis
+memisahkan dua hal yang **dua-duanya benar** dan cuma tertukar. Tidak ada yang
+dicoret di sini.
+
+| Beat | Waktu | Isi |
+|---|---|---|
+| Dua benda berdampingan | `0:00–0:04` | Keduanya di layar sejak frame pertama, dengan namanya. Klaimnya: ini bukan hal yang sama. |
+| "Kelihatannya sama" | `0:04–0:12` | Yang membuat keduanya tertukar — persamaan yang memang nyata, disebut jujur. |
+| Satu perbedaan yang menentukan | `0:12–0:40` | Bukan daftar perbedaan. **Satu**, yang paling menentukan, divisualkan sampai selesai. |
+| Akibatnya untukmu + CTA | `0:40–0:55` | Kapan tertukarnya merugikan. Kalau tidak pernah merugikan, Short ini tidak layak dibuat. |
+
+### Short 4 — "Coba sendiri" (satu tes, hari ini juga)
+
+Satu hal yang bisa dijalankan penonton dalam tiga puluh detik, dengan hasil yang
+ia lihat **di layarnya sendiri**. Ini bentuk yang paling sering **dikirim ke
+orang lain** ("coba deh"), karena yang dibagikan bukan informasinya melainkan
+pengalamannya.
+
+**Syarat mutlak:** tesnya harus bisa benar-benar dijalankan penonton awam, tanpa
+memasang apa pun dan tanpa risiko. Kalau butuh terminal, akun kedua, atau
+mematikan sesuatu — ganti tesnya, jangan dipermudah dengan kalimat.
+
+| Beat | Waktu | Isi |
+|---|---|---|
+| Perintahnya, di detik nol | `0:00–0:04` | Bukan klaim dan bukan mitos: **suruhan**. "Buka X, tekan Y." |
+| Apa yang akan kamu lihat | `0:04–0:14` | Dua kemungkinan hasilnya, keduanya disebut sebelum dijelaskan. |
+| Kenapa hasilnya begitu | `0:14–0:42` | Mekanismenya, divisualkan. Di sinilah topiknya benar-benar diajarkan. |
+| Arti hasilmu + CTA | `0:42–0:55` | Satu kalimat: kalau hasilmu A berarti ini, kalau B berarti itu. |
 
 ### Di mana berkasnya
 
@@ -165,11 +259,12 @@ ada scene yang isinya cuma teks, VO mengundang sebelum menamai, tiap sambungan
 dijembatani.
 
 **Penomoran mulai dari `01` lagi di tiap subfolder**, dan HARD RULE 5 (menyisipkan
-scene = menomori ulang sesudahnya) berhenti di batas subfolder — dua Short adalah
-dua urutan tayang, bukan satu daftar panjang.
+scene = menomori ulang sesudahnya) berhenti di batas subfolder — empat Short
+adalah empat urutan tayang yang berdiri sendiri, bukan satu daftar panjang.
 
 **Id komposisi Remotion berprefiks nama subfolder**: `s1-01-hook`,
-`s2-01-mitos`, dan Short utuhnya `<slug>-s1`. Prefiksnya bukan hiasan — tanpa
+`s2-01-mitos`, `s3-01-berdampingan`, `s4-01-perintah`, dan Short utuhnya
+`<slug>-s1` … `<slug>-s4`. Prefiksnya bukan hiasan — tanpa
 itu `01-hook` milik Short bertabrakan dengan `01-hook-question` milik video
 panjang di sidebar Studio yang sama. Ukuran komposisinya `SHORT_WIDTH` ×
 `SHORT_HEIGHT` dengan `<Panggung rasio="9x16">`, bukan 16:9.
@@ -194,7 +289,7 @@ skrip mana pun yang bisa meleset darinya.
 - **Nama benda tetap menyusul gambarannya.** Patokannya bukan nomor bagian —
   Shorts tidak punya flow tujuh bagian — melainkan syarat yang sama: bendanya
   sudah berdiri dan sudah dipakai di layar. **Satu pengecualian:** kalau
-  mitosnya sendiri berbunyi dengan nama itu (`"RAM lebih besar = lebih cepat"`),
+  mitosnya sendiri berbunyi dengan nama itu (`"Ganti DNS biar internet kencang"`),
   namanya jatuh di detik nol sebagai kutipan. Menuliskannya ulang tanpa nama
   bukan lagi mitos yang dipercaya orang, dan Short-nya kehilangan sasaran.
 - **Teks di layar wajib** — mayoritas penonton Shorts menonton tanpa suara.
@@ -232,7 +327,9 @@ Aturan yang berlaku untuk ketiga keluaran:
   ikon, animasi) — memang itu gunanya `shared/theme.css`.
 - Yang **tidak boleh** dipakai ulang: kalimat hook dan urutan beat. Feed berbeda,
   ritme berbeda.
-- Kedua Shorts tidak boleh mengambil insight yang sama. Kalau Short 1 dan Short 2
-  bisa saling menggantikan, salah satunya harus ditulis ulang.
-- Publikasi: video panjang dulu, Short 1 di hari yang sama (+2 jam), Short 2
-  di hari ke-3. Detail di [06 · Publishing](06-publishing.md).
+- **Tidak ada dua Short yang boleh mengambil insight yang sama**, dan sejak naik
+  jadi empat, syaratnya lebih ketat: yang harus berbeda **perannya**, bukan cuma
+  insight-nya. Uji: tukar isi dua Short. Kalau keduanya masih masuk akal di
+  tempat yang lain, salah satunya ditulis ulang.
+- Publikasi: video panjang dulu, lalu keempat Short berjarak minimal 48 jam —
+  H+2 jam, H+3, H+5, H+7. Detail di [06 · Publishing](06-publishing.md).

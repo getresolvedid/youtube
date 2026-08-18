@@ -28,7 +28,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 
 import { bacaEpisode, bacaShort, daftarShort } from "./baca-episode.mjs";
 
-const slug = process.argv[2] ?? "apa-itu-ram";
+const slug = process.argv[2] ?? "apa-itu-firewall";
 
 /** Berkas .tsx yang memang BUKAN scene. Tanpa daftar ini, perangkai dan berkas
  *  timing dilaporkan sebagai "id yang tidak ada di naskah" — peringatan palsu

@@ -8,7 +8,7 @@ Tidak perlu rapi, tidak perlu lengkap. Yang penting tidak hilang. Berkas lain
 (`naskah.md`, `vo/`, `render/`) menyusul kalau dan ketika ide itu digarap.
 
 ```
-ideas/apa-itu-ram/
+ideas/apa-itu-firewall/
 ├── ide.md        ← selalu ada
 ├── thumbnail.md  ← fase 1: ketegangan + pola + ≤4 kata, SEBELUM naskah
 ├── naskah.md     ← setelah lolos 4 syarat: materi topik + daftar scene
@@ -33,10 +33,13 @@ ideas/<slug>/ide.md  →  docs/07-backlog-topik.md  →  ideas/<slug>/thumbnail.
 - `ideas/` = **semua** ide, termasuk yang belum diuji dan yang ditolak.
 - [`docs/07-backlog-topik.md`](../docs/07-backlog-topik.md) = **hanya** yang sudah
   lolos 4 syarat dan punya kode `T{nn}`. Isinya ringkas — sudut video panjang +
-  dua Shorts.
+  keempat Shorts.
 - Ide yang sudah lolos **tetap tinggal di sini**, statusnya diubah jadi
-  `lolos → T01`. Jangan dihapus; catatan penolakan dan pertimbangan awalnya
+  `lolos → T{nn}`. Jangan dihapus; catatan penolakan dan pertimbangan awalnya
   berguna saat topik itu digarap.
+- **Topik yang sudah tayang dikeluarkan dari repo** — folder `ideas/<slug>/`-nya
+  dihapus beserta pendaftarannya di `src/Root.tsx` dan `package.json`. Arsipnya
+  ada di riwayat git; repo yang sedang digarap cuma berisi yang belum tayang.
 
 ## Empat syarat kelulusan
 
@@ -89,10 +92,12 @@ status: mentah    # mentah | diuji | lolos → T{nn} | ditolak | jadi Shorts saj
 
 ## Sudut video panjang
 
-## Sudut dua Shorts
+## Sudut empat Shorts
 
-- **Nugget:**
-- **Jebakan:**
+- **Nugget** (bikin kaget):
+- **Jebakan** (mengoreksi yang dipercaya):
+- **Beda tipis** (memisahkan dua yang dikira sama):
+- **Coba sendiri** (satu tes yang bisa dijalankan hari ini):
 
 ## Catatan
 ```

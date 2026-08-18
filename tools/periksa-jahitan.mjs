@@ -2,9 +2,9 @@
  *
  *   node --env-file=.env tools/periksa-jahitan.mjs <slug> [opsi]
  *
- *     --prefiks <p>   awalan id komposisi scene (mis. t14), lihat tools/prefiks.mjs
+ *     --prefiks <p>   awalan id komposisi scene (mis. t15), lihat tools/prefiks.mjs
  *     --short <fld>   periksa satu Short, mis. s1-nugget
- *     --jahitan <k>   satu sambungan saja: kunci scene SESUDAHNYA, mis. 12-ganti-loket
+ *     --jahitan <k>   satu sambungan saja: kunci scene SESUDAHNYA, mis. 05-dikunci-semua
  *
  * APA YANG DIPERIKSA. Setiap berkas direction di repo ini membuka dengan klausul
  * yang sama: "frame pertamanya = frame terakhir <scene sebelumnya>". Itu yang
@@ -91,7 +91,7 @@ const opsi = (nama) => {
   const i = argv.indexOf(`--${nama}`);
   return i === -1 ? null : argv[i + 1];
 };
-const slug = argv[0] && !argv[0].startsWith("--") ? argv[0] : "apa-itu-ram";
+const slug = argv[0] && !argv[0].startsWith("--") ? argv[0] : "apa-itu-firewall";
 const folderShort = opsi("short");
 const jahitanSatu = opsi("jahitan");
 const prefiksArg = opsi("prefiks");

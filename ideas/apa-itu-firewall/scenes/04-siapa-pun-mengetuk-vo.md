@@ -35,10 +35,13 @@ Dan itu berjalan sepanjang malam, tanpa terdengar dari dalam.
   penghuninya. Baris pertama dibuka "Masalahnya" — kata sambung yang menopang
   berat, dan yang menjadikannya kelanjutan langsung dari kalimat terakhir scene 3
   (HARD RULE 7).
-- **Pengetuknya sengaja tanpa wajah, tanpa tudung, tanpa warna merah.** Sama
-  seperti `Sosok` di T14: intinya justru bahwa siapa pun yang kebetulan lewat
-  bisa melakukannya, tanpa perlu jadi siapa-siapa. Ketukan yang digambar sebagai
-  penjahat mengubah masalahnya jadi masalah orang lain.
+- **Pengetuknya sekarang digambar — `Peretas`, bertudung, tapi tanpa wajah dan
+  tanpa warna merah.** Alasan lengkapnya di berkas direction; yang mengikat VO
+  cuma satu akibatnya: **teksnya tidak ikut berubah.** Tidak ada baris di sini
+  yang menyebut "peretas", "hacker", atau "menyerang", dan larangan itu tetap
+  berlaku (lihat catatan yang sama di `01-hook-mengetuk-vo.md`). Yang di layar
+  boleh menunjukkan siapa; yang diucapkan tetap "siapa pun" — kalau keduanya
+  mengatakan hal yang sama, tahap 4 dan 5 kehilangan isinya.
 - **Baris 3 ditandai audit sebagai "tanya tanpa tanda tanya" — itu salah baca.**
   "Siapa pun, dari mana pun, boleh datang dan mencoba" bukan pertanyaan; ia
   dimulai dengan kata yang kebetulan sama. Jangan ditambahi tanda tanya di sesi

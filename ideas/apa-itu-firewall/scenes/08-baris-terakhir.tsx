@@ -29,7 +29,7 @@ import {
   N_PINTU,
   P_DAFTAR,
   SKALA_DAFTAR_SISI,
-  Sosok,
+  Penjaga,
   X_GEDUNG,
   X_LUAR,
   X_PENJAGA,
@@ -97,7 +97,7 @@ export const BarisTerakhir: React.FC = () => {
           <g transform={kamera({ x: P_AKHIR.x, y: P_AKHIR.y, skala: 1 + 0.28 * turun })}>
             <Lantai />
             <Gedung pintu={PINTU_TETAP} />
-            <Sosok x={X_PENJAGA} y={Y_LANTAI} topi hadap={1} />
+            <Penjaga x={X_PENJAGA} y={Y_LANTAI} hadap={1} />
 
             {/* --- tahap 5: ruang kosong yang memang kosong --- */}
             <g opacity={0.7 * bingkaiPadam}>

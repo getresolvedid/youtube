@@ -30,8 +30,8 @@ import {
   Lantai,
   PINTU,
   Peta,
+  Penjaga,
   Pintu,
-  Sosok,
   Y_LANTAI,
 } from "../panggung-gedung";
 import { beat } from "../timing.gen";
@@ -129,7 +129,7 @@ export const Diam: React.FC = () => {
               strokeWidth={5}
             />
             <Pintu x={SISI[0].pintu} y={Y_PINTU} nomor={3} nyala={1} nomorTampil={1} />
-            <Sosok x={SISI[0].pintu - 260} y={Y_LANTAI} topi hadap={1} skala={0.8} />
+            <Penjaga x={SISI[0].pintu - 260} y={Y_LANTAI} hadap={1} skala={0.8} />
             <Ketukan x={xKiriKetuk} y={Y_JALUR} skala={0.72} opacity={1 - balikKiri * 0.2} />
 
             {/* jawaban yang terkirim balik ke pengetuk */}
@@ -171,10 +171,9 @@ export const Diam: React.FC = () => {
               strokeWidth={5}
             />
             <Pintu x={SISI[1].pintu} y={Y_PINTU} nomor={3} nyala={1} nomorTampil={1} />
-            <Sosok
+            <Penjaga
               x={SISI[1].pintu - 260}
               y={Y_LANTAI}
-              topi
               hadap={1}
               skala={0.8}
               opacity={1}

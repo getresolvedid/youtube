@@ -79,6 +79,11 @@ motion:
    - pertanyaan: `masuk()` geser 24, durasi 0,5
 
 catatan:
+   - **`Peretas` muncul bersama ketukan pertama, dan ini kali pertama penonton
+     melihatnya di seluruh episode.** ia berdiri di titik lahirnya ketukan, tidak
+     bergerak, dan ikut membeku waktu `dBeku` berhenti di B_TIDAK2 — pertanyaan
+     penutup hook jatuh di atas gambar yang benar-benar diam. alasan lengkap
+     kenapa pengetuknya sekarang digambar: `04-siapa-pun-mengetuk-direction.md`.
    - **BIDANG LAYAR DAN DINDING SEUKURAN, dan tahap 2 sekarang menjelaskan
      kenapa.** Perubahannya sudah kuat sebagai gambar, tapi gambar yang kuat
      tidak sama dengan gambar yang dimengerti: tanpa kalimat "anggap saja laptop

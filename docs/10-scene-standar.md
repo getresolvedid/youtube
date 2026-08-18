@@ -114,11 +114,12 @@ kartunya: kapan ia memudar, dan kapan figurnya boleh bernapas.
 
 **Judul episode maksimal 5 kata.** Lebih dari ~22 karakter sudah melewati lebar
 aman pada 96px dan patah di tempat yang salah. Kalau judulnya akronim, pecah
-jadi dua: `judul="RAM"` + `subjudul="Random Access Memory"` — baris kedua
-otomatis lebih kecil dan mono. Membiarkan `"RAM (Random Access Memory)"` jadi
+jadi dua: `judul="DNS"` + `subjudul="Domain Name System"` — baris kedua
+otomatis lebih kecil dan mono. Membiarkan `"DNS (Domain Name System)"` jadi
 satu string akan membungkus di tengah tanda kurung.
 
-**Judul boleh menyebut istilah inti episode**, dan T01 memang begitu. Tapi sadari
+**Judul boleh menyebut istilah inti episode**, dan episode-episode sejauh ini
+memang begitu. Tapi sadari
 konsekuensinya: kartu ini tayang sekitar detik 10, sementara [tangga
 abstraksi](09-tangga-abstraksi.md) menuntut istilah teknis baru muncul setelah
 bendanya digambarkan. Kalau judul mendahuluinya, **scene yang menamai istilah
@@ -139,7 +140,7 @@ sting terpisah, tagline, alamat website, animasi partikel, handle channel.
 > itu punya isi.
 
 ```tsx
-<KartuJudul judul="RAM" subjudul="Random Access Memory" figur={<FigurRam />} />
+<KartuJudul judul="DNS" subjudul="Domain Name System" figur={<FigurLoket />} />
 ```
 
 **Figurnya milik episode, koreografi masuknya milik `shared/`.** Slot
@@ -168,7 +169,7 @@ batas ini cuma memindahkan masalahnya.
 
 Aturannya:
 
-- **Benda utama episode, bukan dekorasi.** T01 memakai modul RAM. Kalau
+- **Benda utama episode, bukan dekorasi.** T14 memakai loket penanya nama. Kalau
   episodenya belum punya benda yang jelas, kosongkan — prop ini opsional dan
   kartu tanpa figur tetap sah.
 - **Bukan logo getresolved dalam bentuk lain.** Mark sudah ada di kiri; dua
@@ -245,8 +246,8 @@ render.**
 Tidak ada yang perlu disalin. `Episode.tsx` sudah memasang keduanya:
 
 ```tsx
-export const JUDUL = "RAM";
-export const SUBJUDUL = "Random Access Memory";
+export const JUDUL = "DNS";
+export const SUBJUDUL = "Domain Name System";
 
 export const isiScene = (t: Timing) => {
   if (t.id === "opening") return <KartuJudul judul={JUDUL} subjudul={SUBJUDUL} />;
@@ -281,8 +282,8 @@ komponen.
 - Prop `figur` di `<KartuJudul>` — figur benda utama episode di paruh kanan.
   Isinya milik episode; slot dan koreografi masuknya tidak (§ Figur episode).
 - Prop `sub` di `<TandaBrand>` (16:9 saja) — satu baris ajakan. Boleh diganti
-  kalau episodenya punya lanjutan yang spesifik ("Bagian dua: kenapa ram cepat
-  penuh"); yang tidak boleh cuma mengembalikannya jadi deskripsi channel.
+  kalau episodenya punya lanjutan yang spesifik ("Bagian dua: kenapa loketnya
+  bisa berbohong"); yang tidak boleh cuma mengembalikannya jadi deskripsi channel.
 
 Keduanya prop, bukan hasil menyalin komponen. Kalau kamu sedang menyalin
 `StandarScenes.tsx` ke episode, kamu sudah salah jalan.

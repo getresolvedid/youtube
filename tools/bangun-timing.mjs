@@ -16,14 +16,14 @@
    daftar di skrip ini. Daftar kedua yang ditulis tangan akan meleset dari
    isi folder dalam sekali tambah Short.
 
-   Jalankan:  node --env-file=.env tools/bangun-timing.mjs apa-itu-ram
+   Jalankan:  node --env-file=.env tools/bangun-timing.mjs apa-itu-firewall
    Otomatis lewat npm pre-script (studio / render / check / sisa).
 */
 import { writeFileSync } from "node:fs";
 
 import { bacaEpisode, bacaShort, daftarShort, wajib } from "./baca-episode.mjs";
 
-const slug = process.argv[2] ?? "apa-itu-ram";
+const slug = process.argv[2] ?? "apa-itu-firewall";
 
 /* Yang ditulis ke TS hanya yang dipakai komposisi. `kata`, `chars`, dan letak
    berkas rencana VO milik `npm run sisa`, bukan milik Remotion. */

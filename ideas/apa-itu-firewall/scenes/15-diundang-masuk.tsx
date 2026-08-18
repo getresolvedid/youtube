@@ -36,7 +36,7 @@ import {
   N_PINTU,
   PINTU_HIDUP,
   P_BUKU,
-  Sosok,
+  Penjaga,
   X_GEDUNG,
   X_LUAR,
   X_PENJAGA,
@@ -135,7 +135,7 @@ export const DiundangMasuk: React.FC = () => {
             ))}
 
             {/* --- penjaga: minggir satu langkah, tetap tegak --- */}
-            <Sosok x={X_PENJAGA - 44 * minggir} y={Y_LANTAI} topi hadap={1 - 2 * kedalam} />
+            <Penjaga x={X_PENJAGA - 44 * minggir} y={Y_LANTAI} hadap={1 - 2 * kedalam} />
 
             {/* --- tahap 3: permintaan berangkat dari dalam --- */}
             <Ketukan

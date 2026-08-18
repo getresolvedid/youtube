@@ -29,7 +29,7 @@ import {
   Lantai,
   N_PINTU,
   PenandaBaca,
-  Sosok,
+  Penjaga,
   X_GEDUNG,
   X_LUAR,
   X_PENJAGA,
@@ -124,7 +124,7 @@ export const DariAtas: React.FC = () => {
           >
             <Lantai opacity={0.5} />
             <Gedung pintu={PINTU_TETAP} opacity={0.3} />
-            <Sosok x={X_PENJAGA_SILUET} y={Y_LANTAI} topi hadap={1} opacity={0.3} />
+            <Penjaga x={X_PENJAGA_SILUET} y={Y_LANTAI} hadap={1} opacity={0.3} />
 
             <g transform={`translate(0 ${selip * H_BARIS})`}>
               <Daftar

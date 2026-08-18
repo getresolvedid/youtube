@@ -175,8 +175,8 @@ export const KartuJudul: React.FC<{
   subjudul?: string;
   /** Figur benda utama episode, ditaruh di paruh kanan yang selama ini kosong
    *  (HARD RULE 2 — tidak ada scene yang isinya cuma teks; kartu judul pun
-   *  tidak). Dimiliki EPISODE, bukan shared/: T01 mengirim modul RAM,
-   *  episode lain mengirim bendanya sendiri.
+   *  tidak). Dimiliki EPISODE, bukan shared/: T14 mengirim loket penanya
+   *  nama, episode lain mengirim bendanya sendiri.
    *
    *  Yang tetap milik shared/ adalah cara ia MASUK — slot ini yang menggeser
    *  dan memudarkannya, supaya semua episode punya ritme pembuka yang sama.

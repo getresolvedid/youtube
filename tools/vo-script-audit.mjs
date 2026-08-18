@@ -42,7 +42,7 @@ import { bacaEpisode, bacaShort, daftarShort } from "./baca-episode.mjs";
 const DIJALANKAN_LANGSUNG =
   process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 
-const slug = process.argv[2] ?? "apa-itu-ram";
+const slug = process.argv[2] ?? "apa-itu-firewall";
 const MAKS_KATA_KALIMAT = 18;
 
 /* Ambang ritme. cv = simpangan baku / rata-rata panjang baris. Angkanya memang

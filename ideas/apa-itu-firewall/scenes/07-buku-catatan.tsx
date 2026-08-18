@@ -37,7 +37,7 @@ import {
   P_BUKU,
   P_DAFTAR,
   SKALA_DAFTAR_SISI,
-  Sosok,
+  Penjaga,
   X_GEDUNG,
   X_LUAR,
   X_PENJAGA,
@@ -110,7 +110,7 @@ export const BukuCatatan: React.FC = () => {
           <g transform={kamera({ x: P_BUKU.x, y: P_BUKU.y, skala: 1 + 0.42 * zoom })}>
             <Lantai />
             <Gedung pintu={PINTU_TETAP} />
-            <Sosok x={X_PENJAGA} y={Y_LANTAI} topi hadap={1} />
+            <Penjaga x={X_PENJAGA} y={Y_LANTAI} hadap={1} />
 
             {/* daftar: mundur, tapi tetap di layar sepanjang scene */}
             <g opacity={1 - 0.65 * mundur}>

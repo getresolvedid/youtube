@@ -21,7 +21,9 @@
  * menulis batasnya ke JSON supaya bikin-vo-utuh.mjs bisa memakainya.
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
 
 import { bacaEpisode, bacaShort, daftarShort } from "./baca-episode.mjs";
 
@@ -36,7 +38,7 @@ const TARGET = String(opt("--target", "S1")).toUpperCase();
 const MODEL = opt("--model", "gemini-3.7-flash");
 
 if (!slug) {
-  console.error("Pakai: node --env-file=.env tools/cocokkan-vo.mjs <slug> --target L|S1|S2 [--wav p] [--model id]");
+  console.error("Pakai: node --env-file=.env tools/cocokkan-vo.mjs <slug> --target L|S1|S2|S3|S4 [--wav p] [--model id]");
   process.exit(1);
 }
 
@@ -58,9 +60,30 @@ const sumber =
  *  bergeser, tepat di alat yang tugasnya membuktikan naskah TIDAK bergeser. */
 const LEWATI = Number(opt("--lewati", 0));
 
-const scenes = (sumber.timing ?? [])
-  .filter((t) => !t.standar && t.vo.trim())
-  .slice(LEWATI);
+const semuaScene = (sumber.timing ?? []).filter((t) => !t.standar && t.vo.trim());
+
+/** --sampai <n>: scene ke-n dan sesudahnya juga TIDAK ada di audio ini.
+ *
+ *  Pasangan --lewati, dan ada karena alasan yang sama — cuma dari ujung yang
+ *  lain. Dipakai saat bikin-vo-utuh.mjs memecah satu keluaran jadi beberapa
+ *  permintaan (`--batch`): aliran batch 2 memuat scene 5–8 saja, jadi
+ *  penyejajaran yang dibiarkan mencari scene 9 sampai habis akan melaporkan
+ *  seluruh ekor naskah sebagai "tidak diucapkan" — di alat yang justru dipakai
+ *  untuk membuktikan naskahnya diucapkan utuh.
+ *
+ *  Indeksnya ABSOLUT terhadap daftar scene yang bicara, sama seperti --lewati,
+ *  supaya keduanya bisa dibaca berpasangan: --lewati 4 --sampai 8 berarti
+ *  scene ke-5 sampai ke-8. */
+const SAMPAI = Number(opt("--sampai", semuaScene.length));
+
+if (!(LEWATI >= 0 && SAMPAI > LEWATI && SAMPAI <= semuaScene.length)) {
+  console.error(
+    `\n--lewati ${LEWATI} --sampai ${SAMPAI} tidak masuk akal untuk ${semuaScene.length} scene yang bicara.\n`,
+  );
+  process.exit(1);
+}
+
+const scenes = semuaScene.slice(LEWATI, SAMPAI);
 
 /** Kata dinormalkan sebelum dibandingkan: transkripsi menulis tanda baca dan
  *  besar-kecil huruf sesukanya, dan "belakang." vs "belakang" bukan pergeseran
@@ -235,8 +258,41 @@ for (let i = 0; i < scenes.length - 1; i++) {
   batas.push((terakhir.a.akhir + pertamaBerikut.a.mulai) / 2);
 }
 
-const total = kataAudio.at(-1)?.akhir ?? 0;
+/** Ujung akhir aliran diambil dari DURASI BERKASNYA, bukan dari cap waktu kata
+ *  terakhir.
+ *
+ *  Kata terakhir itu tebakan yang tampak pasti, dan ia pernah salah dengan cara
+ *  yang mahal: di batch 4 T14 transkripsi mengembalikan entri terakhir bercap
+ *  waktu 1,29 dtk untuk aliran 89,5 dtk, jadi `tepi` jadi [0, 43,53, 1,29] —
+ *  menurun. ffmpeg menolaknya dengan "-to value smaller than -ss" di tengah
+ *  pemotongan, setelah tiga batch lain sudah dipotong.
+ *
+ *  Durasi berkas tidak bisa salah begitu, dan ekor senyapnya tidak jadi masalah:
+ *  tepi tiap potongan dipangkas silenceremove saat dipotong. */
+const durasiWav = Number(
+  execFileSync(
+    process.env.FFPROBE_PATH?.trim() || "ffprobe",
+    ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", WAV],
+    { encoding: "utf8" },
+  ).trim(),
+);
+const total = durasiWav;
 const tepi = [0, ...batas, total];
+
+/** Tepi WAJIB menaik. Tanpa ini, tepi yang menurun lolos dari sini dan baru
+ *  meledak di ffmpeg — sebagai pesan yang tidak menyebut satu pun nama scene,
+ *  di alat yang berbeda, setelah batch lain terlanjur dipotong. */
+for (let i = 1; i < tepi.length; i++) {
+  if (!(tepi[i] > tepi[i - 1])) {
+    console.error(
+      `\nBatas tidak menaik di ${scenes[i - 1]?.kunci ?? `tepi ${i}`}: ` +
+        `${tepi[i - 1].toFixed(2)} → ${tepi[i].toFixed(2)} dtk.\n` +
+        `Transkripsinya kacau di bagian itu — cap waktu katanya tidak urut.\n` +
+        `Ulangi cocokkan-vo, atau potong dengan --senyap.\n`,
+    );
+    process.exit(1);
+  }
+}
 
 console.log(`\nBatas scene dari cap waktu kata:\n`);
 scenes.forEach((s, i) => {
@@ -247,10 +303,14 @@ scenes.forEach((s, i) => {
   );
 });
 
-const keluar = `out/voicetest/${slug}/batas-${TARGET}.json`;
+/** --keluar <path>: satu aliran = satu berkas batas. Saat keluarannya dipecah
+ *  jadi beberapa permintaan, nama bakunya akan ditimpa berulang kali oleh batch
+ *  berikutnya — dan yang dipakai memotong tinggal batas milik batch terakhir. */
+const keluar = opt("--keluar", `out/voicetest/${slug}/batas-${TARGET}.json`);
+mkdirSync(dirname(keluar), { recursive: true });
 writeFileSync(
   keluar,
-  JSON.stringify({ slug, target: TARGET, wav: WAV, lewati: LEWATI, total, tepi }, null, 2),
+  JSON.stringify({ slug, target: TARGET, wav: WAV, lewati: LEWATI, sampai: SAMPAI, total, tepi }, null, 2),
 );
 console.log(`\nBatas ditulis ke ${keluar}`);
 console.log(`Pakai: node --env-file=.env tools/bikin-vo-utuh.mjs ${slug} --target ${TARGET} --coba --jalan --pakai-wav --batas ${keluar}\n`);

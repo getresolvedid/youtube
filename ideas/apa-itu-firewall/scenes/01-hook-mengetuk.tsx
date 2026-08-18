@@ -38,8 +38,11 @@ import {
   Lantai,
   Layar,
   N_PINTU,
+  Peretas,
   X_GEDUNG,
   X_LUAR,
+  X_PERETAS,
+  Y_LANTAI,
   kamera,
 } from "../panggung-gedung";
 import { beat } from "../timing.gen";
@@ -210,6 +213,20 @@ export const HookMengetuk: React.FC = () => {
                   />
                 );
               })}
+            </g>
+
+            {/* Yang mengetuk, muncul bersama ketukan pertama — dan ini kali
+                pertama penonton melihatnya di seluruh episode. Ia memakai
+                `dBeku` yang sama dengan ketukannya, jadi waktu yang berhenti di
+                B_TIDAK2 membekukannya juga: pertanyaan penutup hook jatuh di
+                atas gambar yang benar-benar diam, bukan yang masih bergerak. */}
+            <g data-tumpang="sengaja" opacity={mundur}>
+              <Peretas
+                x={X_PERETAS}
+                y={Y_LANTAI}
+                skala={0.92}
+                opacity={t(dBeku, { mulai: B_ADA - 0.35, durasi: 0.7, dari: 0, ke: 1 })}
+              />
             </g>
 
             {KETUK.map((k, i) => {

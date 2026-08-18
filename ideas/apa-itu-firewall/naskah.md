@@ -138,7 +138,7 @@ Judulnya diatur di `Episode.tsx` (`JUDUL` + `SUBJUDUL`); `tools/bangun-timing.mj
 yang menyisipkan kedua scene itu ke `timing.gen.ts`.
 
 > **Kartu judul menulis "Firewall" di sekitar detik dua puluh, dan itu
-> disengaja** — sama seperti T01 dan T14. Yang dilarang HARD RULE 6 adalah **VO**
+> disengaja** — sama seperti T14. Yang dilarang HARD RULE 6 adalah **VO**
 > yang menyebut nama sebelum bendanya berdiri, bukan kartu judulnya. Karena itu
 > penamaan di `penjaga` ditulis sebagai penegasan atas benda yang sudah berdiri,
 > bukan sebagai perkenalan.

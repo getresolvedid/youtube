@@ -34,6 +34,8 @@ import {
   PINTU_HIDUP,
   P_DAFTAR,
   SKALA_DAFTAR_SISI,
+  Penjaga,
+  Peretas,
   Sosok,
   X_GEDUNG,
   X_LUAR,
@@ -129,7 +131,7 @@ export const PintuDibukaSendiri: React.FC = () => {
 
             {/* --- penjaga: menoleh keluar frame --- */}
             <g transform={`rotate(${noleh} ${X_PENJAGA} ${Y_LANTAI - 116})`}>
-              <Sosok x={X_PENJAGA} y={Y_LANTAI} topi hadap={1} />
+              <Penjaga x={X_PENJAGA} y={Y_LANTAI} hadap={1} />
             </g>
 
             {/* --- tahap 4: sosok di gedung seberang. TANPA topi. --- */}
@@ -174,6 +176,25 @@ export const PintuDibukaSendiri: React.FC = () => {
               opacity={tamu > 0 && tamu < 0.97 ? 1 : 0}
               warna="var(--accent-ink)"
             />
+
+            {/* --- tahap 9: yang paling rajin mengetuk ---
+                Ia berdiri di sebelah temannya, BUKAN menggantikannya: temannya
+                tetap di tempat, tetap `Sosok` biasa, dan itu justru isi baris
+                terakhirnya. Kalau temannya menghilang waktu ia datang, yang
+                terbaca "ternyata temanmu jahat" — kebalikan persis dari
+                kalimatnya.
+
+                Ia juga tidak melakukan apa pun selain berdiri. Tahap 7–9 tidak
+                menggambarkan kebobolan (lihat catatan direction): yang berubah
+                cuma siapa saja yang sekarang boleh mencoba. */}
+            <g data-tumpang="sengaja">
+              <Peretas
+                x={X_LUAR - 30}
+                y={Y_LANTAI}
+                skala={0.78}
+                opacity={t(d, { mulai: B_RAJIN - 0.2, durasi: 0.8, dari: 0, ke: 1 })}
+              />
+            </g>
 
             {/* --- tahap 8 & 9: ketukan berdatangan ke pintu itu saja --- */}
             {RAPAT.map((tunda, i) => {

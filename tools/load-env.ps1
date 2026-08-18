@@ -11,7 +11,7 @@
 
 .EXAMPLE
     . .\tools\load-env.ps1
-    npx hyperframes render -o render/T01-L.mp4
+    npm run render:t15
 
 .EXAMPLE
     . .\tools\load-env.ps1 -Path ..\\.env -Show

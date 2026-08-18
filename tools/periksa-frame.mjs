@@ -24,6 +24,8 @@ import { inflateSync } from "node:zlib";
 import { mkdirSync, readFileSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 
+import { PREFIKS } from "./prefiks.mjs";
+
 const KELUARAN = "out/periksa";
 /* Lewat package.json karena berkas bin-nya tidak diekspor lewat "exports",
    jadi resolve() langsung ke path-nya ditolak Node. */
@@ -41,9 +43,13 @@ const CLI = (() => {
    memeriksanya di sana akan selalu merah tanpa ada yang rusak. */
 /* ID komposisi scene = field `kunci` di timing.gen.ts, yang memuat nomor urut.
    Nomor itu bergeser begitu naskah disisipi scene baru, jadi ia dibaca dari
-   sana — bukan ditulis "02-opening" di sini lalu jadi salah diam-diam. */
+   sana — bukan ditulis "02-opening" di sini lalu jadi salah diam-diam.
+
+   Awalannya (`t15-`) ikut dipasang di sini: sejak episode kedua, id komposisi
+   scene berprefiks kode topik (src/Root.tsx · tools/prefiks.mjs). */
 const kunci = (() => {
-  const src = readFileSync("ideas/apa-itu-ram/timing.gen.ts", "utf8");
+  const slug = "apa-itu-firewall";
+  const src = readFileSync(`ideas/${slug}/timing.gen.ts`, "utf8");
   const peta = new Map(
     [...src.matchAll(/"id":\s*"([^"]+)",\s*"kunci":\s*"([^"]+)"/g)].map((m) => [
       m[1],
@@ -53,7 +59,7 @@ const kunci = (() => {
   return (id) => {
     const k = peta.get(id);
     if (!k) throw new Error(`Scene "${id}" tidak ada di timing.gen.ts.`);
-    return k;
+    return `${PREFIKS[slug]}-${k}`;
   };
 })();
 
@@ -65,74 +71,33 @@ const kunci = (() => {
 const TITIK = [
   { komposisi: kunci("opening"), frame: 40, nama: "kartu judul, setelah judul masuk" },
   { komposisi: kunci("closing"), frame: 60, nama: "tanda brand, setelah semua masuk" },
-  {
-    komposisi: "T01-apa-itu-ram",
-    frame: 60,
-    nama: "episode 2 dtk, scene pertama",
-    props: { subtitel: false },
-  },
   /* Tiap episode disampel sendiri. Episode yang lolos tidak membuktikan apa pun
      tentang episode lain: panggung, koordinat, dan berkas bantunya beda — dan
      yang paling sering kosong justru episode yang paling baru. */
-  {
-    komposisi: "T14-dns-server",
-    frame: 60,
-    nama: "T14 · episode 2 dtk, scene hook",
-    props: { subtitel: false },
-  },
   {
     komposisi: "T15-apa-itu-firewall",
     frame: 60,
     nama: "T15 · episode 2 dtk, scene hook",
     props: { subtitel: false },
   },
-  {
-    komposisi: "T16-apa-itu-enkripsi",
-    frame: 60,
-    nama: "T16 · episode 2 dtk, scene hook",
-    props: { subtitel: false },
-  },
-  /* Kedua Short ikut disampel. Panggung 9:16 punya skala tipografi dan kotak
-     aman sendiri (`.r-9x16`), jadi episode yang lolos TIDAK membuktikan apa pun
-     tentang keduanya — dan Shorts justru yang paling gampang kosong: kalau isi
-     scene disusun untuk 1920x1080, ia mendarat di luar bingkai 1080x1920 tanpa
-     ada satu pun error. */
-  {
-    komposisi: "T01-apa-itu-ram-s1",
-    frame: 60,
-    nama: "Short 1 · 2 dtk, hook",
-    props: { subtitel: false },
-  },
-  {
-    komposisi: "T01-apa-itu-ram-s2",
-    frame: 60,
-    nama: "Short 2 · 2 dtk, mitos",
-    props: { subtitel: false },
-  },
-  {
-    komposisi: "T14-dns-server-s1",
-    frame: 60,
-    nama: "T14 · Short 1 · 2 dtk, hook",
-    props: { subtitel: false },
-  },
-  {
-    komposisi: "T14-dns-server-s2",
-    frame: 60,
-    nama: "T14 · Short 2 · 2 dtk, mitos",
-    props: { subtitel: false },
-  },
-  { komposisi: "s1-99-closing", frame: 40, nama: "tanda brand 9:16" },
-  /* Thumbnail ikut disampel walaupun ia bukan video. Justru ia yang paling
-     mahal kalau kosong: MP4 yang gelap ketahuan saat ditonton sebelum diunggah,
-     tapi thumbnail cuma dilihat sekali — waktu dipilih di kolom unggah — dan
-     sesudah itu tidak ada yang membukanya lagi. Ukurannya juga sendiri
-     (1280x720), jadi episode yang lolos tidak membuktikan apa pun tentangnya. */
-  { komposisi: "T01-thumb", frame: 0, nama: "thumbnail 1280x720" },
-  { komposisi: "T01-thumb-s1", frame: 0, nama: "kover Short 1 · 2160x3840" },
-  { komposisi: "T01-thumb-s2", frame: 0, nama: "kover Short 2 · 2160x3840" },
-  { komposisi: "T14-thumb", frame: 0, nama: "T14 · thumbnail 1280x720" },
-  { komposisi: "T14-thumb-s1", frame: 0, nama: "T14 · kover Short 1" },
-  { komposisi: "T14-thumb-s2", frame: 0, nama: "T14 · kover Short 2" },
+  /* BELUM ADA SHORT & THUMBNAIL yang terdaftar — keduanya lahir di fase 3 dan
+     fase 4 sebuah topik, dan T15 masih di fase 2. Begitu ada, keduanya WAJIB
+     ikut disampel di sini:
+
+       { komposisi: "T15-apa-itu-firewall-s1", frame: 60, props: { subtitel: false } }
+       { komposisi: "t15-s1-99-closing",       frame: 40 }
+       { komposisi: "T15-thumb",               frame: 0 }
+
+     Short: panggung 9:16 punya skala tipografi dan kotak aman sendiri
+     (`.r-9x16`), jadi episode yang lolos TIDAK membuktikan apa pun tentangnya —
+     dan Short justru yang paling gampang kosong: isi scene yang disusun untuk
+     1920x1080 mendarat di luar bingkai 1080x1920 tanpa satu pun error.
+
+     Thumbnail: ia yang paling mahal kalau kosong. MP4 yang gelap ketahuan saat
+     ditonton sebelum diunggah, tapi thumbnail cuma dilihat sekali — waktu
+     dipilih di kolom unggah — dan sesudah itu tidak ada yang membukanya lagi.
+     Ukurannya juga sendiri (1280x720), jadi episode yang lolos tidak
+     membuktikan apa pun tentangnya. */
 ];
 
 /* --- pembaca PNG minimal ---------------------------------------------------

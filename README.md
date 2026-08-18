@@ -34,7 +34,7 @@ Repo ini menyimpan **guideline, naskah, dan komposisi video** — bukan aplikasi
 | 04 | [Pipeline produksi](docs/04-pipeline-produksi.md) | Alur 8 langkah: riset → naskah → VO → timing → komposisi → render → QA |
 | 05 | [Template naskah](docs/05-template-naskah.md) | Struktur `naskah.md`: materi topik + daftar scene, contoh terisi |
 | 06 | [Publishing](docs/06-publishing.md) | Judul, deskripsi, tag, thumbnail, chapter, checklist upload |
-| 07 | [Backlog topik](docs/07-backlog-topik.md) | Taksonomi topik + 12 topik pembuka beserta sudut kedua Shorts-nya |
+| 07 | [Backlog topik](docs/07-backlog-topik.md) | Taksonomi topik + 12 topik pembuka beserta sudut keempat Shorts-nya |
 | 08 | [Konfigurasi & secret](docs/08-konfigurasi.md) | Semua setelan & API key jadi satu di `.env`, termasuk rotasi key |
 | 09 | [Tangga abstraksi](docs/09-tangga-abstraksi.md) | Aturan "bahasa anak 5 tahun": L1 → L2 → L3. Dibaca bersama 02 dan 05 |
 | 10 | [Scene standar](docs/10-scene-standar.md) | Kartu judul (pembuka) & tanda brand (penutup) yang identik di semua episode |
@@ -157,17 +157,9 @@ Sudah ditetapkan:
 | Website / CTA | [getresolved.id](https://getresolved.id) |
 | Voice Gemini | **Charon**, model `gemini-2.5-flash-preview-tts` |
 | Audiens | **Khalayak umum + developer** dalam satu video, dijembatani tangga L1→L2→L3 |
-| Episode pertama | **T01 · Apa itu RAM** — [ide](ideas/apa-itu-ram/ide.md) · [backlog](docs/07-backlog-topik.md) |
+| Episode berjalan | **T15 · Apa itu firewall** — [ide](ideas/apa-itu-firewall/ide.md) · [backlog](docs/07-backlog-topik.md) |
 
 Yang masih terbuka:
 
-0. **81 scene T01 perlu dibangun ulang.** Migrasi dari HyperFrames ke Remotion
-   (2026-08-13) sengaja membuang 80 scene generate lama + hook tulis tangan;
-   yang diselamatkan naskah, timing, tema, kosakata figur, dan scene standar.
-   Sisa pekerjaannya terlihat lewat `npm run sisa`, dan tiap scene yang belum
-   ada tampil sebagai kartu kuning lengkap dengan baris VO-nya.
-1. **Angka latensi untuk T01** belum punya sumber primer. Opsi paling jujur:
-   ukur sendiri di mesin ini dan sebutkan spesifikasinya di video. Detailnya di
-   [ideas/apa-itu-ram/ide.md](ideas/apa-itu-ram/ide.md#catatan).
-2. **Musik latar.** Belum ada aset di `shared/`; dibutuhkan sebelum render final
-   episode pertama.
+1. **Musik latar.** Belum ada aset di `shared/`; dibutuhkan sebelum render final
+   episode berikutnya.

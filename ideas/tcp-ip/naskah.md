@@ -174,10 +174,9 @@ Keluaran `npm run gen`. Opening dan closing sudah ikut terhitung di sana.
 **Target:** 40–60 dtk · L1
 **Berkas:** `scene-shorts/s1-alamat/` — id komposisi `s1-01-…`, Short utuh `T18-tcp-ip-s1`.
 
-> **FASE 3 — BELUM DIGARAP.** Tabel ini rencana, bukan produksi. Yang menentukan
-> sebuah Short ada adalah **subfoldernya**, dan subfolder itu belum dibuat:
-> selama belum ada, `npm run gen` tidak membaca bagian ini sama sekali. Video
-> panjang tuntas dulu (CLAUDE.md § Fase kerja satu topik).
+**Hook ditulis ulang dari nol** (docs/02): scene 4 video panjang membuka dengan
+kalimat yang mirip, tapi di sana ia lanjutan scene 3 — di sini ia harus berdiri
+sendiri di detik nol.
 
 ### Scene
 
@@ -193,9 +192,12 @@ Keluaran `npm run gen`. Opening dan closing sudah ikut terhitung di sana.
 
 **Sudut:** pemecahan jadi potongan.
 **Target:** 40–60 dtk · L1
-**Berkas:** `scene-shorts/s2-potongan/` — Short utuh `T18-tcp-ip-s2`.
+**Berkas:** `scene-shorts/s2-potongan/` — id komposisi `s2-01-…`, Short utuh `T18-tcp-ip-s2`.
 
-> **FASE 3 — BELUM DIGARAP.**
+**Pekerjaannya berbeda dari Short 1**, dan keduanya tidak bisa saling
+menggantikan: S1 soal *ke mana* satu kiriman pergi, S2 soal *berapa banyak
+benda* yang sebenarnya berjalan. Loop-nya lewat bidang `FILE` yang sama di
+frame pertama dan frame terakhir.
 
 ### Scene
 
@@ -211,9 +213,16 @@ Keluaran `npm run gen`. Opening dan closing sudah ikut terhitung di sana.
 
 **Sudut:** kelengkapan & kirim ulang.
 **Target:** 40–60 dtk · L1
-**Berkas:** `scene-shorts/s3-hilang/` — Short utuh `T18-tcp-ip-s3`.
+**Berkas:** `scene-shorts/s3-hilang/` — id komposisi `s3-01-…`, Short utuh `T18-tcp-ip-s3`.
 
-> **FASE 3 — BELUM DIGARAP.**
+**Ini satu-satunya keluaran topik ini yang urutannya kebetulan sesuai
+HARD RULE 6** — masalahnya berdiri dan terlihat di scene 2, dan nama `TCP` baru
+jatuh di scene 3. Kebetulan, bukan rancangan: storyboard yang menaruhnya begitu.
+
+**Koordinat slot penerima milik `scene-shorts/panggung-short.tsx`**
+(`slotX`, `Y_SLOT`, `SlotKosong`), bukan salah satu berkas scene. Kelima scene
+memakainya, dan slot yang bergeser satu piksel pun antar-scene membatalkan
+seluruh Short ini.
 
 ### Scene
 
@@ -230,9 +239,18 @@ Keluaran `npm run gen`. Opening dan closing sudah ikut terhitung di sana.
 
 **Sudut:** dua tugas yang berbeda.
 **Target:** 40–60 dtk · L1
-**Berkas:** `scene-shorts/s4-beda/` — Short utuh `T18-tcp-ip-s4`.
+**Berkas:** `scene-shorts/s4-beda/` — id komposisi `s4-01-…`, Short utuh `T18-tcp-ip-s4`.
 
-> **FASE 3 — BELUM DIGARAP.**
+> **Nama jatuh di detik nol, dan itu pengecualian yang disengaja** (HARD RULE 6 ·
+> [docs/02 § Aturan Shorts](../../docs/02-format-video.md)). Yang dibantah Short
+> ini adalah keyakinan yang sudah dipegang penonton tentang dua nama itu;
+> menuliskannya ulang tanpa namanya bukan lagi keyakinan yang sama. Bentuk yang
+> sama persis dipakai Short 2 T15.
+
+> **Di 9:16 layar dibelah ATAS–BAWAH, bukan kiri–kanan.** Storyboard menulis
+> "screen split menjadi dua" dengan sisi kiri dan kanan, tapi itu bentuk 16:9 —
+> di bingkai tegak, dua kolom sempit membuat teksnya tidak terbaca di layar HP.
+> Perputaran ini sejalan dengan arah jalur yang juga sudah diputar 90°.
 
 ### Scene
 

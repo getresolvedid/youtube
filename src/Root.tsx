@@ -67,6 +67,42 @@ import {
   cari as cariT18,
 } from "../ideas/tcp-ip/timing.gen";
 import {
+  Short as ShortT18S1,
+  isiScene as isiSceneT18S1,
+} from "../ideas/tcp-ip/scene-shorts/s1-alamat/Short";
+import {
+  TIMING as TIMING_T18S1,
+  TOTAL as TOTAL_T18S1,
+  cari as cariT18S1,
+} from "../ideas/tcp-ip/scene-shorts/s1-alamat/timing.gen";
+import {
+  Short as ShortT18S2,
+  isiScene as isiSceneT18S2,
+} from "../ideas/tcp-ip/scene-shorts/s2-potongan/Short";
+import {
+  TIMING as TIMING_T18S2,
+  TOTAL as TOTAL_T18S2,
+  cari as cariT18S2,
+} from "../ideas/tcp-ip/scene-shorts/s2-potongan/timing.gen";
+import {
+  Short as ShortT18S3,
+  isiScene as isiSceneT18S3,
+} from "../ideas/tcp-ip/scene-shorts/s3-hilang/Short";
+import {
+  TIMING as TIMING_T18S3,
+  TOTAL as TOTAL_T18S3,
+  cari as cariT18S3,
+} from "../ideas/tcp-ip/scene-shorts/s3-hilang/timing.gen";
+import {
+  Short as ShortT18S4,
+  isiScene as isiSceneT18S4,
+} from "../ideas/tcp-ip/scene-shorts/s4-beda/Short";
+import {
+  TIMING as TIMING_T18S4,
+  TOTAL as TOTAL_T18S4,
+  cari as cariT18S4,
+} from "../ideas/tcp-ip/scene-shorts/s4-beda/timing.gen";
+import {
   Short as ShortT17S1,
   isiScene as isiSceneT17S1,
 } from "../ideas/enkripsi/scene-shorts/s1-perjalanan/Short";
@@ -165,6 +201,10 @@ const buatSceneSolo = (
 const SceneSoloT15 = buatSceneSolo(isiSceneT15, cariT15, "16x9");
 const SceneSoloT17 = buatSceneSolo(isiSceneT17, cariT17, "16x9");
 const SceneSoloT18 = buatSceneSolo(isiSceneT18, cariT18, "16x9");
+const SceneSoloT18S1 = buatSceneSolo(isiSceneT18S1, cariT18S1, "9x16");
+const SceneSoloT18S2 = buatSceneSolo(isiSceneT18S2, cariT18S2, "9x16");
+const SceneSoloT18S3 = buatSceneSolo(isiSceneT18S3, cariT18S3, "9x16");
+const SceneSoloT18S4 = buatSceneSolo(isiSceneT18S4, cariT18S4, "9x16");
 const SceneSoloT17S1 = buatSceneSolo(isiSceneT17S1, cariT17S1, "9x16");
 const SceneSoloT17S2 = buatSceneSolo(isiSceneT17S2, cariT17S2, "9x16");
 const SceneSoloT17S3 = buatSceneSolo(isiSceneT17S3, cariT17S3, "9x16");
@@ -276,6 +316,47 @@ export const RemotionRoot: React.FC = () => (
         />
       ))}
     </Folder>
+
+    {/* ---------- T18 · Shorts ----------
+
+        Keempatnya lahir di fase 3, setelah video panjangnya tuntas
+        (CLAUDE.md § Fase kerja satu topik). Ukurannya 9:16 — BUKAN 16:9 yang
+        diputar: kotak aman dan skala tipografinya berbeda (`.r-9x16`).
+
+        Id scene berprefiks DUA LAPIS (`t18-s3-`): lapis `s3` memisahkan Short
+        dari video panjang, lapis `t18` memisahkan topik dari topik. `99-closing`
+        ada di SETIAP Short setiap topik, dan Remotion menolak dua komposisi
+        dengan id yang sama — saat RENDER, bukan saat tsc. */}
+    {(
+      [
+        { n: 1, judul: "alamat", Komponen: ShortT18S1, TIMING: TIMING_T18S1, TOTAL: TOTAL_T18S1, Solo: SceneSoloT18S1 },
+        { n: 2, judul: "potongan", Komponen: ShortT18S2, TIMING: TIMING_T18S2, TOTAL: TOTAL_T18S2, Solo: SceneSoloT18S2 },
+        { n: 3, judul: "hilang", Komponen: ShortT18S3, TIMING: TIMING_T18S3, TOTAL: TOTAL_T18S3, Solo: SceneSoloT18S3 },
+        { n: 4, judul: "beda", Komponen: ShortT18S4, TIMING: TIMING_T18S4, TOTAL: TOTAL_T18S4, Solo: SceneSoloT18S4 },
+      ] as const
+    ).map((s) => (
+      <Folder key={s.n} name={`t18-s${s.n}-${s.judul}`}>
+        <Composition
+          id={`T18-tcp-ip-s${s.n}`}
+          component={s.Komponen}
+          defaultProps={{ subtitel: true }}
+          durationInFrames={f(s.TOTAL)}
+          fps={FPS}
+          {...UKURAN_9x16}
+        />
+        {s.TIMING.map((t) => (
+          <Composition
+            key={t.kunci}
+            id={`t18-s${s.n}-${t.kunci}`}
+            component={s.Solo}
+            defaultProps={{ kunci: t.kunci, subtitel: true }}
+            durationInFrames={Math.max(1, f(t.durasi))}
+            fps={FPS}
+            {...UKURAN_9x16}
+          />
+        ))}
+      </Folder>
+    ))}
 
     {/* ---------- T17 · Enkripsi ----------
 

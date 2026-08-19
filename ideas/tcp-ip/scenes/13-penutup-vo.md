@@ -6,7 +6,7 @@ Penutup. Diambil apa adanya dari
 ## VO
 
 Jadi, setiap kali kamu membuka website, mengirim pesan, atau mengakses sebuah layanan di internet, sebenarnya ada banyak proses komunikasi yang terjadi di balik layar.
-Dan salah satu fondasi terpenting di balik komunikasi tersebut adalah TCP/IP.
+Dan salah satu fondasi terpenting di balik komunikasi tersebut adalah TCP IP.
 
 ## Sinkron
 

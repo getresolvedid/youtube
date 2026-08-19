@@ -16,14 +16,15 @@
    daftar di skrip ini. Daftar kedua yang ditulis tangan akan meleset dari
    isi folder dalam sekali tambah Short.
 
-   Jalankan:  node --env-file=.env tools/bangun-timing.mjs apa-itu-firewall
+   Jalankan:  node --env-file=.env tools/bangun-timing.mjs tcp-ip
    Otomatis lewat npm pre-script (studio / render / check / sisa).
 */
 import { writeFileSync } from "node:fs";
 
 import { bacaEpisode, bacaShort, daftarShort, wajib } from "./baca-episode.mjs";
+import { dirTopik, punyaEpisode } from "./lokasi.mjs";
 
-const slug = process.argv[2] ?? "apa-itu-firewall";
+const slug = process.argv[2] ?? "tcp-ip";
 
 /* Yang ditulis ke TS hanya yang dipakai komposisi. `kata`, `chars`, dan letak
    berkas rencana VO milik `npm run sisa`, bukan milik Remotion. */
@@ -49,7 +50,7 @@ const tulisTiming = ({ tujuan, sumberVO, judul, timing, TOTAL, WPM, PAD }) => {
   const keluar = ringkas(timing);
   const menit = Math.floor(TOTAL / 60);
 
-  const isi = `/* DIGENERATE oleh tools/bangun-timing.mjs dari ideas/${slug}/naskah.md
+  const isi = `/* DIGENERATE oleh tools/bangun-timing.mjs dari ${dirTopik(slug)}/naskah.md
    (daftar scene) + ${sumberVO}/<kunci>-vo.md (teks VO).
    Jangan disunting tangan — ubah sumbernya lalu bangun ulang.
    Berkas ini di-ignore git.
@@ -106,7 +107,7 @@ export const cari = (idAtauKunci: string): Timing => {
   );
   if (!t) {
     throw new Error(
-      \`Scene "\${idAtauKunci}" tidak ada di ${judul} (ideas/${slug}/naskah.md).\`,
+      \`Scene "\${idAtauKunci}" tidak ada di ${judul} (${dirTopik(slug)}/naskah.md).\`,
     );
   }
   return t;
@@ -165,17 +166,21 @@ const lapor = (nama, timing, TOTAL) => {
 
 /* --- video panjang ---------------------------------------------------------- */
 
-const ep = bacaEpisode(slug);
-tulisTiming({
-  tujuan: `ideas/${slug}/timing.gen.ts`,
-  sumberVO: `ideas/${slug}/scenes`,
-  judul: `video panjang ${slug}`,
-  timing: ep.timing,
-  TOTAL: ep.TOTAL,
-  WPM: ep.WPM,
-  PAD: ep.PAD,
-});
-lapor(`ideas/${slug}/timing.gen.ts`, ep.timing, ep.TOTAL);
+if (punyaEpisode(slug)) {
+  const ep = bacaEpisode(slug);
+  tulisTiming({
+    tujuan: `${dirTopik(slug)}/timing.gen.ts`,
+    sumberVO: `${dirTopik(slug)}/scenes`,
+    judul: `video panjang ${slug}`,
+    timing: ep.timing,
+    TOTAL: ep.TOTAL,
+    WPM: ep.WPM,
+    PAD: ep.PAD,
+  });
+  lapor(`${dirTopik(slug)}/timing.gen.ts`, ep.timing, ep.TOTAL);
+} else {
+  console.log(`${dirTopik(slug)}/scenes tidak ada — topik ini tanpa video panjang, cuma Shorts.`);
+}
 
 /* --- Shorts ----------------------------------------------------------------- */
 

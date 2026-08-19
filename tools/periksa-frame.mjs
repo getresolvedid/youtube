@@ -45,10 +45,17 @@ const CLI = (() => {
    Nomor itu bergeser begitu naskah disisipi scene baru, jadi ia dibaca dari
    sana — bukan ditulis "02-opening" di sini lalu jadi salah diam-diam.
 
-   Awalannya (`t15-`) ikut dipasang di sini: sejak episode kedua, id komposisi
-   scene berprefiks kode topik (src/Root.tsx · tools/prefiks.mjs). */
+   Awalannya (`t18-`) ikut dipasang di sini: sejak episode kedua, id komposisi
+   scene berprefiks kode topik (src/Root.tsx · tools/prefiks.mjs).
+
+   SLUG-NYA MENUNJUK TOPIK YANG SEDANG DIGARAP, dan itu perlu diganti tiap kali
+   topik lama dikeluarkan. Dulu "apa-itu-firewall"; ia tayang dan dikeluarkan
+   2026-08-18, dan berkas ini ikut pecah karena slug-nya disimpan keras di sini.
+   Kalau tcp-ip nanti tayang juga, baris di bawah yang pertama harus diganti —
+   `npm run check` mati total kalau tidak, dan matinya di readFileSync, bukan di
+   pemeriksaan yang ia jaga. */
 const kunci = (() => {
-  const slug = "apa-itu-firewall";
+  const slug = "tcp-ip";
   const src = readFileSync(`ideas/${slug}/timing.gen.ts`, "utf8");
   const peta = new Map(
     [...src.matchAll(/"id":\s*"([^"]+)",\s*"kunci":\s*"([^"]+)"/g)].map((m) => [
@@ -75,18 +82,17 @@ const TITIK = [
      tentang episode lain: panggung, koordinat, dan berkas bantunya beda — dan
      yang paling sering kosong justru episode yang paling baru. */
   {
-    komposisi: "T15-apa-itu-firewall",
+    komposisi: "T18-tcp-ip",
     frame: 60,
-    nama: "T15 · episode 2 dtk, scene hook",
+    nama: "T18 · episode 2 dtk, scene hook",
     props: { subtitel: false },
   },
-  /* BELUM ADA SHORT & THUMBNAIL yang terdaftar — keduanya lahir di fase 3 dan
-     fase 4 sebuah topik, dan T15 masih di fase 2. Begitu ada, keduanya WAJIB
-     ikut disampel di sini:
+  /* SHORT & THUMBNAIL T18 sudah terdaftar di src/Root.tsx tapi BELUM disampel
+     di sini. Begitu digarap, keduanya WAJIB masuk:
 
-       { komposisi: "T15-apa-itu-firewall-s1", frame: 60, props: { subtitel: false } }
-       { komposisi: "t15-s1-99-closing",       frame: 40 }
-       { komposisi: "T15-thumb",               frame: 0 }
+       { komposisi: "T18-tcp-ip-s1", frame: 60, props: { subtitel: false } }
+       { komposisi: "t18-s1-99-closing", frame: 40 }
+       { komposisi: "T18-thumb",         frame: 0 }
 
      Short: panggung 9:16 punya skala tipografi dan kotak aman sendiri
      (`.r-9x16`), jadi episode yang lolos TIDAK membuktikan apa pun tentangnya —

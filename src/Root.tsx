@@ -6,8 +6,8 @@
 
    ID komposisi scene = NAMA BERKASNYA, persis (berprefiks kode topik):
 
-     ideas/apa-itu-firewall/scenes/05-dikunci-semua.tsx
-     npx remotion still t15-05-dikunci-semua out/dikunci.png
+     ideas/tcp-ip/scenes/06-jadi-paket.tsx
+     npx remotion still t18-06-jadi-paket out/paket.png
 
    Satu bentuk untuk berkas, id komposisi, dan baris di sidebar Studio. Nomornya
    dihitung tools/bangun-timing.mjs dari urutan di naskah dan dipakai apa adanya
@@ -27,8 +27,8 @@
    masing komposisi tersendiri, ukurannya dari `CFG.THUMB_*`.
 
      npx remotion studio                         -> semua komposisi di sidebar
-     npx remotion render t15-05-dikunci-semua    -> satu scene saja
-     npx remotion render T15-apa-itu-firewall    -> episode utuh (npm run render:t15)
+     npx remotion render t18-06-jadi-paket       -> satu scene saja
+     npx remotion render T18-tcp-ip              -> episode utuh (npm run render:t18)
 */
 import type React from "react";
 import { Composition, Folder } from "remotion";
@@ -37,25 +37,6 @@ import { CFG, FPS, f } from "../shared/config.gen";
 import { Panggung, type Rasio } from "../shared/Stage";
 import { KontakFigur } from "../shared/figures/Kontak";
 import { TrekVO } from "../shared/Vo";
-import {
-  Episode as EpisodeT15,
-  isiScene as isiSceneT15,
-} from "../ideas/apa-itu-firewall/Episode";
-import {
-  TIMING as TIMING_T15,
-  TOTAL as TOTAL_T15,
-  cari as cariT15,
-  type Timing,
-} from "../ideas/apa-itu-firewall/timing.gen";
-import {
-  Episode as EpisodeT17,
-  isiScene as isiSceneT17,
-} from "../ideas/enkripsi/Episode";
-import {
-  TIMING as TIMING_T17,
-  TOTAL as TOTAL_T17,
-  cari as cariT17,
-} from "../ideas/enkripsi/timing.gen";
 
 import {
   Episode as EpisodeT18,
@@ -65,6 +46,7 @@ import {
   TIMING as TIMING_T18,
   TOTAL as TOTAL_T18,
   cari as cariT18,
+  type Timing,
 } from "../ideas/tcp-ip/timing.gen";
 import {
   Short as ShortT18S1,
@@ -103,46 +85,145 @@ import {
   cari as cariT18S4,
 } from "../ideas/tcp-ip/scene-shorts/s4-beda/timing.gen";
 import {
-  Short as ShortT17S1,
-  isiScene as isiSceneT17S1,
-} from "../ideas/enkripsi/scene-shorts/s1-perjalanan/Short";
+  Short as ShortT19S1,
+  isiScene as isiSceneT19S1,
+} from "../fast_ideas/neural-network/scene-shorts/s1-belajar/Short";
 import {
-  TIMING as TIMING_T17S1,
-  TOTAL as TOTAL_T17S1,
-  cari as cariT17S1,
-} from "../ideas/enkripsi/scene-shorts/s1-perjalanan/timing.gen";
+  TIMING as TIMING_T19S1,
+  TOTAL as TOTAL_T19S1,
+  cari as cariT19S1,
+} from "../fast_ideas/neural-network/scene-shorts/s1-belajar/timing.gen";
 import {
-  Short as ShortT17S2,
-  isiScene as isiSceneT17S2,
-} from "../ideas/enkripsi/scene-shorts/s2-bisa-dilihat/Short";
+  Short as ShortT19S2,
+  isiScene as isiSceneT19S2,
+} from "../fast_ideas/neural-network/scene-shorts/s2-neuron/Short";
 import {
-  TIMING as TIMING_T17S2,
-  TOTAL as TOTAL_T17S2,
-  cari as cariT17S2,
-} from "../ideas/enkripsi/scene-shorts/s2-bisa-dilihat/timing.gen";
+  TIMING as TIMING_T19S2,
+  TOTAL as TOTAL_T19S2,
+  cari as cariT19S2,
+} from "../fast_ideas/neural-network/scene-shorts/s2-neuron/timing.gen";
 import {
-  Short as ShortT17S3,
-  isiScene as isiSceneT17S3,
-} from "../ideas/enkripsi/scene-shorts/s3-cara-kerja/Short";
+  Short as ShortT19S5,
+  isiScene as isiSceneT19S5,
+} from "../fast_ideas/neural-network/scene-shorts/s5-lapisan/Short";
 import {
-  TIMING as TIMING_T17S3,
-  TOTAL as TOTAL_T17S3,
-  cari as cariT17S3,
-} from "../ideas/enkripsi/scene-shorts/s3-cara-kerja/timing.gen";
+  TIMING as TIMING_T19S5,
+  TOTAL as TOTAL_T19S5,
+  cari as cariT19S5,
+} from "../fast_ideas/neural-network/scene-shorts/s5-lapisan/timing.gen";
 import {
-  Short as ShortT17S4,
-  isiScene as isiSceneT17S4,
-} from "../ideas/enkripsi/scene-shorts/s4-dekripsi/Short";
+  Short as ShortT19S9,
+  isiScene as isiSceneT19S9,
+} from "../fast_ideas/neural-network/scene-shorts/s9-lereng/Short";
 import {
-  TIMING as TIMING_T17S4,
-  TOTAL as TOTAL_T17S4,
-  cari as cariT17S4,
-} from "../ideas/enkripsi/scene-shorts/s4-dekripsi/timing.gen";
-import { ThumbT17 } from "../ideas/enkripsi/thumb";
-import { ThumbS1 } from "../ideas/enkripsi/scene-shorts/thumb-s1";
-import { ThumbS2 } from "../ideas/enkripsi/scene-shorts/thumb-s2";
-import { ThumbS3 } from "../ideas/enkripsi/scene-shorts/thumb-s3";
-import { ThumbS4 } from "../ideas/enkripsi/scene-shorts/thumb-s4";
+  TIMING as TIMING_T19S9,
+  TOTAL as TOTAL_T19S9,
+  cari as cariT19S9,
+} from "../fast_ideas/neural-network/scene-shorts/s9-lereng/timing.gen";
+import {
+  Short as ShortT19S3,
+  isiScene as isiSceneT19S3,
+} from "../fast_ideas/neural-network/scene-shorts/s3-bobot-bias/Short";
+import {
+  TIMING as TIMING_T19S3,
+  TOTAL as TOTAL_T19S3,
+  cari as cariT19S3,
+} from "../fast_ideas/neural-network/scene-shorts/s3-bobot-bias/timing.gen";
+import {
+  Short as ShortT19S4,
+  isiScene as isiSceneT19S4,
+} from "../fast_ideas/neural-network/scene-shorts/s4-aktivasi/Short";
+import {
+  TIMING as TIMING_T19S4,
+  TOTAL as TOTAL_T19S4,
+  cari as cariT19S4,
+} from "../fast_ideas/neural-network/scene-shorts/s4-aktivasi/timing.gen";
+import {
+  Short as ShortT19S6,
+  isiScene as isiSceneT19S6,
+} from "../fast_ideas/neural-network/scene-shorts/s6-maju/Short";
+import {
+  TIMING as TIMING_T19S6,
+  TOTAL as TOTAL_T19S6,
+  cari as cariT19S6,
+} from "../fast_ideas/neural-network/scene-shorts/s6-maju/timing.gen";
+import {
+  Short as ShortT19S7,
+  isiScene as isiSceneT19S7,
+} from "../fast_ideas/neural-network/scene-shorts/s7-seberapa-salah/Short";
+import {
+  TIMING as TIMING_T19S7,
+  TOTAL as TOTAL_T19S7,
+  cari as cariT19S7,
+} from "../fast_ideas/neural-network/scene-shorts/s7-seberapa-salah/timing.gen";
+import {
+  Short as ShortT19S8,
+  isiScene as isiSceneT19S8,
+} from "../fast_ideas/neural-network/scene-shorts/s8-mundur/Short";
+import {
+  TIMING as TIMING_T19S8,
+  TOTAL as TOTAL_T19S8,
+  cari as cariT19S8,
+} from "../fast_ideas/neural-network/scene-shorts/s8-mundur/timing.gen";
+import {
+  Short as ShortT19S10,
+  isiScene as isiSceneT19S10,
+} from "../fast_ideas/neural-network/scene-shorts/s10-latihan/Short";
+import {
+  TIMING as TIMING_T19S10,
+  TOTAL as TOTAL_T19S10,
+  cari as cariT19S10,
+} from "../fast_ideas/neural-network/scene-shorts/s10-latihan/timing.gen";
+import {
+  Short as ShortT19S11,
+  isiScene as isiSceneT19S11,
+} from "../fast_ideas/neural-network/scene-shorts/s11-hafalan/Short";
+import {
+  TIMING as TIMING_T19S11,
+  TOTAL as TOTAL_T19S11,
+  cari as cariT19S11,
+} from "../fast_ideas/neural-network/scene-shorts/s11-hafalan/timing.gen";
+import {
+  Short as ShortT19S12,
+  isiScene as isiSceneT19S12,
+} from "../fast_ideas/neural-network/scene-shorts/s12-gambar/Short";
+import {
+  TIMING as TIMING_T19S12,
+  TOTAL as TOTAL_T19S12,
+  cari as cariT19S12,
+} from "../fast_ideas/neural-network/scene-shorts/s12-gambar/timing.gen";
+import {
+  Short as ShortT19S13,
+  isiScene as isiSceneT19S13,
+} from "../fast_ideas/neural-network/scene-shorts/s13-urutan/Short";
+import {
+  TIMING as TIMING_T19S13,
+  TOTAL as TOTAL_T19S13,
+  cari as cariT19S13,
+} from "../fast_ideas/neural-network/scene-shorts/s13-urutan/timing.gen";
+import {
+  Short as ShortT19S14,
+  isiScene as isiSceneT19S14,
+} from "../fast_ideas/neural-network/scene-shorts/s14-perhatian/Short";
+import {
+  TIMING as TIMING_T19S14,
+  TOTAL as TOTAL_T19S14,
+  cari as cariT19S14,
+} from "../fast_ideas/neural-network/scene-shorts/s14-perhatian/timing.gen";
+import {
+  Short as ShortT19S15,
+  isiScene as isiSceneT19S15,
+} from "../fast_ideas/neural-network/scene-shorts/s15-chatgpt/Short";
+import {
+  TIMING as TIMING_T19S15,
+  TOTAL as TOTAL_T19S15,
+  cari as cariT19S15,
+} from "../fast_ideas/neural-network/scene-shorts/s15-chatgpt/timing.gen";
+import { ThumbT18 } from "../ideas/tcp-ip/thumb";
+import { ThumbS1 } from "../ideas/tcp-ip/scene-shorts/thumb-s1";
+import { ThumbS2 } from "../ideas/tcp-ip/scene-shorts/thumb-s2";
+import { ThumbS3 } from "../ideas/tcp-ip/scene-shorts/thumb-s3";
+import { ThumbS4 } from "../ideas/tcp-ip/scene-shorts/thumb-s4";
 
 const UKURAN_16x9 = {
   width: CFG.LONG_WIDTH,
@@ -198,17 +279,26 @@ const buatSceneSolo = (
   return Solo;
 };
 
-const SceneSoloT15 = buatSceneSolo(isiSceneT15, cariT15, "16x9");
-const SceneSoloT17 = buatSceneSolo(isiSceneT17, cariT17, "16x9");
 const SceneSoloT18 = buatSceneSolo(isiSceneT18, cariT18, "16x9");
 const SceneSoloT18S1 = buatSceneSolo(isiSceneT18S1, cariT18S1, "9x16");
 const SceneSoloT18S2 = buatSceneSolo(isiSceneT18S2, cariT18S2, "9x16");
 const SceneSoloT18S3 = buatSceneSolo(isiSceneT18S3, cariT18S3, "9x16");
 const SceneSoloT18S4 = buatSceneSolo(isiSceneT18S4, cariT18S4, "9x16");
-const SceneSoloT17S1 = buatSceneSolo(isiSceneT17S1, cariT17S1, "9x16");
-const SceneSoloT17S2 = buatSceneSolo(isiSceneT17S2, cariT17S2, "9x16");
-const SceneSoloT17S3 = buatSceneSolo(isiSceneT17S3, cariT17S3, "9x16");
-const SceneSoloT17S4 = buatSceneSolo(isiSceneT17S4, cariT17S4, "9x16");
+const SceneSoloT19S1 = buatSceneSolo(isiSceneT19S1, cariT19S1, "9x16");
+const SceneSoloT19S15 = buatSceneSolo(isiSceneT19S15, cariT19S15, "9x16");
+const SceneSoloT19S14 = buatSceneSolo(isiSceneT19S14, cariT19S14, "9x16");
+const SceneSoloT19S13 = buatSceneSolo(isiSceneT19S13, cariT19S13, "9x16");
+const SceneSoloT19S12 = buatSceneSolo(isiSceneT19S12, cariT19S12, "9x16");
+const SceneSoloT19S11 = buatSceneSolo(isiSceneT19S11, cariT19S11, "9x16");
+const SceneSoloT19S10 = buatSceneSolo(isiSceneT19S10, cariT19S10, "9x16");
+const SceneSoloT19S8 = buatSceneSolo(isiSceneT19S8, cariT19S8, "9x16");
+const SceneSoloT19S7 = buatSceneSolo(isiSceneT19S7, cariT19S7, "9x16");
+const SceneSoloT19S6 = buatSceneSolo(isiSceneT19S6, cariT19S6, "9x16");
+const SceneSoloT19S4 = buatSceneSolo(isiSceneT19S4, cariT19S4, "9x16");
+const SceneSoloT19S3 = buatSceneSolo(isiSceneT19S3, cariT19S3, "9x16");
+const SceneSoloT19S2 = buatSceneSolo(isiSceneT19S2, cariT19S2, "9x16");
+const SceneSoloT19S5 = buatSceneSolo(isiSceneT19S5, cariT19S5, "9x16");
+const SceneSoloT19S9 = buatSceneSolo(isiSceneT19S9, cariT19S9, "9x16");
 
 /* SHORTS — belum ada satu pun yang terdaftar: T15 masih di fase 2.
    Bentuknya saat kembali (dipakai T14 sampai ia tayang) adalah satu daftar
@@ -249,41 +339,14 @@ export const RemotionRoot: React.FC = () => (
       {...UKURAN_16x9}
     />
 
-    {/* ---------- T15 · Apa itu firewall ---------- */}
-    <Composition
-      id="T15-apa-itu-firewall"
-      component={EpisodeT15}
-      defaultProps={{ subtitel: true }}
-      durationInFrames={f(TOTAL_T15)}
-      fps={FPS}
-      {...UKURAN_16x9}
-    />
-
-    {/* Id scene BERPREFIKS `t15-`, alasan yang sama persis dengan prefiks
-        `s1-`/`s2-` di Shorts: `02-opening` dan `99-closing` ada di SETIAP
-        episode, dan Remotion menolak dua komposisi dengan id yang sama — saat
-        RENDER, bukan saat tsc. Begitu episode kedua didaftarkan, ruang nama
-        tanpa prefiks berhenti cukup. */}
-    <Folder name="scene-t15">
-      {TIMING_T15.map((t) => (
-        <Composition
-          key={t.kunci}
-          id={`t15-${t.kunci}`}
-          component={SceneSoloT15}
-          defaultProps={{ kunci: t.kunci, subtitel: true }}
-          durationInFrames={Math.max(1, f(t.durasi))}
-          fps={FPS}
-          {...UKURAN_16x9}
-        />
-      ))}
-    </Folder>
 
     {/* ---------- T18 · Apa Itu TCP/IP? ----------
 
-        KODE T18 MASIH PROVISIONAL, sama seperti T17. Topiknya masih `mentah` di
+        KODE T18 MASIH PROVISIONAL. Topiknya masih `mentah` di
         ideas/tcp-ip/ide.md dan belum masuk docs/07; T18 dipakai karena id
-        komposisi butuh awalan yang stabil SEKARANG, dan karena T17 sudah
-        dipegang enkripsi. BUKAN T16 — itu dibatalkan 2026-08-17 dan kodenya
+        komposisi butuh awalan yang stabil SEKARANG. BUKAN T16 (dibatalkan
+        2026-08-17) dan BUKAN T17 (enkripsi — tayang lalu dikeluarkan
+        2026-08-18); keduanya sudah terpakai dan kodenya
         tidak pernah dipakai ulang.
 
         EPISODE INI DIBANGUN DARI STORYBOARD USULAN, atas keputusan user
@@ -358,186 +421,111 @@ export const RemotionRoot: React.FC = () => (
       </Folder>
     ))}
 
-    {/* ---------- T17 · Enkripsi ----------
+    {/* ---------- T18 · thumbnail & kover ----------
+        Brief: ideas/tcp-ip/thumbnail.md (fase 1). ARAHNYA SATU: brief -> kartu.
+        Durasinya 1 frame — ini kartu diam, bukan video.
 
-        KODE T17 MASIH PROVISIONAL. Topiknya belum ada di docs/07: ide-nya
-        berstatus `diuji` karena syarat 4 belum lolos (nol sumber dibuka), dan
-        kode resmi baru diberikan saat sebuah topik naik ke backlog. T17 dipakai
-        di sini karena id komposisi butuh awalan yang stabil SEKARANG — bukan
-        karena kodenya sudah diputuskan. Yang pasti cuma satu: BUKAN T16, yang
-        dibatalkan 2026-08-17 dan kodenya tidak pernah dipakai ulang.
+        Ukurannya BUKAN ukuran videonya (docs/06): 1280x720 untuk 16:9 dan
+        2160x3840 untuk kover Short, keduanya dari .env lewat CFG.THUMB_*. */}
+    {/* ---------- T19 · Bagaimana AI sebenarnya belajar (JALUR CEPAT) ----------
 
-        Kalau nanti kodenya berbeda, yang diganti tiga tempat: awalan di sini,
-        PREFIKS di tools/prefiks.mjs, dan nama skrip render di package.json.
+        Topiknya masuk lewat fast_ideas/, bukan ideas/: direction-nya DIUNGGAH
+        user, bukan ditulis dari nol (fast_ideas/README). Sumbernya
+        fast_ideas/neural-network/direction-masuk/.
 
-        Episode ini baru punya SATU scene — sisanya belum ditulis karena
-        sudutnya belum diputuskan (ideas/enkripsi/naskah.md). */}
-    <Composition
-      id="T17-enkripsi"
-      component={EpisodeT17}
-      defaultProps={{ subtitel: true }}
-      durationInFrames={f(TOTAL_T17)}
-      fps={FPS}
-      {...UKURAN_16x9}
-    />
+        TIDAK ADA VIDEO PANJANG di sini, dan itu bukan pekerjaan yang belum
+        selesai — ini seri Shorts, EMPAT episode, satu episode satu Short
+        (naskah.md § Penyimpangan tercatat 1). Direction Ep 1 diunggah user;
+        Ep 2–4 disusun Claude atas izin user (§ Penyimpangan tercatat 6). `tools/lokasi.mjs` yang memutuskan: topik
+        tanpa folder `scenes/` tidak dibaca sebagai episode.
 
-    <Folder name="scene-t17">
-      {TIMING_T17.map((t) => (
+        THUMBNAIL & KOVER-nya belum ada: fase 2 belum dikerjakan. Bentuknya saat
+        lahir sama dengan T18 di bawah — komposisi still 1 frame, ukuran dari
+        CFG.THUMB_SHORT_*. */}
+    {(
+      [
+        { n: 1, judul: "belajar", Komponen: ShortT19S1, TIMING: TIMING_T19S1, TOTAL: TOTAL_T19S1, Solo: SceneSoloT19S1 },
+        { n: 2, judul: "neuron", Komponen: ShortT19S2, TIMING: TIMING_T19S2, TOTAL: TOTAL_T19S2, Solo: SceneSoloT19S2 },
+        { n: 5, judul: "lapisan", Komponen: ShortT19S5, TIMING: TIMING_T19S5, TOTAL: TOTAL_T19S5, Solo: SceneSoloT19S5 },
+        { n: 9, judul: "lereng", Komponen: ShortT19S9, TIMING: TIMING_T19S9, TOTAL: TOTAL_T19S9, Solo: SceneSoloT19S9 },
+        { n: 3, judul: "bobot-bias", Komponen: ShortT19S3, TIMING: TIMING_T19S3, TOTAL: TOTAL_T19S3, Solo: SceneSoloT19S3 },
+        { n: 4, judul: "aktivasi", Komponen: ShortT19S4, TIMING: TIMING_T19S4, TOTAL: TOTAL_T19S4, Solo: SceneSoloT19S4 },
+        { n: 6, judul: "maju", Komponen: ShortT19S6, TIMING: TIMING_T19S6, TOTAL: TOTAL_T19S6, Solo: SceneSoloT19S6 },
+        { n: 7, judul: "seberapa-salah", Komponen: ShortT19S7, TIMING: TIMING_T19S7, TOTAL: TOTAL_T19S7, Solo: SceneSoloT19S7 },
+        { n: 8, judul: "mundur", Komponen: ShortT19S8, TIMING: TIMING_T19S8, TOTAL: TOTAL_T19S8, Solo: SceneSoloT19S8 },
+        { n: 10, judul: "latihan", Komponen: ShortT19S10, TIMING: TIMING_T19S10, TOTAL: TOTAL_T19S10, Solo: SceneSoloT19S10 },
+        { n: 11, judul: "hafalan", Komponen: ShortT19S11, TIMING: TIMING_T19S11, TOTAL: TOTAL_T19S11, Solo: SceneSoloT19S11 },
+        { n: 12, judul: "gambar", Komponen: ShortT19S12, TIMING: TIMING_T19S12, TOTAL: TOTAL_T19S12, Solo: SceneSoloT19S12 },
+        { n: 13, judul: "urutan", Komponen: ShortT19S13, TIMING: TIMING_T19S13, TOTAL: TOTAL_T19S13, Solo: SceneSoloT19S13 },
+        { n: 14, judul: "perhatian", Komponen: ShortT19S14, TIMING: TIMING_T19S14, TOTAL: TOTAL_T19S14, Solo: SceneSoloT19S14 },
+        { n: 15, judul: "chatgpt", Komponen: ShortT19S15, TIMING: TIMING_T19S15, TOTAL: TOTAL_T19S15, Solo: SceneSoloT19S15 },
+      ] as const
+    ).map((s) => (
+      <Folder key={s.n} name={`t19-s${s.n}-${s.judul}`}>
         <Composition
-          key={t.kunci}
-          id={`t17-${t.kunci}`}
-          component={SceneSoloT17}
-          defaultProps={{ kunci: t.kunci, subtitel: true }}
-          durationInFrames={Math.max(1, f(t.durasi))}
-          fps={FPS}
-          {...UKURAN_16x9}
-        />
-      ))}
-    </Folder>
-
-    {/* ---------- T17 · Short 1 · "Apa yang terjadi pada pesanmu?" ----------
-
-        Short PERTAMA di repo ini, dan bentuknya yang dipakai tiga Short
-        berikutnya: satu <Folder> per Short, id scene berprefiks DUA LAPIS
-        (`t17-s1-`), Short utuhnya `T17-enkripsi-s1`, dan ukurannya 9:16 —
-        bukan 16:9 yang diputar.
-
-        Nama folder Studio hanya boleh a-z A-Z 0-9 dan tanda hubung; Remotion
-        menolak spasi dan titik tengah saat RENDER, bukan saat tsc. */}
-    <Composition
-      id="T17-enkripsi-s1"
-      component={ShortT17S1}
-      defaultProps={{ subtitel: true }}
-      durationInFrames={f(TOTAL_T17S1)}
-      fps={FPS}
-      {...UKURAN_9x16}
-    />
-
-    <Folder name="scene-t17-s1">
-      {TIMING_T17S1.map((t) => (
-        <Composition
-          key={t.kunci}
-          id={`t17-s1-${t.kunci}`}
-          component={SceneSoloT17S1}
-          defaultProps={{ kunci: t.kunci, subtitel: true }}
-          durationInFrames={Math.max(1, f(t.durasi))}
+          id={`T19-neural-network-s${s.n}`}
+          component={s.Komponen}
+          defaultProps={{ subtitel: true }}
+          durationInFrames={f(s.TOTAL)}
           fps={FPS}
           {...UKURAN_9x16}
         />
-      ))}
-    </Folder>
+        {s.TIMING.map((t) => (
+          <Composition
+            key={t.kunci}
+            id={`t19-s${s.n}-${t.kunci}`}
+            component={s.Solo}
+            defaultProps={{ kunci: t.kunci, subtitel: true }}
+            durationInFrames={Math.max(1, f(t.durasi))}
+            fps={FPS}
+            {...UKURAN_9x16}
+          />
+        ))}
+      </Folder>
+    ))}
 
-    {/* ---------- T17 · Short 2 · "Apa ada yang bisa melihatnya?" ---------- */}
     <Composition
-      id="T17-enkripsi-s2"
-      component={ShortT17S2}
-      defaultProps={{ subtitel: true }}
-      durationInFrames={f(TOTAL_T17S2)}
-      fps={FPS}
-      {...UKURAN_9x16}
-    />
-
-    <Folder name="scene-t17-s2">
-      {TIMING_T17S2.map((t) => (
-        <Composition
-          key={t.kunci}
-          id={`t17-s2-${t.kunci}`}
-          component={SceneSoloT17S2}
-          defaultProps={{ kunci: t.kunci, subtitel: true }}
-          durationInFrames={Math.max(1, f(t.durasi))}
-          fps={FPS}
-          {...UKURAN_9x16}
-        />
-      ))}
-    </Folder>
-
-    {/* ---------- T17 · Short 3 · "Bagaimana enkripsi bekerja?" ---------- */}
-    <Composition
-      id="T17-enkripsi-s3"
-      component={ShortT17S3}
-      defaultProps={{ subtitel: true }}
-      durationInFrames={f(TOTAL_T17S3)}
-      fps={FPS}
-      {...UKURAN_9x16}
-    />
-
-    <Folder name="scene-t17-s3">
-      {TIMING_T17S3.map((t) => (
-        <Composition
-          key={t.kunci}
-          id={`t17-s3-${t.kunci}`}
-          component={SceneSoloT17S3}
-          defaultProps={{ kunci: t.kunci, subtitel: true }}
-          durationInFrames={Math.max(1, f(t.durasi))}
-          fps={FPS}
-          {...UKURAN_9x16}
-        />
-      ))}
-    </Folder>
-
-    {/* ---------- T17 · Short 4 · "Bagaimana penerima membacanya?" ---------- */}
-    <Composition
-      id="T17-enkripsi-s4"
-      component={ShortT17S4}
-      defaultProps={{ subtitel: true }}
-      durationInFrames={f(TOTAL_T17S4)}
-      fps={FPS}
-      {...UKURAN_9x16}
-    />
-
-    <Folder name="scene-t17-s4">
-      {TIMING_T17S4.map((t) => (
-        <Composition
-          key={t.kunci}
-          id={`t17-s4-${t.kunci}`}
-          component={SceneSoloT17S4}
-          defaultProps={{ kunci: t.kunci, subtitel: true }}
-          durationInFrames={Math.max(1, f(t.durasi))}
-          fps={FPS}
-          {...UKURAN_9x16}
-        />
-      ))}
-    </Folder>
-
-    {/* ---------- T17 · thumbnail & kover ----------
-        Brief: ideas/enkripsi/thumbnail.md (fase 1). ARAHNYA SATU: brief → kartu.
-        Durasinya 1 frame — ini kartu diam, bukan video. */}
-    <Composition
-      id="T17-thumb"
-      component={ThumbT17}
+      id="T18-thumb"
+      component={ThumbT18}
       durationInFrames={1}
       fps={FPS}
       {...UKURAN_THUMB}
     />
-    <Folder name="thumb-t17-shorts">
+    <Folder name="thumb-t18-shorts">
       <Composition
-        id="T17-thumb-s1"
+        id="T18-thumb-s1"
         component={ThumbS1}
         durationInFrames={1}
         fps={FPS}
         {...UKURAN_THUMB_SHORT}
       />
       <Composition
-        id="T17-thumb-s2"
+        id="T18-thumb-s2"
         component={ThumbS2}
         durationInFrames={1}
         fps={FPS}
         {...UKURAN_THUMB_SHORT}
       />
       <Composition
-        id="T17-thumb-s3"
+        id="T18-thumb-s3"
         component={ThumbS3}
         durationInFrames={1}
         fps={FPS}
         {...UKURAN_THUMB_SHORT}
       />
       <Composition
-        id="T17-thumb-s4"
+        id="T18-thumb-s4"
         component={ThumbS4}
         durationInFrames={1}
         fps={FPS}
         {...UKURAN_THUMB_SHORT}
       />
     </Folder>
+
+
+
+
+
+
   </>
 );

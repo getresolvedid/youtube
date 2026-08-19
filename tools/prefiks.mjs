@@ -8,15 +8,21 @@
  */
 
 export const PREFIKS = {
-  "apa-itu-firewall": "t15",
-  /* PROVISIONAL — topiknya belum ada di docs/07, jadi kodenya belum resmi.
-     Alasan lengkapnya di src/Root.tsx, yang tetap jadi sumbernya. */
-  enkripsi: "t17",
-  /* PROVISIONAL — sama seperti enkripsi. Topiknya masih `mentah` di
-     ideas/tcp-ip/ide.md dan belum masuk docs/07. T18 dipakai karena id
-     komposisi butuh awalan yang stabil SEKARANG, dan karena T17 sudah dipegang
-     enkripsi. Yang pasti: BUKAN T16, yang dibatalkan dan tidak dipakai ulang. */
+  /* PROVISIONAL — topiknya masih `mentah` di ideas/tcp-ip/ide.md dan belum
+     masuk docs/07. T18 dipakai karena id komposisi butuh awalan yang stabil
+     SEKARANG.
+
+     TIGA KODE DI BAWAHNYA SUDAH TERPAKAI DAN TIDAK PERNAH DIDAUR ULANG, dan
+     ketiganya tidak punya berkas lagi di repo ini: T15 (firewall) dan T17
+     (enkripsi) TAYANG lalu dikeluarkan 2026-08-18, T16 dibatalkan 2026-08-17. Kode yang didaur ulang
+     membuat catatan lama di dokumen, pesan commit, dan id komposisi menunjuk
+     topik yang salah — tanpa satu pun tanda. */
   "tcp-ip": "t18",
+
+  /* JALUR CEPAT (fast_ideas/). T19 diambil karena T18 yang tertinggi terpakai;
+     T15, T16, dan T17 sudah mati dan tidak pernah didaur ulang. Topik ini tidak
+     punya video panjang — nilai di bawah dipakai `prefiksShort()` saja. */
+  "neural-network": "t19",
 };
 
 /** Awalan untuk video panjang sebuah slug. `null` kalau slug-nya belum dikenal —

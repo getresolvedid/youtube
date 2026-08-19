@@ -27,8 +27,9 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 
 import { bacaEpisode, bacaShort, daftarShort } from "./baca-episode.mjs";
+import { dirTopik, punyaEpisode } from "./lokasi.mjs";
 
-const slug = process.argv[2] ?? "apa-itu-firewall";
+const slug = process.argv[2] ?? "tcp-ip";
 
 /** Berkas .tsx yang memang BUKAN scene. Tanpa daftar ini, perangkai dan berkas
  *  timing dilaporkan sebagai "id yang tidak ada di naskah" — peringatan palsu
@@ -257,13 +258,19 @@ const periksa = ({ nama, dir, timing, audioYatim, maks, total }) => {
 
 /* --- video panjang ---------------------------------------------------------- */
 
-const ep = bacaEpisode(slug);
-periksa({
-  nama: `video panjang · ideas/${slug}/scenes`,
-  dir: ep.dirVO,
-  timing: ep.timing,
-  audioYatim: ep.audioYatim,
-});
+if (punyaEpisode(slug)) {
+  const ep = bacaEpisode(slug);
+  periksa({
+    nama: `video panjang · ${dirTopik(slug)}/scenes`,
+    dir: ep.dirVO,
+    timing: ep.timing,
+    audioYatim: ep.audioYatim,
+  });
+} else {
+  console.log(`
+=== ${slug} — tanpa video panjang ===`);
+  console.log(`${dirTopik(slug)}/scenes tidak ada; yang diperiksa cuma Shorts-nya.`);
+}
 
 /* --- Shorts ----------------------------------------------------------------- */
 

@@ -5,7 +5,7 @@ Tutup Short 4. Diambil dari
 
 ## VO
 
-Itulah mengapa kita sering mendengar istilah TCP/IP.
+Itulah mengapa kita sering mendengar istilah TCP IP.
 
 ## Sinkron
 

@@ -5,8 +5,8 @@ Kumpulan protokol. Diambil apa adanya dari
 
 ## VO
 
-Namun, TCP/IP sebenarnya bukan hanya TCP dan IP.
-TCP/IP adalah kumpulan berbagai protokol yang bekerja bersama.
+Namun, TCP IP sebenarnya bukan hanya TCP dan IP.
+TCP IP adalah kumpulan berbagai protokol yang bekerja bersama.
 Ada HTTP dan HTTPS yang digunakan untuk komunikasi website.
 Ada DNS yang membantu menerjemahkan nama seperti google.com menjadi alamat IP.
 Ada juga UDP yang digunakan untuk komunikasi yang membutuhkan kecepatan dan tidak selalu membutuhkan mekanisme pengiriman ulang seperti TCP.

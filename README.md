@@ -105,19 +105,25 @@ youtube/                      ← ROOT PROJECT Remotion
 │   ├── git-setup.ps1         ← init git + hook penolak secret
 │   ├── estimate-timing.mjs   ← timing perkiraan dari rencana VO (gratis)
 │   ├── vo-durations.mjs      ← timing final dari berkas VO
-└── ideas/                    ← SEMUA ide + seluruh produksinya hidup di sini
-    ├── README.md             ← alur & template ide
+├── ideas/                    ← SEMUA ide + seluruh produksinya hidup di sini
+│   ├── README.md             ← alur & template ide
+│   └── <slug>/
+│       ├── ide.md            ← ide mentah + uji 4 syarat (selalu ada)
+│       ├── thumbnail.md      ← ketegangan + pola + ≤4 kata (fase 1, docs/06)
+│       ├── naskah.md         ← materi topik + DAFTAR scene (docs/05)
+│       ├── timing.gen.ts     ← ⚙ digenerate dari naskah.md + scenes/*-vo.md
+│       ├── Episode.tsx       ← merangkai <Sequence>, tanpa isi scene
+│       ├── scenes/index.ts   ← daftar SCENES: id → komponen
+│       ├── scenes/01-hook-question-vo.md        ← teks VO (HARD RULE 4, docs/11)
+│       ├── scenes/01-hook-question-direction.md ← apa di layar (HARD RULE 3)
+│       ├── scenes/01-hook-question.tsx          ← komposisi (HARD RULE 1)
+│       └── render/           ← MP4 final + thumbnail + metadata publish
+└── fast_ideas/               ← JALUR CEPAT: direction diunggah user, bukan ditulis
+    ├── README.md             ← tiga fase: direction masuk → thumbnail → video
     └── <slug>/
-        ├── ide.md            ← ide mentah + uji 4 syarat (selalu ada)
-        ├── thumbnail.md      ← ketegangan + pola + ≤4 kata (fase 1, docs/06)
-        ├── naskah.md         ← materi topik + DAFTAR scene (docs/05)
-        ├── timing.gen.ts     ← ⚙ digenerate dari naskah.md + scenes/*-vo.md
-        ├── Episode.tsx       ← merangkai <Sequence>, tanpa isi scene
-        ├── scenes/index.ts   ← daftar SCENES: id → komponen
-        ├── scenes/01-hook-question-vo.md        ← teks VO (HARD RULE 4, docs/11)
-        ├── scenes/01-hook-question-direction.md ← apa di layar (HARD RULE 3)
-        ├── scenes/01-hook-question.tsx          ← komposisi (HARD RULE 1)
-        └── render/           ← MP4 final + thumbnail + metadata publish
+        ├── direction-masuk/  ← unggahan user apa adanya, tidak pernah disunting
+        ├── naskah.md         ← tabel scene, disusun DARI unggahan itu
+        └── …                 ← sisanya identik dengan ideas/<slug>/
 ```
 
 ⚙ = digenerate, di-ignore git, dibangun ulang `npm run gen`. Sumber kebenarannya

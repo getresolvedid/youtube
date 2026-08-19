@@ -32,6 +32,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from "node:fs";
 
 import { bacaEpisode, bacaShort, daftarShort, wajib } from "./baca-episode.mjs";
+import { dirTopik } from "./lokasi.mjs";
 import { siapkan } from "./tts-gemini.mjs";
 
 const argv = process.argv.slice(2);
@@ -82,7 +83,7 @@ if (scenes.length < 2) {
 /* Gerbang naskah beku — sama dengan bikin-vo.mjs. Dilewati saat --coba, karena
    percobaan suara memang harus bisa jalan sebelum naskahnya dibekukan. */
 if (!COBA) {
-  const naskah = readFileSync(`ideas/${slug}/naskah.md`, "utf8");
+  const naskah = readFileSync(`${dirTopik(slug)}/naskah.md`, "utf8");
   const blok = /^naskah_beku:[^\n]*\n((?:[ \t]+\S[^\n]*\n)*)/m.exec(naskah);
   const beku = new Map();
   for (const baris of blok?.[1]?.split("\n") ?? []) {
@@ -91,7 +92,7 @@ if (!COBA) {
   }
   if (!beku.has(TARGET)) {
     console.error(
-      `\nideas/${slug}/naskah.md: "${TARGET}" belum punya tanggal di naskah_beku.\n` +
+      `\n${dirTopik(slug)}/naskah.md: "${TARGET}" belum punya tanggal di naskah_beku.\n` +
         `VO tidak dibuat dari naskah yang belum lewat gerbang docs/04 §5.\n` +
         `Untuk percobaan suara sebelum beku, pakai --coba.\n`,
     );

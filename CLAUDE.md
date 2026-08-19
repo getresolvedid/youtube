@@ -470,6 +470,26 @@ sendiri-sendiri saat digarap. Sambungan yang sengaja dibiarkan menganga
 sesi berikutnya akan "memperbaikinya". Detail & contoh:
 [docs/11 § Sambungan antar-scene](docs/11-rencana-vo.md#sambungan-antar-scene--hard-rule-7).
 
+## Dua titik masuk: `ideas/` dan `fast_ideas/`
+
+Lima fase di atas berlaku untuk topik yang masuk lewat [`ideas/`](ideas/) — ide
+mentah dulu, diuji 4 syarat, baru digarap.
+
+Ada titik masuk kedua: [`fast_ideas/`](fast_ideas/README.md), untuk topik yang
+**direction-nya diunggah user**, bukan ditulis dari nol. Fasenya tiga —
+direction masuk → bangun thumbnail → bangun video — tanpa `ide.md` dan tanpa uji
+4 syarat. **Seluruh HARD RULE di bawah berlaku sama persis di dalamnya**; yang
+berbeda cuma cara topiknya masuk dan siapa yang menulis direction-nya.
+
+Sesudah titik masuk, isinya identik: `naskah.md`, `scenes/`, `scene-shorts/`,
+`render/`. Perkakas membaca keduanya lewat satu resolver —
+`dirTopik()` di [`tools/lokasi.mjs`](tools/lokasi.mjs), yang **menolak** slug
+yang ada di dua akar sekaligus.
+
+**Topik boleh tidak punya video panjang.** Seri Shorts — satu episode satu Short
+— sah, dan yang menentukan keberadaan folder `scenes/` (`punyaEpisode()`), bukan
+daftar di skrip mana pun. Contohnya `fast_ideas/neural-network`.
+
 ## Aturan kerja
 
 - **Balas dalam Bahasa Indonesia** — user berkomunikasi dalam Bahasa Indonesia informal.
@@ -548,8 +568,10 @@ npm run jahit:semua                              # potongan antar-scene yang lom
 npm run jahit -- <slug>
 npm run jahit -- <slug> --jahitan 06-penjaga     # satu sambungan saja: kunci scene SESUDAHNYA
 npm run jahit -- <slug> --short s1-nugget
+npm run sisa:t19   # satu topik saja — bentuknya `sisa:t<nn>`
 npm run studio     # Remotion Studio — server panjang, jalankan di background
 npm run render:t15     # episode utuh → out/   (satu skrip per topik, `:t<nn>`)
+npm run render:t19:s1  # Short utuh 9:16 — topik jalur cepat tanpa video panjang
 
 # Short & thumbnail baru punya skrip/komposisi setelah topiknya sampai ke fase
 # 3 dan fase 4 — belum ada satu pun sekarang. Bentuk perintahnya saat lahir:

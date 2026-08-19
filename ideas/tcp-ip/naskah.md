@@ -5,14 +5,14 @@ judul_kerja: Apa Itu TCP/IP?
 pilar: P2 · Di Balik Aplikasi
 lapis: umum
 what: TCP/IP
-status: komposisi
+status: render
 naskah_beku:
-  L:
-  S1:
-  S2:
-  S3:
-  S4:
-karakter_terpakai: 0
+  L: 2026-08-18
+  S1: 2026-08-18
+  S2: 2026-08-18
+  S3: 2026-08-18
+  S4: 2026-08-18
+karakter_terpakai: 6137
 tanggal_target:
 ---
 
@@ -86,29 +86,50 @@ definisi. Blok ini tetap ditulis karena ia syarat topik masuk backlog.
 
 ## Sumber
 
-| Klaim | Sumber | Status |
+**GERBANG TERBUKA — 2026-08-18.** Kelima klaim ditelusuri ke dokumen primer,
+dan kelimanya dibuka, bukan ditulis dari ingatan.
+
+| Klaim | Sumber | Kutipan |
 |---|---|---|
-| IP mengurus pengalamatan dan penerusan menuju tujuan | spesifikasi IP | ⚠ **belum dibuka** |
-| TCP mengurus kelengkapan, urutan, dan pengiriman ulang | spesifikasi TCP (perhatikan versinya — dokumen lama sudah digantikan) | ⚠ **belum dibuka** |
-| Data dipecah jadi potongan yang bisa menempuh jalur berbeda | spesifikasi IP | ⚠ **belum dibuka** |
-| UDP dipakai saat kecepatan lebih penting daripada pengiriman ulang | spesifikasi UDP | ⚠ **belum dibuka** |
-| DNS menerjemahkan nama jadi alamat | sudah tayang sebagai T14 — pakai sumber episode itu | ⚠ **belum disalin** |
+| IP mengurus pengalamatan dan penerusan menuju tujuan | RFC 791 §1.4, §2.3 | *"The internet modules use the addresses carried in the internet header to transmit internet datagrams toward their destinations."* · *"The datagrams are routed from one internet module to another … based on the interpretation of an internet address."* |
+| Pengantarnya tidak menjanjikan apa pun — inti bagian 3 & 4 | RFC 791 §1.2, §1.4 | *"There are no mechanisms to augment end-to-end data reliability, flow control, sequencing, or other services commonly found in host-to-host protocols."* · *"The internet protocol does not provide a reliable communication facility. There are no acknowledgments … There are no retransmissions. There is no flow control."* |
+| Kiriman dipecah jadi potongan | RFC 791 §1.4, §2.3 | *"The internet protocol also provides for fragmentation and reassembly of long datagrams, if necessary, for transmission through 'small packet' networks."* |
+| TCP mengurus kelengkapan, urutan, dan pengiriman ulang | **RFC 9293** §2.2, §3.4, §3.8 | *"TCP reliability consists of detecting packet losses (via sequence numbers) and errors (via per-segment checksums), as well as correction via retransmission."* · *"every octet of data sent over a TCP connection has a sequence number … an acknowledgment of sequence number X indicates that all octets up to but not including X have been received."* |
+| UDP dipakai saat pengiriman ulang tidak dibutuhkan | RFC 768 | *"delivery and duplicate protection are not guaranteed"* · *"Applications requiring ordered reliable delivery of streams of data should use the Transmission Control Protocol (TCP)."* |
+| DNS menerjemahkan nama jadi alamat (scene 10 & 11) | RFC 1035 | *"The goal of domain names is to provide a mechanism for naming resources in such a way that the names are usable in different hosts, networks, protocol families, internets, and administrative organizations."* |
 
-> **GERBANG MASIH TERTUTUP.** Naskah ini **tidak boleh dibekukan** dan VO-nya
-> **tidak boleh digenerate** selama masih ada baris ⚠ di atas
-> ([docs/04 §5](../../docs/04-pipeline-produksi.md#5-gerbang--bekukan-naskah)).
-> Komposisi boleh dibangun lebih dulu — itu memang urutannya.
->
-> **Angka yang tampil di layar sengaja bukan klaim.** `192.168.1.10` dan
-> `93.184.xxx.xxx` dipakai apa adanya dari storyboard sebagai **contoh bentuk**,
-> bukan alamat yang mengklaim milik siapa pun. Nomor potongan 01–10 juga cuma
-> "banyak dan berurutan", bukan ukuran yang sebenarnya.
+**Versi dokumen TCP-nya penting, dan inilah kenapa berkas ini menyebutnya
+tebal.** Spesifikasi TCP yang berlaku adalah **RFC 9293 (Agustus 2022,
+Internet Standard, STD 7)**, yang **menggantikan RFC 793** beserta 793, 879,
+2873, 6093, 6429, 6528, dan 6691. Menyebut "RFC 793" di deskripsi atau di
+komentar kode berarti menunjuk dokumen yang sudah tidak berlaku — kesalahan
+yang tidak menghasilkan error apa pun dan bertahan bertahun-tahun.
 
+### Satu klaim yang BUKAN kutipan harfiah, dan itu harus dibedakan
+
+VO scene 6 dan Short 2 mengatakan potongan **"dapat melewati jalur yang
+berbeda"**. RFC 791 tidak pernah menuliskan kalimat itu. Yang ia tuliskan:
+
+> *"The internet protocol treats each internet datagram as an independent
+> entity unrelated to any other internet datagram."* — §1.4
+
+digabung dengan §1.2 yang menyatakan tidak ada jaminan **sequencing**. Jalur
+yang berbeda adalah **akibat wajar** dari keduanya di jaringan yang meneruskan
+tiap datagram sendiri-sendiri — bukan kalimat yang bisa dikutip. Dibiarkan di
+VO karena ia benar dan bisa digambar; dicatat di sini supaya tidak ada yang
+kelak menaruh tanda kutip di sekelilingnya.
+
+> **Angka yang tampil di layar tetap bukan klaim.** `192.168.1.10` dan
+> `93.184.0.10` dipakai sebagai **contoh bentuk**, bukan alamat yang mengklaim
+> milik siapa pun. Nomor potongan 01–10 juga cuma "banyak dan berurutan",
+> bukan ukuran yang sebenarnya — RFC 791 §2.3 justru menyebut ukuran potongan
+> ditentukan jaringan yang dilewatinya, dan episode ini sengaja tidak
+> menyebut satu angka pun untuk itu.
 ## Kamus pengucapan
 
 | Tulis di VO | Maksudnya | Catatan |
 |---|---|---|
-| TCP/IP | T C P garis miring I P | dieja per huruf, **terdaftar** |
+| TCP IP | T C P — I P | dieja per huruf. **Ditulis TANPA garis miring di blok `## VO`** — simbol mentah dibaca mesin TTS tidak terduga dan ikut terbawa ke berkas subtitel penonton (`vo-script-audit` menolaknya sebagai tingkat A). Bentuk tertulis `TCP/IP` tetap dipakai di judul, deskripsi, dan teks layar |
 | IP | I P | dieja per huruf, **terdaftar** |
 | TCP | T C P | dieja per huruf, **terdaftar** |
 | UDP | U D P | dieja per huruf, **terdaftar** |

@@ -34,6 +34,7 @@
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 
 import { bacaEpisode, bacaShort, daftarShort, wajib } from "./baca-episode.mjs";
+import { dirTopik } from "./lokasi.mjs";
 
 /* --- argumen ---------------------------------------------------------------- */
 
@@ -85,7 +86,7 @@ Mesin Gemini belum siap.
 
 /* --- gerbang 1: naskah beku, PER KELUARAN ----------------------------------- */
 
-const naskahPath = `ideas/${slug}/naskah.md`;
+const naskahPath = `${dirTopik(slug)}/naskah.md`;
 const naskah = readFileSync(naskahPath, "utf8");
 
 /** Tanggal beku tiap keluaran, dari frontmatter:

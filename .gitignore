@@ -45,6 +45,8 @@ graphify-out/
 shared/config.gen.ts
 ideas/*/timing.gen.ts
 ideas/*/scene-shorts/*/timing.gen.ts
+fast_ideas/*/timing.gen.ts
+fast_ideas/*/scene-shorts/*/timing.gen.ts
 
 node_modules/
 out/

@@ -33,7 +33,6 @@ tidak ditulis di sini — semuanya ada di `.env`. Lihat
 | T09 | Apa yang terjadi saat `git commit` | P3 | dev | belum mulai |
 | T10 | Kenapa AI bisa menjawab tapi kadang ngarang | P4 | umum | belum mulai |
 | T11 | Kenapa rekomendasi tahu selera kamu | P4 | umum → dev | belum mulai |
-| **T15** | **Apa itu firewall** | P5 | umum → dev | **naskah** |
 | T12 | Apa yang terjadi saat password bocor | P5 | umum | belum mulai |
 
 Status: `belum mulai → riset → naskah → vo → komposisi → render → publish`.
@@ -233,42 +232,6 @@ konsekuensi matematis, bukan konspirasi.
 
 ## P5 · Keamanan & Privasi
 
-### T15 · Apa itu firewall
-
-**L1:** Rumahmu punya banyak pintu. Supaya bisa menerima kiriman, sebagian harus
-bisa diketuk — dan siapa pun boleh mengetuk. Jadi ditaruh satu penjaga di depan,
-dengan daftar siapa yang boleh lewat. Ia juga mencatat tiap kiriman yang kamu
-pesan sendiri, supaya cuma jawaban yang kamu tunggu yang boleh masuk.
-
-**Titik putus analogi:** penjaganya tidak pernah membuka kotaknya — ia cuma
-membaca label. Buku catatannya cuma berisi percakapan yang kamu mulai sendiri,
-jadi apa pun yang kamu undang sudah punya barisnya di sana. Dan penjaganya bukan
-satu orang: ada beberapa, berlapis, dan yang satu bisa mengizinkan apa yang
-ditolak yang lain.
-
-**Video panjang.** Kenapa mesin yang sedang kamu pakai harus bisa dihubungi siapa
-pun supaya berguna sama sekali — dan bagaimana satu buku catatan kecil
-menyelesaikan hal yang terlihat mustahil: membedakan jawaban yang kamu tunggu
-dari orang asing, padahal keduanya datang dari arah yang sama lewat pintu yang
-sama. Lalu daftarnya dibedah: dibaca dari atas dan berhenti di baris pertama yang
-cocok, baris terakhirnya berbunyi "selain itu, tidak", dan penjaganya berdiri dua
-arah. Realita: firewall gagal bukan karena ditembus, tapi karena kita sendiri
-yang menyuruhnya minggir — satu pintu dibuka untuk kamera rumah, satu kotak
-diundang masuk dan labelnya memang benar.
-
-- **Short 1 — Nugget:** cara paling aman menjawab ketukan adalah tidak menjawab.
-  Pintu yang bilang "tidak" sudah membocorkan bahwa pintunya ada; pintu yang diam
-  memulangkan pengetuknya dengan peta kosong.
-- **Short 2 — Jebakan:** "sudah ada firewall, jadi aman dari virus." Penjaganya
-  membaca label, tidak pernah membuka kotaknya — dan kotak yang paling sering
-  jadi masalah adalah yang kamu pesan sendiri.
-
-**Batasnya dengan T12:** sama-sama P5 dan tidak bersinggungan. T12 soal apa yang
-terjadi pada rahasia yang sudah diberikan; T15 soal siapa yang boleh mengetuk
-sejak awal. **Dengan T05:** T05 memakai pintu bernomor sebagai *tujuan yang
-dituju*, T15 sebagai *yang dijaga* — tidak ada scene T15 yang menjelaskan salaman
-TCP.
-
 ### T16 · Apa itu enkripsi — dibatalkan
 
 > **Dibatalkan 2026-08-17**, saat video panjangnya sudah sampai fase komposisi —
@@ -295,13 +258,24 @@ dan sidik jari tidak bisa dibalik jadi jari.
 saat sebuah database bocor. Realita: berapa cepat password lemah dipecahkan hari
 ini, dan kenapa password manager mengubah perhitungannya.
 
-> **"Hashing vs enkripsi" boleh kembali ke T12 — 2026-08-17.** Kunci, gembok,
-> dan segalanya yang bisa dibuka lagi dulu dicoret dari sini karena
-> [T16](#t16--apa-itu-enkripsi--dibatalkan) yang memegangnya dan tayang lebih
-> dulu. T16 dibatalkan, jadi tidak ada lagi episode yang akan memakannya —
-> pembedaan sidik jari vs kotak berkunci boleh dibuka sepenuhnya di T12, bukan
-> lagi cuma satu kalimat pembeda. Kalau nanti enkripsi diangkat lagi sebagai
-> topik sendiri, batas ini yang dinegosiasi ulang lebih dulu.
+> **BATAS INI SUDAH DINEGOSIASI DUA KALI — dan yang berlaku catatan kedua.**
+>
+> ~~*2026-08-17:* "Hashing vs enkripsi" boleh kembali sepenuhnya ke T12, karena
+> T16 dibatalkan dan tidak ada lagi episode yang akan memakannya.~~
+>
+> **2026-08-18 — enkripsi TAYANG sebagai T17**, dan catatan di atas gugur
+> bersamanya. Yang sudah diambil T17 dan **tidak boleh diulang** di T12:
+> enkripsi, dekripsi, kunci sebagai benda yang membuka, dan seluruh gambaran
+> "kalimat yang dikunci lalu dibuka lagi di ujung". Berkasnya sudah dikeluarkan
+> dari repo (arsipnya di riwayat git), tapi videonya sudah ditonton orang —
+> dan itu yang menentukan batas, bukan ada-tidaknya berkas.
+>
+> **Yang tersisa untuk T12, dan justru itu sudutnya yang paling tajam:** sidik
+> jari yang **tidak dimaksudkan untuk dibalik**. T17 seluruhnya soal benda yang
+> memang dirancang bisa dibuka lagi; T12 soal benda yang sengaja tidak bisa.
+> Pembedaan itu sekarang punya video yang bisa dirujuk — satu kalimat "ini bukan
+> seperti yang di video enkripsi" mengerjakan lebih banyak daripada penjelasan
+> panjang, dan itu keuntungan yang tidak dipunyai T12 kemarin.
 
 - **Short 1 — Nugget:** satu huruf diubah, seluruh hash berubah total — efek
   longsoran divisualkan.
@@ -340,28 +314,25 @@ sinyal audiens yang konsisten lebih berharga daripada variasi. Karena itu
 **buka dengan P1** (jangkauan paling luas), baru turunkan kedalamannya perlahan
 lewat P2, dan sisipkan P3 setelah ada penonton yang bertahan.
 
-**T15 → T13 → T03 → T10 → T06**, lalu masuk P3 (T08/T09) dan
-sesuaikan dengan data retensi. T14 sudah tayang dan membuka urutan ini.
+**T13 → T03 → T10 → T06**, lalu masuk P3 (T08/T09) dan
+sesuaikan dengan data retensi. T14, T15, dan T17 sudah tayang; ketiganya
+membuka urutan ini.
 **T05 tetap di belakang T14**: sekarang penonton sudah tahu apa yang terjadi
 saat satu nama ditanyakan, jadi "kenapa kunjungan pertama lebih lambat" punya
 satu dari tiga perjalanannya yang sudah dikenal — urutan sebaliknya akan memaksa
 T05 menjelaskan DNS sambil lalu, persis yang dihindari.
 
-> **T15 naik ke posisi ketiga — diputuskan 2026-08-14.** Bukan karena ia lebih
-> penting daripada T13, tapi karena ia menempel rapat ke T14 yang tayang tepat
-> sebelumnya: T14 menutup dengan pertanyaan yang dikirim polos dan siapa pun di
-> jalur bisa menjawabnya duluan, dan T15 justru soal siapa yang berdiri di jalur
-> itu. Dua episode berturut-turut di lapis "umum → dev" adalah risikonya, dan
-> itu diterima sadar — T13 turun satu posisi, bukan dicoret.
-
-> **T16 dicabut dari urutan — 2026-08-17.** Ia dulu menyusul tepat di belakang
-> T15 karena sambungannya rapat: T15 menutup dengan penjaga yang cuma membaca
-> label dan tidak pernah membuka kotaknya, dan T16 membuka dengan pertanyaan
-> siapa yang bisa membaca isinya. Topiknya
-> [dibatalkan](#t16--apa-itu-enkripsi--dibatalkan), jadi yang tersisa dari
-> keputusan itu cuma efek sampingnya, dan efeknya baik: setelah T15 lapisnya
-> turun kembali ke "umum" lewat T13 — tidak lagi tiga episode berturut-turut di
-> "umum → dev".
+> **Tiga episode P5 sudah tayang berturut-turut — dan T13 sekarang menagih
+> hutangnya, 2026-08-18.** Urutan yang benar-benar tayang jadi T14 → T15 → T17,
+> dan ketiganya "umum → dev" di pilar yang berdekatan: DNS, firewall, enkripsi.
+> Rencana lama menaruh T13 di belakang T15 justru supaya lapisnya turun kembali
+> ke "umum"; yang terjadi malah T17 menyisip di antaranya.
+>
+> Akibatnya bukan soal kerapian daftar: penonton yang datang dari ketiganya
+> sudah tersaring ke satu jenis, dan episode keempat yang sejenis lagi akan
+> menyempitkan kanal alih-alih melebarkannya. **T13 (sinyal penuh tapi internet
+> lambat) sekarang berdiri paling depan tanpa saingan** — P1, lapis "umum", dan
+> tidak bersinggungan sama sekali dengan tiga yang barusan tayang.
 
 Alasan T13 (sinyal) dan T03 (video buram) berdiri paling depan di antara sisa
 P1: keduanya pertanyaan yang benar-benar ditanyakan orang sehari-hari — saat

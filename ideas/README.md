@@ -104,3 +104,11 @@ status: mentah    # mentah | diuji | lolos → T{nn} | ditolak | jadi Shorts saj
 
 Ide yang cuma satu baris pun tetap sah ditulis — bagian di bawahnya boleh diisi
 belakangan.
+
+## Jalur cepat — [`fast_ideas/`](../fast_ideas/)
+
+Folder ini mengandaikan idenya lahir mentah lalu diuji. Kalau **direction-nya
+sudah ada dan tinggal diunggah**, topiknya tidak lewat sini sama sekali: ia
+masuk lewat [`fast_ideas/`](../fast_ideas/README.md), yang cuma punya tiga fase
+— direction masuk → bangun thumbnail → bangun video — tanpa `ide.md` dan tanpa
+uji 4 syarat. Seluruh HARD RULE tetap berlaku di dalamnya.

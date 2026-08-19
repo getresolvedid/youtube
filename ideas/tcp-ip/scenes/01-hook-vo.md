@@ -7,7 +7,7 @@ Scene pembuka, bagian 1. Diambil apa adanya dari
 
 Pernahkah kamu berpikir, bagaimana sebuah pesan bisa dikirim dari komputer kamu ke komputer yang berada ribuan kilometer jauhnya?
 Bagaimana saat kamu membuka sebuah website, data bisa menemukan jalan menuju perangkatmu?
-Semua itu terjadi karena perangkat di internet menggunakan aturan komunikasi yang disebut TCP/IP.
+Semua itu terjadi karena perangkat di internet menggunakan aturan komunikasi yang disebut TCP IP.
 
 ## Sinkron
 

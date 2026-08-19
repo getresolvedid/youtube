@@ -33,6 +33,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
 import { bacaEpisode, bacaShort, daftarShort } from "./baca-episode.mjs";
+import { dirTopik } from "./lokasi.mjs";
 
 /** Berkas ini dua-duanya: CLI dan modul. `tingkatA`/`tingkatB` diekspor supaya
  *  bisa diuji dengan baris yang sengaja salah — satu-satunya cara membuktikan
@@ -42,7 +43,7 @@ import { bacaEpisode, bacaShort, daftarShort } from "./baca-episode.mjs";
 const DIJALANKAN_LANGSUNG =
   process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 
-const slug = process.argv[2] ?? "apa-itu-firewall";
+const slug = process.argv[2] ?? "tcp-ip";
 const MAKS_KATA_KALIMAT = 18;
 
 /* Ambang ritme. cv = simpangan baku / rata-rata panjang baris. Angkanya memang
@@ -80,7 +81,7 @@ const CV_DATAR = 0.3;
  *  HANYA JIKA ada aturan yang mencakupnya. */
 const bacaKamus = () => {
   const set = new Set();
-  const path = `ideas/${slug}/naskah.md`;
+  const path = `${dirTopik(slug)}/naskah.md`;
   /* Saat diimpor sebagai modul, argv[2] milik proses lain dan slug-nya bisa
      menunjuk topik yang tidak ada. Kamus kosong lebih benar daripada lempar. */
   if (!existsSync(path)) return set;

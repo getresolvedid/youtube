@@ -37,6 +37,7 @@
 */
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { dirTopik } from "./lokasi.mjs";
 
 export const R = (n) => Math.round(n * 100) / 100;
 
@@ -396,8 +397,8 @@ export const bacaEpisode = (slug) => {
   const DUR_CLOSING = wajib("CLOSING_LONG_SECONDS");
   const DUR_PLACEHOLDER = wajib("VO_PLACEHOLDER_SECONDS");
 
-  const naskah = `ideas/${slug}/naskah.md`;
-  const dirVO = `ideas/${slug}/scenes`;
+  const naskah = `${dirTopik(slug)}/naskah.md`;
+  const dirVO = `${dirTopik(slug)}/scenes`;
   const daftar = bacaDaftar(naskah);
 
   /* Penempatan scene standar mengikuti docs/10:
@@ -446,7 +447,7 @@ export const bacaEpisode = (slug) => {
 const POLA_SHORT = /^s(\d+)-[a-z0-9-]+$/;
 
 export const daftarShort = (slug) => {
-  const dir = `ideas/${slug}/scene-shorts`;
+  const dir = `${dirTopik(slug)}/scene-shorts`;
   if (!existsSync(dir)) return [];
 
   return readdirSync(dir, { withFileTypes: true })
@@ -482,8 +483,8 @@ export const bacaShort = (slug, short) => {
   const DUR_PLACEHOLDER = wajib("VO_PLACEHOLDER_SECONDS");
   const MAKS = wajib("SHORT_MAX_SECONDS");
 
-  const naskah = `ideas/${slug}/naskah.md`;
-  const dirVO = `ideas/${slug}/scene-shorts/${short.folder}`;
+  const naskah = `${dirTopik(slug)}/naskah.md`;
+  const dirVO = `${dirTopik(slug)}/scene-shorts/${short.folder}`;
   const bagianRe = new RegExp(`^##\\s+Short\\s+${short.nomor}\\b`);
 
   const urut = bacaDaftar(naskah, bagianRe).map((b) => ({ ...b, standar: false }));

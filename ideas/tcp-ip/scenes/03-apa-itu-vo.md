@@ -5,8 +5,8 @@ Definisi. Diambil apa adanya dari [`storyboard-usulan.md`](../storyboard-usulan.
 
 ## VO
 
-TCP/IP adalah sekumpulan protokol yang digunakan perangkat untuk berkomunikasi melalui jaringan.
-Sederhananya, TCP/IP adalah seperti aturan yang mengatur bagaimana data dikirim, bagaimana alamat tujuan ditentukan, dan bagaimana data tersebut diterima oleh perangkat lain.
+TCP IP adalah sekumpulan protokol yang digunakan perangkat untuk berkomunikasi melalui jaringan.
+Sederhananya, TCP IP adalah seperti aturan yang mengatur bagaimana data dikirim, bagaimana alamat tujuan ditentukan, dan bagaimana data tersebut diterima oleh perangkat lain.
 
 ## Sinkron
 

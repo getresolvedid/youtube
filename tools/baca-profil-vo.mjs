@@ -31,6 +31,7 @@
  */
 
 import { existsSync, readFileSync } from "node:fs";
+import { dirTopik } from "./lokasi.mjs";
 
 /** Pembaca YAML seadanya — cukup untuk bentuk yang dipakai berkas profil:
  *  `kunci: nilai` di kolom nol, plus satu blok `keluaran:` dengan dua tingkat
@@ -103,7 +104,7 @@ const MEDAN = ["voice", "profile", "style", "accent", "pace", "tempo"];
  *  @param prefiks  "L" | "S1" | "S2" — keluaran yang sedang dibuat
  *  @param kunci    kunci scene, kalau arahannya khusus scene itu */
 export const bacaProfilVO = (slug, prefiks = "L", kunci = "") => {
-  const path = `ideas/${slug}/vo-gemini-profile.yaml`;
+  const path = `${dirTopik(slug)}/vo-gemini-profile.yaml`;
 
   const dariEnv = {
     voice: process.env.GEMINI_TTS_VOICE?.trim() || "",

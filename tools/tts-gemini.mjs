@@ -39,6 +39,7 @@
 import { execFileSync } from "node:child_process";
 
 import { bacaProfilVO, susunArahan } from "./baca-profil-vo.mjs";
+import { dirTopik } from "./lokasi.mjs";
 
 /* --- setelan, semuanya dari .env (docs/08) ---------------------------------- */
 
@@ -104,7 +105,7 @@ export const siapkan = (slug, timpa = {}) => {
       const p = { ...bacaProfilVO(slug, prefiks, kunci), ...timpa };
       if (!p.voice) {
         throw new Error(
-          `voice kosong — isi di ideas/${slug}/vo-gemini-profile.yaml ` +
+          `voice kosong — isi di ${dirTopik(slug)}/vo-gemini-profile.yaml ` +
             `atau GEMINI_TTS_VOICE di .env.`,
         );
       }

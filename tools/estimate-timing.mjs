@@ -4,7 +4,7 @@
  * Dipakai di langkah 3 pipeline: membangun komposisi bisu dengan timing
  * perkiraan supaya naskah & rencana VO bisa diiterasi gratis sebelum VO dibuat.
  *
- *   node --env-file=.env tools/estimate-timing.mjs apa-itu-firewall
+ *   node --env-file=.env tools/estimate-timing.mjs tcp-ip
  *
  * Sumbernya sama persis dengan yang dipakai `npm run gen`
  * (tools/baca-episode.mjs): daftar scene dari naskah.md, teks VO dari
@@ -18,6 +18,7 @@
  */
 
 import { bacaEpisode, wajib } from "./baca-episode.mjs";
+import { slugDari } from "./lokasi.mjs";
 
 const arg = process.argv[2];
 if (!arg) {
@@ -25,7 +26,7 @@ if (!arg) {
   process.exit(1);
 }
 /* Terima slug maupun path naskah — perintah lama di dokumen menyebut path. */
-const slug = arg.replace(/^.*ideas[\\/]/, "").replace(/[\\/].*$/, "");
+const slug = slugDari(arg);
 
 const MAX_CHARS = wajib("VO_MAX_CHARS_PER_TOPIC");
 const LONG_TARGET = wajib("LONG_TARGET_SECONDS");

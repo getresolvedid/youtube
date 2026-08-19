@@ -5,11 +5,11 @@ Rangkuman. Diambil apa adanya dari
 
 ## VO
 
-Jadi, apa itu TCP/IP?
-TCP/IP adalah sekumpulan protokol yang memungkinkan perangkat berkomunikasi melalui jaringan.
+Jadi, apa itu TCP IP?
+TCP IP adalah sekumpulan protokol yang memungkinkan perangkat berkomunikasi melalui jaringan.
 IP membantu menentukan alamat dan jalur tujuan.
 TCP membantu memastikan data dikirim dan diterima secara andal.
-Dan bersama berbagai protokol lainnya, TCP/IP menjadi salah satu fondasi utama yang memungkinkan internet bekerja.
+Dan bersama berbagai protokol lainnya, TCP IP menjadi salah satu fondasi utama yang memungkinkan internet bekerja.
 
 ## Sinkron
 

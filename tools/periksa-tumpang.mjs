@@ -40,7 +40,10 @@ import { join } from "node:path";
 import { bundle } from "@remotion/bundler";
 import { openBrowser, renderStill, selectComposition } from "@remotion/renderer";
 
+import { spawnSync } from "node:child_process";
+
 import { bacaEpisode, bacaShort, daftarShort, wajib } from "./baca-episode.mjs";
+import { punyaEpisode } from "./lokasi.mjs";
 import {
   pesanPrefiksHilang,
   PREFIKS,
@@ -75,10 +78,33 @@ const opsi = (nama) => {
   const i = argv.indexOf(`--${nama}`);
   return i === -1 ? null : argv[i + 1];
 };
-const slug = argv[0] && !argv[0].startsWith("--") ? argv[0] : "apa-itu-firewall";
+const slug = argv[0] && !argv[0].startsWith("--") ? argv[0] : "tcp-ip";
 const folderShort = opsi("short");
 const kunciSatu = opsi("kunci");
 const simpanSemua = argv.includes("--simpan");
+
+/* --- topik tanpa video panjang ---------------------------------------------
+
+   Seri Shorts (satu episode satu Short) tidak punya `scenes/`, jadi tanpa
+   `--short` tidak ada yang bisa diperiksa — dan sebelum ini ia berhenti di
+   `bacaEpisode()` dengan pesan tentang "bagian 1 (question)" yang tidak ada
+   hubungannya dengan sebabnya.
+
+   Yang dikerjakan: menjalankan diri sendiri sekali per Short. Daftarnya dari
+   ISI FOLDER (`daftarShort`), bukan dari daftar yang ditulis tangan di
+   package.json — daftar kedua meleset satu hari setelah Short kelima lahir. */
+if (!folderShort && !punyaEpisode(slug)) {
+  let kode = 0;
+  for (const s of daftarShort(slug)) {
+    const r = spawnSync(
+      process.execPath,
+      [...process.execArgv, process.argv[1], slug, "--short", s.folder, ...argv.slice(1)],
+      { stdio: "inherit" },
+    );
+    kode = kode || r.status || 0;
+  }
+  process.exit(kode);
+}
 
 const prefiksArg = opsi("prefiks");
 if (prefiksArg === null && !(slug in PREFIKS) && !folderShort) {

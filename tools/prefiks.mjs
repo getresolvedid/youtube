@@ -12,17 +12,15 @@ export const PREFIKS = {
      masuk docs/07. T18 dipakai karena id komposisi butuh awalan yang stabil
      SEKARANG.
 
-     TIGA KODE DI BAWAHNYA SUDAH TERPAKAI DAN TIDAK PERNAH DIDAUR ULANG, dan
-     ketiganya tidak punya berkas lagi di repo ini: T15 (firewall) dan T17
-     (enkripsi) TAYANG lalu dikeluarkan 2026-08-18, T16 dibatalkan 2026-08-17. Kode yang didaur ulang
-     membuat catatan lama di dokumen, pesan commit, dan id komposisi menunjuk
-     topik yang salah — tanpa satu pun tanda. */
-  "tcp-ip": "t18",
+     EMPAT KODE SUDAH TERPAKAI DAN TIDAK PERNAH DIDAUR ULANG, dan keempatnya
+     tidak punya berkas lagi di repo ini: T15 (firewall) dan T17 (enkripsi)
+     TAYANG lalu dikeluarkan 2026-08-18, T16 dibatalkan 2026-08-17, T19
+     (neural-network — seri 15 Short) TAYANG lalu dikeluarkan 2026-08-20. Kode
+     yang didaur ulang membuat catatan lama di dokumen, pesan commit, dan id
+     komposisi menunjuk topik yang salah — tanpa satu pun tanda.
 
-  /* JALUR CEPAT (fast_ideas/). T19 diambil karena T18 yang tertinggi terpakai;
-     T15, T16, dan T17 sudah mati dan tidak pernah didaur ulang. Topik ini tidak
-     punya video panjang — nilai di bawah dipakai `prefiksShort()` saja. */
-  "neural-network": "t19",
+     Kode berikutnya karena itu T20, bukan T19. */
+  "tcp-ip": "t18",
 };
 
 /** Awalan untuk video panjang sebuah slug. `null` kalau slug-nya belum dikenal —

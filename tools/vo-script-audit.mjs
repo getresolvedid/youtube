@@ -33,7 +33,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
 import { bacaEpisode, bacaShort, daftarShort } from "./baca-episode.mjs";
-import { dirTopik } from "./lokasi.mjs";
+import { dirTopik, punyaEpisode } from "./lokasi.mjs";
 
 /** Berkas ini dua-duanya: CLI dan modul. `tingkatA`/`tingkatB` diekspor supaya
  *  bisa diuji dengan baris yang sengaja salah — satu-satunya cara membuktikan
@@ -244,7 +244,11 @@ if (DIJALANKAN_LANGSUNG) {
   console.log(`\nvo-script-audit · ${slug}`);
   console.log(`Kamus pengucapan: ${KAMUS.size} entri — ${[...KAMUS].join(", ") || "(kosong)"}`);
 
-  laporan(`${slug} — video panjang`, bacaEpisode(slug).timing, { ritmePerScene: true });
+  /* Topik tanpa video panjang (seri Shorts) melewati bagian ini — sama seperti
+     `npm run gen` dan `npm run sisa`. Yang diperiksa cuma Shorts-nya. */
+  if (punyaEpisode(slug)) {
+    laporan(`${slug} — video panjang`, bacaEpisode(slug).timing, { ritmePerScene: true });
+  }
 
   for (const s of daftarShort(slug)) {
     laporan(`${slug} — Short ${s.nomor} · ${s.folder}`, bacaShort(slug, s).timing, {

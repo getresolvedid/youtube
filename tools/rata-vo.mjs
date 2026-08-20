@@ -59,6 +59,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync, renameSync, unlinkSync } from "node:fs";
 
 import { bacaEpisode, bacaShort, daftarShort, wajib } from "./baca-episode.mjs";
+import { punyaEpisode } from "./lokasi.mjs";
 
 const argv = process.argv.slice(2);
 const bebas = argv.filter((a) => !a.startsWith("--"));
@@ -196,7 +197,11 @@ const cariGain = (path, awalI, tmpMp3) => {
 };
 
 const keluaran = [
-  { prefiks: "L", label: "video panjang", ...bacaEpisode(slug) },
+  /* Topik tanpa video panjang (seri Shorts) melewati baris ini — pola yang sama
+     dengan gen, sisa, tumpang, jahit, vo-script-audit, dan bikin-vo. */
+  ...(punyaEpisode(slug)
+    ? [{ prefiks: "L", label: "video panjang", ...bacaEpisode(slug) }]
+    : []),
   ...daftarShort(slug).map((s) => ({
     prefiks: s.prefiks,
     label: `Short ${s.nomor} · ${s.folder}`,

@@ -34,7 +34,7 @@
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 
 import { bacaEpisode, bacaShort, daftarShort, wajib } from "./baca-episode.mjs";
-import { dirTopik } from "./lokasi.mjs";
+import { dirTopik, punyaEpisode } from "./lokasi.mjs";
 
 /* --- argumen ---------------------------------------------------------------- */
 
@@ -144,7 +144,11 @@ const tolakBeku = (prefiks) => {
  *  prefiks berkasnya sendiri. Prefiks itulah yang memisahkan `01-hook` milik
  *  Short dari `01-hook-question` milik video panjang di satu folder yang sama. */
 const keluaran = [
-  { prefiks: "L", label: "video panjang", ...bacaEpisode(slug) },
+  /* Topik tanpa video panjang (seri Shorts) melewati baris ini — pola yang sama
+     dengan gen, sisa, tumpang, jahit, dan vo-script-audit. */
+  ...(punyaEpisode(slug)
+    ? [{ prefiks: "L", label: "video panjang", ...bacaEpisode(slug) }]
+    : []),
   ...daftarShort(slug).map((s) => ({
     prefiks: s.prefiks,
     label: `Short ${s.nomor} · ${s.folder}`,

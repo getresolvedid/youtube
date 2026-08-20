@@ -219,6 +219,23 @@ import {
   TOTAL as TOTAL_T19S15,
   cari as cariT19S15,
 } from "../fast_ideas/neural-network/scene-shorts/s15-chatgpt/timing.gen";
+import {
+  ThumbS1 as KoverT19S1,
+  ThumbS2 as KoverT19S2,
+  ThumbS3 as KoverT19S3,
+  ThumbS4 as KoverT19S4,
+  ThumbS5 as KoverT19S5,
+  ThumbS6 as KoverT19S6,
+  ThumbS7 as KoverT19S7,
+  ThumbS8 as KoverT19S8,
+  ThumbS9 as KoverT19S9,
+  ThumbS10 as KoverT19S10,
+  ThumbS11 as KoverT19S11,
+  ThumbS12 as KoverT19S12,
+  ThumbS13 as KoverT19S13,
+  ThumbS14 as KoverT19S14,
+  ThumbS15 as KoverT19S15,
+} from "../fast_ideas/neural-network/scene-shorts/kover";
 import { ThumbT18 } from "../ideas/tcp-ip/thumb";
 import { ThumbS1 } from "../ideas/tcp-ip/scene-shorts/thumb-s1";
 import { ThumbS2 } from "../ideas/tcp-ip/scene-shorts/thumb-s2";
@@ -483,6 +500,35 @@ export const RemotionRoot: React.FC = () => (
         ))}
       </Folder>
     ))}
+
+    {/* ---------- T19 · kover kelima belas Short ----------
+        Brief: fast_ideas/neural-network/thumbnail.md (fase 2). ARAHNYA SATU:
+        brief -> kartu. Durasinya 1 frame — ini kartu diam, bukan video.
+
+        TIDAK ADA KARTU 16:9 di sini: seri ini seluruhnya Shorts, tidak ada
+        video panjang, jadi tidak ada tempat kartu 1280x720 dipakai.
+
+        Tiap kover mengimpor komponen SCENE-NYA SENDIRI (kover.tsx) — itu yang
+        membuat larangan docs/06 "jangan menjanjikan gambar yang tidak ada di
+        videonya" jadi mustahil dilanggar, bukan sekadar terlarang. */}
+    <Folder name="kover-t19">
+      {(
+        [
+          KoverT19S1, KoverT19S2, KoverT19S3, KoverT19S4, KoverT19S5,
+          KoverT19S6, KoverT19S7, KoverT19S8, KoverT19S9, KoverT19S10,
+          KoverT19S11, KoverT19S12, KoverT19S13, KoverT19S14, KoverT19S15,
+        ] as const
+      ).map((Kover, i) => (
+        <Composition
+          key={i}
+          id={`T19-thumb-s${i + 1}`}
+          component={Kover}
+          durationInFrames={1}
+          fps={FPS}
+          {...UKURAN_THUMB_SHORT}
+        />
+      ))}
+    </Folder>
 
     <Composition
       id="T18-thumb"

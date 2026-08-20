@@ -1,0 +1,44 @@
+# Arahan pembacaan VO — T19 · Neural Network dari Nol
+#
+# Enam medan (docs/11), dan CUMA `voice` yang medan API sungguhan:
+#   voice   -> prebuiltVoiceConfig.voiceName
+#   profile ─┐
+#   style    ├─ melebur jadi satu kalimat arahan di depan teks VO.
+#   accent   │  Permintaan, bukan jaminan — model boleh mengabaikannya.
+#   pace    ─┘
+#   tempo   -> pengali ffmpeg SESUDAH audionya jadi. Bukan arahan ke model.
+#
+# SATU BARIS PER NILAI. Pembaca YAML repo ini (tools/baca-profil-vo.mjs) membaca
+# `kunci: nilai` di kolom nol dan TIDAK mengenal blok multi-baris (`>-`) — versi
+# pertama berkas ini memakai blok itu, dan arahannya terkirim ke Gemini sebagai
+# ">-; gaya: >-; aksen: …". Lolos tanpa error, dan cuma ketahuan dari baris
+# "arahan" yang dicetak `vo:utuh`.
+#
+# `voice` sengaja TIDAK ada barisnya di sini: baris kosong MENANG atas
+# GEMINI_TTS_VOICE di .env dan menghentikan vo:utuh bahkan untuk rencana yang
+# gratis. Selama barisnya tidak ada, yang dipakai nilai .env. Begitu suaranya
+# dipilih, tulis `voice: <nama>` di sini — supaya pilihannya menempel pada
+# topiknya, bukan pada mesin yang kebetulan dipakai.
+#
+#   npm run vo:coba  -- neural-network --scene 1-cara-belajar --voice A,B
+#   npm run vo:utuh  -- neural-network --target S1                  # rencana, gratis
+#   npm run vo:utuh  -- neural-network --target S1 --coba --jalan   # ke out/voicetest/
+#   npm run vo:utuh  -- neural-network --target S1 --jalan --pisah 1
+
+# ARAHANNYA SENGAJA PENDEK, dan itu bukan selera.
+#
+# Versi pertama berkas ini memakai kalimat panjang berisi tanda kutip dan tanda
+# pisah — 450 karakter arahan ditempel di depan naskah 400 karakter. Enam dari
+# lima belas Short kembali JAUH lebih panjang dari naskahnya (S13: 654 detik
+# untuk 47 kata) dengan pencocokan kata 16–60%: modelnya ikut MEMBACAKAN
+# arahannya. Yang lolos pun bukan karena aman — sembilan yang lain kebetulan
+# tidak kena.
+#
+# Aturan yang lahir dari situ: satu frasa pendek per medan, tanpa tanda kutip,
+# tanpa tanda pisah, tanpa contoh kata yang bisa ikut terbaca.
+
+profile: Pencerita yang menjelaskan ke teman yang pintar. Yakin dan penasaran.
+style: Percakapan, bukan pembacaan naskah.
+accent: Indonesia netral.
+pace: Sedang, melambat sedikit di kalimat terakhir.
+tempo: 1.0

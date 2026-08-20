@@ -3,7 +3,22 @@ kode: T19
 judul: Bagaimana AI sebenarnya belajar
 sumber_direction: direction-masuk/30-second-shorts-production-standard.md
 diunggah: 2026-08-18
-naskah_beku:           # tanggal; diisi saat VO boleh digenerate
+naskah_beku:
+  S1: 2026-08-19
+  S2: 2026-08-19
+  S3: 2026-08-19
+  S4: 2026-08-19
+  S5: 2026-08-19
+  S6: 2026-08-19
+  S7: 2026-08-19
+  S8: 2026-08-19
+  S9: 2026-08-19
+  S10: 2026-08-19
+  S11: 2026-08-19
+  S12: 2026-08-19
+  S13: 2026-08-19
+  S14: 2026-08-19
+  S15: 2026-08-19
 ---
 
 # T19 · Bagaimana AI sebenarnya belajar
@@ -465,6 +480,76 @@ Belum dijawab, dan menahan fase 3 — bukan fase 1:
    dan bagian yang bertabrakan dengan docs/02, docs/03, dan docs/10 harus
    diselesaikan dulu, bukan didiamkan jadi dua kontrak.
 
+## Temuan audit VO yang memang disengaja
+
+`vo-script-audit` melaporkan **0 tingkat A** (tidak ada yang menahan) dan 27
+tingkat B. Ketiga kelasnya sudah dibaca, dan ketiganya disengaja — ditulis di
+sini supaya sesi berikutnya tidak "memperbaikinya":
+
+1. **11 × "huruf kapital"** — semuanya kata **AI**, dan AI **ada barisnya di
+   kamus pengucapan** di atas (dibaca "e i"). Itu justru syarat yang diminta
+   HARD RULE 4; yang dilarang akronim yang TIDAK terdaftar.
+2. **"2 kalimat dalam satu beat"** — dipakai di hook beberapa Short, dan itu
+   bentuk yang diminta docs/02 § bentuk serial: kalimat pertama memperkenalkan
+   ulang bendanya dalam satu frasa, kalimat kedua yang bertanya. Memecahnya jadi
+   dua baris membuat perkenalan ulang itu memakan satu beat penuh — di Short 30
+   detik itu seperdelapan durasinya.
+3. **"ritme datar melintasi scene"** — cv 0,30–0,54 di kelima belas Short.
+   Sengaja: peta § Global direction meminta "consistent 30-second rhythm", dan
+   lima belas episode yang ritmenya berayun-ayun terbaca sebagai lima belas
+   pencerita. Ritme yang bervariasi milik video panjang, bukan seri Shorts yang
+   ditonton berurutan di feed.
+
+## VO — SUDAH DIBUAT (2026-08-20)
+
+**91 berkas di `public/vo/neural-network/`, kelima belas Short bersuara penuh.**
+Timing tiap Short sekarang DIUKUR dari MP3, bukan lagi perkiraan jumlah kata.
+
+**Karakter terpakai ±11.400** untuk keluaran senilai 6.851 — selisihnya take
+yang dibuang. Rinciannya, karena mahal untuk dilupakan:
+
+| Sebab | Karakter |
+|---|---|
+| Take yang dipakai | 6.851 |
+| S1 disintesis dua kali (`--pakai-wav` mencari WAV di `public/vo/`, bukan `out/voicetest/`) | 502 |
+| Take melenceng: S3, S4, S6, S9, S10, S13, S15 | ±4.000 |
+
+**Tiga pelajaran yang menempel di berkas, bukan cuma di ingatan:**
+
+1. **Arahan yang panjang ikut dibacakan model.** Versi pertama
+   `vo-gemini-profile.yaml` memakai 450 karakter arahan berisi tanda kutip dan
+   tanda pisah; enam Short kembali jauh lebih panjang dari naskahnya — S13
+   **654 detik untuk 47 kata**, pencocokan 16–60%. Dipendekkan jadi satu frasa
+   per medan, S13 langsung jadi 39,97 detik dengan pencocokan 100%.
+2. **`--pakai-wav` mensintesis ulang kalau WAV-nya tidak ada di folder tujuan** —
+   dan tetap memakai batas dari take LAMA. Hasilnya potongan yang jatuh di luar
+   berkas. Yang benar: salin dulu WAV-nya ke `public/vo/`, baru potong ulang.
+3. **S15 menolak jalur satu-permintaan, empat take berturut-turut.** Naskahnya
+   membuka dengan pertanyaan yang menyebut ChatGPT, dan mesin TTS-nya model
+   obrolan — dugaan terkuat: ia MENJAWAB, bukan membaca. Jalan keluarnya
+   per-scene (`tools/bikin-vo.mjs --scene`), yang berhasil di percobaan pertama.
+   **Konsekuensinya tercatat:** keenam scene S15 dibaca dalam enam panggilan
+   terpisah, jadi temponya tidak sesegaram empat belas Short lain.
+
+## Anggaran VO — dihitung sebelum dibayar
+
+Rencana kelima belas Short sudah dijalankan **tanpa `--jalan`** (gratis):
+
+| | karakter | | karakter | | karakter |
+|---|---|---|---|---|---|
+| S1 | 502 | S6 | 428 | S11 | 447 |
+| S2 | 471 | S7 | 435 | S12 | 451 |
+| S3 | 469 | S8 | 417 | S13 | 392 |
+| S4 | 470 | S9 | 494 | S14 | 423 |
+| S5 | 524 | S10 | 501 | S15 | 427 |
+
+**Total 6.851 karakter · 15 permintaan** — 57% dari `VO_MAX_CHARS_PER_TOPIC`
+(12.000). Angka ini keluaran `vo:utuh` sendiri, bukan taksiran.
+
+**Suara belum dipilih.** Yang dipakai rencana di atas nilai `.env`
+(`GEMINI_TTS_VOICE`), bukan pilihan yang dibuat untuk topik ini. Begitu suaranya
+dipilih, tulis `voice: <nama>` di `vo-gemini-profile.yaml`.
+
 ## Sumber
 
 Belum ada satu pun angka yang dipakai. Jangan menyebut jumlah lapisan, jumlah
@@ -476,7 +561,15 @@ parameter, lama pelatihan, atau akurasi apa pun sebelum barisnya ada di sini
 - Kode **T19** diambil karena T18 (tcp-ip) yang tertinggi terpakai; T15, T16, dan
   T17 sudah mati dan tidak pernah didaur ulang. Belum didaftarkan di
   `tools/prefiks.mjs` maupun `src/Root.tsx` — keduanya fase 3.
-- Fase 2 (thumbnail) belum mulai. Figur yang dijanjikan kover Short-nya wajib
-  komponen yang sama dengan yang dipakai scene — lahir sebagai `figur-*.tsx`,
-  bukan digambar ulang di dalam `thumb-s1.tsx`
-  ([fast_ideas/README § Fase 2](../README.md#fase-2--bangun-thumbnail)).
+- **Fase 2 SELESAI 2026-08-19** — [`thumbnail.md`](thumbnail.md) + lima belas
+  kover di [`scene-shorts/kover.tsx`](scene-shorts/kover.tsx), keluarannya
+  `render/thumb-s01.png` … `thumb-s15.png` (2160×3840). Tidak ada kartu 16:9:
+  seri ini seluruhnya Shorts.
+  **Tiap kover mengimpor komponen scene-nya sendiri** — itu yang membuat larangan
+  docs/06 ("jangan menjanjikan gambar yang tidak ada di videonya") jadi mustahil
+  dilanggar, bukan sekadar terlarang.
+- **Yang tersisa cuma fase rilis:** VO (berbayar) lalu render + unggah.
+  `vo-gemini-profile.yaml` sudah berdiri dengan arahan pembacaannya; **baris
+  `voice` sengaja dibiarkan kosong** — itu keputusan user, dan salah pilih
+  berarti membayar dua kali. `naskah_beku` juga masih kosong, dan
+  `bikin-vo-utuh.mjs` menolak jalan tanpa tanggalnya.
